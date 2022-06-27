@@ -1,0 +1,103 @@
+﻿body {
+    background-color: #f2f2f2;
+}
+
+.etista-img-div {
+
+    display: block;
+    width: 100%;
+    position: relative;
+    height: 0;
+    padding: 46.25% 0 0 0;
+    overflow: hidden;
+
+}
+
+.etista-img-responsive {
+
+    position: absolute;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+}
+
+header {
+    margin: 90px;
+}
+
+/* navbar */
+.navbar-default {
+    background-color: #3399ff;
+    color: white;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #0056b3;
+}
+
+/* Mobile version */
+.navbar-default .navbar-toggler {
+    background-color: white;
+    border-color: white;
+}
+
+.navbar-default .navbar-toggler:focus {
+    background-color: white;
+}
+
+.navbar-default .navbar-toggler:hover,
+.navbar-default .navbar-toggler:active {
+    background-color: #0056b3;
+}
+
+.navbar-default .navbar-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(22, 40, 64, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: white;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #3399ff;
+    }
+}
+
+.navbar-header .navbar-brand {
+    float: right;
+    padding: 10px 10px;
+    line-height: 30px;
+    color: white;
+}
+
+.navbar-brand > img {
+  display: block;
+  float: left;
+  padding: 0px 10px 0px 0px;
+}
+
+.navbar-collapse {
+    background-color: #3399ff;
+}
+
+.navbar-nav > li > a {
+    color: white;
+}
+
+.container-footer {
+    padding: 50px 0px 0px 0px;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 170px;
+}

@@ -1,0 +1,22 @@
+<!-- Core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% for script in view.js %}
+    <script src="{{ script }}"></script>
+{% endfor %}
+
+<script>
+    var jq = $.noConflict();
+    jq(document).ajaxComplete(function() {
+        var obj = { Title: 'PHP Code Viewer', Url: '{$view.links.Home}' };
+        history.pushState(obj, obj.Title, obj.Url);
+        jq('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+        jq('#mainFileBrowser').DataTable();
+    });
+</script>
+
+{% for script in view.jsscripts %}
+    {{ script }}
+{% endfor %}

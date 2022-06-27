@@ -1,0 +1,82 @@
+{
+    "name": "linuxforphp/linuxforcomposer",
+    "description": "A Composer interface to run 'Linux for PHP' Docker containers, Dockerfiles or docker-compose files.",
+    "single": {
+        "image": {
+            "linuxforcomposer": {
+                "php-versions": [
+                    "7.4"
+                ],
+                "script": [
+                    "cd /srv",
+                    "mkdir tempo",
+                    "cd tempo",
+                    "if [[ -d wwwftsocan ]]; then cd wwwftsocan && git pull origin master; else git clone https://github.com/linuxforphp/wwwftsocan && cd wwwftsocan; fi",
+                    "composer install",
+                    "chmod -R 777 cache/ logs/ templates_c/",
+                    "export BACKEND_PASS=\"$( head /dev/urandom | tr -dc A-Za-z0-9 | head -c 34 ; echo '' )\"",
+                    "cp -f config/config.local.php.dist config/config.local.php",
+                    "sed -i 's/development/production/g' config/config.local.php",
+                    "sed -i 's/USERNAME/fwuser/g' config/config.local.php",
+                    "sed -i \"s/PASSWORD/$BACKEND_PASS/g\" config/config.local.php",
+                    "sed -i 's/DATABASE/fw/g' config/config.local.php",
+                    "cd /srv",
+                    "mv www www.OLD",
+                    "ln -s tempo/wwwftsocan/public www",
+                    "/etc/init.d/mysql start",
+                    "sleep 5",
+                    "mysql -uroot -e \"CREATE DATABASE fw;\"",
+                    "mysql -uroot -e \"CREATE USER 'fwuser'@'localhost' IDENTIFIED BY '$BACKEND_PASS';\"",
+                    "mysql -uroot -e \"GRANT ALL PRIVILEGES ON fw.* TO 'fwuser'@'localhost'\"",
+                    "mysql -uroot fw < /srv/tempo/wwwftsocan/data/db_schema.sql",
+                    "mysql -uroot fw < /srv/tempo/wwwftsocan/data/db_data.sql",
+                    "echo $BACKEND_PASS > /srv/backuppass",
+                    "/etc/init.d/mysql stop",
+                    "sleep 5",
+                    "lfphp --mysql --phpfpm --apache"
+                ],
+                "thread-safe": "false"
+            },
+            "dockerfile": {
+                "url": "",
+                "container-name": "",
+                "username": "",
+                "token": ""
+            }
+        },
+        "containers": {
+            "modes": {
+                "mode1": "detached",
+                "mode2": "interactive",
+                "mode3": "tty"
+            },
+            "ports": {
+                "port1": [
+                    "8181:80"
+                ]
+            },
+            "volumes": {
+                "volume1": ""
+            },
+            "persist-data": {
+                "mount": "false",
+                "root-name": "",
+                "directories": {
+                    "directory1": "",
+                    "directory2": "",
+                    "directory3": ""
+                }
+            }
+        }
+    },
+    "docker-compose": {
+        "url": "",
+        "username": "",
+        "token": ""
+    },
+    "lfphp-cloud": {
+        "account": "",
+        "username": "",
+        "token": ""
+    }
+}
