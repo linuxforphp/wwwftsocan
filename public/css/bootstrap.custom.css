@@ -33,12 +33,12 @@ header {
 
 /* navbar */
 .navbar-default {
-    background-color: #3399ff;
+    background-color: #EF0000;
     color: white;
 }
 
 .navbar-nav .nav-link:hover {
-    color: #0056b3;
+    color: #CD0000;
 }
 
 /* Mobile version */
@@ -53,7 +53,7 @@ header {
 
 .navbar-default .navbar-toggler:hover,
 .navbar-default .navbar-toggler:active {
-    background-color: #0056b3;
+    background-color: #CD0000;
 }
 
 .navbar-default .navbar-toggler .navbar-toggler-icon {
@@ -66,7 +66,7 @@ header {
     }
     .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
     .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-        color: #3399ff;
+        color: #EF0000;
     }
 }
 
@@ -84,7 +84,7 @@ header {
 }
 
 .navbar-collapse {
-    background-color: #3399ff;
+    background-color: #EF0000;
 }
 
 .navbar-nav > li > a {

@@ -1,14 +1,14 @@
 <?php
 
-$baseConfig['env'] = 'development'; // 'development' or 'production'
+$baseConfig['env'] = 'development';
 
-$baseConfig['appName'] = 'The LightMVC Framework Skeleton Application';
+$baseConfig['appName'] = 'The FTSOCAN Homepage';
 
 /*$baseConfig['doctrine']['DBAL']['dcm1'] = [
     'driver'   => 'pdo_mysql',
     'host'     => 'localhost',
     'user'     => 'USERNAME',
-    'password' => 'PASSWORD',
+    'password' => 'testpass',
     'dbname'   => 'DATABASE',
 ];*/
 

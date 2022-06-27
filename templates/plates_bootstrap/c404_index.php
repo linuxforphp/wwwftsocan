@@ -7,14 +7,14 @@
     <?=$this->section('head', $this->fetch('head', ['view' => $view]))?>
 <?php endif ?>
 
-<body>
+<body id="body">
 <?=$this->section('navbar', $this->fetch('navbar', ['view' => $view]))?>
 
-<main role="main">
-    <div class="container">
-        <div id="pageBody">
-            <div class="row block justify-content-center">
-                <div class="col-sm-12 p-5">
+<main class="site-content" role="main">
+    <section class="main-section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="sec-title text-center">
                     <h1 class="h1 xl:text-blue-darker">404</h1>
                     <h2 class="h2 text-blue-darker">Page Not Found</h2>
                     <p class="pt-2 font-bold text-blue">Sorry, but we did not find this page!</p>
@@ -22,30 +22,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- feature -->
-    <div class="bg-yellow text-black">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12"><p><br /></p></div>
-            </div>
-        </div>
-    </div>
-    <!-- /feature -->
-
-    <!-- content -->
-    <div class="bg-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-4"></div>
-                <div class="col-md-1"></div>
-                <div class="col-md-5"></div>
-                <div class="col-md-1"></div>
-            </div>
-        </div>
-    </div>
+    </section>
 </main> <!-- /content -->
 
 <div class="container-footer">

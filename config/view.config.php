@@ -11,53 +11,59 @@ $baseConfig['templates'] = [
 
 $baseConfig['view'] = [
     'urlbaseaddr' => $baseConfig['URLBASEADDR'],
-    'logo' => $baseConfig['URLBASEADDR'] . 'img/logo.png',
-    'lightmvc_logo' => $baseConfig['URLBASEADDR'] . 'img/lightmvc_logo.png',
-    'lightmvc_logo_large' => $baseConfig['URLBASEADDR'] . 'img/lightmvc_logo_large.png',
+    'logo' => $baseConfig['URLBASEADDR'] . 'img/logo.svg',
+    'lightmvc_logo' => $baseConfig['URLBASEADDR'] . 'img/logo-dark.svg',
+    'lightmvc_logo_large' => $baseConfig['URLBASEADDR'] . 'img/logo-dark.svg',
     'favicon' => $baseConfig['URLBASEADDR'] . 'favicon.ico',
     'appname' => $baseConfig['appName'],
-    'title' => 'Skeleton Application',
-    'author' => 'Andrew Caya',
-    'email' => 'admin@localdomain.local',
-    'description' => 'Small CRUD application',
+    'title' => 'FTSOCAN Homepage',
+    'author' => 'Flare Time Series Oracle Canada',
+    'email' => 'info@ftsocan.com',
+    'description' => 'Flare Time Series Oracle Canada (FTSOCAN) is one of the most reliable Flare signal providers in the World. FTSOCAN is your best partner when it comes to earning passive income on the Flare Network.',
     'css' =>
         [
-            $baseConfig['URLBASEADDR'] . 'css/tailwind.min.css',
+            /*$baseConfig['URLBASEADDR'] . 'css/tailwind.min.css',
             $baseConfig['URLBASEADDR'] . 'css/bootstrap.min.css',
             $baseConfig['URLBASEADDR'] . 'css/bootstrap.custom.css',
-            $baseConfig['URLBASEADDR'] . 'css/dashboard.css',
+            $baseConfig['URLBASEADDR'] . 'css/dashboard.css',*/
 
         ],
     'js' =>
         [
-            $baseConfig['URLBASEADDR'] . 'js/jquery-3.3.1.min.js',
-            $baseConfig['URLBASEADDR'] . 'js/bootstrap.min.js',
+            /*$baseConfig['URLBASEADDR'] . 'js/jquery-3.3.1.min.js',
+            $baseConfig['URLBASEADDR'] . 'js/bootstrap.min.js',*/
 
+        ],
+    'jshead' =>
+        [
         ],
     'jsscripts' =>
         [
             //"<script>\n\t\tfunction getPage(page) {\n\n\t\t\tvar url = page;\n\n\t\t\tjq( \"#pageBody\" ).load( url );\n\n\t\t}\n\t</script>\n",
 
         ],
+    'jsscriptshead' =>
+        [
+        ],
     'bodyjs' => 0,
     'links' =>
         [
             'Home' => $baseConfig['URLBASEADDR'] . 'index',
-            'Products' => $baseConfig['URLBASEADDR'] . 'products/index',
+            /*'Products' => $baseConfig['URLBASEADDR'] . 'products/index',
             'Documentation' => 'https://lightmvc-framework.readthedocs.io/en/latest/?badge=latest',
-            'API Doc' => 'http://apidocs.lightmvcframework.net/',
+            'API Doc' => 'http://apidocs.lightmvcframework.net/',*/
 
         ],
     'links-left' =>
         [
             'Home' => $baseConfig['URLBASEADDR'] . 'index',
-            'Products' => $baseConfig['URLBASEADDR'] . 'products/index',
+            /*'Products' => $baseConfig['URLBASEADDR'] . 'products/index',*/
 
         ],
     'links-right' =>
         [
-            'Documentation' => 'https://lightmvc-framework.readthedocs.io/en/latest/?badge=latest',
-            'API Doc' => 'http://apidocs.lightmvcframework.net/',
+            /*'Documentation' => 'https://lightmvc-framework.readthedocs.io/en/latest/?badge=latest',
+            'API Doc' => 'http://apidocs.lightmvcframework.net/',*/
 
         ],
     'navMenu' =>
@@ -65,5 +71,4 @@ $baseConfig['view'] = [
             'Home' => $baseConfig['URLBASEADDR'] . 'index',
 
         ],
-
 ];

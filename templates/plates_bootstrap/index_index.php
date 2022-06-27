@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 7]> <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 
 <?php if (isset($view['headjs'])): ?>
     <?=$this->section('headjs', $this->fetch('headjs', ['view' => $view]))?>
@@ -7,72 +10,99 @@
     <?=$this->section('head', $this->fetch('head', ['view' => $view]))?>
 <?php endif ?>
 
-<body>
+<body id="body">
 <?=$this->section('navbar', $this->fetch('navbar', ['view' => $view]))?>
 
-<main role="main">
-    <div class="container">
-        <div class="row text-left flex flex-wrap">
-            <div class="col-md-8">
-                <h1 class="p-2 text-center">Welcome to<br /><?=$view['appname'] ?>!</h1>
-                <p class="p-2 text-center text-md md:text-lg text-grey-dark leading-normal">
-                    You can view a list of all products!
-                </p>
-                <p class="mb-5 text-center"><a href="<?=$view['urlbaseaddr'] ?>products/index" class="btn btn-light mt-6 inline-block bg-white text-black no-underline px-4 py-3 shadow-lg">View products</a></p>
-            </div>
-            <div class="col-md-4 items-center">
-                <p><img src="<?=$view['urlbaseaddr'] ?>img/lightmvc_logo.png" class="center-block shadow-lg" /><br /></p>
+<main class="site-content" role="main">
+
+    <!--
+    Jumbotron
+    ==================================== -->
+    <section id="home-jumbotron">
+        <div class="jumbotron jumbotron-fluid jumbotron-padding bg-img bg-img-1">
+            <div class="container">
+                <div class="jumbotron-content float-left">
+                    <img src="<?=$view['urlbaseaddr']?>/img/logo-dark.svg" style="max-width: 15%;"/>
+                    <div class="h1">
+                        FTSO Canada<br />
+                        <span class="lead">Start building passive income today!</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+    <!--
+    End Home Jumbotron
+    ==================================== -->
 
-    <!-- feature -->
-    <div class="bg-yellow text-black">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="p-5 text-center text-grey-darkest">
-                        <div class="mb-5 h3 font-weight-bold">
-                            Easily create PHP applications by using any PHP library within this very modular, event-driven and Swoole-enabled framework!
+    <!-- About section -->
+    <section id="about" class="main-section-padding parallax">
+        <div class="overlay">
+            <div class="container">
+                <div class="row">
+                    <div class="sec-title text-center white wow animated fadeInDown">
+                        <h2>About FTSO Canada</h2>
+                    </div>
+                    <div class="owl-carousel owl-theme wow animated fadeInUp">
+                        <div class="item testimonial-item text-center">
+                            <img src="<?=$view['urlbaseaddr'] ?>img/logo-dark.svg" alt="About FTSO Canada">
+                            <div class="clearfix">
+                                <span>Flare Time Series Oracle Canada</span>
+                                <p>FTSO Canada is your partner to help you build your passive income on the Flare Network,<br />
+                                    by providing the Flare Network with a fast and efficient price provider.
+                                </p>
+                            </div>
                         </div>
-                        <p class="lg:text-xl"><a href="https://lightmvcframework.net/" target="_blank">https://lightmvcframework.net/</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /feature -->
+                        <div class="item testimonial-item text-center">
+                            <img src="<?=$view['urlbaseaddr'] ?>img/songbird.jpg" alt="About Flare Networks">
+                            <div class="clearfix">
+                                <span>Earn SGB and FLR</span>
+                                <p>Passive income is at hand!<br />
+                                    You can earn $SGB and $FLR, without the risk of losing your tokens.<br />
+                                    Make your money work for you, and start claiming your tokens every week!<br /><br />
+                                    <a class="light-link" href="<?=$view['urlbaseaddr'] ?>delegate/index" target="_blank">Delegate now</a>!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="item testimonial-item text-center">
+                            <img src="<?=$view['urlbaseaddr'] ?>img/flare.jpg" alt="About XRPL">
+                            <div class="clearfix">
+                                <span>Flare Networks</span>
+                                <p>Unleashing Value.<br />
+                                    Around 65% of the value of Blockchain Tokens is inaccessible to decentralised applications.<br />
+                                    That changes now.<br /><br />
+                                    Please visit the <a class="light-link" href="https://flare.xyz" target="_blank">Flare website</a>.</p>
 
-    <!-- content -->
-    <div class="bg-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-4">
-                    <div class="row justify-content-center">
-                        <a href="https://getlaminas.org/" target="_blank"><img class="center-block mt-5 p-2" src="<?=$view['urlbaseaddr'] ?>img/laminas-logo.svg" /></a>
-                    </div>
-                    <div class="row justify-content-center">
-                        <a href="https://symfony.com/" target="_blank"><img class="center-block mt-5 p-2" src="<?=$view['urlbaseaddr'] ?>img/symfony.png" /></a>
-                    </div>
-                    <div class="row justify-content-center">
-                        <a href="https://www.swoole.co.uk/" target="_blank"><img class="center-block mt-5 p-2" src="<?=$view['urlbaseaddr'] ?>img/swoole.png" /></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-5">
-                    <h3 class="mt-5 mb-8">
-                        Build applications using PSR-15 compliant middleware and PSR-7 compliant HTTP messages.
-                    </h3>
-                    <p class="mb-8">Built upon proven technologies like Laminas Diactoros, Laminas Stratigility, and Laminas EventManager!</p>
-                    <p class="mb-8">Many great technologies, like Pimple, FastRoute, Plates, and Whoops come together to become the LightMVC Framework!</p>
-                    <p class="mb-8">And, let's not forget these great-looking templates created with Bootstrap and Tailwind CSS!</p>
-                    <p class="text-center"><a href="<?=$view['urlbaseaddr'] ?>products/index" class="btn btn-dark inline-block bg-black text-white mb-5 px-4 py-3 no-underline shadow-lg">Browse our products</a></p>
-                </div>
-                <div class="col-md-1"></div>
             </div>
         </div>
-    </div>
+    </section>
+    <!-- end About section -->
+
+    <!-- Social section -->
+    <section id="social" class="main-section-padding parallax">
+        <div class="overlay">
+            <div class="container">
+                <div class="row">
+
+                    <div class="sec-title text-center dark wow animated fadeInDown">
+                        <h2>FOLLOW US</h2>
+                        <p>Stay up to date with the latest information about FTSO Canada!</p>
+                    </div>
+
+                    <ul class="social-button">
+                        <li class="wow animated zoomIn"><a href="https://twitter.com/ftsocan" target="_blank"><i class="fa fa-twitter fa-2x"></i></a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end Social section -->
+
 </main> <!-- /content -->
 
 <div class="container-footer">

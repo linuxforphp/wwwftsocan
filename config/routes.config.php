@@ -12,6 +12,11 @@ $baseConfig['routes'] = [
         'index',
     ],
     [
+        'GET',
+        '/delegate[/{action}]',
+        'delegate',
+    ],
+    /*[
         ['GET', 'POST'],
         '/products[/{action}[/{id:[0-9]+}]]',
         'products',
@@ -25,5 +30,5 @@ $baseConfig['routes'] = [
         'GET',
         '/admin[/{action}]',
         'specialmodule/index',
-    ],
+    ],*/
 ];

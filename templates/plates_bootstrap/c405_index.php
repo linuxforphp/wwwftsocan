@@ -7,14 +7,14 @@
     <?=$this->section('head', $this->fetch('head', ['view' => $view]))?>
 <?php endif ?>
 
-<body>
+<body id="body">
 <?=$this->section('navbar', $this->fetch('navbar', ['view' => $view]))?>
 
-<main role="main">
-    <div class="container">
-        <div id="pageBody">
-            <div class="row justify-content-center">
-                <div class="col-auto">
+<main class="site-content" role="main">
+    <section class="main-section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="sec-title text-center">
                     <h1 class="h1 xl:text-blue-darker">405</h1>
                     <h2 class="h2 text-blue-darker">Method Not Allowed</h2>
                     <p class="pt-2 font-bold text-blue">Sorry, but this method is not allowed on this page!</p>
@@ -26,31 +26,9 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- feature -->
-    <div class="bg-yellow text-black">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12"><p><br /></p></div>
-            </div>
-        </div>
-    </div>
-    <!-- /feature -->
-
-    <!-- content -->
-    <div class="bg-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-4"></div>
-                <div class="col-md-1"></div>
-                <div class="col-md-5"></div>
-                <div class="col-md-1"></div>
-            </div>
-        </div>
-    </div>
-</main> <!-- /content -->
+    </section>
+</main> <!-- /content --><body>
+<?=$this->section('navbar', $this->fetch('navbar', ['view' => $view]))?>
 
 <div class="container-footer">
     <?=$this->section('footer', $this->fetch('footer', ['view' => $view]))?>

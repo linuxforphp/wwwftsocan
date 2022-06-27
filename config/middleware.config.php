@@ -1,7 +1,7 @@
 <?php
 
 $baseConfig['middleware'] = [
-    '/foo' => function ($req, $handler) {
+    /*'/foo' => function ($req, $handler) {
         $response = new \Laminas\Diactoros\Response();
         $response->getBody()->write('FOO!');
 
@@ -21,5 +21,5 @@ $baseConfig['middleware'] = [
     '/admin' => [
         \Application\Middleware\SessionMiddleware::class,
         \Application\Middleware\ExampleMiddleware::class,
-    ],
+    ],*/
 ];
