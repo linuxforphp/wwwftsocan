@@ -1,6 +1,8 @@
 # FTSOCAN WEBSITE
 *********************
 
+## Flare Time Series Oracle Canada
+
 https://ftsocan.com
 
-# Earn passive income now!
+### Start building passive income today!
