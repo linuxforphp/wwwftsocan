@@ -18,7 +18,7 @@
                     <h1 class="h1 xl:text-blue-darker">404</h1>
                     <h2 class="h2 text-blue-darker">Page Not Found</h2>
                     <p class="pt-2 font-bold text-blue">Sorry, but we did not find this page!</p>
-                    <p class="pt-2 pb-10 text-lg-center">Let's go back <a href="<?=$view['urlbaseaddr'] ?>index">HOME</a>!</p>
+                    <p class="pt-2 pb-10 text-lg-center">Let's go back <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index">HOME</a>!</p>
                 </div>
             </div>
         </div>

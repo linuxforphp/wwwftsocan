@@ -22,7 +22,7 @@
                     <?php foreach($view['vars'] as $key => $value): ?>
                         <div class="row justify-content-center"><?=$value ?></div>
                     <?php endforeach; ?>
-                    <p class="pt-5 pb-10 text-lg-center">Let's go back <a href="<?=$view['urlbaseaddr'] ?>index">HOME</a>!</p>
+                    <p class="pt-5 pb-10 text-lg-center">Let's go back <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index">HOME</a>!</p>
                 </div>
             </div>
         </div>
