@@ -243,8 +243,8 @@ h1, h2, h3, h4, h5, h6,
   border-radius: 1px;
   height: 100px;
   left: 50%;
-  margin-left: -64px;
-  margin-top: -50px;
+  margin-left: -30px;
+  margin-top: -30px;
   position: absolute;
   top: 50%;
   width: 128px;
@@ -1015,7 +1015,7 @@ ul.external li a:hover {
 }
 
 #social .overlay {
-    background: url("../img/slide_bg.png") repeat scroll 0 0 transparent;
+    /*background: url("../img/slide_bg.png") repeat scroll 0 0 transparent;*/
     padding: 100px 0 120px;
 }
 
