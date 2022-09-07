@@ -24,8 +24,8 @@ Fixed Navigation
             <!-- logo -->
             <h1 class="navbar-brand">
                 <span>
-                    <img src="<?=$view['urlbaseaddr']?>/img/logo-dark.svg" style="max-height: 35px;"/>
-                    <a href="#body">FTSOCAN</a>
+                    <img src="<?=$view['urlbaseaddr']?>img/logo-dark.svg" style="max-height: 35px;"/>
+                    <a href="https://ftsocan.com">FTSOCAN</a>
                 </span>
             </h1>
             <!-- /logo -->
