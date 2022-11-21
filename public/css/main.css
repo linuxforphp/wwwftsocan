@@ -15,7 +15,7 @@
 /* =================================== */
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     line-height: 24px;
     font-size: 16px;
 }
@@ -48,7 +48,7 @@ a, a:hover, a:focus, .btn:focus {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: #252525;
 }
 
@@ -874,7 +874,7 @@ ul.external li a:hover {
 }
 
 .testimonial-item > div:before {
-    /*background-image: url("../img/icons/quotes.png");*///
+    /*background-image: url("../img/icons/quotes.png");*/
     background-repeat: no-repeat;
     bottom: 127px;
     height: 33px;
