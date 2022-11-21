@@ -22,7 +22,7 @@
         <div class="jumbotron jumbotron-fluid jumbotron-padding bg-img bg-img-1">
             <div class="container">
                 <div class="jumbotron-content float-left">
-                    <img src="<?=$view['urlbaseaddr']?>/img/logo-dark.svg" style="max-width: 15%;"/>
+                    <img src="<?=$view['urlbaseaddr']?>/img/logo-dark-2.svg"/>
                     <div class="h1">
                         FTSO Canada<br />
                         <span class="lead">Start building passive income today!</span>

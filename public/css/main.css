@@ -17,7 +17,6 @@
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 24px;
-    font-size: 16px;
 }
 
 figure, p, address {
@@ -49,7 +48,7 @@ a, a:hover, a:focus, .btn:focus {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Poppins', sans-serif;
-    color: #252525;
+    color: #000;
 }
 
 .delegation > li {
@@ -67,6 +66,33 @@ h1, h2, h3, h4, h5, h6,
 
 .jumbotron-padding {
     padding: 150px 0;
+}
+
+.jumbotron {
+    color: #fff;
+}
+
+.jumbotron-content img {
+    max-width: 175px;
+}
+
+.jumbotron h1, .jumbotron .h1 {
+    color: #000;
+    font-weight: bold;
+    font-size: 4em;
+}
+
+.jumbotron .lead {
+    color: #000;
+    font-weight: normal;
+}
+
+.jumbotron-content {
+    /*background-color: rgba(0, 0, 0, 0.7);*/
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .btn {
@@ -357,7 +383,7 @@ h1, h2, h3, h4, h5, h6,
 
     background-color: rgba(0,0,0,.4);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    padding: 5px 0;
+    padding: 10px 0;
 }
 
 #navigation.animated-header {
@@ -365,7 +391,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1.navbar-brand {
-    font-size: 20px;
+    font-size: 1.6em;
     font-weight: 700;
     margin: 0;
     text-transform: uppercase;
@@ -373,6 +399,7 @@ h1.navbar-brand {
 
 h1.navbar-brand > a {
     color: #fff;
+    margin-left: 10px;
 }
 
 h1.navbar-brand > a:hover, h1.navbar-brand > a:focus {
@@ -652,7 +679,7 @@ h1.navbar-brand > a:hover, h1.navbar-brand > a:focus {
 .owl-buttons {
     border: 2px solid #fff;
     display: inline-block;
-    float: right;
+    /* float: right; */
     padding: 1px 8px 5px;
 }
 
@@ -1339,10 +1366,22 @@ textarea.form-control {
 	Mobile (Portrait) Design for a width of 320px
 ==============================================================*/
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 320px) {
 
-    body {
-        font-size: 14px;
+    .jumbotron-padding {
+        padding: 105px 0;
+    }
+    
+    .jumbotron span {
+        font-size: 13.5px;
+    }
+
+    .jumbotron-content img {
+        max-width: 140px;
+    }
+
+    .jumbotron h1, .jumbotron .h1 {
+        font-size: 2.5em;
     }
 
     .parallax {
@@ -1578,22 +1617,6 @@ pre {
     text-align: center;
 }
 
-.jumbotron {
-    color: #fff;
-}
-
-.jumbotron h1, .jumbotron .h1, .jumbotron .lead {
-    color: #CD0000;
-}
-
-.jumbotron-content {
-    /*background-color: rgba(0, 0, 0, 0.7);*/
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
 .command-styling {
     background-color: rgb(45, 46, 69);
     color: white;
@@ -1614,7 +1637,7 @@ pre {
     margin: 5px 7px;
     background: white;
     display: block;
-    -webkit-backface-visibility: visible;
+    /* -webkit-backface-visibility: visible; */
     transition: opacity 200ms ease;
     border-radius: 30px; }
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
