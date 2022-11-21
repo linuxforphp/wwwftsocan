@@ -5,7 +5,7 @@
         "image": {
             "linuxforcomposer": {
                 "php-versions": [
-                    "custom-Mobile-V2"
+                    "custom-Home-page-Final"
                 ],
                 "script": [
                     "cd /srv",
