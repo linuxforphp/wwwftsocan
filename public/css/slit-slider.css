@@ -13,14 +13,27 @@
 	position: relative;
 }
 
-
-
 .bg-img {
-	background-position: center center;
+	background-position: 0;
+	background-position-x: 80%;
+	background-position-y: 20%;
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 100%;
 	width: 100%;
+}
+
+@media only screen and (max-width: 991px) {
+
+	.bg-img {
+		background-position: 0;
+		background-position-x: 55%;
+		background-position-y: 20%;
+		background-repeat: no-repeat;
+		background-size: cover;
+		height: 100%;
+		width: 100%;
+	}
 }
 
 /* Custom navigation arrows */
