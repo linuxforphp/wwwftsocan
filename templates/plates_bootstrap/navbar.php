@@ -34,7 +34,7 @@ Fixed Navigation
         <!-- main nav -->
         <nav class="collapse navbar-collapse navbar-right" role="navigation">
             <ul id="nav" class="nav navbar-nav">
-                <li><a href="#body">Home</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>index')">Home</a></li>
                 <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>delegate/index')">Delegate</a></li>
                 <li><a href="#" onclick="getDocsPageNewTab(2)">About</a></li>
             </ul>

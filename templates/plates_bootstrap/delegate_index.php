@@ -11,7 +11,7 @@
 <?php endif ?>
 
 <body id="body">
-<?=$this->section('navbardelegation', $this->fetch('navbardelegation', ['view' => $view]))?>
+<?=$this->section('navbar', $this->fetch('navbar', ['view' => $view]))?>
 
 <main class="site-content" role="main">
 
