@@ -51,8 +51,13 @@ h1, h2, h3, h4, h5, h6,
     color: #000;
 }
 
+ul.delegation {
+    padding: 0;
+}
+
 .delegation > li {
-    padding: 20px;
+    padding-left: 1em;
+    list-style-position: inside;
 }
 
 .site-content {
