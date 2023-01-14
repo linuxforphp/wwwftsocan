@@ -16,6 +16,16 @@ $baseConfig['routes'] = [
         '/delegate[/{action}]',
         'delegate',
     ],
+    [
+        'GET',
+        '/flrexplorer[/{action}]',
+        'flrexplorer',
+    ],
+    [
+        'GET',
+        '/sgbexplorer[/{action}]',
+        'sgbexplorer',
+    ],
     /*[
         ['GET', 'POST'],
         '/products[/{action}[/{id:[0-9]+}]]',

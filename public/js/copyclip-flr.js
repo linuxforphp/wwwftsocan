@@ -10,5 +10,5 @@ function copyClip(button, value) {
 }
 
 document.querySelector('#myCopyCommand1Button').onclick = function() {
-    copyClip('myCopyCommand1Button', '0x7C255e428e95bEbc76e944D49D4F460C84b3A3c3');
-}
+    copyClip('myCopyCommand1Button', '0x9e55a49D251324B1623dc2A81894D1AfBfB8bbdC');
+};

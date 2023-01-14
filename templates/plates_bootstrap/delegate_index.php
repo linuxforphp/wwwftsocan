@@ -20,44 +20,73 @@
         <div class="container">
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated bounceInLeft">You can delegate to <strong>FTSO Canada</strong>,<br />using the Songbird Explorer!</h2>
-                    <h3 class="wow animated bounceInRight">Please follow these steps:</h3>
-                    <ul class="text-md delegation">
-                        <li class="wow animated bounceInLeft">Using Firefox, go to the Songbird Explorer : <br /><a class="dark-link" href="https://songbird-explorer.flare.network/address/0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED/write-contract" target="_blank">https://songbird-explorer.flare.network/address/0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED/write-contract</a></li>
-                        <li class="wow animated bounceInRight">Connect your wallet, and wrap your $SGB by using "<strong>#7 - deposit"</strong><br />(please do not wrap all of your $SGB, because you will need some to pay for fees!)</li>
-                        <li class="wow animated bounceInLeft">Copy the <strong>FTSO Canada</strong> Flare Address :</li>
-                    </ul>
+                    <h2 class="sec-title text-center wow animated fadeInDown">You can delegate to <strong>FTSOCAN</strong>,<br />by using the Flare Portal!</h2>
+                    <hr />
+                    <img src="<?=$view['urlbaseaddr']?>/img/flare-black.svg" style="max-height: 300px;" />
+                    <a href="https://portal.flare.network" target="_blank" type="button" class="btn btn-red" >Launch Flare Portal</a>
+                    <hr />
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-2"></div>
+                <div class="sec-title text-center mt-2">
+                    <h2 class="sec-title text-center wow animated fadeInDown">Add the WFLR and WSGB tokens to your wallet!</h2>
+                    <ul class="text-md delegation">
+                        <li class="wow animated fadeInDown">Import your favorite tokens by pasting these addresses in the "Import tokens" section of your wallet:</li>
+                    </ul>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-1">
+                    <img src="<?=$view['urlbaseaddr']?>/img/WFLR.svg" style="height: 40px" />
+                    <div class="text-lg-center">WFLR</div>
+                </div>
                 <div class="col-sm-8">
-                    <pre><code class="pre-code-custom">0x7C255e428e95bEbc76e944D49D4F460C84b3A3c3</code></pre>
+                    <pre><code class="pre-code-custom">0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d</code></pre>
                 </div>
                 <div class="col-sm-2">
-                    <button id="myCopyCommand1Button"><span data-feather="copy" /></button>
+                    <button id="myCopyCommandWFLRButton"><span data-feather="copy" /></button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-1">
+                    <img src="<?=$view['urlbaseaddr']?>/img/WSGB.svg" style="max-height: 40px;" />
+                    <div class="text-lg-center">WSGB</div>
+                </div>
+                <div class="col-sm-8">
+                    <pre><code class="pre-code-custom">0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED</code></pre>
+                </div>
+                <div class="col-sm-2">
+                    <button id="myCopyCommandWSGBButton"><span data-feather="copy" /></button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="sec-title text-center">
+                    <h2 class="wow animated bounceInRight">Or, delegate using the Flare or the Songbird Explorer!</h2>
+                    <a href="<?=$view['urlbaseaddr']?>flrexplorer/index">
+                        <img src="<?=$view['urlbaseaddr']?>/img/FLR.svg" style="max-height: 100px;" />
+                    </a>
+                    <hr />
+                    <a href="<?=$view['urlbaseaddr']?>sgbexplorer/index">
+                        <img src="<?=$view['urlbaseaddr']?>/img/SGB.svg" style="max-height: 100px;" />
+                    </a>
+                    <hr />
                 </div>
             </div>
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated bounceInRight">And, delegate!</h2>
-                    <ul class="text-md delegation">
-                        <li class="wow animated bounceInLeft">Then, use "<strong>#5 - delegate</strong>", to delegate to our address (copied above),<br />and enter the percentage of the delegation in BIPS (ex. "100%" would become "10000")</li>
-                    </ul>
+                    <h2 class="wow animated bounceInLeft">Don't forget to claim your rewards every week!</h2>
                 </div>
             </div>
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated bounceInRight">Claim your rewards every week!</h2>
-                    <ul class="text-md delegation">
-                        <li class="wow animated bounceInLeft">Using Firefox, go to the Songbird Explorer : <br /><a class="dark-link" href="https://songbird-explorer.flare.network/address/0xc5738334b972745067fFa666040fdeADc66Cb925/write-contract" target="_blank">https://songbird-explorer.flare.network/address/0xc5738334b972745067fFa666040fdeADc66Cb925/write-contract</a></li>
-                        <li class="wow animated bounceInRight">Connect your wallet, and claim your rewards by using "<strong>#3 - claimReward"</strong><br />(please enter your wallet address, and the <a class="dark-link" href="https://flaremetrics.io/" target="_blank">epoch number</a> in the appropriate fields)</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="sec-title text-center">
-                    <h2 class="wow animated bounceInLeft">Enjoy your passive income!</h2>
+                    <h2 class="wow animated bounceInRight">Enjoy your passive income!</h2>
                     <img src="<?=$view['urlbaseaddr'] ?>img/logo-signal.png" style="max-height: 250px;"/>
                 </div>
             </div>
@@ -76,7 +105,7 @@
 <?php endif ?>
 
 <!-- copyclip functions -->
-<script src="<?=$view['urlbaseaddr'] ?>js/copyclip.js"></script>
+<script src="<?=$view['urlbaseaddr'] ?>js/copyclip-wflr-wsgb.js"></script>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="<?=$view['urlbaseaddr'] ?>js/ie10-viewport-bug-workaround.js"></script>
