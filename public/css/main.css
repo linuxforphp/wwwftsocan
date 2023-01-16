@@ -108,7 +108,7 @@ ul.delegation {
 }
 
 .btn-red {
-    background-color: #EF0000;
+    background-color: #E00D0D;
     box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15) inset;
     padding: 15px 55px;
     color: #fff;
@@ -121,7 +121,7 @@ ul.delegation {
     padding: 12px 35px;
 }
 
-.bg-blue {
+.bg-red {
     background-color: #EF0000;
 }
 
@@ -235,10 +235,10 @@ ul.delegation {
     border-bottom: 1px solid #EF0000;
     content: "";
     display: block;
-    left: 45%;
+    left: 35%;
     bottom: 0;
     position: absolute;
-    width: 115px;
+    width: 30%;
 }
 
 .sec-title.white h2:after {

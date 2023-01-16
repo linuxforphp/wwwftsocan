@@ -21,12 +21,43 @@
             <div class="row">
                 <div class="sec-title text-center">
                     <h2 class="sec-title text-center wow animated fadeInDown">You can delegate to <strong>FTSOCAN</strong>,<br />by using the Flare Portal!</h2>
-                    <hr />
                     <img src="<?=$view['urlbaseaddr']?>/img/flare-black.svg" style="max-height: 300px;" />
                     <a href="https://portal.flare.network" target="_blank" type="button" class="btn btn-red" >Launch Flare Portal</a>
                     <hr />
                 </div>
             </div>
+            <div class="row">
+                <div class="sec-title text-center">
+                    <h2 class="wow animated fadeInDown">Don't forget to claim your rewards every week!</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="sec-title text-center">
+                    <h2 class="wow animated fadeInDown">Delegate the classic way with the Explorer!</h2>
+                    <ul class="text-md delegation">
+                        <li class="wow animated fadeInDown">Instead of using to Flare Portal to delegate your tokens, you might prefer to use the Flare or the Songbird Explorer:</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row align-items-md-center text-center">
+                <div class="col-lg-2">
+                </div>
+                <div class="col-lg-4">
+                    <a href="<?=$view['urlbaseaddr']?>flrexplorer/index">
+                        <img src="<?=$view['urlbaseaddr']?>/img/FLR.svg" style="max-height: 100px;" /><br />
+                    </a>
+                    <div class="text-center">Flare Explorer</div>
+                </div>
+                <div class="col-lg-4">
+                    <a href="<?=$view['urlbaseaddr']?>sgbexplorer/index">
+                        <img src="<?=$view['urlbaseaddr']?>/img/SGB.svg" style="max-height: 100px;" /><br />
+                    </a>
+                    <div class="text-center">Songbird Explorer</div>
+                </div>
+                <div class="col-lg-2">
+                </div>
+            </div>
+            <hr />
             <div class="row">
                 <div class="sec-title text-center mt-2">
                     <h2 class="sec-title text-center wow animated fadeInDown">Add the WFLR and WSGB tokens to your wallet!</h2>
@@ -35,7 +66,6 @@
                     </ul>
                 </div>
             </div>
-            <hr />
             <div class="row">
                 <div class="col-sm-1">
                 </div>
@@ -68,25 +98,7 @@
             <hr />
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated bounceInRight">Or, delegate using the Flare or the Songbird Explorer!</h2>
-                    <a href="<?=$view['urlbaseaddr']?>flrexplorer/index">
-                        <img src="<?=$view['urlbaseaddr']?>/img/FLR.svg" style="max-height: 100px;" />
-                    </a>
-                    <hr />
-                    <a href="<?=$view['urlbaseaddr']?>sgbexplorer/index">
-                        <img src="<?=$view['urlbaseaddr']?>/img/SGB.svg" style="max-height: 100px;" />
-                    </a>
-                    <hr />
-                </div>
-            </div>
-            <div class="row">
-                <div class="sec-title text-center">
-                    <h2 class="wow animated bounceInLeft">Don't forget to claim your rewards every week!</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="sec-title text-center">
-                    <h2 class="wow animated bounceInRight">Enjoy your passive income!</h2>
+                    <h2 class="wow animated fadeInDown">Enjoy your passive income!</h2>
                     <img src="<?=$view['urlbaseaddr'] ?>img/logo-signal.png" style="max-height: 250px;"/>
                 </div>
             </div>
