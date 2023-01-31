@@ -50,7 +50,7 @@
                 <div class="sec-title text-center">
                     <h2 class="wow animated bounceInRight">Claim your rewards every week!</h2>
                     <ul class="text-md delegation">
-                        <li class="wow animated bounceInLeft">Using Firefox, go to the Flare Explorer : <br /><a class="dark-link" href="https://flare-explorer.flare.network/address/0x9EDCa806834e89cC928EF4951cE0506Be8416309/write-contract" target="_blank">https://flare-explorer.flare.network/address/0x9EDCa806834e89cC928EF4951cE0506Be8416309/write-contract</a></li>
+                        <li class="wow animated bounceInLeft">Using Firefox, go to the Flare Explorer : <br /><a class="dark-link" href="https://flare-explorer.flare.network/address/0x85627d71921AE25769f5370E482AdA5E1e418d37/write-contract" target="_blank">https://flare-explorer.flare.network/address/0x85627d71921AE25769f5370E482AdA5E1e418d37/write-contract</a></li>
                         <li class="wow animated bounceInRight">Connect your wallet, and claim your rewards by using "<strong>#7 - claimReward"</strong><br />(please enter your wallet address, and the <a class="dark-link" href="https://flaremetrics.io/" target="_blank">epoch number</a> in the appropriate fields)</li>
                     </ul>
                 </div>
