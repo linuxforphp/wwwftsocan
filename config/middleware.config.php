@@ -10,8 +10,8 @@ $baseConfig['middleware'] = [
                     || strpos($request->getServerParams()['REDIRECT_QUERY_STRING'], 'ref=') !== false))
         ) {
             $requestUriArray = explode('?', $request->getServerParams()['REQUEST_URI']);
-
-            if (empty($requestUriArray[0]) || $requestUriArray[0] === '/') {
+            
+            if (empty($requestUriArray[0]) || $requestUriArray[0] === '/' || substr($requestUriArray[0], -1, 1) === '/') {
                 $requestUri = '/index';
             } else {
                 $requestUri = $requestUriArray[0];
