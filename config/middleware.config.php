@@ -3,11 +3,11 @@
 $baseConfig['middleware'] = [
     function ($request, $handler) {
         if ((isset($request->getServerParams()['QUERY_STRING'])
-                && (strpos($request->getServerParams()['QUERY_STRING'], 'fbclid=') !== false
-                    || strpos($request->getServerParams()['QUERY_STRING'], 'ref=') !== false))
+                && (strpos($request->getServerParams()['QUERY_STRING'], 'fbclid') !== false
+                    || strpos($request->getServerParams()['QUERY_STRING'], 'ref') !== false))
             || (isset($request->getServerParams()['REDIRECT_QUERY_STRING'])
-                && (strpos($request->getServerParams()['REDIRECT_QUERY_STRING'], 'fbclid=') !== false
-                    || strpos($request->getServerParams()['REDIRECT_QUERY_STRING'], 'ref=') !== false))
+                && (strpos($request->getServerParams()['REDIRECT_QUERY_STRING'], 'fbclid') !== false
+                    || strpos($request->getServerParams()['REDIRECT_QUERY_STRING'], 'ref') !== false))
         ) {
             $requestUriArray = explode('?', $request->getServerParams()['REQUEST_URI']);
             
