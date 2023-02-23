@@ -35,7 +35,7 @@
                 <div class="sec-title text-center">
                     <h2 class="wow animated fadeInDown">Delegate the classic way with the Explorer!</h2>
                     <ul class="text-md delegation">
-                        <li class="wow animated fadeInDown">Instead of using to Flare Portal to delegate your tokens, you might prefer to use the Flare or the Songbird Explorer:</li>
+                        <li class="wow animated fadeInDown">Instead of using the Flare Portal to delegate your tokens, you might prefer to use the Flare or the Songbird Explorer:</li>
                     </ul>
                 </div>
             </div>
