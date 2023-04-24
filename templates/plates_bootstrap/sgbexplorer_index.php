@@ -50,7 +50,7 @@
                 <div class="sec-title text-center">
                     <h2 class="wow animated bounceInRight">Claim your rewards every week!</h2>
                     <ul class="text-md delegation">
-                        <li class="wow animated bounceInLeft">Using Firefox, go to the Songbird Explorer : <br /><a class="dark-link" href="https://songbird-explorer.flare.network/address/0xE82A1f25b2b661fe98e6f1aA982A69cdB33AF27b/write-contract" target="_blank">https://songbird-explorer.flare.network/address/0xE82A1f25b2b661fe98e6f1aA982A69cdB33AF27b/write-contract</a></li>
+                        <li class="wow animated bounceInLeft">Using Firefox, go to the Songbird Explorer : <br /><a class="dark-link" href="https://songbird-explorer.flare.network/address/0x13F7866568dC476cC3522d17C23C35FEDc1431C5/write-contract" target="_blank">https://songbird-explorer.flare.network/address/0x13F7866568dC476cC3522d17C23C35FEDc1431C5/write-contract</a></li>
                         <li class="wow animated bounceInRight">Connect your wallet, and claim your rewards by using "<strong>#3 - claimReward"</strong><br />(please enter your wallet address, and the <a class="dark-link" href="https://flaremetrics.io/" target="_blank">epoch number</a> in the appropriate fields)</li>
                     </ul>
                 </div>
