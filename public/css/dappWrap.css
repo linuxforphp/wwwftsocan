@@ -1,0 +1,87 @@
+body {
+    padding-top: 10em;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+}
+
+.h {
+    font-size: 28px;
+    color: #383a3b;
+    margin-top: 40px
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.dappContainer {
+    display: inline-block;
+    background-color: #ececec;
+    margin-top: 0px;
+    padding: 20px 44px;
+    border-radius: 25px;
+}
+
+.Wrap {
+    font-size: 17px;
+    color: #67696a;
+    margin-top: 20px
+}
+
+.ConnectWallet {
+    display: inline-block;
+    margin-top: 40px;
+    border-radius: 30px;
+    background-color: #fd000f;
+    padding: 10px 44px;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    cursor: pointer;
+    border: none;
+}
+
+/* .ConnectWallet:hover {
+    background-color: lightgray;
+    color: red;
+} */
+
+a, a:hover, a:active, a:focus {
+    color: #fd000f;
+}
+
+select {
+    font-size: 2rem;
+    padding: .7em;
+    padding-right: .5em;
+    cursor: pointer;
+    border-radius: .3em;
+    margin-right: 3em;
+    background-color: #fff;
+    color: #383a3b !important;
+    border: 1.5px solid #383a3b;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23383a3b;" /></svg>');
+    background-position: right 10px top 50%;
+    background-repeat: no-repeat;
+    background-size: 10px;
+    padding-right: 25px;
+}
+
+select:focus,
+select:hover {
+    outline: none;
+    border: 1.5px solid #fd000f;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23fd000f;" /></svg>');
+    color: #fd000f !important;
+}
+
+select option {
+    background-color: #fff;
+    color: #fd000f;
+}
