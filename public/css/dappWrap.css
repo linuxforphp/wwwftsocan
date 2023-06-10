@@ -22,17 +22,92 @@ body {
     margin-top: 0px;
     padding: 20px 44px;
     border-radius: 25px;
+    width: calc(50% + 1em);
+}
+
+.selectContainer {
+    text-align: right;
+}
+.wrapUnwrap {
+    font-size: 20px;
+    margin-top: 10px;
+    float: left;
+    cursor: pointer;
+}
+
+.networkLabel {
+    padding-right: 10px;
+}
+
+.wrapBox {
+    height: 9.5rem;
+    justify-content: right;
+    align-items: right;
+    text-align: right;
+
+    background-color: #fff;
+    padding-right: 1.2em;
+    padding-top: .2em;
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    border-radius: 25px;
 }
 
 .Wrap {
-    font-size: 17px;
+    text-align: left;
+    font-size: 13px;
+    color: #8f8f8f;
+    margin-left: 20px;
+}
+
+.AddrWrap {
+    font-size: 13px;
     color: #67696a;
-    margin-top: 20px
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.logoFrom {
+    color: rgb(219 39 119);
+    margin-top: 15px;
+    float: left;
+    width: 25%; height: 50%;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+.logoTo {
+    color: #000;
+    margin-top: 15px;
+    float: left;
+    width: 25%; height: 50%;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+.tokenIdentifier {
+    font-size: 2.4rem;
+    left: -1em;
+    margin-top: 27px;
+    float: left;
+    text-align: left;
+}
+
+.amount {
+    border: none;
+    width: 50%;
+    margin-top: 20px;
+    font-size: 2.4rem;
+    padding-bottom: 10px;
 }
 
 .ConnectWallet {
     display: inline-block;
-    margin-top: 40px;
+    margin-top: 20px;
     border-radius: 30px;
     background-color: #fd000f;
     padding: 10px 44px;
