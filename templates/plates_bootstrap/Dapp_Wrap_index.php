@@ -89,7 +89,7 @@
                 <div class="tokenIdentifier">
                         <span id="wrappedTokenIdentifier"></span>
                 </div>
-                <input id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
                 <div class="Wrapper">
                     <span>Balance:</span>
                     <span id="TokenBalance">0.0</span>

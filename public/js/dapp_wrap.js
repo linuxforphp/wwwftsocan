@@ -25,6 +25,10 @@ let networkValue = selectedNetwork.options[selectedNetwork.selectedIndex].value;
 
 let WrapBool = true
 
+//if isrealvalue is true, the "Wrap" button will be clickable, if not, it will not.
+
+let IsRealValue = false
+
 //These are calls for the svg classes to change the color on click of "Wrap/Unwrap"
 
 let fromIcon = document.getElementById("FromIcon");
@@ -98,12 +102,20 @@ async function switchIconColor() {
                 console.log(error);
         }
     }
-    if (document.getElementById('AmountFrom').value < 1) {
-        document.getElementById('WrapButton').style.backgroundColor = "#67696a"
+    if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
+        document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
+        document.getElementById('WrapButton').style.cursor = "auto"
         document.getElementById('WrapButton').innerText = "Enter Amount"
+        IsRealValue = false
     } else {
         document.getElementById('WrapButton').style.backgroundColor = "#fd000f"
-        document.getElementById('WrapButton').innerText = "Unwrap"
+        document.getElementById('WrapButton').style.cursor = "pointer"
+        IsRealValue = true
+        if (WrapBool == true) {
+            document.getElementById('WrapButton').innerText = "Wrap"
+        } else {
+            document.getElementById('WrapButton').innerText = "Unwrap"
+        }
     }
     } else {
         document.getElementById('wrapUnwrap').value = "false"
@@ -155,12 +167,20 @@ async function switchIconColor() {
                 console.log(error);
         }
     }    
-    if (document.getElementById('AmountFrom').value < 1) {
+    if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
         document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
+        document.getElementById('WrapButton').style.cursor = "auto"
         document.getElementById('WrapButton').innerText = "Enter Amount"
+        IsRealValue = false
     } else {
         document.getElementById('WrapButton').style.backgroundColor = "#fd000f"
-        document.getElementById('WrapButton').innerText = "Wrap"
+        document.getElementById('WrapButton').style.cursor = "pointer"
+        IsRealValue = true
+        if (WrapBool == true) {
+            document.getElementById('WrapButton').innerText = "Wrap"
+        } else {
+            document.getElementById('WrapButton').innerText = "Unwrap"
+        }
     }
 }
 }
@@ -200,17 +220,42 @@ async function isWalletUnlocked() {
 //Checking if the "AmountFrom" input is greater than 1
 
 function isInput() {
-    if (document.getElementById('AmountFrom').value < 1) {
+    if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
         document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
+        document.getElementById('WrapButton').style.cursor = "auto"
         document.getElementById('WrapButton').innerText = "Enter Amount"
+        IsRealValue = false
     } else {
         document.getElementById('WrapButton').style.backgroundColor = "#fd000f"
+        document.getElementById('WrapButton').style.cursor = "pointer"
+        IsRealValue = true
         if (WrapBool == true) {
             document.getElementById('WrapButton').innerText = "Wrap"
         } else {
             document.getElementById('WrapButton').innerText = "Unwrap"
         }
     }
+}
+
+//Copying the amount from "AmountFrom" to "AmountTo" if it is a number of any kind
+
+function isNumber(value) {
+    if ((undefined === value) || (null === value)) {
+        return false;
+    }
+    if (typeof value == 'number') {
+        return true;
+    }
+    return !isNaN(value - 0);
+}
+
+function copyInput() {
+    if (isNumber(document.getElementById('AmountFrom').value)) {
+        document.getElementById('AmountTo').value = document.getElementById('AmountFrom').value
+    } else {
+        document.getElementById('AmountTo').value = null
+    }
+
 }
 
 if (networkValue == 1) {
@@ -310,12 +355,20 @@ selectedNetwork.onchange = async () => {
         document.getElementById('Wrap').style.color = "#8f8f8f"
         document.getElementById('Unwrap').style.color = "#383a3b"
         WrapBool = true
-        if (document.getElementById('AmountFrom').value < 1) {
+        if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
             document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
+            document.getElementById('WrapButton').style.cursor = "auto"
             document.getElementById('WrapButton').innerText = "Enter Amount"
+            IsRealValue = false
         } else {
             document.getElementById('WrapButton').style.backgroundColor = "#fd000f"
-            document.getElementById('WrapButton').innerText = "Wrap"
+            document.getElementById('WrapButton').style.cursor = "pointer"
+            IsRealValue = true
+            if (WrapBool == true) {
+                document.getElementById('WrapButton').innerText = "Wrap"
+            } else {
+                document.getElementById('WrapButton').innerText = "Unwrap"
+            }
         }
     } else {
         rpcUrl = 'https://songbird-api.flare.network/ext/bc/C/rpc';
@@ -380,12 +433,20 @@ selectedNetwork.onchange = async () => {
         document.getElementById('Wrap').style.color = "#8f8f8f"
         document.getElementById('Unwrap').style.color = "#383a3b"
         WrapBool = true
-        if (document.getElementById('AmountFrom').value < 1) {
+        if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
             document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
+            document.getElementById('WrapButton').style.cursor = "auto"
             document.getElementById('WrapButton').innerText = "Enter Amount"
+            IsRealValue = false
         } else {
             document.getElementById('WrapButton').style.backgroundColor = "#fd000f"
-            document.getElementById('WrapButton').innerText = "Wrap"
+            document.getElementById('WrapButton').style.cursor = "pointer"
+            IsRealValue = true
+            if (WrapBool == true) {
+                document.getElementById('WrapButton').innerText = "Wrap"
+            } else {
+                document.getElementById('WrapButton').innerText = "Unwrap"
+            }
         }
     }
 }
@@ -461,3 +522,4 @@ document.getElementById('wrapUnwrap').addEventListener('click', async () => {
 
 //Wrap tokens button
 document.querySelector("#AmountFrom").addEventListener("input", isInput);
+document.querySelector("#AmountFrom").addEventListener("input", copyInput);
