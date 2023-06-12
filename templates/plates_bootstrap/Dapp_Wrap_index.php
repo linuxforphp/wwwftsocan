@@ -43,7 +43,7 @@
     <div class="container">
         <div class="dappContainer">
             <div class="Top">
-                <button type="button" class="wrapUnwrap" id="wrapUnwrap" value="false" onclick="switchIconColor()"><span id="Wrap" class="Wrap">Wrap</span> / <span id="Unwrap" class="Unwrap">Unwrap</span></button>
+                <button class="wrapUnwrap" type="button" id="wrapUnwrap" value="false"><span id="Wrap" class="Wrap">Wrap</span> / <span id="Unwrap" class="Unwrap">Unwrap</span></button>
                 <div class="selectContainer">
                     <label for="SelectedNetwork" class="networkLabel">Choose Network:</label>
                     <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork"> 
@@ -68,7 +68,7 @@
                 <div class="tokenIdentifier">
                     <span id="tokenIdentifier"></span>
                 </div>
-                <input id="Amount" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                <input id="AmountFrom" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
                 <div class="Wrapper">
                     <span>Balance:</span>
                     <span id="Balance">0.0</span>
@@ -89,9 +89,9 @@
                 <div class="tokenIdentifier">
                         <span id="wrappedTokenIdentifier"></span>
                 </div>
-                <input id="Amount" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                <input id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
                 <div class="Wrapper">
-                    <span>Token Balance:</span>
+                    <span>Balance:</span>
                     <span id="TokenBalance">0.0</span>
                 </div>
             </div>
@@ -100,16 +100,20 @@
 
 
 
-
-            <button id="ConnectWallet" class="ConnectWallet">ConnectWallet</button>
-            <div class="AddrWrap">
-                <span>My address is</span>
-                <span id="address"></span>
+            <div class="Buttons">
+                <button id="ConnectWallet" class="ConnectWallet">ConnectWallet</button>
+                <button id="WrapButton" class="WrapButton">Enter Amount</button>
             </div>
-                        
-            <div class="Wrapper">
-                <span>My RPC is</span>
-                <span id="rpcAddress"></span>
+            <div class="dummytext">
+                <!-- <div class="AddrWrap">
+                    <span>My address is</span>
+                    <span id="address"></span>
+                </div> -->
+                            
+                <div class="AddrWrap">
+                    <span>My RPC is</span>
+                    <span id="rpcAddress"></span>
+                </div>
             </div>
 
         </div>
@@ -122,6 +126,7 @@
 <!-- <script href="../../Dapp/index.js"></script> -->
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrap.js"></script>
 </body>

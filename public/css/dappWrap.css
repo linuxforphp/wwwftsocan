@@ -29,11 +29,20 @@ body {
     text-align: right;
 }
 .wrapUnwrap {
+    color: #383a3b;
     font-size: 20px;
     margin-top: 10px;
     float: left;
     cursor: pointer;
     border: 0;
+}
+
+.Wrap {
+    color: #8f8f8f;
+}
+
+.Unwrap {
+    color: #383a3b;
 }
 
 .wrapUnwrap:hover,
@@ -74,10 +83,15 @@ body {
     margin-left: 20px;
 }
 
+.dummytext {
+    margin-top: 64px;
+}
+
 .AddrWrap {
+    text-align: left;
     font-size: 13px;
     color: #67696a;
-    margin-top: 10px;
+    margin-top: 70px;
     margin-left: 10px;
 }
 
@@ -115,19 +129,43 @@ body {
     margin-top: 20px;
     font-size: 2.4rem;
     padding-bottom: 10px;
+    
+}
+.amount:focus {
+    outline:none !important;
 }
 
 .ConnectWallet {
-    display: inline-block;
+    float: left;
     margin-top: 20px;
+    margin-left: 10px;
     border-radius: 30px;
     background-color: #fd000f;
     padding: 10px 44px;
     color: white;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 16.5px;
     cursor: pointer;
     border: none;
+    width: 45%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
+}
+
+.WrapButton {
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
+    border-radius: 30px;
+    background-color: #8f8f8f;
+    padding: 10px 44px;
+    color: white;
+    text-decoration: none;
+    font-size: 16.2px;
+    cursor: pointer;
+    border: none;
+    width: 40%;
 }
 
 /* .ConnectWallet:hover {
