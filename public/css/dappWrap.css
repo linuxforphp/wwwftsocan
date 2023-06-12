@@ -33,6 +33,18 @@ body {
     margin-top: 10px;
     float: left;
     cursor: pointer;
+    border: 0;
+}
+
+.wrapUnwrap:hover,
+.wrapUnwrap:focus {
+    font-size: 20px;
+    margin-top: 10px;
+    float: left;
+    cursor: pointer;
+    border: 0;
+    background-color: #ececec;
+    outline:none;
 }
 
 .networkLabel {
@@ -55,7 +67,7 @@ body {
     border-radius: 25px;
 }
 
-.Wrap {
+.Wrapper {
     text-align: left;
     font-size: 13px;
     color: #8f8f8f;

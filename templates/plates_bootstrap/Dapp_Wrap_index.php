@@ -43,7 +43,7 @@
     <div class="container">
         <div class="dappContainer">
             <div class="Top">
-                <div class="wrapUnwrap" id="wrapUnwrap">Wrap / Unwrap</div>
+                <button type="button" class="wrapUnwrap" id="wrapUnwrap" value="false" onclick="switchIconColor()"><span id="Wrap" class="Wrap">Wrap</span> / <span id="Unwrap" class="Unwrap">Unwrap</span></button>
                 <div class="selectContainer">
                     <label for="SelectedNetwork" class="networkLabel">Choose Network:</label>
                     <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork"> 
@@ -53,9 +53,9 @@
                 </div>
             </div>
             <div class="wrapBox">
-                <svg class="logoFrom" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
+                <svg id="FromIcon" class="logoFrom" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
                     <g id="layer2">
-                        <g id="layer1-2">
+                        <g id="layer1-2" class="AssetLogo">
                             <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
                             <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
                             <polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon>
@@ -69,13 +69,13 @@
                     <span id="tokenIdentifier"></span>
                 </div>
                 <input id="Amount" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                <div class="Wrap">
+                <div class="Wrapper">
                     <span>Balance:</span>
                     <span id="Balance">0.0</span>
                 </div></div>
             <div class="wrapBox">
-                <svg class="logoTo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
-                    <g id="layer2">
+                <svg id="ToIcon" class="logoTo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
+                    <g id="layer3">
                         <g id="layer1-3">
                             <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
                             <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
@@ -90,7 +90,7 @@
                         <span id="wrappedTokenIdentifier"></span>
                 </div>
                 <input id="Amount" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                <div class="Wrap">
+                <div class="Wrapper">
                     <span>Token Balance:</span>
                     <span id="TokenBalance">0.0</span>
                 </div>
@@ -107,7 +107,7 @@
                 <span id="address"></span>
             </div>
                         
-            <div class="Wrap">
+            <div class="Wrapper">
                 <span>My RPC is</span>
                 <span id="rpcAddress"></span>
             </div>
