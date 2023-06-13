@@ -280,10 +280,11 @@ if (networkValue == 1) {
     showRpcUrl(rpcUrl);
 }
 
-// Reshowing RPC and token identifiers, just in case.
+// Reshowing RPC, token identifiers, and checking if the input field is valid, just in case.
 
 showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier)
 showRpcUrl(rpcUrl);
+isInput();
 
 //When the network is changed, we switch every value accordingly, and check if metamask is unlocked
 
@@ -521,5 +522,151 @@ document.getElementById('wrapUnwrap').addEventListener('click', async () => {
 });
 
 //Wrap tokens button
+
 document.querySelector("#AmountFrom").addEventListener("input", isInput);
 document.querySelector("#AmountFrom").addEventListener("input", copyInput);
+
+if (!provider) {
+    alert('MetaMask is not installed, please install it.');
+} else {
+    console.log('isMetaMask=', provider.isMetaMask);
+    // A) Set provider in web3.js
+     // B) Use provider object directly
+     document.getElementById('WrapButton').addEventListener('click', async () => {
+        if (!IsRealValue) {
+            alert('Please enter valid value');
+        } else {
+            let web3 = new Web3(rpcUrl);
+            let tokenContract = new web3.eth.Contract(ercAbi, wrappedTokenAddr);
+            let flareContract = new web3.eth.Contract(flrAbi, flrAddr);
+            if (WrapBool) {
+                try {
+
+                    // Request account access if needed
+
+                    const accounts = (await provider.send('eth_requestAccounts')).result;
+                    
+                    // Accounts now exposed, use them
+
+                    const account = accounts[0]
+
+                    showAccountAddress(account);
+
+                    //Request balance from the Blockchain
+
+                    const balance = await web3.eth.getBalance(account);
+                        
+                    showBalance(web3.utils.fromWei(balance, "ether"))
+
+                    //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
+
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+
+                    showTokenBalance(web3.utils.fromWei(tokenBalance, "ether"))
+
+                    //Setting up the Wnat contract to be able to Wrap or Unwrap tokens
+
+                    const smartContracts = await flareContract.methods.getAllContracts().call();
+                    const contractList = smartContracts[1];
+                    let wnatAddr;
+                    let wnatAbi;
+                    if (rpcUrl == 'https://flare-api.flare.network/ext/C/rpc') {
+                        wnatAddr = contractList[19]
+                        wnatAbi = wnat_flare_abi
+                    } else {
+                        wnatAddr = contractList[12]
+                        wnatAbi = wnat_songbird_abi
+                    }
+                    let wnatContract = new web3.eth.Contract(wnatAbi, wnatAddr)
+                    
+                    if (document.getElementById('AmountFrom').value > web3.utils.fromWei(balance, "ether")) {
+                        alert('Insufficient Balance!');
+                   } else {
+
+                        console.log(`Wrapping`, document.getElementById('AmountFrom').value,`tokens from account:`, account)
+
+                        //This is currently commented because this is a payable contract, so to prevent
+                        //loss of actual money, it will remain this way until the Coston server will be
+                        //up and running
+
+                        // async function DepositContract() {
+                        //     try {
+                        //         await wnatContract.methods.Deposit(account, document.getElementById('AmountFrom').value).call();
+                        //     } catch (error) {
+                        //         // User denied or Error
+                        //         console.log(error);
+                        //     }
+                        // }
+                        // DepositContract();
+                   }
+                } catch (error) {
+                    // User denied or Error
+                    console.log(error);
+                }
+            } else {
+                try {
+
+                    // Request account access if needed
+
+                    const accounts = (await provider.send('eth_requestAccounts')).result;
+
+                    // Accounts now exposed, use them
+
+                    const account = accounts[0]
+
+                    showAccountAddress(account);
+
+                    //Request balance from the Blockchain
+
+                    const balance = await web3.eth.getBalance(account);
+
+                    //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
+
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+
+                    showBalance(web3.utils.fromWei(tokenBalance, "ether"))
+
+                    showTokenBalance(web3.utils.fromWei(balance, "ether"))
+
+                    //Setting up the Wnat contract to be able to Wrap or Unwrap tokens
+
+                   const smartContracts = await flareContract.methods.getAllContracts().call();
+                   const contractList = smartContracts[1];
+                   let wnatAddr;
+                   let wnatAbi;
+                   if (rpcUrl == 'https://flare-api.flare.network/ext/C/rpc') {
+                       wnatAddr = contractList[19]
+                       wnatAbi = wnat_flare_abi
+                   } else {
+                       wnatAddr = contractList[12]
+                       wnatAbi = wnat_songbird_abi
+                   }
+                   let wnatContract = new web3.eth.Contract(wnatAbi, wnatAddr)
+                   if (document.getElementById('AmountFrom').value >= web3.utils.fromWei(tokenBalance, "ether")) {
+                        alert('Insufficient Balance!');
+                   } else {
+                        console.log(`Unwrapping`, document.getElementById('AmountFrom').value,`tokens from the Blockchain`)
+
+                            //This is currently commented because this is a payable contract, so to prevent
+                            //loss of actual money, it will remain this way until the Coston server will be
+                            //up and running
+
+                        // async function WithdrawContract() {
+                        //     try {
+                        //         await wnatContract.methods.withdraw(document.getElementById('AmountFrom').value).call();
+                        //     } catch (error) {
+                        //         // User denied or Error
+                        //         console.log(error);
+                        //     }
+                        // }
+                        // WithdrawContract();
+                   }
+               } catch (error) {
+                   // User denied or Error
+                   console.log(error);
+               }
+            }
+        }
+
+    })
+}
