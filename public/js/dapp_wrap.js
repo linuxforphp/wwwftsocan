@@ -4,6 +4,9 @@ const ercAbi = human_standard_token_abi
 const flrAbi = flare_abi
 const sgbLogo = '<g id="layer1-3"><polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon><polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon><polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon><polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon><polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon><polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon></g>'
 const flrLogo = '<g id="layer1-2" transform="matrix(1.7,0,0,1.7,-0,120)"><path inkscape:connector-curvature="0" d="M 1.54,44.88 C 1.54,44.88 0,44.043066 0,43.309998 0,29.293727 13.305791,-2.1604174e-7 44.83,-2.1604171e-7 c 7.083657,1e-14 178,0 178,0 0,0 1.54998,0.83699994604171 1.54,1.57000021604171 -0.28292,20.783154 -17.20265,43.31 -44.86,43.31 -7.19693,0 -177.97,0 -177.97,0 z" id="path5842" /><path inkscape:connector-curvature="0" d="M -2.8370967e-7,133.36 C -0.01006008,134.093 1.5399997,134.93 1.5399997,134.93 c 0,0 73.8666673,0 110.8000003,0 25.5862,0 44.57708,-22.52684 44.86,-43.309998 0.01,-0.733001 -1.54,-1.570002 -1.54,-1.570002 0,0 -96.641983,0 -110.78,0 -25.4532,0 -44.5947035,22.52208 -44.88000028370967,43.31 z" id="path5840" /><path d="M 45.068739,202.56174 A 22.648399,22.301296 0 0 1 22.42034,224.86303 22.648399,22.301296 0 0 1 -0.22805977,202.56174 22.648399,22.301296 0 0 1 22.42034,180.26044 a 22.648399,22.301296 0 0 1 22.648399,22.3013 z" id="path5799" /></g>'
+let wrapUnwrapButton = document.getElementById('wrapUnwrap');
+let amountFrom = document.getElementById('AmountFrom');
+let amountTo = document.getElementById('AmountTo');
 
 //By default, the FLR settings will be loaded. Later we will check the dropdown to see
 //which one is *actually* loaded, but by default it will be FLR. 
@@ -19,7 +22,7 @@ let flrAddr = '0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'
 
 //Network value (if it has a value of 1) represents Flare, if not, it represents Songbird
 
-let networkValue = selectedNetwork.options[selectedNetwork.selectedIndex].value;
+let networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 
 //If wrapbool is true, The "Wrap" contract will be executed, if it is false, "Unwrap" will be executed.
 
@@ -51,8 +54,8 @@ function showTokenIdentifiers(Token, WrappedToken) {
 
 async function switchIconColor() {
 
-    if (document.getElementById('wrapUnwrap').value != "true") {
-        document.getElementById('wrapUnwrap').value = "true"
+    if (wrapUnwrapButton.value != "true") {
+        wrapUnwrapButton.value = "true"
         fromIcon.style.color = "#000"
         toIcon.style.color = "rgb(219 39 119)"
         document.getElementById('Wrap').style.color = "#383a3b"
@@ -75,7 +78,7 @@ async function switchIconColor() {
 
                 const isUnlocked = isWalletUnlocked();
 
-                if (isUnlocked != "false") {
+                if (await isUnlocked != "false") {
 
                     const accounts = (await provider.send('eth_requestAccounts')).result;
                 
@@ -102,7 +105,7 @@ async function switchIconColor() {
                 console.log(error);
         }
     }
-    if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
+    if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
         document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
         document.getElementById('WrapButton').style.cursor = "auto"
         document.getElementById('WrapButton').innerText = "Enter Amount"
@@ -118,7 +121,7 @@ async function switchIconColor() {
         }
     }
     } else {
-        document.getElementById('wrapUnwrap').value = "false"
+        wrapUnwrapButton.value = "false"
         fromIcon.style.color = "rgb(219 39 119)"
         toIcon.style.color = "#000"
         document.getElementById('Wrap').style.color = "#8f8f8f"
@@ -140,7 +143,7 @@ async function switchIconColor() {
 
                 const isUnlocked = isWalletUnlocked();
 
-                if (isUnlocked != "false") {
+                if (await isUnlocked != "false") {
 
                     const accounts = (await provider.send('eth_requestAccounts')).result;
                 
@@ -167,7 +170,7 @@ async function switchIconColor() {
                 console.log(error);
         }
     }    
-    if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
+    if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
         document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
         document.getElementById('WrapButton').style.cursor = "auto"
         document.getElementById('WrapButton').innerText = "Enter Amount"
@@ -220,7 +223,7 @@ async function isWalletUnlocked() {
 //Checking if the "AmountFrom" input is greater than 1
 
 function isInput() {
-    if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
+    if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
         document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
         document.getElementById('WrapButton').style.cursor = "auto"
         document.getElementById('WrapButton').innerText = "Enter Amount"
@@ -250,10 +253,10 @@ function isNumber(value) {
 }
 
 function copyInput() {
-    if (isNumber(document.getElementById('AmountFrom').value)) {
-        document.getElementById('AmountTo').value = document.getElementById('AmountFrom').value
+    if (isNumber(amountFrom.value)) {
+        amountTo.value = amountFrom.value
     } else {
-        document.getElementById('AmountTo').value = null
+        amountTo.value = ''
     }
 
 }
@@ -319,7 +322,7 @@ selectedNetwork.onchange = async () => {
 
                 const isUnlocked = isWalletUnlocked();
 
-                if (isUnlocked != "false") {
+                if (await isUnlocked != "false") {
 
                     const accounts = (await provider.send('eth_requestAccounts')).result;
                 
@@ -350,13 +353,13 @@ selectedNetwork.onchange = async () => {
 
         //Reseting Everything to "Wrap"
 
-        document.getElementById('wrapUnwrap').value = "false"
+        wrapUnwrapButton.value = "false"
         fromIcon.style.color = "rgb(219 39 119)"
         toIcon.style.color = "#000"
         document.getElementById('Wrap').style.color = "#8f8f8f"
         document.getElementById('Unwrap').style.color = "#383a3b"
         WrapBool = true
-        if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
+        if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
             document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
             document.getElementById('WrapButton').style.cursor = "auto"
             document.getElementById('WrapButton').innerText = "Enter Amount"
@@ -398,7 +401,7 @@ selectedNetwork.onchange = async () => {
 
                 const isUnlocked = isWalletUnlocked();
 
-                if (isUnlocked != "false") {
+                if (await isUnlocked != "false") {
 
                     const accounts = (await provider.send('eth_requestAccounts')).result;
                     
@@ -428,13 +431,13 @@ selectedNetwork.onchange = async () => {
         }
         //Reseting Everything to "Wrap"
 
-        document.getElementById('wrapUnwrap').value = "false"
+        wrapUnwrapButton.value = "false"
         fromIcon.style.color = "rgb(219 39 119)"
         toIcon.style.color = "#000"
         document.getElementById('Wrap').style.color = "#8f8f8f"
         document.getElementById('Unwrap').style.color = "#383a3b"
         WrapBool = true
-        if (document.getElementById('AmountFrom').value < 1 | !isNumber(document.getElementById('AmountFrom').value)) {
+        if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
             document.getElementById('WrapButton').style.backgroundColor = "#8f8f8f"
             document.getElementById('WrapButton').style.cursor = "auto"
             document.getElementById('WrapButton').innerText = "Enter Amount"
@@ -517,7 +520,7 @@ if (!provider) {
 
 // Wrap-Unwrap Button
 
-document.getElementById('wrapUnwrap').addEventListener('click', async () => {
+wrapUnwrapButton.addEventListener('click', async () => {
     switchIconColor();
 });
 
@@ -555,12 +558,12 @@ if (!provider) {
                     //Request balance from the Blockchain
 
                     const balance = await web3.eth.getBalance(account);
-                        
-                    showBalance(web3.utils.fromWei(balance, "ether"))
 
                     //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
 
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+
+                    showBalance(web3.utils.fromWei(balance, "ether"))
 
                     showTokenBalance(web3.utils.fromWei(tokenBalance, "ether"))
 
@@ -577,13 +580,12 @@ if (!provider) {
                         wnatAddr = contractList[12]
                         wnatAbi = wnat_songbird_abi
                     }
-                    let wnatContract = new web3.eth.Contract(wnatAbi, wnatAddr)
-                    
-                    if (document.getElementById('AmountFrom').value > web3.utils.fromWei(balance, "ether")) {
+                    let wnatContract = new web3.eth.Contract(wnatAbi, wnatAddr)        
+                    if (Number(amountFrom.value) >= Number(web3.utils.fromWei(balance, "ether"))) {
                         alert('Insufficient Balance!');
-                   } else {
+                    } else {
 
-                        console.log(`Wrapping`, document.getElementById('AmountFrom').value,`tokens from account:`, account)
+                        console.log(`Wrapping`, amountFrom.value,`tokens from account:`, account)
 
                         //This is currently commented because this is a payable contract, so to prevent
                         //loss of actual money, it will remain this way until the Coston server will be
@@ -591,7 +593,7 @@ if (!provider) {
 
                         // async function DepositContract() {
                         //     try {
-                        //         await wnatContract.methods.Deposit(account, document.getElementById('AmountFrom').value).call();
+                        //         await wnatContract.methods.Deposit(account, amountFrom.value).call();
                         //     } catch (error) {
                         //         // User denied or Error
                         //         console.log(error);
@@ -642,10 +644,10 @@ if (!provider) {
                        wnatAbi = wnat_songbird_abi
                    }
                    let wnatContract = new web3.eth.Contract(wnatAbi, wnatAddr)
-                   if (document.getElementById('AmountFrom').value >= web3.utils.fromWei(tokenBalance, "ether")) {
+                   if (Number(amountFrom.value) >= Number(web3.utils.fromWei(tokenBalance, "ether"))) {
                         alert('Insufficient Balance!');
                    } else {
-                        console.log(`Unwrapping`, document.getElementById('AmountFrom').value,`tokens from the Blockchain`)
+                        console.log(`Unwrapping`, document.amountFrom.value,`tokens from the Blockchain`)
 
                             //This is currently commented because this is a payable contract, so to prevent
                             //loss of actual money, it will remain this way until the Coston server will be
@@ -653,7 +655,7 @@ if (!provider) {
 
                         // async function WithdrawContract() {
                         //     try {
-                        //         await wnatContract.methods.withdraw(document.getElementById('AmountFrom').value).call();
+                        //         await wnatContract.methods.withdraw(document.amountFrom.value).call();
                         //     } catch (error) {
                         //         // User denied or Error
                         //         console.log(error);

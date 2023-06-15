@@ -1,0 +1,174 @@
+body {
+    padding-top: 10em;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+}
+
+.h {
+    font-size: 28px;
+    color: #383a3b;
+    margin-top: 40px
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.dappContainer {
+    display: inline-block;
+    background-color: #ececec;
+    margin-top: 0px;
+    padding: 20px 44px;
+    border-radius: 25px;
+    width: calc(50% + 1em);
+}
+
+.AddrWrap {
+    text-align: left;
+    font-size: 13px;
+    color: #67696a;
+    margin-top: 70px;
+    margin-left: 10px;
+}
+
+.ConnectWallet {
+    float: left;
+    margin-top: 20px;
+    margin-left: 10px;
+    border-radius: 30px;
+    background-color: #fd000f;
+    padding: 10px 44px;
+    color: white;
+    text-decoration: none;
+    font-size: 16.5px;
+    cursor: pointer;
+    border: none;
+    width: 45%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
+}
+
+.ClaimButton {
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
+    border-radius: 30px;
+    background-color: #8f8f8f;
+    padding: 10px 44px;
+    color: white;
+    text-decoration: none;
+    font-size: 16.2px;
+    cursor: auto;
+    border: none;
+    width: 40%;
+}
+
+
+.selectContainer {
+    text-align: right;
+}
+
+.Rewards {
+    color: #383a3b;
+    font-size: 20px;
+    margin-top: 10px;
+    float: left;
+    cursor: pointer;
+    border: 0;
+}
+
+
+.networkLabel {
+    padding-right: 10px;
+}
+
+.wrapBox {
+    height: 9.5rem;
+    justify-content: right;
+    align-items: right;
+    text-align: right;
+
+    background-color: #fff;
+    padding-right: 1.2em;
+    padding-top: .2em;
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    border-radius: 25px;
+}
+
+.Wrapper {
+    text-align: right;
+    font-size: 2rem;
+    color: #383a3b;
+    margin-right: 20px;
+    margin-top: 27px;
+}
+
+.tokenIdentifier {
+    font-size: 2.4rem;
+    left: -1em;
+    margin-top: 27px;
+    float: left;
+    text-align: left;
+}
+
+.dummytext {
+    margin-top: 64px;
+}
+
+.AddrWrap {
+    text-align: left;
+    font-size: 13px;
+    color: #67696a;
+    margin-top: 70px;
+    margin-left: 10px;
+}
+
+.logo {
+    color: #000;
+    margin-top: 15px;
+    float: left;
+    width: 25%; height: 50%;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+select {
+    font-size: 2rem;
+    padding: .7em;
+    padding-right: .5em;
+    cursor: pointer;
+    border-radius: .3em;
+    margin-right: 3em;
+    background-color: #fff;
+    color: #383a3b !important;
+    border: 1.5px solid #383a3b;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23383a3b;" /></svg>');
+    background-position: right 10px top 50%;
+    background-repeat: no-repeat;
+    background-size: 10px;
+    padding-right: 25px;
+}
+
+select:focus,
+select:hover {
+    outline: none;
+    border: 1.5px solid #fd000f;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23fd000f;" /></svg>');
+    color: #fd000f !important;
+}
+
+select option {
+    background-color: #fff;
+    color: #fd000f;
+}
