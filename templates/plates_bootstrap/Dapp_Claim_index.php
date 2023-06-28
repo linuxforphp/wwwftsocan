@@ -50,7 +50,7 @@
                     <option value="2" selected="selected">Songbird</option> 
                 </select>
             </div>
-            <div class="wrapBox">
+            <div class="wrapBox" id='wrapBox'>
                 <svg id="Icon" class="logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
                     <g id="layer3">
                         <g id="layer1-3">
@@ -63,20 +63,22 @@
                         </g>
                     </g>
                 </svg>
-            <div class="tokenIdentifier">
-                <span id="wrappedTokenIdentifier"></span>
+                <div class="tokenIdentifier">
+                    <span id="wrappedTokenIdentifier"></span>
+                </div>
+                <div class="Wrapper">
+                        <span id="TokenBalance">0.0</span>
+                </div>
             </div>
-            <div class="Wrapper">
-                    <span id="TokenBalance">0.0</span>
-            </div>
-        </div>
 
-        <div class="Buttons">
+            <div id="after"></div>
+
+            <div class="Buttons">
                 <button id="ConnectWallet" class="ConnectWallet">ConnectWallet</button>
                 <button id="ClaimButton" class="ClaimButton">Enter Amount</button>
-        </div>
+            </div>
 
-        <div class="dummytext">
+            <div class="dummytext">
                 <!-- <div class="AddrWrap">
                     <span>My address is</span>
                     <span id="address"></span>
@@ -86,7 +88,7 @@
                     <span>My RPC is</span>
                     <span id="rpcAddress"></span>
                 </div>
-        </div>
+            </div>
 
         </div>
     </div>
@@ -96,7 +98,8 @@
 <?php endif ?>
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso_registry_abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter_whitelister_abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso_reward_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim_setup_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>

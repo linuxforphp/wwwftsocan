@@ -1,10 +1,12 @@
 const provider = window.ethereum;
 const selectedNetwork = document.getElementById('SelectedNetwork');
+const delegatedFtsoElement = document.getElementById('after');
 const ercAbi = human_standard_token_abi
+const wnatAbi = wnat_flare_abi
 const flrAbi = flare_abi
+const voterWhitelisterAbi = voter_whitelister_abi
 const csmAbi = claim_setup_abi
 const ftsoRewardAbi = ftso_reward_abi
-const ftsoRegistryAbi = ftso_registy_abi
 const sgbLogo = '<g id="layer1-3"><polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon><polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon><polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon><polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon><polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon><polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon></g>'
 const flrLogo = '<g id="layer1-3" transform="matrix(1.7,0,0,1.7,-0,120)"><path inkscape:connector-curvature="0" d="M 1.54,44.88 C 1.54,44.88 0,44.043066 0,43.309998 0,29.293727 13.305791,-2.1604174e-7 44.83,-2.1604171e-7 c 7.083657,1e-14 178,0 178,0 0,0 1.54998,0.83699994604171 1.54,1.57000021604171 -0.28292,20.783154 -17.20265,43.31 -44.86,43.31 -7.19693,0 -177.97,0 -177.97,0 z" id="path5842" /><path inkscape:connector-curvature="0" d="M -2.8370967e-7,133.36 C -0.01006008,134.093 1.5399997,134.93 1.5399997,134.93 c 0,0 73.8666673,0 110.8000003,0 25.5862,0 44.57708,-22.52684 44.86,-43.309998 0.01,-0.733001 -1.54,-1.570002 -1.54,-1.570002 0,0 -96.641983,0 -110.78,0 -25.4532,0 -44.5947035,22.52208 -44.88000028370967,43.31 z" id="path5840" /><path d="M 45.068739,202.56174 A 22.648399,22.301296 0 0 1 22.42034,224.86303 22.648399,22.301296 0 0 1 -0.22805977,202.56174 22.648399,22.301296 0 0 1 22.42034,180.26044 a 22.648399,22.301296 0 0 1 22.648399,22.3013 z" id="path5799" /></g>'
 
@@ -14,7 +16,7 @@ const flrLogo = '<g id="layer1-3" transform="matrix(1.7,0,0,1.7,-0,120)"><path i
 let tokenIdentifier = 'FLR';
 let wrappedTokenIdentifier = 'WFLR';
 let rpcUrl = 'https://flare-api.flare.network/ext/C/rpc';
-let wrappedTokenAddr = '0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d';
+let wrappedTokenAddr
 
 //We call the FlareContractRegistry contract from the blockchain
 
@@ -229,32 +231,42 @@ if (!provider) {
      // B) Use provider object directly
      document.getElementById('ConnectWallet').addEventListener('click', async () => {
         let web3 = new Web3(rpcUrl);
-        let tokenContract = new web3.eth.Contract(ercAbi, wrappedTokenAddr);
         let flareContract = new web3.eth.Contract(flrAbi, flrAddr);
 
         const SmartContracts = await flareContract.methods.getAllContracts().call();
         const contractList = SmartContracts[1];
-        let ftsoRegistyAddr
         let ftsoRewardAddr
         let csmAddr
+        let voterWhitelisterAddr
 
         if (rpcUrl == 'https://flare-api.flare.network/ext/C/rpc') {
-           ftsoRegistyAddr = contractList[13]
+        //    ftsoRewardAddr = contractList[13]
+            ftsoRewardAddr = '0x13F7866568dC476cC3522d17C23C35FEDc1431C5'
         
-           ftsoRewardAddr = contractList[11];
+        //    csmAddr = contractList[21];
+            csmAddr = '0xD56c0Ea37B848939B59e6F5Cda119b3fA473b5eB'
 
-           csmAddr = contractList[21];
+            voterWhitelisterAddr = '0x072A199670fAD8883c7A92D108dFA56828EfCE87'
+
+            wrappedTokenAddr = '0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d';
         } else {
-           ftsoRegistyAddr = contractList[0]
+        //    ftsoRewardAddr = contractList[0]
+        ftsoRewardAddr = '0x85627d71921AE25769f5370E482AdA5E1e418d37'
 
-           ftsoRewardAddr = contractList[7];
+        //    csmAddr = contractList[18];
+            csmAddr = '0xDD138B38d87b0F95F6c3e13e78FFDF2588F1732d'
 
-           csmAddr = contractList[18];
+            voterWhitelisterAddr = '0x6Ce15a3aDd04d1A4C575B6be19674D6bb11Ba614'
+            
+            wrappedTokenAddr = '0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED';
+
         }
 
-        let ftsoRegistryContract = new web3.eth.Contract(ftsoRegistryAbi, ftsoRegistyAddr);
         let ftsoRewardContract = new web3.eth.Contract(ftsoRewardAbi, ftsoRewardAddr);
         let csmContract = new web3.eth.Contract(csmAbi, csmAddr);
+        let voterWhitelisterContract = new web3.eth.Contract(voterWhitelisterAbi, voterWhitelisterAddr);
+        let tokenContract = new web3.eth.Contract(ercAbi, wrappedTokenAddr);
+        let wnatContract = new web3.eth.Contract(wnatAbi, wrappedTokenAddr)
 
         try {
              
@@ -279,12 +291,36 @@ if (!provider) {
 
              showTokenBalance(round(convertedTokenBalance))
 
-             const implementation_contract_address = ftsoRegistryContract.functions.implementation.call()
+             const ftsoList = await voterWhitelisterContract.methods.getFtsoWhitelistedPriceProviders(0).call();
 
-             const ftsoList = await ftsoRegistryContract.methods.getAllFtsos().call();
+             const ftsoJsonList = JSON.stringify(ftsoList)
+
+             const delegatesOfUser = await wnatContract.methods.delegatesOf(account).call();
+
+             const delegatedFtsos = delegatesOfUser[0]
+
+             var insert = '';
+
+             if (delegatedFtsos.length == 0) {
+                alert('The FTSO you have delegated to is invalid!');
+             }
+
+             for (var i = 0; i < delegatedFtsos.length; i++ ) {
+
+                if (ftsoJsonList.includes(delegatedFtsos[i])) {
+                    insert += `<div class="wrapBox"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/><div class="tokenIdentifier"><span id="delegatedName"></span></div></div>`;
+                    delegatedFtsoElement.innerHTML = insert;
+                    console.log(`Ftso `, i,` is valid!`)
+                } else {
+                    alert('The FTSO you have delegated to is invalid!');
+
+                    break
+                }
+            }
              
             console.log(`Account `, account,` has `, balance,` tokens, and `, tokenBalance,` wrapped tokens.`);
-            console.log(`Ftso list: `, implementation_contract_address);
+
+            console.log(`Ftso list: `, delegatedFtsos);
              // Send ETH
              // provider.send(
              //     'eth_sendTransaction',
