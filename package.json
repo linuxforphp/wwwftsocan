@@ -2,7 +2,7 @@
   "name": "wwwftsocan",
   "version": "1.0.0",
   "description": "*********************",
-  "main": "./dapp/index.js",
+  "main": "./dist/DataProvider.js",
   "directories": {
     "lib": "lib"
   },
@@ -19,10 +19,17 @@
     "url": "https://github.com/jtcaya/wwwftsocan/issues"
   },
   "homepage": "https://github.com/jtcaya/wwwftsocan#readme",
+  "dependencies": {
+    "@typechain/ethers-v5": "^11.1.1",
+    "bn.js": "^5.2.1",
+    "ethers": "^5.1.4",
+    "typescript": "^4.9.5",
+    "web3": "^4.1.1",
+    "winston": "^3.10.0"
+  },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ethers": "^3.0.1",
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "dotenv": "^16.1.4",
-    "hardhat": "^2.15.0"
+    "@types/bn.js": "^5.1.1",
+    "@types/glob": "^8.1.0",
+    "typechain": "^8.3.1"
   }
 }

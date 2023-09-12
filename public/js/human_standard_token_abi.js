@@ -1,7 +1,7 @@
 // You can include this file into your client-side javascript application to gain access to the "human_standard_token_abi" variable.
 // This ABI can be used to interact with any Standard ERC-20 or Human Standard Token on the Ethereum Blockchain
 
-var human_standard_token_abi = [
+export var human_standard_token_abi = [
     {
         "constant": true,
         "inputs": [],

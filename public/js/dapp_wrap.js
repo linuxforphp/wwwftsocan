@@ -28,6 +28,10 @@ let networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value
 
 let WrapBool = true
 
+//If ConnectWalletBool is true, the "ConnectWallet" button has already been pressed, so it will do nothing.
+
+let ConnectWalletBool = false
+
 //if isrealvalue is true, the "Wrap" button will be clickable, if not, it will not.
 
 let IsRealValue = false
@@ -48,6 +52,12 @@ function showRpcUrl(rpcAddress) {
 function showTokenIdentifiers(Token, WrappedToken) {
     document.getElementById('tokenIdentifier').innerText = Token;
     document.getElementById('wrappedTokenIdentifier').innerText = WrappedToken;
+}
+
+// Rounding Balance
+
+function round(num) {
+    return +(Math.round(num + "e+4")  + "e-4");
 }
 
 // Switching everything on click of Wrap/Unwrap
@@ -94,8 +104,8 @@ async function switchIconColor() {
 
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-                    showTokenBalance(web3.utils.fromWei(balance, "ether"))
-                    showBalance(web3.utils.fromWei(tokenBalance, "ether"))
+                    showTokenBalance(round(web3.utils.fromWei(balance, "ether")))
+                    showBalance(round(web3.utils.fromWei(tokenBalance, "ether")))
                     console.log(`Account `, account,` has `, balance,` tokens, and `, tokenBalance,` wrapped tokens.`);
                 } else {
                     alert('You are not connected!')
@@ -159,8 +169,8 @@ async function switchIconColor() {
 
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-                    showTokenBalance(web3.utils.fromWei(tokenBalance, "ether"))
-                    showBalance(web3.utils.fromWei(balance, "ether"))
+                    showTokenBalance(round(web3.utils.fromWei(tokenBalance, "ether")))
+                    showBalance(round(web3.utils.fromWei(balance, "ether")))
                     console.log(`Account `, account,` has `, balance,` tokens, and `, tokenBalance,` wrapped tokens.`);
                 } else {
                     alert('You are not connected!')
@@ -334,13 +344,13 @@ selectedNetwork.onchange = async () => {
 
                     const balance = await web3.eth.getBalance(account);
                         
-                    showBalance(web3.utils.fromWei(balance, "ether"))
+                    showBalance(round(web3.utils.fromWei(balance, "ether")))
 
                     //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
 
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-                    showTokenBalance(web3.utils.fromWei(tokenBalance, "ether"))
+                    showTokenBalance(round(web3.utils.fromWei(tokenBalance, "ether")))
                     console.log(`Account `, account,` has `, balance,` tokens, and `, tokenBalance,` wrapped tokens.`);
                 } else {
                     alert('You are not connected!')
@@ -413,13 +423,13 @@ selectedNetwork.onchange = async () => {
 
                     const balance = await web3.eth.getBalance(account);
                         
-                    showBalance(web3.utils.fromWei(balance, "ether"))
+                    showBalance(round(web3.utils.fromWei(balance, "ether")))
 
                     //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
 
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-                    showTokenBalance(web3.utils.fromWei(tokenBalance, "ether"))
+                    showTokenBalance(round(web3.utils.fromWei(tokenBalance, "ether")))
                     console.log(`Account `, account,` has `, balance,` tokens, and `, tokenBalance,` wrapped tokens.`);
                 } else {
                     alert('You are not connected!')
@@ -464,6 +474,8 @@ if (!provider) {
     // A) Set provider in web3.js
      // B) Use provider object directly
      document.getElementById('ConnectWallet').addEventListener('click', async () => {
+        if (ConnectWalletBool == false) {
+        ConnectWalletBool = true
         let web3 = new Web3(rpcUrl);
         let tokenContract = new web3.eth.Contract(ercAbi, wrappedTokenAddr);
         let flareContract = new web3.eth.Contract(flrAbi, flrAddr);
@@ -480,41 +492,34 @@ if (!provider) {
 
              const balance = await web3.eth.getBalance(account);
                 
-             showBalance(web3.utils.fromWei(balance, "ether"))
+             showBalance(round(web3.utils.fromWei(balance, "ether")))
 
              //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
 
              const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-             showTokenBalance(web3.utils.fromWei(tokenBalance, "ether"))
+             showTokenBalance(round(web3.utils.fromWei(tokenBalance, "ether")))
 
              const SmartContracts = await flareContract.methods.getAllContracts().call();
              
             console.log(`Account `, account,` has `, balance,` tokens, and `, tokenBalance,` wrapped tokens.`);
             console.log(`Smart contract list: `, SmartContracts);
-             // Send ETH
-             // provider.send(
-             //     'eth_sendTransaction',
-             //     [{
-            //         from: account,
-             //         to: account,
-             //         gas: "0x76c0", // 30400
-             //         gasPrice: '0x9184e72a',
-             //         value: '0x9184e72a000', // 10000000000000 wei = 0.00001 ETH
-             //         data: '0x123'
-             //     }]
-             // );
         } catch (error) {
             // User denied or Error
             console.log(error);
         }
+    } else {
+        navigator.clipboard.writeText(document.getElementById('ConnectWallet').innerText);
+        alert('Copied!')
+    }
     });
+
     provider.on('accountsChanged', function (accounts, balance, tokenBalance) {
         console.log('accountsChanged', accounts, balance, tokenBalance);
         const account = accounts[0];
         showAccountAddress(account);
-        showBalance(balance);
-        showTokenBalance(tokenBalance);
+        showBalance(round(web3.utils.fromWei(balance, "ether")));
+        showTokenBalance(round(web3.utils.fromWei(tokenBalance, "ether")));
     });
 }
 
@@ -553,8 +558,6 @@ if (!provider) {
 
                     const account = accounts[0]
 
-                    showAccountAddress(account);
-
                     //Request balance from the Blockchain
 
                     const balance = await web3.eth.getBalance(account);
@@ -562,10 +565,6 @@ if (!provider) {
                     //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
 
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-                    showBalance(web3.utils.fromWei(balance, "ether"))
-
-                    showTokenBalance(web3.utils.fromWei(tokenBalance, "ether"))
 
                     //Setting up the Wnat contract to be able to Wrap or Unwrap tokens
 
@@ -616,8 +615,6 @@ if (!provider) {
 
                     const account = accounts[0]
 
-                    showAccountAddress(account);
-
                     //Request balance from the Blockchain
 
                     const balance = await web3.eth.getBalance(account);
@@ -625,10 +622,6 @@ if (!provider) {
                     //Request ERC-20 token balance (WFLR or WSGB) from the Blockchain
 
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-                    showBalance(web3.utils.fromWei(tokenBalance, "ether"))
-
-                    showTokenBalance(web3.utils.fromWei(balance, "ether"))
 
                     //Setting up the Wnat contract to be able to Wrap or Unwrap tokens
 

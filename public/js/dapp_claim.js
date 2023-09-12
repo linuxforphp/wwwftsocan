@@ -45,6 +45,12 @@ function showAccountAddress(address) {
     document.getElementById('ConnectWallet').innerText = address;
 }
 
+function switchButtonColor() {
+    document.getElementById('ClaimButton').style.backgroundColor = "#fd000f";
+    CanClaim = true;
+    document.getElementById('ClaimButton').style.cursor = "pointer"
+}
+
 // function showBalance(balanceAddress) {
 //     document.getElementById('Balance').innerText = balanceAddress;
 // }
@@ -53,9 +59,27 @@ function showTokenBalance(tokenBalanceAddress) {
     document.getElementById('TokenBalance').innerText = tokenBalanceAddress;
 }
 
+function showRewards(Rewards) {
+    document.getElementById('ClaimButton').innerText = Rewards;
+}
+
 function round(num) {
     return +(Math.round(num + "e+4")  + "e-4");
 }
+
+function isNumber(value) {
+    if ((undefined === value) || (null === value)) {
+        return false;
+    }
+    if (typeof value == 'number') {
+        return true;
+    }
+    return !isNaN(value - 0);
+}
+
+//Checking if rewards can be claimed
+
+let CanClaim = false
 
 //Checking if Metamask wallet is unlocked
 
@@ -241,8 +265,7 @@ if (!provider) {
 
         if (rpcUrl == 'https://flare-api.flare.network/ext/C/rpc') {
         //    ftsoRewardAddr = contractList[13]
-            ftsoRewardAddr = '0x13F7866568dC476cC3522d17C23C35FEDc1431C5'
-        
+            ftsoRewardAddr = '0x85627d71921AE25769f5370E482AdA5E1e418d37'
         //    csmAddr = contractList[21];
             csmAddr = '0xD56c0Ea37B848939B59e6F5Cda119b3fA473b5eB'
 
@@ -250,8 +273,7 @@ if (!provider) {
 
             wrappedTokenAddr = '0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d';
         } else {
-        //    ftsoRewardAddr = contractList[0]
-        ftsoRewardAddr = '0x85627d71921AE25769f5370E482AdA5E1e418d37'
+            ftsoRewardAddr = contractList[0]
 
         //    csmAddr = contractList[18];
             csmAddr = '0xDD138B38d87b0F95F6c3e13e78FFDF2588F1732d'
@@ -291,6 +313,9 @@ if (!provider) {
 
              showTokenBalance(round(convertedTokenBalance))
 
+             // Getting which FTSO(s) the user has delegated to, the percentage of wnat he has 
+             // delegated,and the logo of said FTSO(s).
+
              const ftsoList = await voterWhitelisterContract.methods.getFtsoWhitelistedPriceProviders(0).call();
 
              const ftsoJsonList = JSON.stringify(ftsoList)
@@ -299,28 +324,66 @@ if (!provider) {
 
              const delegatedFtsos = delegatesOfUser[0]
 
-             var insert = '';
+             const BipsJson = delegatesOfUser[1]
 
-             if (delegatedFtsos.length == 0) {
-                alert('The FTSO you have delegated to is invalid!');
-             }
+             const Bips = BipsJson[0] / 100n
 
-             for (var i = 0; i < delegatedFtsos.length; i++ ) {
+             let insert = '';
 
-                if (ftsoJsonList.includes(delegatedFtsos[i])) {
-                    insert += `<div class="wrapBox"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/><div class="tokenIdentifier"><span id="delegatedName"></span></div></div>`;
-                    delegatedFtsoElement.innerHTML = insert;
-                    console.log(`Ftso `, i,` is valid!`)
-                } else {
-                    alert('The FTSO you have delegated to is invalid!');
+             fetch('https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json')
+             .then(res => res.json())
+             .then(FtsoInfo => {
+                for (var i = 0; i < delegatedFtsos.length; i++) {
 
-                    break
+                    let indexNumber
+                       
+                    if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length == 0) {
+                        for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                            if (FtsoInfo.providers[f].address == delegatedFtsos[i]) {
+                                indexNumber = f
+
+                                insert += `<div class="wrapBoxFTSO"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div>`;
+                                delegatedFtsoElement.innerHTML = insert;
+                                console.log(`Ftso `, i,` is valid!`)
+                                console.log(Bips)
+                                console.log(FtsoInfo.providers[indexNumber].name)
+                            }
+                        }
+                    } else {
+                        alert('The FTSO you have delegated to is invalid!');
+                        break
+                    }
                 }
+             })
+
+             // Getting the unclaimed Rewards and affecting the Claim button
+
+             const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
+
+             let UnclaimedAmount = 0
+
+             let l
+
+             for (var k = 0; k < epochsUnclaimed.length; k++) {
+                l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
+                UnclaimedAmount += Number(l[1])
             }
+
+            const convertedRewards = web3.utils.fromWei(UnclaimedAmount, "ether")
+
+            showRewards(round(convertedRewards));
              
-            console.log(`Account `, account,` has `, balance,` tokens, and `, tokenBalance,` wrapped tokens.`);
+            console.log(`Account `, account,` has `, balance,` tokens `, tokenBalance,` wrapped tokens, and `, UnclaimedAmount ,` unclaimed tokens.`);
 
             console.log(`Ftso list: `, delegatedFtsos);
+
+            console.log(epochsUnclaimed)
+
+            //Changing the color of Claim button
+
+            if (Number(document.getElementById('ClaimButton').innerText) >= 1 | isNumber(document.getElementById('ClaimButton').innerText)) {
+                switchButtonColor()
+            }
              // Send ETH
              // provider.send(
              //     'eth_sendTransaction',

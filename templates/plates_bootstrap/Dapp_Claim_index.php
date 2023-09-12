@@ -74,8 +74,8 @@
             <div id="after"></div>
 
             <div class="Buttons">
-                <button id="ConnectWallet" class="ConnectWallet">ConnectWallet</button>
-                <button id="ClaimButton" class="ClaimButton">Enter Amount</button>
+                <button id="ConnectWallet" class="ConnectWallet">Connect Wallet</button>
+                <button id="ClaimButton" class="ClaimButton">0.0</button>
             </div>
 
             <div class="dummytext">

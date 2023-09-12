@@ -101,7 +101,7 @@
 
 
             <div class="Buttons">
-                <button id="ConnectWallet" class="ConnectWallet">ConnectWallet</button>
+                <button id="ConnectWallet" class="ConnectWallet">Connect Wallet</button>
                 <button id="WrapButton" class="WrapButton">Enter Amount</button>
             </div>
             <div class="dummytext">
@@ -127,7 +127,6 @@
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_flare_abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_songbird_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrap.js"></script>

@@ -101,9 +101,25 @@ body {
     border-radius: 25px;
 }
 
+.wrapBoxFTSO {
+    height: 9.5rem;
+    justify-content: right;
+    align-items: right;
+    text-align: right;
+
+    background-color: #fff;
+    padding-right: 1.2em;
+    padding-top: .2em;
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    border-radius: 25px;
+}
+
 .Wrapper {
     text-align: right;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #383a3b;
     margin-right: 20px;
     margin-top: 27px;
@@ -112,6 +128,15 @@ body {
 .tokenIdentifier {
     font-size: 2.4rem;
     left: -1em;
+    margin-top: 27px;
+    float: left;
+    text-align: left;
+}
+
+
+.ftsoIdentifier {
+    font-size: 2.4rem;
+    padding-left: 1.7em;
     margin-top: 27px;
     float: left;
     text-align: left;
