@@ -18,6 +18,11 @@ $baseConfig['routes'] = [
     ],
     [
         'GET',
+        '/stake[/{action}]',
+        'stake',
+    ],
+    [
+        'GET',
         '/flrexplorer[/{action}]',
         'flrexplorer',
     ],
