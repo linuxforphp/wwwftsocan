@@ -1,7 +1,8 @@
 body {
     padding-top: 10em;
     font-family: 'Poppins', sans-serif;
-    background-color: #fff;
+    background-image: url("../img/Component-1.png")!important;
+    background-size: cover;
 }
 
 .h {
@@ -20,7 +21,7 @@ body {
     display: inline-block;
     background-color: #ececec;
     margin-top: 0px;
-    padding: 20px 44px;
+    padding: 30px 44px;
     border-radius: 25px;
     width: calc(50% + 1em);
 }
@@ -32,14 +33,14 @@ body {
 .wrapUnwrap {
     color: #383a3b;
     font-size: 20px;
-    margin-top: 10px;
+    margin-top: 5px;
     float: left;
     cursor: pointer;
     border: 0;
 }
 
 .Wrap {
-    color: #8f8f8f;
+    color: #fd000f;
 }
 
 .Unwrap {
@@ -48,8 +49,6 @@ body {
 
 .wrapUnwrap:hover,
 .wrapUnwrap:focus {
-    font-size: 20px;
-    margin-top: 10px;
     float: left;
     cursor: pointer;
     border: 0;
@@ -97,7 +96,7 @@ body {
 }
 
 .logoFrom {
-    color: rgb(219 39 119);
+    color: #fd000f;
     margin-top: 15px;
     float: left;
     width: 25%; height: 50%;
@@ -138,7 +137,7 @@ body {
 
 .ConnectWallet {
     float: left;
-    margin-top: 20px;
+    margin-top: 25px;
     margin-left: 10px;
     border-radius: 30px;
     background-color: #fd000f;
@@ -156,7 +155,7 @@ body {
 
 .WrapButton {
     float: right;
-    margin-top: 20px;
+    margin-top: 25px;
     margin-right: 20px;
     border-radius: 30px;
     background-color: #8f8f8f;

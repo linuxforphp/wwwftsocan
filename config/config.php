@@ -2,7 +2,7 @@
 
 $baseConfig['env'] = 'production'; // 'development' or 'production'
 
-$baseConfig['appName'] = 'The LightMVC Framework Skeleton Application';
+$baseConfig['appName'] = 'The FTSO Canada Dapp';
 
 // Required configuration
 require 'events.config.php';

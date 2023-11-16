@@ -67,9 +67,9 @@ async function switchIconColor() {
     if (wrapUnwrapButton.value != "true") {
         wrapUnwrapButton.value = "true"
         fromIcon.style.color = "#000"
-        toIcon.style.color = "rgb(219 39 119)"
+        toIcon.style.color = "#fd000f"
         document.getElementById('Wrap').style.color = "#383a3b"
-        document.getElementById('Unwrap').style.color = "#8f8f8f"
+        document.getElementById('Unwrap').style.color = "#fd000f"
         showTokenIdentifiers(wrappedTokenIdentifier, tokenIdentifier)
         WrapBool = false
 
@@ -132,9 +132,9 @@ async function switchIconColor() {
     }
     } else {
         wrapUnwrapButton.value = "false"
-        fromIcon.style.color = "rgb(219 39 119)"
+        fromIcon.style.color = "#fd000f"
         toIcon.style.color = "#000"
-        document.getElementById('Wrap').style.color = "#8f8f8f"
+        document.getElementById('Wrap').style.color = "#fd000f"
         document.getElementById('Unwrap').style.color = "#383a3b"
         showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier)
         WrapBool = true
@@ -364,9 +364,9 @@ selectedNetwork.onchange = async () => {
         //Reseting Everything to "Wrap"
 
         wrapUnwrapButton.value = "false"
-        fromIcon.style.color = "rgb(219 39 119)"
+        fromIcon.style.color = "#fd000f"
         toIcon.style.color = "#000"
-        document.getElementById('Wrap').style.color = "#8f8f8f"
+        document.getElementById('Wrap').style.color = "#fd000f"
         document.getElementById('Unwrap').style.color = "#383a3b"
         WrapBool = true
         if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
@@ -442,9 +442,9 @@ selectedNetwork.onchange = async () => {
         //Reseting Everything to "Wrap"
 
         wrapUnwrapButton.value = "false"
-        fromIcon.style.color = "rgb(219 39 119)"
+        fromIcon.style.color = "#fd000f"
         toIcon.style.color = "#000"
-        document.getElementById('Wrap').style.color = "#8f8f8f"
+        document.getElementById('Wrap').style.color = "#fd000f"
         document.getElementById('Unwrap').style.color = "#383a3b"
         WrapBool = true
         if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
@@ -571,13 +571,11 @@ if (!provider) {
                     const smartContracts = await flareContract.methods.getAllContracts().call();
                     const contractList = smartContracts[1];
                     let wnatAddr;
-                    let wnatAbi;
+                    let wnatAbi = wnat_flare_abi;
                     if (rpcUrl == 'https://flare-api.flare.network/ext/C/rpc') {
                         wnatAddr = contractList[19]
-                        wnatAbi = wnat_flare_abi
                     } else {
                         wnatAddr = contractList[12]
-                        wnatAbi = wnat_songbird_abi
                     }
                     let wnatContract = new web3.eth.Contract(wnatAbi, wnatAddr)        
                     if (Number(amountFrom.value) >= Number(web3.utils.fromWei(balance, "ether"))) {

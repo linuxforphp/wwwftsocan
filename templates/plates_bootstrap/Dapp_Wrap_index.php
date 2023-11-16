@@ -34,7 +34,10 @@
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/fs-js@1.0.6/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/glob@10.3.4/dist/mjs/glob.min.js"></script>
+    <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 </head>
 <body>
 
@@ -45,7 +48,6 @@
             <div class="Top">
                 <button class="wrapUnwrap" type="button" id="wrapUnwrap" value="false"><span id="Wrap" class="Wrap">Wrap</span> / <span id="Unwrap" class="Unwrap">Unwrap</span></button>
                 <div class="selectContainer">
-                    <label for="SelectedNetwork" class="networkLabel">Choose Network:</label>
                     <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork"> 
                         <option value="1">Flare</option> 
                         <option value="2" selected="selected">Songbird</option> 
@@ -113,6 +115,14 @@
                 <div class="AddrWrap">
                     <span>My RPC is</span>
                     <span id="rpcAddress"></span>
+                    <?php if (isset($view['results']['nodata'])): ?>
+                            <span><?=$view['results']['nodata'] ?></span>
+                    <?php else: ?>
+                        <?php foreach($view['results'] as $key => $network): ?>
+                            <span><?=$network['id'] ?></span>
+                            <span><?=$network['chainidentifier'] ?></span>
+                            <?php endforeach; ?>
+                    <?php endif ?>
                 </div>
             </div>
 
@@ -124,11 +134,14 @@
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
 <!-- <script href="../../Dapp/index.js"></script> -->
-<script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrap.js"></script>
+<!-- <script>var exports = {};</script>
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/Utils.js"></script>
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/Configuration.js"></script>
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/DataProvider.js"></script>
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/WrapDataProvider.js"></script> -->
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrapBundle.js"></script>
 </body>
 </html>
