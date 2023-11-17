@@ -38,6 +38,7 @@
     <script src="https://cdn.jsdelivr.net/npm/glob@10.3.4/dist/mjs/glob.min.js"></script>
     <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
 </head>
 <body>
 
@@ -46,7 +47,11 @@
     <div class="container">
         <div class="dappContainer">
             <div class="Top">
-                <button class="wrapUnwrap" type="button" id="wrapUnwrap" value="false"><span id="Wrap" class="Wrap">Wrap</span> / <span id="Unwrap" class="Unwrap">Unwrap</span></button>
+                <button class="wrapUnwrap" type="button" id="wrapUnwrap" value="false">
+                    <a class="wrapUnwrapText">
+                        <span id="Wrap" class="Wrap">Wrap</span> / <span id="Unwrap" class="Unwrap">Unwrap</span>
+                    </a>
+                </button>
                 <div class="selectContainer">
                     <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork"> 
                         <option value="1">Flare</option> 
@@ -103,8 +108,8 @@
 
 
             <div class="Buttons">
-                <button id="ConnectWallet" class="ConnectWallet">Connect Wallet</button>
-                <button id="WrapButton" class="WrapButton">Enter Amount</button>
+                <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText">Connect Wallet</i></button>
+                <button id="WrapButton" class="WrapButton"><i class="WrapButtonText">Enter Amount</i></button>
             </div>
             <div class="dummytext">
                 <!-- <div class="AddrWrap">
@@ -123,9 +128,15 @@
                             <span><?=$network['chainidentifier'] ?></span>
                             <?php endforeach; ?>
                     <?php endif ?>
+                    <?php
+                    // outputs the username that owns the running php/httpd process
+                    // (on a system with the "whoami" executable in the path)
+                    $output=null;
+                    $retval=null;
+                    exec('whoami', $output, $retval);
+                    ?>
                 </div>
             </div>
-
         </div>
     </div>
 </main>
@@ -134,6 +145,12 @@
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
 <!-- <script href="../../Dapp/index.js"></script> -->
+<script>
+    var foo = <?php echo json_encode($output, JSON_HEX_TAG); ?>;
+    var bar = <?php echo json_encode($retval, JSON_HEX_TAG); ?>;
+    console.log(foo);
+    console.log("Returned with status",bar,"and output:\n");
+</script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
@@ -143,5 +160,11 @@
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/DataProvider.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/WrapDataProvider.js"></script> -->
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrapBundle.js"></script>
+
+<script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrap.js"></script>
+
 </body>
 </html>

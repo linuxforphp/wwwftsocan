@@ -25,7 +25,7 @@ Fixed Navigation
             <h1 class="navbar-brand">
                 <span>
                     <img src="<?=$view['urlbaseaddr']?>img/logo-dark-2.svg" style="max-height: 50px;"/>
-                    <a href="https://ftsocan.com">FTSOCAN</a>
+                    <a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>')">FTSOCAN</a>
                 </span>
             </h1>
             <!-- /logo -->

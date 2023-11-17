@@ -1,7 +1,7 @@
 body {
     padding-top: 10em;
     font-family: 'Poppins', sans-serif;
-    background-image: url("../img/Component-1.png")!important;
+    background-image: url("../img/Component-2.png")!important;
     background-size: cover;
 }
 
@@ -18,26 +18,66 @@ body {
 }
 
 .dappContainer {
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(236,236,236,0.6);
     display: inline-block;
-    background-color: #ececec;
     margin-top: 0px;
-    padding: 30px 44px;
+    padding: 25px 44px 30px;
     border-radius: 25px;
     width: calc(50% + 1em);
-}
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  }
+  
+  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .dappContainer {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+  }
 
 .selectContainer {
     text-align: right;
 }
 
 .wrapUnwrap {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(255,255,255, 0.4);
+    border-bottom: 1px solid rgba(255,255,255, 0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     color: #383a3b;
     font-size: 20px;
-    margin-top: 5px;
+    padding: 12px 20px;
+    border-radius: 30px;
     float: left;
     cursor: pointer;
-    border: 0;
+    border-left: none;
+    border-right: none;
+    overflow: hidden!important; 
+    transition: 0.5s;
 }
+
+.wrapUnwrapText {
+    color: #383a3b!important;
+}
+
+/* .wrapUnwrap > .wrapUnwrapText::before {
+    box-sizing: inherit;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.wrapUnwrap:hover > .wrapUnwrapText::before {
+    transform: skewX(45deg) translateX(200%);
+} */
 
 .Wrap {
     color: #fd000f;
@@ -51,8 +91,6 @@ body {
 .wrapUnwrap:focus {
     float: left;
     cursor: pointer;
-    border: 0;
-    background-color: #ececec;
     outline:none;
 }
 
@@ -136,36 +174,111 @@ body {
 }
 
 .ConnectWallet {
-    float: left;
-    margin-top: 25px;
-    margin-left: 10px;
-    border-radius: 30px;
-    background-color: #fd000f;
-    padding: 10px 44px;
+    /* display: inline-block; */
+    background-color: rgba(253, 0, 15, 0.6);
+    border-top: 1px solid rgba(255,255,255, 0.4);
+    border-bottom: 1px solid rgba(255,255,255, 0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     color: white;
     text-decoration: none;
-    font-size: 16.5px;
+    font-size: 18px;
     cursor: pointer;
-    border: none;
+    border-left: none;
+    border-right: none;
     width: 45%;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; 
+    float: left;
+    margin-top: 25px;
+    margin-left: 10px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    letter-spacing: normal;
+    transition: 0.5s;
 }
+
+.ConnectWallet:hover {
+    letter-spacing: 1.5px;
+}
+
+.ConnectWalletText {
+    font-style: normal;
+}
+
+.ConnectWalletText::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+}
+
+.ConnectWallet:hover > .ConnectWalletText::before {
+    transform: skewX(45deg) translateX(200%);
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .ConnectWallet {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+  }
 
 .WrapButton {
     float: right;
     margin-top: 25px;
     margin-right: 20px;
     border-radius: 30px;
-    background-color: #8f8f8f;
-    padding: 10px 44px;
+    background-color: rgba(143, 143, 143, 0.6);
+    border-top: 1px solid rgba(255,255,255, 0.4);
+    border-bottom: 1px solid rgba(255,255,255, 0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    padding: 12px 20px;
     color: white;
     text-decoration: none;
-    font-size: 16.2px;
+    font-size: 18px;
     cursor: auto;
-    border: none;
+    border-left: none;
+    border-right: none;
     width: 40%;
+    letter-spacing: normal;
+    transition: 0.5s;
+}
+
+.WrapButtonText {
+    font-style: normal;
+}
+
+.WrapButtonText::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+}
+
+.WrapButton:hover > .WrapButtonText::before {
+    transform: skewX(45deg) translateX(200%);
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .WrapButton {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+  }
+
+.WrapButton:hover {
+    letter-spacing: 1.5px;
 }
 
 /* .ConnectWallet:hover {
