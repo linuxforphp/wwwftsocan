@@ -67,18 +67,18 @@
         }
       }
       if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
-        document.getElementById("WrapButton").style.backgroundColor = "#8f8f8f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("WrapButton").style.cursor = "auto";
-        document.getElementById("WrapButton").innerText = "Enter Amount";
+        document.getElementById("WrapButtonText").innerText = "Enter Amount";
         IsRealValue = false;
       } else {
-        document.getElementById("WrapButton").style.backgroundColor = "#fd000f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         document.getElementById("WrapButton").style.cursor = "pointer";
         IsRealValue = true;
         if (WrapBool == true) {
-          document.getElementById("WrapButton").innerText = "Wrap";
+          document.getElementById("WrapButtonText").innerText = "Wrap";
         } else {
-          document.getElementById("WrapButton").innerText = "Unwrap";
+          document.getElementById("WrapButtonText").innerText = "Unwrap";
         }
       }
     } else {
@@ -114,24 +114,24 @@
         }
       }
       if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
-        document.getElementById("WrapButton").style.backgroundColor = "#8f8f8f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("WrapButton").style.cursor = "auto";
-        document.getElementById("WrapButton").innerText = "Enter Amount";
+        document.getElementById("WrapButtonText").innerText = "Enter Amount";
         IsRealValue = false;
       } else {
-        document.getElementById("WrapButton").style.backgroundColor = "#fd000f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         document.getElementById("WrapButton").style.cursor = "pointer";
         IsRealValue = true;
         if (WrapBool == true) {
-          document.getElementById("WrapButton").innerText = "Wrap";
+          document.getElementById("WrapButtonText").innerText = "Wrap";
         } else {
-          document.getElementById("WrapButton").innerText = "Unwrap";
+          document.getElementById("WrapButtonText").innerText = "Unwrap";
         }
       }
     }
   }
   function showAccountAddress(address) {
-    document.getElementById("ConnectWallet").innerText = address;
+    document.getElementById("ConnectWalletText").innerText = address;
   }
   function showBalance(balanceAddress) {
     document.getElementById("Balance").innerText = balanceAddress;
@@ -152,18 +152,18 @@
   }
   function isInput() {
     if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
-      document.getElementById("WrapButton").style.backgroundColor = "#8f8f8f";
+      document.getElementById("WrapButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
       document.getElementById("WrapButton").style.cursor = "auto";
-      document.getElementById("WrapButton").innerText = "Enter Amount";
+      document.getElementById("WrapButtonText").innerText = "Enter Amount";
       IsRealValue = false;
     } else {
-      document.getElementById("WrapButton").style.backgroundColor = "#fd000f";
+      document.getElementById("WrapButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
       document.getElementById("WrapButton").style.cursor = "pointer";
       IsRealValue = true;
       if (WrapBool == true) {
-        document.getElementById("WrapButton").innerText = "Wrap";
+        document.getElementById("WrapButtonText").innerText = "Wrap";
       } else {
-        document.getElementById("WrapButton").innerText = "Unwrap";
+        document.getElementById("WrapButtonText").innerText = "Unwrap";
       }
     }
   }
@@ -247,18 +247,18 @@
       document.getElementById("Unwrap").style.color = "#383a3b";
       WrapBool = true;
       if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
-        document.getElementById("WrapButton").style.backgroundColor = "#8f8f8f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("WrapButton").style.cursor = "auto";
-        document.getElementById("WrapButton").innerText = "Enter Amount";
+        document.getElementById("WrapButtonText").innerText = "Enter Amount";
         IsRealValue = false;
       } else {
-        document.getElementById("WrapButton").style.backgroundColor = "#fd000f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         document.getElementById("WrapButton").style.cursor = "pointer";
         IsRealValue = true;
         if (WrapBool == true) {
-          document.getElementById("WrapButton").innerText = "Wrap";
+          document.getElementById("WrapButtonText").innerText = "Wrap";
         } else {
-          document.getElementById("WrapButton").innerText = "Unwrap";
+          document.getElementById("WrapButtonText").innerText = "Unwrap";
         }
       }
     } else {
@@ -301,18 +301,18 @@
       document.getElementById("Unwrap").style.color = "#383a3b";
       WrapBool = true;
       if (Number(amountFrom.value) < 1 | !isNumber(amountFrom.value)) {
-        document.getElementById("WrapButton").style.backgroundColor = "#8f8f8f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("WrapButton").style.cursor = "auto";
-        document.getElementById("WrapButton").innerText = "Enter Amount";
+        document.getElementById("WrapButtonText").innerText = "Enter Amount";
         IsRealValue = false;
       } else {
-        document.getElementById("WrapButton").style.backgroundColor = "#fd000f";
+        document.getElementById("WrapButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         document.getElementById("WrapButton").style.cursor = "pointer";
         IsRealValue = true;
         if (WrapBool == true) {
-          document.getElementById("WrapButton").innerText = "Wrap";
+          document.getElementById("WrapButtonText").innerText = "Wrap";
         } else {
-          document.getElementById("WrapButton").innerText = "Unwrap";
+          document.getElementById("WrapButtonText").innerText = "Unwrap";
         }
       }
     }
@@ -342,7 +342,7 @@
           console.log(error);
         }
       } else {
-        navigator.clipboard.writeText(document.getElementById("ConnectWallet").innerText);
+        navigator.clipboard.writeText(document.getElementById("ConnectWalletText").innerText);
         alert("Copied!");
       }
     });

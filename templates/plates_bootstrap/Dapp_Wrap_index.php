@@ -53,54 +53,62 @@
                     </a>
                 </button>
                 <div class="selectContainer">
-                    <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork"> 
-                        <option value="1">Flare</option> 
-                        <option value="2" selected="selected">Songbird</option> 
-                    </select>
+                    <div class="Box">
+                        <div class="selectBox">
+                            <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork">
+                                <option value="1">FLR</option> 
+                                <option value="2" selected="selected">SGB</option> 
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="wrapBox">
-                <svg id="FromIcon" class="logoFrom" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
-                    <g id="layer2">
-                        <g id="layer1-2" class="AssetLogo">
-                            <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
-                            <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
-                            <polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon>
-                            <polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon>
-                            <polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon>
-                            <polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon>
+                <span class="wrapBoxContent">
+                    <svg id="FromIcon" class="logoFrom" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
+                        <g id="layer2">
+                            <g id="layer1-2" class="AssetLogo">
+                                <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
+                                <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
+                                <polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon>
+                                <polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon>
+                                <polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon>
+                                <polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon>
+                            </g>
                         </g>
-                    </g>
-                </svg>
-                <div class="tokenIdentifier">
-                    <span id="tokenIdentifier"></span>
-                </div>
-                <input id="AmountFrom" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                <div class="Wrapper">
-                    <span>Balance:</span>
-                    <span id="Balance">0.0</span>
-                </div></div>
+                    </svg>
+                    <div class="tokenIdentifier">
+                        <span id="tokenIdentifier"></span>
+                    </div>
+                    <input id="AmountFrom" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                    <div class="Wrapper">
+                        <span>Balance:</span>
+                        <span id="Balance">0.0</span>
+                    </div></div>
+                </span>
             <div class="wrapBox">
-                <svg id="ToIcon" class="logoTo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
-                    <g id="layer3">
-                        <g id="layer1-3">
-                            <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
-                            <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
-                            <polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon>
-                            <polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon>
-                            <polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon>
-                            <polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon>
+                <span class="wrapBoxContent">
+                    <svg id="ToIcon" class="logoTo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
+                        <g id="layer3">
+                            <g id="layer1-3">
+                                <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
+                                <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
+                                <polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon>
+                                <polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon>
+                                <polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon>
+                                <polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon>
+                            </g>
                         </g>
-                    </g>
-                </svg>
-                <div class="tokenIdentifier">
-                        <span id="wrappedTokenIdentifier"></span>
-                </div>
-                <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                <div class="Wrapper">
-                    <span>Balance:</span>
-                    <span id="TokenBalance">0.0</span>
-                </div>
+                    </svg>
+                    <div class="tokenIdentifier">
+                            <span id="wrappedTokenIdentifier"></span>
+                    </div>
+                    <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                    <div class="Wrapper">
+                        <span>Balance:</span>
+                        <span id="TokenBalance">0.0</span>
+                    </div>
+                </span>
             </div>
 
             <!--<div class="h">FTSO Can dApp Example</div> -->
@@ -108,8 +116,8 @@
 
 
             <div class="Buttons">
-                <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText">Connect Wallet</i></button>
-                <button id="WrapButton" class="WrapButton"><i class="WrapButtonText">Enter Amount</i></button>
+                <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="WrapButton" class="WrapButton"><i class="WrapButtonText" id="WrapButtonText">Enter Amount</i></button>
             </div>
             <div class="dummytext">
                 <!-- <div class="AddrWrap">
