@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `networks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `networks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `chainidentifier` varchar(4) NOT NULL,
+  `chainidentifier` varchar(10) NOT NULL,
   `rpcurl` varchar(100) NOT NULL,
   `chainid` int(11) NOT NULL,
   `registrycontract` varchar(255) NOT NULL,
@@ -38,33 +38,32 @@ CREATE TABLE `networks` (
 
 LOCK TABLES `networks` WRITE;
 /*!40000 ALTER TABLE `networks` DISABLE KEYS */;
-INSERT INTO `networks` VALUES (1,'SGB','http://sbi.sgb.ftsocan.com:9650/ext/bc/C/rpc',19,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(2,'FLR','http://sbi.flr.ftsocan.com:9650/ext/bc/C/rpc',14,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019');
+INSERT INTO `networks` VALUES (1,'FLR','https://sbi.flr.ftsocan.com/ext/C/rpc',14,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(2,'SGB','https://sbi.sgb.ftsocan.com/ext/C/rpc',19,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(3,'CFLR','https://coston-api.flare.network/ext/bc/C/rpc',16,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(4,'C2FLR','https://sbi1.costwo.ftsocan.com/ext/C/rpc',114,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019');
 /*!40000 ALTER TABLE `networks` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `sgbcontracts`
+-- Table structure for table `smartcontracts`
 --
 
-DROP TABLE IF EXISTS `sgbcontracts`;
+DROP TABLE IF EXISTS `smartcontracts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sgbcontracts` (
+CREATE TABLE `smartcontracts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `contractname` varchar(32) NOT NULL,
-  `contractabi` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sgbcontracts`
+-- Dumping data for table `smartcontracts`
 --
 
-LOCK TABLES `sgbcontracts` WRITE;
-/*!40000 ALTER TABLE `sgbcontracts` DISABLE KEYS */;
-INSERT INTO `sgbcontracts` VALUES (1,'WNat','WNat.json'),(2,'ClaimSetupManager','ClaimSetupManager.json'),(3,'FtsoRewardManager','FtsoRewardManager.json'),(4,'VoterWhitelister','VoterWhitelister.json');
-/*!40000 ALTER TABLE `sgbcontracts` ENABLE KEYS */;
+LOCK TABLES `smartcontracts` WRITE;
+/*!40000 ALTER TABLE `smartcontracts` DISABLE KEYS */;
+INSERT INTO `smartcontracts` VALUES (1,'WNat'),(2,'ClaimSetupManager'),(3,'FtsoRewardManager'),(4,'VoterWhitelister');
+/*!40000 ALTER TABLE `smartcontracts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

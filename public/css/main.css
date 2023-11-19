@@ -14,6 +14,11 @@
 /*	Basic Style 
 /* =================================== */
 
+@font-face {
+    font-family: FontAwesome;
+    src: url(../fonts/fontawesome-webfont.woff);
+  }
+
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 24px;
@@ -426,6 +431,11 @@ h1.navbar-brand > a:hover, h1.navbar-brand > a:focus {
     color: rgba(239, 0, 0, 0.78);
     font-size: 15px;
     text-transform: uppercase;
+}
+
+.fa-caret-down {
+    box-sizing: content-box!important;
+    font-family: FontAwesome!important;
 }
 
 
@@ -1403,6 +1413,7 @@ textarea.form-control {
     }
 
 /*navigation*/
+
     .navbar-inverse .navbar-toggle {
         border-color: #fff;
     }
@@ -1628,6 +1639,51 @@ pre {
     color: white;
     font-weight: bold;
     padding: 5px;
+}
+
+.dd-menu {
+    box-sizing: border-box;
+    display: inline-block!important;
+    min-width: 160px;
+    min-height: 144px;
+    position: absolute;
+}
+
+.dropdown-menu ul li:hover > a.navbar-list-item {
+    color: #EF0000!important;
+}
+
+.dropdown-menu {
+    transition: 0.3;
+    display: none;
+} 
+
+.navbar-nav li:hover .dropdown-menu {
+    border-radius: 10px!important;
+    padding: 0;
+    box-sizing: border-box;
+    display: inline-block!important;
+    width: max-content!important;
+    position: absolute;
+    left: 0;
+    top: 17%;
+    background-color: rgba(0, 0, 0, 0.4);  
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); 
+    transition: 0.3s;
+}
+
+.navbar-nav li:hover .dropdown-menu ul {
+    display: table;
+    content: " ";
+    box-sizing: border-box; 
+    margin: 5px 10px; 
+    padding: 0; 
+    list-style: none;
+}
+
+.navbar-nav li:hover .dropdown-menu ul li {
+    width: 130px; 
+    padding: 10px;
 }
 
 .owl-theme .owl-dots {

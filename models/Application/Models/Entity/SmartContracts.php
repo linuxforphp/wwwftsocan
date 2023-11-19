@@ -5,11 +5,11 @@ namespace Application\Models\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity("Application\Models\Entity\Products")
- * @ORM\Entity(repositoryClass="Application\Models\Repository\ProductsRepository")
- * @ORM\Table("products")
+ * @ORM\Entity("Application\Models\Entity\SmartContracts")
+ * @ORM\Entity(repositoryClass="Application\Models\Repository\SmartContractsRepository")
+ * @ORM\Table("smartcontracts")
  */
-class SgbContracts
+class SmartContracts
 {
     /**
      * @ORM\Id
@@ -22,11 +22,6 @@ class SgbContracts
      * @ORM\Column(type="string", length=32, name="name")
      */
     protected $contractname;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, name="price")
-     */
-    protected $contractabi;
 
     /**
      * @return mixed
@@ -58,21 +53,5 @@ class SgbContracts
     public function setContractName($contractname)
     {
         $this->contractname = (string) $contractname;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getContractAbi()
-    {
-        return $this->contractabi;
-    }
-
-    /**
-     * @param mixed $price
-     */
-    public function setContractAbi($contractabi)
-    {
-        $this->contractabi = (string) $contractabi;
     }
 }

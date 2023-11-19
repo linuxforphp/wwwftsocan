@@ -8,7 +8,6 @@
     <link rel="icon" href="<?php echo $view['favicon'] ?>">
 
     <link rel="apple-touch-icon" href="<?php echo $view['urlbaseaddr'] ?>apple-touch-icon.png">
-
     <title><?php echo $view['title'] ?></title>
 
     <!-- Core CSS -->

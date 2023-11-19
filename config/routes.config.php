@@ -13,8 +13,8 @@ $baseConfig['routes'] = [
     ],
     [
         'GET',
-        '/delegate[/{action}]',
-        'delegate',
+        '/faq[/{action}]',
+        'faq',
     ],
     [
         'GET',

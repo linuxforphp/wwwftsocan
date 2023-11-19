@@ -38,6 +38,7 @@ Fixed Navigation
                 <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>delegate/index')">Delegate</a></li>
                 <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>stake/index')">Stake</a></li>
                 <li><a href="#" onclick="getDocsPageNewTab(2)">About</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>faq/index')">FAQ</a></li>
             </ul>
         </nav>
         <!-- /main nav -->

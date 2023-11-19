@@ -55,10 +55,17 @@
                 <div class="selectContainer">
                     <div class="Box">
                         <div class="selectBox">
+                        <?php if (isset($view['results']['nodata'])): ?>
+                            <?=$view['results']['nodata'] ?>
+                        <?php else: ?>
                             <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork">
-                                <option value="1">FLR</option> 
-                                <option value="2" selected="selected">SGB</option> 
+                            <?php foreach($view['results'] as $key => $networks): ?>
+                                <option value="<?=$networks['id'] ?>" data-chainidhex="<?='0x' . dechex($networks['chainid']) ?>"data-rpcurl="<?=$networks['rpcurl'] ?>" data-registrycontract="<?=$networks['registrycontract'] ?>"><?=$networks['chainidentifier'] ?></option>
+                            <?php endforeach; ?>
+                                <!-- <option value="1">FLR</option> 
+                                <option value="2" selected="selected">SGB</option>  -->
                             </select>
+                        <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -171,8 +178,5 @@
 
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrap.js"></script>
-
 </body>
 </html>

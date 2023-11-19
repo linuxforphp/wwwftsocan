@@ -4,7 +4,7 @@ namespace Application\Controllers;
 
 use Ascmvc\Mvc\Controller;
 
-class Dapp_ClaimController extends Controller
+class FaqController extends Controller
 {
     public function indexAction($vars = null)
     {
@@ -12,7 +12,7 @@ class Dapp_ClaimController extends Controller
 
         $this->view['bodyjs'] = 1;
         
-        $this->view['templatefile'] = 'Dapp_Claim_index';
+        $this->view['templatefile'] = 'faq_index';
         
         return $this->view;
     }

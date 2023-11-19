@@ -4,7 +4,7 @@ namespace Application\Controllers;
 
 use Ascmvc\Mvc\Controller;
 
-class DelegateController extends Controller
+class DappDelegateController extends Controller
 {
     public function indexAction($vars = null)
     {
@@ -12,7 +12,7 @@ class DelegateController extends Controller
 
         $this->view['bodyjs'] = 1;
         
-        $this->view['templatefile'] = 'delegate_index';
+        $this->view['templatefile'] = 'dappdelegate_index';
         
         return $this->view;
     }

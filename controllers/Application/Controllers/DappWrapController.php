@@ -14,13 +14,13 @@ use Ascmvc\Mvc\AscmvcEvent;
 use Pimple\Container;
 use Laminas\Diactoros\Response;
 
-class Dapp_WrapController extends AggregateRootController implements AggregateEventListenerInterface
+class DappWrapController extends AggregateRootController implements AggregateEventListenerInterface
 {
     const READ_REQUESTED =  'networks_read_received';
 
     // Define the Aggregate's invokable listeners.
     protected $aggregateListenerNames = [
-        Dapp_WrapController::READ_REQUESTED => NetworksReadModel::class,
+        DappWrapController::READ_REQUESTED => NetworksReadModel::class,
     ];
 
     // This controller MUST implement the Ascmvc\AscmvcControllerFactoryInterface interface
@@ -143,7 +143,7 @@ class Dapp_WrapController extends AggregateRootController implements AggregateEv
         $event = new AggregateEvent(
             $aggregateValueObject,
             $this->aggregateRootName,
-            Dapp_WrapController::READ_REQUESTED
+            DappWrapController::READ_REQUESTED
         );
 
         $this->eventDispatcher->dispatch($event);
@@ -161,7 +161,7 @@ class Dapp_WrapController extends AggregateRootController implements AggregateEv
 
         $this->view['bodyjs'] = 1;
         
-        $this->view['templatefile'] = 'Dapp_Wrap_index';
+        $this->view['templatefile'] = 'dappwrap_index';
 
         return $this->view;
     }
