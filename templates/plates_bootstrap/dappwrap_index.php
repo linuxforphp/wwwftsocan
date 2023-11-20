@@ -169,11 +169,7 @@
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
-<!-- <script>var exports = {};</script>
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/Utils.js"></script>
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/Configuration.js"></script>
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/DataProvider.js"></script>
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/WrapDataProvider.js"></script> -->
+
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrapBundle.js"></script>
 
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
