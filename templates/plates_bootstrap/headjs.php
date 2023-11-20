@@ -46,6 +46,8 @@
         <script src="<?php echo $value ?>"></script>
     <?php endforeach; ?>
 
+    <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
+
     <?php foreach($view['jsscriptshead'] as $key => $value): ?>
         <?php echo $value ?>
     <?php endforeach; ?>

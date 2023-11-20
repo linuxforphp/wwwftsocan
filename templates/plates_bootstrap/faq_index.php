@@ -43,7 +43,7 @@
                 <div class="pannel">
                     <p>There are multiple options for wrapping, delegating, or even claiming your <strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use our official <br> 
                     <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Wrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
-                    Flare Portal</a> , Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a>, Flare's official Block Explorer, or any other Flare Dapp made by the Flare community.</p>
+                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a>, Flare's official Block Explorer , or any other trusted Dapp made by the Flare community.</p>
                 </div>
             </div>
         </div>    
