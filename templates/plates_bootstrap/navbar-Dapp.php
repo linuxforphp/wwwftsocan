@@ -34,9 +34,9 @@ Fixed Navigation
         <!-- main nav -->
         <nav class="collapse navbar-collapse navbar-right" role="navigation">
             <ul id="nav" class="nav navbar-nav">
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Wrap/index')">Wrap</a></li>
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Delegate/index')">Delegate</a></li>
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Claim/index')">Rewards</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">Wrap</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappdelegate/index')">Delegate</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappclaim/index')">Rewards</a></li>
             </ul>
         </nav>
         <!-- /main nav -->
