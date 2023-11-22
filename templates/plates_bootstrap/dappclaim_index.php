@@ -44,7 +44,13 @@
     <div class="container">
         <div class="dappContainer">
         <div class="Top">
-            <div class="Rewards"><div class="RewardsText">Rewards</div></div>
+            <div class="Rewards">
+                <div class="RewardsText">
+                    <input type="checkbox" id="CheckBox" class="RewardsCheck" name="Rewards" checked="checked" />
+                    <label for="Rewards" class="CheckMark"></label>
+                    <span class="RewardsCheckLabel">Auto Wrap</span>
+                </div>
+            </div>
             <div class="selectContainer">
                     <div class="Box">
                         <div class="selectBox">

@@ -1,3 +1,9 @@
+
+@font-face {
+    font-family: FontAwesome;
+    src: url(../fonts/fontawesome-webfont.woff);
+}
+
 body {
     padding-top: 9.5em;
     font-family: 'Poppins', sans-serif;
@@ -157,20 +163,21 @@ letter-spacing: 1.5px;
 
 .Rewards {
     position: relative;
-    background-color: rgba(253, 0, 15, 0.5);
+    background-color: rgba(253, 0, 15, 0.7);
     border-top: 1px solid rgba(255,255,255, 0.4);
     border-bottom: 1px solid rgba(255,255,255, 0.4);
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     color: #fff;
     font-size: 20px;
-    padding: 12px 25px;
+    padding: 12px 10px 12px 20px;
     border-radius: 30px;
-    width: fit-content;
+    width: 177px;
     float: left;
     cursor: default;
     border-left: none;
     border-right: none;
     overflow: hidden!important; 
+    transition: 0.5s;
 }
 
 .RewardsText {
@@ -191,6 +198,53 @@ letter-spacing: 1.5px;
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
     overflow: hidden;
+}
+
+
+.Rewards:hover {
+    letter-spacing: 1.5px;
+}
+
+.Rewards:hover::after {
+    transform: skewX(45deg) translateX(200%);
+}
+
+.RewardsText > input {
+    margin: 3px 0 0!important;
+    float: left;
+    height: 20px;
+    width: 20px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    outline: none;
+    transition-duration: 0.3s;
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.RewardsText > input:checked {
+    border: 1px solid #fff;
+    background-color: rgba(0,0,0,0);
+}
+
+.RewardsText > input:checked + .CheckMark::before {
+    cursor: pointer;
+    font-family: FontAwesome!important;
+    content: '\f00c';
+    color: #fff;
+    position: absolute;
+    left: 0.25rem;
+    top: 0.1rem;
+}
+
+.RewardsCheckLabel {
+    font-weight: normal!important;
+    z-index: 3;
+    position: relative;
 }
 
 .networkLabel {

@@ -13,6 +13,7 @@
         // dapp_claim.js
     var provider = window.ethereum;
     var selectedNetwork = document.getElementById("SelectedNetwork");
+    var Checkbox = document.getElementById("Checkbox").checked;
     var delegatedFtsoElement = document.getElementById('after');
     var ercAbi = human_standard_token_abi;
     var flrAbi = flare_abi;
@@ -519,6 +520,10 @@
                 const account = accounts[0];
 
                 const SmartContracts = await flareContract.methods.getAllContracts().call();
+                const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
+                const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+      
+                let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
                 const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0],"FtsoRewardManager");
                 const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
                 let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbi, ftsoRewardAddr);
@@ -527,7 +532,29 @@
 
                 const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
 
-                await ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses).send({from: account});
+                if (Checkbox) {
+                    const transactionParameters = {
+                        from: account,
+                        to: ftsoRewardAddr,
+                        data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, true).encodeABI(),
+                        value: amountFromValueWei,
+                    };
+                } else {
+                    const transactionParameters = {
+                        from: account,
+                        to: ftsoRewardAddr,
+                        data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, false).encodeABI(),
+                        value: amountFromValueWei,
+                    };
+                }
+
+                await provider.request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters],
+                })
+
+                tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
             } catch (error) {
                 console.log(error);
             }
