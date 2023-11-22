@@ -60,31 +60,32 @@
 }
 
   async function switchIconColor() {
-    
-    if (wrapUnwrapButton.value != "true") {
+    // Switching everything...
+
+    if (wrapUnwrapButton.value == "false") {
+      WrapBool = false;
       wrapUnwrapButton.value = "true";
       fromIcon.style.color = "#000";
       toIcon.style.color = "#fd000f";
       document.getElementById("Wrap").style.color = "#383a3b";
       document.getElementById("Unwrap").style.color = "#fd000f";
       showTokenIdentifiers(wrappedTokenIdentifier, tokenIdentifier);
-      WrapBool = false;
       isInput();
     } else {
+      WrapBool = true;
       wrapUnwrapButton.value = "false";
       fromIcon.style.color = "#fd000f";
       toIcon.style.color = "#000";
       document.getElementById("Wrap").style.color = "#fd000f";
       document.getElementById("Unwrap").style.color = "#383a3b";
       showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
-      WrapBool = true;
       isInput();
     }
-    if (ConnectWalletBool == false) {
+    if (ConnectWalletBool == true) {
       if (!provider) {
         alert("MetaMask is not installed, please install it.");
       } else {
-        console.log("isMetaMask=", provider.isMetaMask);
+        console.log(WrapBool)
         let web32 = new Web3(rpcUrl);
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
         try {
@@ -101,8 +102,14 @@
             showAccountAddress(account);
             const balance = await web32.eth.getBalance(account);
             const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
-            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+
+            if (WrapBool == false) {
+              showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+              showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+            } else {
+              showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+              showBalance(round(web32.utils.fromWei(balance, "ether")));
+            }
             console.log(`Account `, account, ` has `, balance, ` tokens, and `, tokenBalance, ` wrapped tokens.`);
           } else {
             alert("You are not connected!");
@@ -111,10 +118,12 @@
           console.log(error);
         }
       }
-    } else {
-      return
     }
   }
+
+  wrapUnwrapButton.addEventListener("click", async () => {
+    switchIconColor();
+  });
 
   //Functions to show the requested info
 
@@ -131,14 +140,9 @@
   // Has the wallet already been unlocked?
 
   async function isWalletUnlocked() {
-    const Web3provider = new ethers.providers.Web3Provider(window.ethereum);
-    let unlocked;
-    try {
-      const accounts = await Web3provider.listAccounts();
-      unlocked = accounts.length > 0;
-    } catch (e) {
-      unlocked = false;
-    }
+    
+    var unlocked = provider._metamask.isUnlocked() 
+
     return unlocked;
   }
 
@@ -255,11 +259,32 @@
     } else {
       console.log("isMetaMask=", provider.isMetaMask);
       let web32 = new Web3(rpcUrl);
+      let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
       try {
         await provider.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: chainidhex }],
-       })
+        })
+        const isUnlocked = isWalletUnlocked();
+        if (await isUnlocked != "false") {
+          const SmartContracts = await flareContract.methods.getAllContracts().call();
+          const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
+          const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+  
+          let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+          const accounts = (await provider.send("eth_requestAccounts")).result;
+          const account = accounts[0];
+          showAccountAddress(account);
+          const balance = await web32.eth.getBalance(account);
+          const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+          if (WrapBool) {
+            showBalance(round(web32.utils.fromWei(balance, "ether")));
+            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+          } else {
+            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+          }
+        }
       } catch (error) {
         console.log(error);
       }
@@ -267,7 +292,7 @@
 
     //If we have already logged in the account, show new results, else, do nothing
 
-    if (ConnectWalletBool == false) {
+    if (ConnectWalletBool == true) {
       if (!provider) {
         alert("MetaMask is not installed, please install it.");
       } else {
@@ -286,10 +311,14 @@
             const account = accounts[0];
             showAccountAddress(account);
             const balance = await web32.eth.getBalance(account);
-            showBalance(round(web32.utils.fromWei(balance, "ether")));
             const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-            console.log(`Account `, account, ` has `, balance, ` tokens, and `, tokenBalance, ` wrapped tokens.`);
+            if (WrapBool) {
+              showBalance(round(web32.utils.fromWei(balance, "ether")));
+              showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+            } else {
+              showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+              showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+            } 
           } else {
             alert("You are not connected!");
           }
@@ -325,18 +354,19 @@
           const account = accounts[0];
           showAccountAddress(account);
           const balance = await web32.eth.getBalance(account);
-          showBalance(round(web32.utils.fromWei(balance, "ether")));
           const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-          showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-          console.log(`Account `, account, ` has `, balance, ` tokens, and `, tokenBalance, ` wrapped tokens.`);
-          console.log(`Smart contract list: `, SmartContracts);
+          if (WrapBool) {
+            showBalance(round(web32.utils.fromWei(balance, "ether")));
+            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+          } else {
+            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+          }
         } catch (error) {
           console.log(error);
         }
       } else {
         navigator.clipboard.writeText(document.getElementById("ConnectWalletText").innerText);
-        
-        ConnectWalletBool = true;
         let web32 = new Web3(rpcUrl);
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
         try {
@@ -350,20 +380,20 @@
           const account = accounts[0];
           showAccountAddress(account);
           const balance = await web32.eth.getBalance(account);
-          showBalance(round(web32.utils.fromWei(balance, "ether")));
           const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-          showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-          console.log(`Account `, account, ` has `, balance, ` tokens, and `, tokenBalance, ` wrapped tokens.`);
-          console.log(`Smart contract list: `, SmartContracts);
+          if (WrapBool) {
+            showBalance(round(web32.utils.fromWei(balance, "ether")));
+            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+          } else {
+            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+          }
         } catch (error) {
           console.log(error);
         }
       }
     });
   }
-  wrapUnwrapButton.addEventListener("click", async () => {
-    switchIconColor();
-  });
 
   provider.on("accountsChanged", async (accounts) => {
     console.log("accountsChanged");
@@ -380,9 +410,14 @@
         const account = accounts[0];
         showAccountAddress(account);
         const balance = await web32.eth.getBalance(account);
-        showBalance(round(web32.utils.fromWei(balance, "ether")));
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+        if (WrapBool) {
+          showBalance(round(web32.utils.fromWei(balance, "ether")));
+          showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+        } else {
+          showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+          showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+        }
       } catch (error) {
         console.log(error)
       }
@@ -423,6 +458,7 @@
             const accounts = await provider.request({ method: 'eth_requestAccounts' });
             const account = accounts[0];
             const balance = await web32.eth.getBalance(account);
+            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
             const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''))
 
@@ -444,6 +480,16 @@
                 method: 'eth_sendTransaction',
                 params: [transactionParameters],
               });
+
+              balance = await web32.eth.getBalance(account);
+              tokenBalance = await tokenContract.methods.balanceOf(account).call();
+              if (WrapBool) {
+                showBalance(round(web32.utils.fromWei(balance, "ether")));
+                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+              } else {
+                showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+              }
             }
           } catch (error) {
             console.log(error);
@@ -480,29 +526,21 @@
                 method: 'eth_sendTransaction',
                 params: [transactionParameters],
               })
+              
+              balance = await web32.eth.getBalance(account);
+              tokenBalance = await tokenContract.methods.balanceOf(account).call();
+              if (WrapBool) {
+                showBalance(round(web32.utils.fromWei(balance, "ether")));
+                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+              } else {
+                showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+              }
             }
           } catch (error) {
             console.log(error);
           }
         }
-        setTimeout(async () => {
-          try {
-            const SmartContracts = await flareContract.methods.getAllContracts().call();
-            const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
-            const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-    
-            let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-
-            const accounts = await provider.request({ method: 'eth_requestAccounts' });
-            const account = accounts[0];
-            const balance = await web32.eth.getBalance(account);
-            showBalance(round(web32.utils.fromWei(balance, "ether")));
-            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-          } catch (error) {
-            console.log(error)
-          }
-        }, 30000)
       }
     });
   }
