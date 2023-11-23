@@ -207,166 +207,6 @@ ul.delegation {
 			transform: scaleX(1);
 }
 
-.active, button.accordion:hover {
-    background-color: #f1f7f5;
-    color: #EF0000;
-}
-
-button.accordion {
-    border-radius: 30px;
-    background-color: #FFFFFF;
-    color: #000;
-    cursor: pointer;
-    font-size: 2rem;
-    width: 100%;
-    padding: 3rem 3.5rem;
-    border: none;
-    outline: none;
-    transition: background-color 0.5s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-}
-
-button.accordion.active {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    background-color: #f1f7f5;
-}
-
-button.accordion i {
-    font-size: 1.6rem;
-}
-
-.faq {
-    border: solid 1px rgba(0, 0, 0, 0.3);
-    border-radius: 30px;
-    margin: 10px 0;
-}
-
-.faq.active {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-
-button.accordion.active + .pannel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    opacity: 1;
-    max-height: fit-content;
-    padding: 0 5rem 3rem 3rem;
-    background-color: white;
-    overflow: hidden;
-    background-color: #f1f7f5;
-    transition: opacity 0.5s linear, max-height 0.5s linear;
-    will-change: display, opacity, max-height;
-}
-
-.faq .pannel {
-    display: none;
-    max-height: 0;
-    opacity: 0;
-    transition: opacity 0s linear, max-height 0.5s linear;
-    will-change: display, opacity, max-height;
-}
-
-.faq .pannel p {
-    width: 100%;
-    text-align: left;
-    color: rgba(0,0,0, 1);
-    font-size: 16px;
-    line-height: 2.7rem!important;
-}
-
-.footnote {
-    font-style: normal;
-    width: 100%;
-    text-align: left;
-    color: rgba(253,0,15, 1);
-    font-size: 12px;
-    line-height: 2.7rem!important;
-}
-
-.footnote.asterisk {
-    font-style: normal;
-    width: 100%;
-    text-align: left;
-    color: rgba(253,0,15, 1);
-    font-size: 16px!important;
-    line-height: 2.7rem!important;
-}
-
-.faq .pannel div {
-    box-sizing: border-box;
-    padding: 0 5rem 3rem 3rem;
-    display: grid;
-    grid: auto / 1fr 1fr;
-    grid-gap: 25%;
-    align-items: center;
-}
-
-.shinyButton {
-    position: relative;
-    background-color: rgba(253, 0, 15, 1);
-    border-top: 1px solid rgba(255,255,255, 0.4);
-    border-bottom: 1px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    color: white;
-    text-decoration: none;
-    font-size: 17px;
-    cursor: pointer;
-    border-left: none;
-    border-right: none;
-    min-width: fit-content;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden; 
-    float: left;
-    margin: 40px;
-    padding: 12px 50px;
-    border-radius: 30px;
-    letter-spacing: normal;
-    transition: 0.5s;
-}
-
-a.link {
-    color: #EF0000!important;
-}
-/* 
-.shinyButton:hover {
-    letter-spacing: 1.5px;
-} */
-
-.shinyButtonText {
-    font-style: normal;
-}
-
-.shinyButtonText::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
-    transform: skewX(45deg) translateX(0);
-    transition: 0.5s;
-}
-
-.shinyButton:hover > .shinyButtonText::before {
-    transform: skewX(45deg) translateX(200%);
-}
-
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .ConnectWallet {
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-    }
-  }
-
 .sec-title {
     position: relative;
     margin-top: 50px;
@@ -409,16 +249,6 @@ a.link {
 
 .sec-title strong {
     position: relative;
-}
-
-.sec-title strong:after {
-    border-bottom: 1px solid #EF0000;
-    content: "";
-    display: block;
-    left: 25%;
-    margin-top: 2.7rem;
-    position: absolute;
-    width: 50%;
 }
 
 .sec-title.white h2:after {
@@ -1861,20 +1691,6 @@ textarea.form-control {
 
     .footer-social ul li {
         margin: 0 7px;
-    }
-
-
-    .faq .pannel div {
-        display: grid;
-        grid: none;
-        grid-auto-flow: row!important;
-        grid-row: 2;
-        grid-gap: 0;
-        width: 448px;
-    }
-
-    .shinyButton {
-        padding: 12px 40px!important;
     }
 }
 

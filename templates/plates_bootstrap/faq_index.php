@@ -6,9 +6,34 @@
 
 <?php if (isset($view['headjs'])): ?>
     <?=$this->section('headjs', $this->fetch('headjs', ['view' => $view]))?>
-<?php else: ?>
-    <?=$this->section('head', $this->fetch('head', ['view' => $view]))?>
 <?php endif ?>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="<?php echo $view['description'] ?>">
+    <meta name="author" content="<?php echo $view['author'] ?>">
+    <link rel="icon" href="<?php echo $view['favicon'] ?>">
+
+    <link rel="apple-touch-icon" href="<?php echo $view['urlbaseaddr'] ?>apple-touch-icon.png">
+    <link rel="shortcut icon" href="<?php echo $view['urlbaseaddr'] ?>apple-touch-icon.png">
+    <title><?php echo $view['title'] ?></title>
+
+    <!-- Core CSS -->
+    <?php foreach($view['css'] as $key => $value): ?>
+        <link href="<?php echo $value ?>" rel="stylesheet">
+    <?php endforeach; ?>
+
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/faq.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="<?php echo $view['urlbaseaddr'] ?>js/html5shiv.min.js"></script>
+      <script src="<?php echo $view['urlbaseaddr'] ?>js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
 
 <body id="body">
 <?=$this->section('navbar', $this->fetch('navbar', ['view' => $view]))?>
@@ -17,11 +42,22 @@
     <!-- FAQ Section -->
     <section id="FAQ" class="main-section-padding">
         <div class="container">
-            <h1 class="sec-title text-center"><strong>Frequently Asked Questions</strong></h1>
+            <h2 class="sec-title text-center"><strong>Frequently Asked Questions</strong></h2>
 
             <div class="faq">
                 <button class="accordion">
-                    How Do I Get "Flare" or "Songbird" On My Browser? <i class="fas fa-caret-down"></i>
+                    <strong>What is FTSO Canada? </strong><i class="fas fa-caret-down"></i>
+                </button>
+                <div class="pannel">
+                    <p><strong>FTSO Canada</strong> is one of the <strong>Flare</strong> Network's many FTSOs (Flare Time Series Oracle). <br> 
+                    It provides applications on the <strong>Flare</strong> Network with highly accurate and decentralized data, such as cryptocurrency prices, and transaction validation. To learn more about FTSOs, you can visit 
+                    <a class="link" href="#" onclick="getDocsPageNewTab(2)">Flare's official post about FTSOs</a></p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <button class="accordion">
+                    <strong>How Do I Get "Flare" or "Songbird" On My Browser? </strong><i class="fas fa-caret-down"></i>
                 </button>
                 <div class="pannel">
                     <p>To be able to interact with Ethereum chains such as <strong>Flare</strong> , <strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</strong> , you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p>
@@ -38,12 +74,23 @@
 
             <div class="faq">
                 <button class="accordion">
-                    How Can I Wrap my Flare or Songbird Tokens into WFLR or WSGB? <i class="fas fa-caret-down"></i>
+                    <strong>How Can I Wrap my Flare or Songbird Tokens into WFLR or WSGB? </strong><i class="fas fa-caret-down"></i>
                 </button>
                 <div class="pannel">
                     <p>There are multiple options for wrapping, delegating, or even claiming your <strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use our official <br> 
                     <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Wrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
-                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a>, Flare's official Block Explorer , or any other trusted Dapp made by the Flare community.</p>
+                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted Dapp made by the Flare community.</p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <button class="accordion">
+                    <strong>How Can I Delegate my Flare or Songbird Tokens to earn Rewards? </strong><i class="fas fa-caret-down"></i>
+                </button>
+                <div class="pannel">
+                    <p>There are multiple options for wrapping, delegating, or even claiming your <strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use our official <br> 
+                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Wrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
+                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted Dapp made by the Flare community.</p>
                 </div>
             </div>
         </div>    
