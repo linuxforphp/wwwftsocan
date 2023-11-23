@@ -49,10 +49,6 @@
     // wrapbox2.addEventListener("click", function(){
     //     ExpandSelect(ftso2)
     // })
-    
-    function showRpcUrl(rpcAddress) {
-        document.getElementById('rpcAddress').innerText = rpcAddress;
-    }
 
     // show the current token identifiers
 
@@ -332,7 +328,6 @@
             // document.getElementById('layer3').innerHTML = flrLogo
             
             // showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
         } else {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             // tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
@@ -340,13 +335,11 @@
             // document.getElementById('layer3').innerHTML = sgbLogo
             
             // showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
         }
     }
 
     isNetworkValue(networkValue)
     // showTokenIdentifiers(wrappedTokenIdentifier)
-    showRpcUrl(rpcUrl);
     isInput1();
     if (isAmount2Active) {
       isInput2();
@@ -364,7 +357,6 @@
             // document.getElementById('layer3').innerHTML = flrLogo
             
             // showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
             isInput1();
             if (isAmount2Active) {
               isInput2();
@@ -376,7 +368,6 @@
             // document.getElementById('layer3').innerHTML = sgbLogo
             
             // showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
             isInput1();
             if (isAmount2Active) {
               isInput2();
@@ -709,12 +700,39 @@
 
                     var addr1 = ftso1?.options[ftso1.selectedIndex].getAttribute('data-addr')
                     var addr2 = ftso2?.options[ftso2.selectedIndex].getAttribute('data-addr')
-
-                    await tokenContract.methods.undelegateAll().send({from: account});
-
-                    await tokenContract.methods.delegate(addr1, bips1).send({from: account});
                     
-                    await tokenContract.methods.delegate(addr2, bips2).send({from: account});
+                    var transactionParameters = {
+                      from: account,
+                      to: wrappedTokenAddr,
+                      data: tokenContract.methods.undelegateAll().send({from: account}),
+                    };
+
+                    await provider.request({
+                      method: 'eth_sendTransaction',
+                      params: [transactionParameters],
+                    })
+
+                    transactionParameters = {
+                      from: account,
+                      to: wrappedTokenAddr,
+                      data: tokenContract.methods.delegate(addr1, bips1).send({from: account}),
+                    };
+
+                    await provider.request({
+                      method: 'eth_sendTransaction',
+                      params: [transactionParameters],
+                    })
+
+                    transactionParameters = {
+                      from: account,
+                      to: wrappedTokenAddr,
+                      data: tokenContract.methods.delegate(addr2, bips2).send({from: account}),
+                    };
+
+                    await provider.request({
+                      method: 'eth_sendTransaction',
+                      params: [transactionParameters],
+                    })
                 } else {
                     const value1 = Amount1.value
 
@@ -724,9 +742,27 @@
 
                     var addr1 = ftso1?.options[ftso1.selectedIndex].getAttribute('data-addr');
 
-                    await tokenContract.methods.undelegateAll().send({from: account});
+                    var transactionParameters = {
+                      from: account,
+                      to: wrappedTokenAddr,
+                      data: tokenContract.methods.undelegateAll().send({from: account}),
+                    };
 
-                    await tokenContract.methods.delegate(addr1, bips1).send({from: account});
+                    await provider.request({
+                      method: 'eth_sendTransaction',
+                      params: [transactionParameters],
+                    })
+
+                    transactionParameters = {
+                      from: account,
+                      to: wrappedTokenAddr,
+                      data: tokenContract.methods.delegate(addr1, bips1).send({from: account}),
+                    };
+
+                    await provider.request({
+                      method: 'eth_sendTransaction',
+                      params: [transactionParameters],
+                    })
                 }
               } catch (error) {
                 console.log(error);
