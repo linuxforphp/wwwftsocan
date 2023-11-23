@@ -2,7 +2,6 @@ body {
     padding-top: 9.5em;
     font-family: 'Poppins', sans-serif;
     background-image: url("../img/Flare-Network-Red.png")!important;
-    overflow: hidden;
     background-position-x: 0; 
     background-position-y: 0;
     background-size: 100%;
@@ -398,8 +397,7 @@ select option {
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
-        background-size: 300%;
-        overflow: hidden;
+        background-size: 350%;
     }
 
     .wrapBox {
@@ -414,6 +412,166 @@ select option {
     .dappContainer {
         padding: 25px 10px 17px;
         width: 100%;
+    }
+    .Buttons {
+        margin-top: 15px;
+        box-sizing: border-box;
+        display: grid;
+        grid: none;
+        grid-auto-flow: row!important;
+        grid-row: 1;
+        grid-gap: 15px;
+        height: fit-content;
+        width: 100%;
+        place-items: center;
+        text-align: center;
+    }
+
+    .ConnectWallet {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 1;
+    }
+
+    .WrapButton {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 2;
+    }
+
+    .dummytext {
+        margin: 0;
+    }
+
+    .AddrWrap {
+        margin: 10px 10px 0;
+    }
+
+    .wrapUnwrap {
+        width: 60%;
+        padding: 10px 0;
+    }
+
+    .Box {
+        height: 46px;
+        padding: 0;
+    }
+
+    select {
+        padding: 0.5em 20px;
+    }
+
+    .selectContainer {
+        height: fit-content;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+    body {
+        padding: 8.5em 0 0 0!important;
+        background-repeat: no-repeat;
+        background-position-x: left 50%;
+        background-position-y: bottom 100%;
+        background-size: 300%;
+    }
+
+    .wrapBox {
+        height: 9rem;
+        margin: 10px 0 0;
+    }
+
+    .container {
+        padding: 0 10px!important;
+        height: fit-content;
+    }
+    .dappContainer {
+        padding: 30px 44px 25px;
+        width: 80%;
+    }
+    .Buttons {
+        margin-top: 15px;
+        box-sizing: border-box;
+        display: grid;
+        grid: none;
+        grid-auto-flow: row!important;
+        grid-row: 1;
+        grid-gap: 15px;
+        height: fit-content;
+        width: 100%;
+        place-items: center;
+        text-align: center;
+    }
+
+    .ConnectWallet {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 1;
+    }
+
+    .WrapButton {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 2;
+    }
+
+    .dummytext {
+        margin: 0;
+    }
+
+    .AddrWrap {
+        margin: 10px 10px 0;
+    }
+
+    .wrapUnwrap {
+        width: 60%;
+        padding: 10px 0;
+    }
+
+    .Box {
+        height: 46px;
+        padding: 0;
+    }
+
+    select {
+        padding: 0.5em 20px;
+    }
+
+    .selectContainer {
+        height: fit-content;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+
+    body {
+        padding: 8.5em 0 0 0!important;
+        background-repeat: no-repeat;
+        background-position-x: left 50%;
+        background-position-y: bottom 100%;
+        background-size: 170%;
+    }
+
+    .wrapBox {
+        height: 9rem;
+        margin: 10px 0 0;
+    }
+
+    .container {
+        padding: 0 10px!important;
+        height: fit-content;
+    }
+    .dappContainer {
+        padding: 30px 44px 25px;
+        width: 80%;
     }
     .Buttons {
         margin-top: 15px;
