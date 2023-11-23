@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="FromIcon"
+   class="logoFrom"
+   viewbox="0 0 383.66 538.51"
+   version="1.1"
+   sodipodi:docname="sgb.svg"
+   width="600"
+   height="600"
+   style="fill:currentColor"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata21">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs19">
+    <linearGradient
+       id="linearGradient1"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#c8c8c8;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="radialGradient2"
+       cx="300"
+       cy="300"
+       fx="300"
+       fy="300"
+       r="300"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="704"
+     id="namedview17"
+     showgrid="false"
+     inkscape:zoom="0.417193"
+     inkscape:cx="261.26996"
+     inkscape:cy="220.52144"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="FromIcon"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <circle
+     style="fill:url(#radialGradient2);stroke:none;stroke-width:3.18000045;stroke-linecap:round;stroke-linejoin:bevel;stroke-opacity:0.501961;fill-opacity:1;stroke-dasharray:none"
+     id="path1"
+     cx="300"
+     cy="300"
+     r="300" />
+  <g
+     id="layer2"
+     transform="matrix(0.7497794,0,0,0.7497794,156.16982,98.118149)"
+     style="fill:#ff0404;fill-opacity:1">
+    <g
+       id="layer1-2"
+       class="AssetLogo"
+       style="fill:#ff0404;fill-opacity:1">
+      <polygon
+         points="0,538.51 101.68,508.22 124.29,316.35 "
+         id="polygon2"
+         style="fill:#ff0404;fill-opacity:1" />
+      <polygon
+         points="135.35,299.46 119.98,431.6 300.07,320.69 259.45,315.45 "
+         id="polygon4"
+         style="fill:#ff0404;fill-opacity:1" />
+      <polygon
+         points="233.21,158.92 40.08,0 133.09,285.06 195.58,206.32 "
+         id="polygon6"
+         style="fill:#ff0404;fill-opacity:1" />
+      <polygon
+         points="343.46,245.8 383.66,282.19 363.82,188.11 "
+         id="polygon8"
+         style="fill:#ff0404;fill-opacity:1" />
+      <polygon
+         points="263.6,221.16 238.46,166.78 215.95,195.14 139.88,290.97 265.69,307.18 305.76,312.35 "
+         id="polygon10"
+         style="fill:#ff0404;fill-opacity:1" />
+      <polygon
+         points="273.62,221.37 312.7,305.92 357,180.39 "
+         id="polygon12"
+         style="fill:#ff0404;fill-opacity:1" />
+    </g>
+  </g>
+</svg>

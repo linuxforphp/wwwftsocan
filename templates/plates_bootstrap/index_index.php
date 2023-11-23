@@ -45,7 +45,7 @@
                     </div>
                     <div class="owl-carousel owl-theme wow animated fadeInUp">
                         <div class="item testimonial-item text-center">
-                            <img src="<?=$view['urlbaseaddr'] ?>img/logo-dark.svg" alt="About FTSO Canada">
+                            <img src="<?=$view['urlbaseaddr'] ?>img/Logo-Corporate-Light.svg" alt="About FTSO Canada">
                             <div class="clearfix">
                                 <span>Flare Time Series Oracle Canada</span>
                                 <p>FTSO Canada is your partner to help you build your passive income on the Flare Network,<br />
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="item testimonial-item text-center">
-                            <img src="<?=$view['urlbaseaddr'] ?>img/songbird.jpg" alt="About Flare Networks">
+                            <img src="<?=$view['urlbaseaddr'] ?>img/sgb.svg" alt="About Flare Networks">
                             <div class="clearfix">
                                 <span>Earn SGB and FLR</span>
                                 <p>Passive income is at hand!<br />
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <div class="item testimonial-item text-center">
-                            <img src="<?=$view['urlbaseaddr'] ?>img/flare.jpg" alt="About XRPL">
+                            <img src="<?=$view['urlbaseaddr'] ?>img/flare.svg" alt="About XRPL">
                             <div class="clearfix">
                                 <span>Flare Networks</span>
                                 <p>Unleashing Value.<br />

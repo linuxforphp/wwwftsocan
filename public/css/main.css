@@ -218,6 +218,7 @@ ul.delegation {
 }
 
 .sec-title.dark {
+    font-size: 1.2em;
     color: #444444;
 }
 
@@ -234,6 +235,7 @@ ul.delegation {
 }
 
 .sec-title.dark h2 {
+    font-size: 2.5em;
     color: #444444;
 }
 
@@ -712,14 +714,18 @@ h1.navbar-brand > a:hover, h1.navbar-brand > a:focus {
 ==================================================================*/
 
 #about {
-    background-color: #EF0000;
+    background: url("../img/Component-1.png") no-repeat;
+    background-size: cover;
     color: #fff;
 }
 
-#about h3 {
+#about h2 {
+    font-size: 3em;
     color: #fff;
     margin: 0 0 35px;
     text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
 #about .welcome-block h3 {
@@ -727,7 +733,11 @@ h1.navbar-brand > a:hover, h1.navbar-brand > a:focus {
 }
 
 #about .welcome-block img {
-    border: 3px solid #fff;
+    border-top: 1.5px solid rgba(255,255,255, 0.4);
+    border-bottom: 1.5px solid rgba(255,255,255, 0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-left: none;
+    border-right: none;
     border-radius: 50%;
     margin-right: 35px;
     max-width: 100px;
@@ -964,7 +974,11 @@ ul.external li a:hover {
 }
 
 .testimonial-item img {
-    border: 3px solid #fff;
+    border-top: 2px solid rgba(255,255,255, 0.4);
+    border-bottom: 2px solid rgba(255,255,255, 0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    border-left: none;
+    border-right: none;
     border-radius: 50%;
     display: inline-block;
     /*display: block;*/
@@ -1001,6 +1015,7 @@ ul.external li a:hover {
 }
 
 .testimonial-item > div > span {
+    font-size: 1.5em;
     display: inline-block;
     font-weight: 700;
     margin: 40px 0 30px;
