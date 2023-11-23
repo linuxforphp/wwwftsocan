@@ -133,8 +133,7 @@
                 </div> -->
                             
                 <div class="AddrWrap">
-                    <span>My RPC is</span>
-                    <span id="rpcAddress"></span>
+                    <span>FTSOCAN Dapp Version 0.9.0</span>
                 </div>
             </div>
         </div>

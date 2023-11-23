@@ -33,12 +33,6 @@
     var CanClaim = false
     document.getElementById('layer3').innerHTML = flrLogo
 
-    // showing the current rpc url
-    
-    function showRpcUrl(rpcAddress) {
-        document.getElementById('rpcAddress').innerText = rpcAddress;
-    }
-
     // show the current token identifiers
 
     function showTokenIdentifiers(WrappedToken) {
@@ -133,7 +127,6 @@
             document.getElementById('layer3').innerHTML = flrLogo
             
             showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
         } else {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
@@ -141,13 +134,11 @@
             document.getElementById('layer3').innerHTML = sgbLogo
             
             showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
         }
     }
 
     isNetworkValue(networkValue)
     showTokenIdentifiers(wrappedTokenIdentifier)
-    showRpcUrl(rpcUrl);
 
     selectedNetwork.onchange = async () => {
         rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
@@ -161,7 +152,6 @@
             document.getElementById('layer3').innerHTML = flrLogo
             
             showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
         } else {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
@@ -169,7 +159,6 @@
             document.getElementById('layer3').innerHTML = sgbLogo
             
             showTokenIdentifiers(wrappedTokenIdentifier)
-            showRpcUrl(rpcUrl);
         }
     
         //Alert Metamask to switch

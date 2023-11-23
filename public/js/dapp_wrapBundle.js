@@ -34,12 +34,6 @@
   document.getElementById("layer2").innerHTML = flrLogo;
   document.getElementById("layer3").innerHTML = flrLogo;
 
-// showing the current rpc url
-
-  function showRpcUrl(rpcAddress) {
-    document.getElementById("rpcAddress").innerText = rpcAddress;
-  }
-
 // show the current token identifiers
 
   function showTokenIdentifiers(Token, WrappedToken) {
@@ -197,21 +191,18 @@
       document.getElementById("layer2").innerHTML = flrLogo;
       document.getElementById("layer3").innerHTML = flrLogo;
       showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
-      showRpcUrl(rpcUrl);
     } else {
       tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
       wrappedTokenIdentifier = "W" + tokenIdentifier;
       document.getElementById("layer2").innerHTML = sgbLogo;
       document.getElementById("layer3").innerHTML = sgbLogo;
       showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
-      showRpcUrl(rpcUrl);
     }
   }
 
   isNetworkValue(networkValue)
   
   showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
-  showRpcUrl(rpcUrl);
   isInput();
 
   //When Selected Network Changes, alert Metamask
@@ -227,7 +218,6 @@
       document.getElementById("layer2").innerHTML = flrLogo;
       document.getElementById("layer3").innerHTML = flrLogo;
       showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
-      showRpcUrl(rpcUrl);
       
       wrapUnwrapButton.value = "false";
       fromIcon.style.color = "#fd000f";
@@ -242,7 +232,6 @@
       document.getElementById("layer2").innerHTML = sgbLogo;
       document.getElementById("layer3").innerHTML = sgbLogo;
       showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
-      showRpcUrl(rpcUrl);
       wrapUnwrapButton.value = "false";
       fromIcon.style.color = "#fd000f";
       toIcon.style.color = "#000";
