@@ -202,7 +202,7 @@ letter-spacing: 1.5px;
 
 
 .Rewards:hover {
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
 }
 
 .Rewards:hover::after {
@@ -210,20 +210,22 @@ letter-spacing: 1.5px;
 }
 
 .RewardsText > input {
+    accent-color: #fd000f;
     margin: 3px 0 0!important;
     float: left;
     height: 20px;
     width: 20px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -o-appearance: none;
-    appearance: none;
     border: 1px solid #fff;
     border-radius: 4px;
     outline: none;
     transition-duration: 0.3s;
     background-color: rgba(0,0,0,0);
     cursor: pointer;
+}
+
+.RewardsText > input:focus, .RewardsText > input:hover {
+    border: none;
+    outline: none;
 }
 
 .RewardsText > input:checked {

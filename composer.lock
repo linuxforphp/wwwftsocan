@@ -8,7 +8,6 @@
     "packages": [
         {
             "name": "atlas/mapper",
-<<<<<<< Updated upstream
             "version": "1.4.1",
             "source": {
                 "type": "git",
@@ -19,18 +18,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/atlasphp/Atlas.Mapper/zipball/df92c4f53d7be22a793700c06a4340a48a90c8a8",
                 "reference": "df92c4f53d7be22a793700c06a4340a48a90c8a8",
-=======
-            "version": "1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atlasphp/Atlas.Mapper.git",
-                "reference": "25b61af3de9f290c3d5ade4136a7c0bcf94f1840"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atlasphp/Atlas.Mapper/zipball/25b61af3de9f290c3d5ade4136a7c0bcf94f1840",
-                "reference": "25b61af3de9f290c3d5ade4136a7c0bcf94f1840",
->>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -69,15 +56,9 @@
             ],
             "support": {
                 "issues": "https://github.com/atlasphp/Atlas.Mapper/issues",
-<<<<<<< Updated upstream
                 "source": "https://github.com/atlasphp/Atlas.Mapper/tree/1.4.1"
             },
             "time": "2023-09-25T13:18:02+00:00"
-=======
-                "source": "https://github.com/atlasphp/Atlas.Mapper/tree/1.4.0"
-            },
-            "time": "2023-03-08T14:28:47+00:00"
->>>>>>> Stashed changes
         },
         {
             "name": "atlas/orm",
@@ -805,7 +786,6 @@
         },
         {
             "name": "doctrine/deprecations",
-<<<<<<< Updated upstream
             "version": "1.1.2",
             "source": {
                 "type": "git",
@@ -816,18 +796,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/deprecations/zipball/4f2d4f2836e7ec4e7a8625e75c6aa916004db931",
                 "reference": "4f2d4f2836e7ec4e7a8625e75c6aa916004db931",
-=======
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "612a3ee5ab0d5dd97b7cf3874a6efe24325efac3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/612a3ee5ab0d5dd97b7cf3874a6efe24325efac3",
-                "reference": "612a3ee5ab0d5dd97b7cf3874a6efe24325efac3",
->>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -859,15 +827,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-<<<<<<< Updated upstream
                 "source": "https://github.com/doctrine/deprecations/tree/1.1.2"
             },
             "time": "2023-09-27T20:04:15+00:00"
-=======
-                "source": "https://github.com/doctrine/deprecations/tree/v1.1.1"
-            },
-            "time": "2023-06-03T09:27:29+00:00"
->>>>>>> Stashed changes
         },
         {
             "name": "doctrine/event-manager",
@@ -2727,7 +2689,6 @@
         },
         {
             "name": "symfony/console",
-<<<<<<< Updated upstream
             "version": "v5.4.31",
             "source": {
                 "type": "git",
@@ -2738,18 +2699,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/console/zipball/11ac5f154e0e5c4c77af83ad11ead9165280b92a",
                 "reference": "11ac5f154e0e5c4c77af83ad11ead9165280b92a",
-=======
-            "version": "v5.4.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/console.git",
-                "reference": "560fc3ed7a43e6d30ea94a07d77f9a60b8ed0fb8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/560fc3ed7a43e6d30ea94a07d77f9a60b8ed0fb8",
-                "reference": "560fc3ed7a43e6d30ea94a07d77f9a60b8ed0fb8",
->>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -2819,11 +2768,7 @@
                 "terminal"
             ],
             "support": {
-<<<<<<< Updated upstream
                 "source": "https://github.com/symfony/console/tree/v5.4.31"
-=======
-                "source": "https://github.com/symfony/console/tree/v5.4.24"
->>>>>>> Stashed changes
             },
             "funding": [
                 {
@@ -2839,11 +2784,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< Updated upstream
             "time": "2023-10-31T07:58:33+00:00"
-=======
-            "time": "2023-05-26T05:13:16+00:00"
->>>>>>> Stashed changes
         },
         {
             "name": "symfony/deprecation-contracts",

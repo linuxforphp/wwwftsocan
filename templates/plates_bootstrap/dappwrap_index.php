@@ -135,21 +135,6 @@
                 <div class="AddrWrap">
                     <span>My RPC is</span>
                     <span id="rpcAddress"></span>
-                    <?php if (isset($view['results']['nodata'])): ?>
-                            <span><?=$view['results']['nodata'] ?></span>
-                    <?php else: ?>
-                        <?php foreach($view['results'] as $key => $network): ?>
-                            <span><?=$network['id'] ?></span>
-                            <span><?=$network['chainidentifier'] ?></span>
-                            <?php endforeach; ?>
-                    <?php endif ?>
-                    <?php
-                    // outputs the username that owns the running php/httpd process
-                    // (on a system with the "whoami" executable in the path)
-                    $output=null;
-                    $retval=null;
-                    exec('whoami', $output, $retval);
-                    ?>
                 </div>
             </div>
         </div>
@@ -160,12 +145,6 @@
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
 <!-- <script href="../../Dapp/index.js"></script> -->
-<script>
-    var foo = <?php echo json_encode($output, JSON_HEX_TAG); ?>;
-    var bar = <?php echo json_encode($retval, JSON_HEX_TAG); ?>;
-    console.log(foo);
-    console.log("Returned with status",bar,"and output:\n");
-</script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>

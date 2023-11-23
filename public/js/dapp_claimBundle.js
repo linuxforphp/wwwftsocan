@@ -13,7 +13,6 @@
         // dapp_claim.js
     var provider = window.ethereum;
     var selectedNetwork = document.getElementById("SelectedNetwork");
-    var Checkbox = document.getElementById("Checkbox").checked;
     var delegatedFtsoElement = document.getElementById('after');
     var ercAbi = human_standard_token_abi;
     var flrAbi = flare_abi;
@@ -27,6 +26,7 @@
     var wrappedTokenIdentifier = "W" + tokenIdentifier;
     var rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
     var chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
+    var Checkbox = document.getElementById("RewardsCheck");
     var networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
     var ConnectWalletBool = false;
     var icon = document.getElementById("Icon");
@@ -532,15 +532,17 @@
 
                 const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
 
-                if (Checkbox) {
-                    const transactionParameters = {
+                var transactionParameters
+
+                if (Checkbox.checked) {
+                    transactionParameters = {
                         from: account,
                         to: ftsoRewardAddr,
                         data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, true).encodeABI(),
                         value: amountFromValueWei,
                     };
                 } else {
-                    const transactionParameters = {
+                    transactionParameters = {
                         from: account,
                         to: ftsoRewardAddr,
                         data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, false).encodeABI(),
@@ -553,7 +555,7 @@
                     params: [transactionParameters],
                 })
 
-                tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
             } catch (error) {
                 console.log(error);

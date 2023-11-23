@@ -2,6 +2,8 @@ body {
     padding-top: 9.5em;
     font-family: 'Poppins', sans-serif;
     background-image: url("../img/Flare-Network-Red.png")!important;
+    overflow: hidden;
+    background-repeat: round;
     background-size: cover;
 }
 
@@ -384,4 +386,83 @@ select {
 select option {
     background-color: #fff;
     color: #fd000f;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+
+    body {
+        padding: 8.5em 0 0 0!important;
+        background-repeat: no-repeat;
+        background-size: 300%;
+        overflow: hidden;
+    }
+
+    .wrapBox {
+        height: 9rem;
+        margin: 10px 0 0;
+    }
+
+    .container {
+        padding: 0 10px!important;
+        height: fit-content;
+    }
+    .dappContainer {
+        padding: 22px 10px 17px;
+        width: 100%;
+    }
+    .Buttons {
+        margin-top: 15px;
+        box-sizing: border-box;
+        display: grid;
+        grid: none;
+        grid-auto-flow: row!important;
+        grid-row: 1;
+        grid-gap: 15px;
+        height: fit-content;
+        width: 100%;
+        place-items: center;
+        text-align: center;
+    }
+
+    .ConnectWallet {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 1;
+    }
+
+    .WrapButton {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 2;
+    }
+
+    .dummytext {
+        margin: 0;
+    }
+
+    .AddrWrap {
+        margin: 5px 10px 0;
+    }
+
+    .wrapUnwrap {
+        width: 60%;
+        padding: 10px 0;
+    }
+
+    .Box {
+        height: 46px;
+        padding: 0;
+    }
+
+    select {
+        padding: 0.5em 20px;
+    }
+
+    .selectContainer {
+        height: fit-content;
+    }
 }

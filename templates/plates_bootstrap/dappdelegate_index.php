@@ -45,7 +45,7 @@
     <div class="container">
         <div class="dappContainer">
         <div class="Top">
-            <div class="Rewards"><div class="RewardsText">Delegate</div></div>
+            <div class="Delegate"><div class="DelegateText">Delegate</div></div>
             <div class="selectContainer">
                     <div class="Box">
                         <div class="selectBox">

@@ -46,8 +46,7 @@
         <div class="Top">
             <div class="Rewards">
                 <div class="RewardsText">
-                    <input type="checkbox" id="CheckBox" class="RewardsCheck" name="Rewards" checked="checked" />
-                    <label for="Rewards" class="CheckMark"></label>
+                    <input type="checkbox" id="RewardsCheck" class="RewardsCheck" name="RewardsCheck" checked="checked" />
                     <span class="RewardsCheckLabel">Auto Wrap</span>
                 </div>
             </div>

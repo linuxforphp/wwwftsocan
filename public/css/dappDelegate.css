@@ -155,9 +155,9 @@ transform: skewX(45deg) translateX(200%);
 letter-spacing: 1.5px;
 }
 
-.Rewards {
+.Delegate {
     position: relative;
-    background-color: rgba(253, 0, 15, 0.5);
+    background-color: rgba(255,255,255, 0.6);
     border-top: 1px solid rgba(255,255,255, 0.4);
     border-bottom: 1px solid rgba(255,255,255, 0.4);
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
@@ -173,13 +173,13 @@ letter-spacing: 1.5px;
     overflow: hidden!important; 
 }
 
-.RewardsText {
-    color: #fff!important;
+.DelegateText {
+    color: #383a3b!important;
     z-index: 3;
     position: relative;
 }
 
-.Rewards::after {
+.Delegate::after {
     z-index: 1;
     content: '';
     position: absolute;
@@ -342,17 +342,20 @@ letter-spacing: 1.5px;
 }
 
 .SelectedFTSO {
+    position: absolute;
+    z-index: 100;
     width: 50%;
     outline: none;
     font-size: 2.4rem!important;
     padding: 30px 20px;
     cursor: pointer;
     border-radius: .3em;
-    margin-right: 0em;
+    margin-right: 10em;
+    left: 3em;
     background-color: rgba(255, 255, 255, 0.0);
     border: none;
     box-shadow: none;
-    color: #383a3b !important;
+    color: #67696a !important;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
