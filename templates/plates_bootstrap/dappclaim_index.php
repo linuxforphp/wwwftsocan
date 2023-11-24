@@ -93,8 +93,9 @@
             <div id="after"></div>
 
             <div class="Buttons">
-            <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText" id="ConnectWalletText">Connect Wallet</i></button>
                 <button id="ClaimButton" class="ClaimButton"><i class="ClaimButtonText" id="ClaimButtonText">0.0</i></button>
+                <button id="ClaimFdButton" class="ClaimFdButton"><i class="ClaimFdButtonText" id="ClaimFdButtonText">0.0</i></button>
             </div>
 
             <div class="dummytext">
@@ -116,6 +117,7 @@
 <?php endif ?>
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter_whitelister_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso_reward_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim_setup_abi.js"></script>

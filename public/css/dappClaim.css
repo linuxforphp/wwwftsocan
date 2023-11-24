@@ -46,7 +46,7 @@ body {
     text-align: left;
     font-size: 13px;
     color: #67696a;
-    margin-top: 90px;
+    margin-top: 10px;
     margin-left: 10px;
 }
 
@@ -62,14 +62,14 @@ body {
     cursor: pointer;
     border-left: none;
     border-right: none;
-    width: 45%;
+    width: 170px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; 
     float: left;
     margin-top: 25px;
-    margin-left: 10px;
-    padding: 12px 20px;
+    margin-left: 0px;
+    padding: 12px 0px;
     border-radius: 30px;
     letter-spacing: normal;
     transition: 0.5s;
@@ -109,20 +109,20 @@ body {
 .ClaimButton {
 float: right;
 margin-top: 25px;
-margin-right: 20px;
+margin-left: 15px;
 border-radius: 30px;
 background-color: rgba(143, 143, 143, 0.8);
 border-top: 1px solid rgba(255,255,255, 0.4);
 border-bottom: 1px solid rgba(255,255,255, 0.4);
 box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-padding: 12px 20px;
+padding: 12px 0px;
 color: white;
 text-decoration: none;
 font-size: 18px;
 cursor: auto;
 border-left: none;
 border-right: none;
-width: 40%;
+width: 140px;
 letter-spacing: normal;
 transition: 0.5s;
 overflow: hidden;
@@ -159,6 +159,75 @@ transform: skewX(45deg) translateX(200%);
 
 .ClaimButton:hover {
 letter-spacing: 1.5px;
+}
+
+.ClaimFdButton {
+    float: right;
+    margin-top: 25px;
+    margin-left: 15px;
+    border-radius: 30px;
+    background-color: rgba(143, 143, 143, 0.8);
+    border-top: 1px solid rgba(255,255,255, 0.4);
+    border-bottom: 1px solid rgba(255,255,255, 0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    padding: 12px 0px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: auto;
+    border-left: none;
+    border-right: none;
+    width: 140px;
+    letter-spacing: normal;
+    transition: 0.5s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+    
+.ClaimFdButtonText {
+    font-style: normal;
+}
+    
+.ClaimFdButtonText::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+}
+    
+.ClaimFdButton:hover > .ClaimFdButtonText::before {
+    transform: skewX(45deg) translateX(200%);
+}
+    
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .ClaimFdButton {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+}
+    
+.ClaimFdButton:hover {
+    letter-spacing: 1.5px;
+}
+
+.Buttons {
+    margin-top: 15px;
+    box-sizing: border-box;
+    display: grid;
+    grid: none;
+    grid-auto-flow: column!important;
+    grid-column: 1;
+    grid-gap: 0px;
+    height: fit-content;
+    width: 100%;
+    place-items: left;
+    text-align: center;
 }
 
 .Rewards {
@@ -351,7 +420,7 @@ letter-spacing: 1.5px;
 }
 
 .dummytext {
-    margin-top: 64px;
+    margin-top: 20px;
 }
 
 .logo {
@@ -514,6 +583,15 @@ select option {
         grid-row: 2;
     }
 
+
+    .ClaimFdButton {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 3;
+    }
+
     .dummytext {
         margin: 0;
     }
@@ -620,6 +698,14 @@ select option {
         grid-row: 2;
     }
 
+    .ClaimFdButton {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 3;
+    }
+
     .dummytext {
         margin: 0;
     }
@@ -724,6 +810,14 @@ select option {
         width: 70%;
         margin: 0;
         grid-row: 2;
+    }
+
+    .ClaimFdButton {
+        padding: 8px 20px;
+        height: 45px;
+        width: 70%;
+        margin: 0;
+        grid-row: 3;
     }
 
     .dummytext {

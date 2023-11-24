@@ -14,6 +14,7 @@
     var provider = window.ethereum;
     var selectedNetwork = document.getElementById("SelectedNetwork");
     var delegatedFtsoElement = document.getElementById('after');
+    var distributionAbi = distribution_abi
     var ercAbi = human_standard_token_abi;
     var flrAbi = flare_abi;
     var voterWhitelisterAbi = voter_whitelister_abi
@@ -31,6 +32,7 @@
     var ConnectWalletBool = false;
     var icon = document.getElementById("Icon");
     var CanClaim = false
+    var CanClaimFd = false
     document.getElementById('layer3').innerHTML = flrLogo
 
     // show the current token identifiers
@@ -70,6 +72,18 @@
         document.getElementById('ClaimButton').style.cursor = "auto"
     }
 
+    function switchFdButtonColor() {
+        document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+        CanClaimFd = true;
+        document.getElementById('ClaimFdButton').style.cursor = "pointer"
+    }
+
+    function switchFdButtonColorBack() {
+        document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+        CanClaimFd = false;
+        document.getElementById('ClaimFdButton').style.cursor = "auto"
+    }
+
     // show current token balance
 
     function showTokenBalance(tokenBalanceAddress) {
@@ -80,6 +94,10 @@
     
     function showRewards(Rewards) {
         document.getElementById('ClaimButtonText').innerText = Rewards;
+    }
+
+    function showFdRewards(Rewards) {
+        document.getElementById('ClaimFdButtonText').innerText = Rewards;
     }
 
     // simple math function
@@ -229,8 +247,8 @@
             const SmartContracts = await flareContract.methods.getAllContracts().call();
             const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
             const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-            const claimSetupIndex = getKeyByValue(Object.values(SmartContracts)[0],"ClaimSetupManager");
-            const claimSetupAddr = SmartContracts[1][claimSetupIndex];
+            const DistributionDelegatorsIndex = getKeyByValue(Object.values(SmartContracts)[0],"DistributionToDelegators");
+            const DistributionDelegatorsAddr = SmartContracts[1][DistributionDelegatorsIndex];
             const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0],"FtsoRewardManager");
             const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
             const voterWhitelistIndex = getKeyByValue(Object.values(SmartContracts)[0],"VoterWhitelister");
@@ -238,7 +256,7 @@
 
             let tokenContract = new web32.eth.Contract(human_standard_token_abi, wrappedTokenAddr);
 
-            let claimSetupContract = new web32.eth.Contract(csmAbi, claimSetupAddr);
+            let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbi, DistributionDelegatorsAddr);
 
             let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbi, ftsoRewardAddr);
 
@@ -251,11 +269,18 @@
             const tokenBalance = await tokenContract.methods.balanceOf(account).call();
             showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
 
+            showFdRewards(0.0)
             showRewards(0.0)
 
             //Changing the color of Claim button
 
             if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+                switchButtonColor();
+            } else {
+                switchButtonColorBack();
+            }
+
+            if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
                 switchButtonColor();
             } else {
                 switchButtonColorBack();
@@ -321,19 +346,37 @@
 
             const convertedRewards = web32.utils.fromWei(UnclaimedAmount, "ether")
 
-            showRewards(round(convertedRewards));
-
             console.log(`Ftso list: `, delegatedFtsos);
 
             console.log(epochsUnclaimed)
 
+            var ClaimableAmountFd
 
-            //Changing the color of Claim button
+            const ClaimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-            if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+            for (var m = 0; m < ClaimableMonths.length; m++) {
+                ClaimableAmountFd += await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, Number(ClaimableMonths[m])).call();
+            }
+
+
+            var BucketTotal = await web32.eth.getBalance(ftsoRewardAddr)
+
+            //Changing the color of Claim buttons
+
+            if (Number(round(convertedRewards)) >= 1 && Number(round(convertedRewards)) < BucketTotal) {
+                showRewards(round(convertedRewards));
                 switchButtonColor();
             } else {
                 switchButtonColorBack();
+            }
+
+            var FdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr)
+
+            if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1 && Number(document.getElementById('ClaimFdButtonText').innerText) < FdBucketTotal) {
+                showFdRewards(String(round(web32.utils.fromWei(ClaimableAmountFd, "ether"))))
+                switchFdButtonColor();
+            } else {
+                switchFdButtonColorBack();
             }
 
             console.log(`Account `, account,` has `, balance,` tokens `, tokenBalance,` wrapped tokens, and `, UnclaimedAmount ,` unclaimed tokens.`);
@@ -350,8 +393,8 @@
             const SmartContracts = await flareContract.methods.getAllContracts().call();
             const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
             const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-            const claimSetupIndex = getKeyByValue(Object.values(SmartContracts)[0],"ClaimSetupManager");
-            const claimSetupAddr = SmartContracts[1][claimSetupIndex];
+            const DistributionDelegatorsIndex = getKeyByValue(Object.values(SmartContracts)[0],"DistributionToDelegators");
+            const DistributionDelegatorsAddr = SmartContracts[1][DistributionDelegatorsIndex];
             const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0],"FtsoRewardManager");
             const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
             const voterWhitelistIndex = getKeyByValue(Object.values(SmartContracts)[0],"VoterWhitelister");
@@ -359,7 +402,7 @@
 
             let tokenContract = new web32.eth.Contract(human_standard_token_abi, wrappedTokenAddr);
 
-            let claimSetupContract = new web32.eth.Contract(csmAbi, claimSetupAddr);
+            let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbi, DistributionDelegatorsAddr);
 
             let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbi, ftsoRewardAddr);
 
@@ -371,12 +414,19 @@
             const balance = await web32.eth.getBalance(account);
             const tokenBalance = await tokenContract.methods.balanceOf(account).call();
             showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-
+            
+            showFdRewards(0.0)
             showRewards(0.0)
 
             //Changing the color of Claim button
 
             if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+                switchButtonColor();
+            } else {
+                switchButtonColorBack();
+            }
+
+            if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
                 switchButtonColor();
             } else {
                 switchButtonColorBack();
@@ -442,18 +492,38 @@
 
             const convertedRewards = web32.utils.fromWei(UnclaimedAmount, "ether")
 
-            showRewards(round(convertedRewards));
-
             console.log(`Ftso list: `, delegatedFtsos);
 
             console.log(epochsUnclaimed)
 
-            BucketTotal = await web32.eth.getBalance(ftsoRewardAddr)
+            var ClaimableAmountFd
 
-            //Changing the color of Claim button
+            const ClaimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-            if (Number(document.getElementById('ClaimButtonText').innerText) >= 1 && Number(document.getElementById('ClaimButtonText').innerText) < BucketTotal) {
+            for (var m = 0; m < ClaimableMonths.length; m++) {
+                ClaimableAmountFd += await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, ClaimableMonths[m]).call();
+            }
+
+            var BucketTotal = await web32.eth.getBalance(ftsoRewardAddr)
+
+            var FdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr)
+
+            //Changing the color of Claim buttons
+
+            if (Number(round(convertedRewards)) >= 1 && Number(round(convertedRewards)) < BucketTotal) {
+                showRewards(round(convertedRewards));
                 switchButtonColor()
+            } else {
+                showRewards(0.0);
+                switchButtonColorBack();
+            }
+
+            if (Number(round(web32.utils.fromWei(ClaimableAmountFd, "ether"))) >= 1 && Number(round(web32.utils.fromWei(ClaimableAmountFd, "ether"))) < FdBucketTotal) {
+                showFdRewards(String(round(web32.utils.fromWei(ClaimableAmountFd, "ether"))));
+                switchFdButtonColor();
+            } else {
+                showFdRewards(0.0);
+                switchFdButtonColorBack();
             }
 
             console.log(`Account `, account,` has `, balance,` tokens `, tokenBalance,` wrapped tokens, and `, UnclaimedAmount ,` unclaimed tokens.`);
@@ -493,6 +563,10 @@
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet'
             showTokenBalance(0.0);
+            showRewards(0.0);
+            showFdRewards(0.0);
+            switchButtonColorBack();
+            switchFdButtonColorBack();
             ConnectWalletBool = false
         }
     });
@@ -528,14 +602,12 @@
                         from: account,
                         to: ftsoRewardAddr,
                         data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, true).encodeABI(),
-                        value: amountFromValueWei,
                     };
                 } else {
                     transactionParameters = {
                         from: account,
                         to: ftsoRewardAddr,
                         data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, false).encodeABI(),
-                        value: amountFromValueWei,
                     };
                 }
 
@@ -551,4 +623,58 @@
             }
         })
     }
+
+if (!provider) {
+    alert("MetaMask is not installed, please install it.");
+  } else {
+    console.log("isMetaMask=", provider.isMetaMask);
+    document.getElementById("ClaimFdButton").addEventListener("click", async () => {
+        let web32 = new Web3(rpcUrl);
+        let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+        try {
+            const accounts = (await provider.send("eth_requestAccounts")).result;
+            const account = accounts[0];
+
+            const SmartContracts = await flareContract.methods.getAllContracts().call();
+            const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
+            const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+  
+            let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+
+            const DistributionDelegatorsIndex = getKeyByValue(Object.values(SmartContracts)[0],"DistributionToDelegators");
+            const DistributionDelegatorsAddr = SmartContracts[1][DistributionDelegatorsIndex];
+            let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbi, DistributionDelegatorsAddr);
+
+            const ClaimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
+
+            var transactionParameters
+
+            for(var i = 0; i < ClaimableMonths.length; i++) {
+                if (Checkbox.checked) {
+                    transactionParameters = {
+                        from: account,
+                        to: DistributionDelegatorsAddr,
+                        data: DistributionDelegatorsContract.methods. claim(account, account, ClaimableMonths[i], true).encodeABI(),
+                    };
+                } else {
+                    transactionParameters = {
+                        from: account,
+                        to: DistributionDelegatorsAddr,
+                        data: DistributionDelegatorsContract.methods. claim(account, account, ClaimableMonths[i], false).encodeABI(),
+                    };
+                }
+                
+                await provider.request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters],
+                })
+            }
+
+            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+        } catch (error) {
+            console.log(error);
+        }
+    })
+}
 })();
