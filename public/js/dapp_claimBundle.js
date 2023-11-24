@@ -591,7 +591,9 @@
                 const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
                 let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbi, ftsoRewardAddr);
 
-                var DelegatedFtsoaddresses = document.getElementsByClassName('wrapBoxFTSO').getAttribute('data-addr');
+                const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
+
+                const DelegatedFtsoaddresses = delegatesOfUser[0]
 
                 const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
 
