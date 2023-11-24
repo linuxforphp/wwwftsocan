@@ -3,60 +3,32 @@
 <!--[if IE 7]> <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html lang="en" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
-<head>
 
-    <meta charset="utf-8">
-    <!-- Always force latest IE rendering engine or request Chrome Frame -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <!-- Mobile Specific Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Meta Description -->
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="<?=$view['description'] ?>">
-    <meta name="author" content="<?=$view['author'] ?>">
-    <meta name="keywords" content="flare, flare networks, servers, node, unleashing value, linux, docker, asclinux, linux for php, lfphp">
-    <link rel="icon" href="<?=$view['favicon'] ?>">
+<?php if (isset($view['headjs'])): ?>
+    <?=$this->section('headjs', $this->fetch('headjs', ['view' => $view]))?>
+<?php else: ?>
+    <?=$this->section('head', $this->fetch('head', ['view' => $view]))?>
+<?php endif ?>
 
-    <link rel="apple-touch-icon" href="<?=$view['urlbaseaddr'] ?>apple-touch-icon.png">
-
-    <title><?=$view['title'] ?></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" type='text/css'> 
-
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/dappClaim.css">
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/font-awesome.min.css">
-    <!-- bootstrap.min -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery.fancybox.css">
-    <!-- bootstrap.min -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/bootstrap.min.css">
-    <!-- animate.css -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">
-
-    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
-
-</head>
 <body>
 <main class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main">
-    <?=$this->section('navbar-Dapp', $this->fetch('navbar-Dapp', ['view' => $view]))?>
+    <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
     <div class="container">
-        <div class="dappContainer">
-        <div class="Top">
-            <div class="Rewards">
-                <div class="RewardsText">
-                    <input type="checkbox" id="RewardsCheck" class="RewardsCheck" name="RewardsCheck" checked="checked" />
-                    <span class="RewardsCheckLabel">Auto Wrap</span>
+        <div class="dapp-container">
+        <div class="top">
+            <div class="rewards">
+                <div class="rewards-text">
+                    <input type="checkbox" id="RewardsCheck" class="rewards-check" name="RewardsCheck" checked="checked" />
+                    <span class="rewards-check-label">Auto Wrap</span>
                 </div>
             </div>
-            <div class="selectContainer">
-                    <div class="Box">
-                        <div class="selectBox">
+            <div class="select-container">
+                    <div class="dapp-box">
+                        <div class="select-box">
                         <?php if (isset($view['results']['nodata'])): ?>
                             <?=$view['results']['nodata'] ?>
                         <?php else: ?>
-                            <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork">
+                            <select name="SelectedNetwork" id="SelectedNetwork" class="selected-network">
                             <?php foreach($view['results'] as $key => $networks): ?>
                                 <option value="<?=$networks['id'] ?>" data-chainidhex="<?='0x' . dechex($networks['chainid']) ?>"data-rpcurl="<?=$networks['rpcurl'] ?>" data-registrycontract="<?=$networks['registrycontract'] ?>"><?=$networks['chainidentifier'] ?></option>
                             <?php endforeach; ?>
@@ -67,8 +39,8 @@
                         </div>
                     </div>
                 </div>
-            <div class="wrapBox" id='wrapBox'>
-                <div class="wrapBoxContent">
+            <div class="wrap-box" id='wrapBox'>
+                <div class="wrap-box-content">
                     <svg id="Icon" class="logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
                         <g id="layer3">
                             <g id="layer1-3">
@@ -81,10 +53,10 @@
                             </g>
                         </g>
                     </svg>
-                    <div class="tokenIdentifier">
+                    <div class="token-identifier">
                         <span id="wrappedTokenIdentifier"></span>
                     </div>
-                    <div class="Wrapper">
+                    <div class="wrapper">
                             <span id="TokenBalance">0.0</span>
                     </div>
                 </div>
@@ -92,10 +64,10 @@
 
             <div id="after"></div>
 
-            <div class="Buttons">
-                <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText" id="ConnectWalletText">Connect Wallet</i></button>
-                <button id="ClaimButton" class="ClaimButton"><i class="ClaimButtonText" id="ClaimButtonText">0.0</i></button>
-                <button id="ClaimFdButton" class="ClaimFdButton"><i class="ClaimFdButtonText" id="ClaimFdButtonText">0.0</i></button>
+            <div class="dapp-buttons">
+                <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ClaimButton" class="claim-button"><i class="claim-button-text" id="ClaimButtonText">0.0</i></button>
+                <button id="ClaimFdButton" class="claim-fd-button"><i class="claim-fd-button-text" id="ClaimFdButtonText">0.0</i></button>
             </div>
 
             <div class="dummytext">
@@ -104,7 +76,7 @@
                     <span id="address"></span>
                 </div> -->
                             
-                <div class="AddrWrap">
+                <div class="addr-wrap">
                     <span>FTSOCAN Dapp Version 0.9.0</span>
                 </div>
             </div>

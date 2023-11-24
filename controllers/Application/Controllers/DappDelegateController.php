@@ -102,9 +102,11 @@ class DappDelegateController extends AggregateRootController implements Aggregat
 
     public function onDispatch(AscmvcEvent $event)
     {
-        $this->view['saved'] = 0;
+        $app = $event->getApplication();
 
-        $this->view['error'] = 0;
+        $baseConfig = $app->getBaseConfig();
+
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-delegate.css';
     }
 
     /**

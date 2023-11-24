@@ -1,12 +1,14 @@
 body {
     padding-top: 9.5em;
     font-family: 'Poppins', sans-serif;
-    background-image: url("../img/Flare-Network-Red.png")!important;
-    background-position-x: 0; 
+    background-image: url("../img/Flare-Network-Red.png") !important;
+    background-position-x: 0;
     background-position-y: 0;
-    background-size: 100%;
     background-repeat: no-repeat;
     background-size: cover;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .h {
@@ -15,58 +17,52 @@ body {
     margin-top: 40px
 }
 
-.container {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.dappContainer {
+.dapp-container {
     border-top: 1px solid rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(236,236,236,0.6);
+    background: rgba(236, 236, 236, 0.8);
     display: inline-block;
     margin-top: 0px;
     padding: 30px 44px 25px;
     border-radius: 25px;
-    width: calc(50% + 1em);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  }
-  
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .dappContainer {
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-    }
-  }
+    width: auto;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
 
-.wrapUnwrap {
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .dapp-container {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+}
+
+.wrap-unwrap {
     position: relative;
     background-color: rgba(255, 255, 255, 0.6);
-    border-top: 1px solid rgba(255,255,255, 0.4);
-    border-bottom: 1px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     color: #383a3b;
     font-size: 20px;
-    padding: 12px 0px;
+    padding: 12px;
     border-radius: 30px;
-    width: 40%;
+    width: auto;
     float: left;
     cursor: pointer;
     border-left: none;
     border-right: none;
-    overflow: hidden!important; 
+    overflow: hidden !important;
     letter-spacing: normal;
     transition: 0.5s;
 }
 
-.wrapUnwrapText {
-    color: #383a3b!important;
+.wrap-unwrap-text {
+    color: #383a3b !important;
     z-index: 3;
     position: relative;
 }
 
-.wrapUnwrap::after {
+.wrap-unwrap-text::before {
     z-index: 1;
     content: '';
     position: absolute;
@@ -74,69 +70,64 @@ body {
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent); */
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
     overflow: hidden;
 }
 
-.wrapUnwrap:hover::after {
+.wrap-unwrap:hover::after {
     transform: skewX(45deg) translateX(200%);
 }
 
-.Wrap {
+.wrap {
     color: #fd000f;
 }
 
-.Unwrap {
+.unwrap {
     color: #383a3b;
 }
 
-.wrapUnwrap:hover {
+.wrap-unwrap:hover {
     letter-spacing: 1px;
     float: left;
     cursor: pointer;
-    outline:none;
+    outline: none;
 }
 
-.networkLabel {
+.network-label {
     padding-right: 10px;
 }
 
-.wrapBox {
+.wrap-box {
     position: relative;
     white-space: nowrap;
     overflow: hidden;
     height: 9.5rem;
     justify-content: right;
-    align-items: right;
+    align-items: center;
     text-align: right;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     border-top: 1px solid rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255,255,255,0.6);
+    background: rgba(255, 255, 255, 0.6);
     padding-right: 1.2em;
     padding-top: .2em;
-    margin-top: 25px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
+    margin: 5px;
     border-radius: 25px;
 }
 
-.wrapBoxContent::before {
+.wrap-box-content::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
+    width: auto;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent); */
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
 }
 
-.Wrapper {
+.wrapper {
     text-align: left;
     font-size: 13px;
     color: #8f8f8f;
@@ -147,35 +138,34 @@ body {
     margin-top: 64px;
 }
 
-.AddrWrap {
-    text-align: left;
+.addr-wrap {
+    text-align: center;
     font-size: 13px;
-    color: #67696a;
-    margin-top: 90px;
-    margin-left: 10px;
 }
 
-.logoFrom {
+.logo-from {
     color: #fd000f;
     margin-top: 15px;
     float: left;
-    width: 25%; height: 50%;
+    width: 25%;
+    height: 50%;
     text-align: left;
     justify-content: left;
-    align-items: left;
+    align-items: center;
 }
 
-.logoTo {
+.logo-to {
     color: #000;
     margin-top: 15px;
     float: left;
-    width: 25%; height: 50%;
+    width: 25%;
+    height: 50%;
     text-align: left;
     justify-content: left;
-    align-items: left;
+    align-items: center;
 }
 
-.tokenIdentifier {
+.token-identifier {
     font-size: 2.4rem;
     left: -1em;
     margin-top: 27px;
@@ -189,86 +179,85 @@ body {
     margin-top: 20px;
     font-size: 2.4rem;
     padding-bottom: 10px;
-    background: none!important;
-    
-}
-.amount:focus {
-    outline:none !important;
+    background: none !important;
+
 }
 
-.ConnectWallet {
+.amount:focus {
+    outline: none !important;
+}
+
+.connect-wallet {
     /* display: inline-block; */
     background-color: rgba(253, 0, 15, 0.8);
-    border-top: 1px solid rgba(255,255,255, 0.4);
-    border-bottom: 1px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     color: white;
     text-decoration: none;
     font-size: 18px;
     cursor: pointer;
     border-left: none;
     border-right: none;
-    width: 45%;
+    width: 90%;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     float: left;
-    margin-top: 25px;
-    margin-left: 10px;
-    padding: 12px 20px;
+    margin: 20px;
+    padding: 20px;
     border-radius: 30px;
     letter-spacing: normal;
     transition: 0.5s;
 }
 
-.ConnectWallet:hover {
+.connect-wallet:hover {
     letter-spacing: 1.5px;
 }
 
-.ConnectWalletText {
+.connect-wallet-text {
     font-style: normal;
 }
 
-.ConnectWalletText::before {
+.connect-wallet-text::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent); */
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
 }
 
-.ConnectWallet:hover > .ConnectWalletText::before {
+.connect-wallet:hover > .connect-wallet-text::after {
     transform: skewX(45deg) translateX(200%);
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .ConnectWallet {
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
+    .connect-wallet {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
     }
-  }
+}
 
-.WrapButton {
+.wrap-button {
     float: right;
-    margin-top: 25px;
-    margin-right: 20px;
+    margin: 20px;
     border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
-    border-top: 1px solid rgba(255,255,255, 0.4);
-    border-bottom: 1px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    padding: 12px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 20px;
     color: white;
     text-decoration: none;
     font-size: 18px;
     cursor: auto;
     border-left: none;
     border-right: none;
-    width: 40%;
+    width: 90%;
     letter-spacing: normal;
     transition: 0.5s;
     overflow: hidden;
@@ -276,57 +265,56 @@ body {
     white-space: nowrap;
 }
 
-.WrapButtonText {
+.wrap-button-text {
     font-style: normal;
 }
 
-.WrapButtonText::before {
+.wrap-button-text::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent); */
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
 }
 
-.WrapButton:hover > .WrapButtonText::before {
+.wrap-button:hover > .wrap-button-text::after {
     transform: skewX(45deg) translateX(200%);
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .WrapButton {
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
+    .wrap-button {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
     }
-  }
+}
 
-.WrapButton:hover {
+.wrap-button:hover {
     letter-spacing: 1.5px;
 }
 
-/* .ConnectWallet:hover {
-    background-color: lightgray;
-    color: red;
-} */
+.connect-wallet:hover {
+    letter-spacing: 1.5px;
+}
 
-a, a:hover, a:active, a:focus {
+a:hover, a:active, a:focus {
     color: #fd000f;
 }
 
 select {
     outline: none;
-    font-size: 20px!important;
+    font-size: 20px !important;
     padding: .7em 20px;
     cursor: pointer;
     border-radius: .3em;
     margin-right: 3em;
     background-color: rgba(255, 255, 255, 0.8);
-    border-top: 1.5px solid rgba(255,255,255, 0.4);
-    border-bottom: 1.5px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     border-left: none;
     border-right: none;
     color: #383a3b !important;
@@ -342,12 +330,12 @@ select {
     letter-spacing: normal;
 }
 
-.selectBox {
+.select-box {
     overflow: hidden;
     white-space: nowrap;
 }
 
-.selectBox::after {
+.select-box::before {
     position: absolute;
     display: inline-block;
     content: '';
@@ -355,30 +343,30 @@ select {
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
-    transform: skewX(45deg) translateX(12px);
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent); */
+    /* transform: skewX(45deg) translateX(12px); */
     transition: 0.5s;
 }
 
-.selectBox:hover::after {
-    transform: skewX(45deg) translateX(250%);
+.select-box:hover::after {
+    /* transform: skewX(45deg) translateX(250%); */
 }
 
 
-.selectContainer {
+.select-container {
     text-align: right;
     position: relative;
 }
 
-.Box {
+.dapp-box {
     position: relative;
     height: 54px;
     display: inline-block;
     overflow: hidden;
 }
 
-.selectBox:focus,
-.selectBox:hover > select {
+.select-box:focus,
+.select-box:hover > select {
     outline: none;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23fd000f;" /></svg>');
     color: #fd000f !important;
@@ -391,241 +379,229 @@ select option {
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
-
     body {
-        padding: 8.5em 0 0 0!important;
+        padding: 8.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
         background-size: 350%;
     }
 
-    .wrapBox {
+    .wrap-box {
         height: 9rem;
-        margin: 10px 0 0;
+        margin: 10px;
     }
 
     .container {
-        padding: 0 10px!important;
+        padding: 10px !important;
         height: fit-content;
     }
-    .dappContainer {
-        padding: 25px 10px 17px;
-        width: 100%;
+
+    .dapp-container {
+        padding: 10px !important;
+        width: auto;
     }
-    .Buttons {
-        margin-top: 15px;
+
+    .dapp-buttons {
+        margin: 15px;
         box-sizing: border-box;
         display: grid;
-        grid: none;
-        grid-auto-flow: row!important;
-        grid-row: 1;
-        grid-gap: 15px;
-        height: fit-content;
-        width: 100%;
+        width: auto;
         place-items: center;
         text-align: center;
     }
 
-    .ConnectWallet {
-        padding: 8px 20px;
+    .connect-wallet {
+        padding: 10px;
         height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 1;
+        width: auto;
+        margin: 10px;
     }
 
-    .WrapButton {
-        padding: 8px 20px;
+    .wrap-button {
+        padding: 10px;
         height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 2;
+        width: auto;
+        margin: 10px;
     }
 
     .dummytext {
         margin: 0;
     }
 
-    .AddrWrap {
-        margin: 10px 10px 0;
+    .addr-wrap {
+        text-align: center;
+        font-size: 13px;
+        margin: 20px;
     }
 
-    .wrapUnwrap {
-        width: 60%;
-        padding: 10px 0;
+    .wrap-unwrap {
+        width: auto;
+        padding: 10px;
     }
 
-    .Box {
+    .dapp-box {
         height: 46px;
         padding: 0;
     }
 
     select {
-        padding: 0.5em 20px;
+        padding: 10px 30px 10px 30px;
+        width: auto;
     }
 
-    .selectContainer {
+    .select-container {
         height: fit-content;
     }
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
-
     body {
-        padding: 8.5em 0 0 0!important;
+        padding: 8.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
         background-size: 300%;
     }
 
-    .wrapBox {
+    .wrap-box {
         height: 9rem;
-        margin: 10px 0 0;
+        margin: 10px
     }
 
     .container {
-        padding: 0 10px!important;
+        padding: 10px !important;
         height: fit-content;
     }
-    .dappContainer {
-        padding: 30px 44px 25px;
-        width: 80%;
+
+    .dapp-container {
+        padding: 10px !important;
+        width: auto;
     }
-    .Buttons {
-        margin-top: 15px;
+
+    .dapp-buttons {
+        margin: 15px;
         box-sizing: border-box;
-        display: grid;
-        grid: none;
-        grid-auto-flow: row!important;
-        grid-row: 1;
-        grid-gap: 15px;
-        height: fit-content;
-        width: 100%;
+        width: auto;
         place-items: center;
         text-align: center;
     }
 
-    .ConnectWallet {
-        padding: 8px 20px;
+    .connect-wallet {
+        padding: 10px;
         height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 1;
+        width: auto;
+        margin: 10px;
     }
 
-    .WrapButton {
-        padding: 8px 20px;
+    .wrap-button {
+        padding: 10px;
         height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 2;
+        width: auto;
+        margin: 10px;
     }
 
     .dummytext {
         margin: 0;
     }
 
-    .AddrWrap {
-        margin: 10px 10px 0;
+    .addr-wrap {
+        text-align: center;
+        font-size: 13px;
+        margin: 20px;
     }
 
-    .wrapUnwrap {
-        width: 60%;
-        padding: 10px 0;
+    .wrap-unwrap {
+        width: auto;
+        padding: 10px;
     }
 
-    .Box {
+    .dapp-box {
         height: 46px;
         padding: 0;
     }
 
     select {
-        padding: 0.5em 20px;
+        padding: 10px;
     }
 
-    .selectContainer {
+    .select-container {
         height: fit-content;
     }
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-
     body {
-        padding: 8.5em 0 0 0!important;
+        padding: 8.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
         background-size: 170%;
     }
 
-    .wrapBox {
+    .wrap-box {
         height: 9rem;
-        margin: 10px 0 0;
+        margin: 10px;
     }
 
     .container {
-        padding: 0 10px!important;
+        padding: 10px !important;
         height: fit-content;
     }
-    .dappContainer {
-        padding: 30px 44px 25px;
-        width: 80%;
+
+    .dapp-container {
+        padding: 10px;
+        width: auto;
     }
-    .Buttons {
+
+    .dapp-buttons {
         margin-top: 15px;
         box-sizing: border-box;
-        display: grid;
-        grid: none;
-        grid-auto-flow: row!important;
-        grid-row: 1;
-        grid-gap: 15px;
         height: fit-content;
-        width: 100%;
+        width: auto;
         place-items: center;
         text-align: center;
     }
 
-    .ConnectWallet {
-        padding: 8px 20px;
+    .connect-wallet {
+        padding: 10px;
         height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 1;
+        width: auto;
+        margin: 10px;
     }
 
-    .WrapButton {
-        padding: 8px 20px;
+    .wrap-button {
+        padding: 10px;
         height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 2;
+        width: auto;
+        margin: 10px;
     }
 
     .dummytext {
         margin: 0;
     }
 
-    .AddrWrap {
-        margin: 10px 10px 0;
+    .addr-wrap {
+        text-align: center;
+        font-size: 13px;
+        margin: 20px;
     }
 
-    .wrapUnwrap {
-        width: 60%;
-        padding: 10px 0;
+    .wrap-unwrap {
+        width: auto;
+        padding: 10px;
     }
 
-    .Box {
+    .dapp-box {
         height: 46px;
         padding: 0;
     }
 
     select {
-        padding: 0.5em 20px;
+        padding: 10px;
     }
 
-    .selectContainer {
+    .select-container {
         height: fit-content;
     }
 }

@@ -4,55 +4,26 @@
 <!--[if IE 8]> <html lang="en" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 
-<head>
+<?php if (isset($view['headjs'])): ?>
+    <?=$this->section('headjs', $this->fetch('headjs', ['view' => $view]))?>
+<?php else: ?>
+    <?=$this->section('head', $this->fetch('head', ['view' => $view]))?>
+<?php endif ?>
 
-    <meta charset="utf-8">
-    <!-- Always force latest IE rendering engine or request Chrome Frame -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <!-- Mobile Specific Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Meta Description -->
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="<?=$view['description'] ?>">
-    <meta name="author" content="<?=$view['author'] ?>">
-    <meta name="keywords" content="flare, flare networks, servers, node, unleashing value, linux, docker, asclinux, linux for php, lfphp">
-    <link rel="icon" href="<?=$view['favicon'] ?>">
-
-    <link rel="apple-touch-icon" href="<?=$view['urlbaseaddr'] ?>apple-touch-icon.png">
-
-    <title><?=$view['title'] ?></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" type='text/css'> 
-
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/dappDelegate.css">
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/font-awesome.min.css">
-    <!-- bootstrap.min -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery.fancybox.css">
-    <!-- bootstrap.min -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/bootstrap.min.css">
-    <!-- animate.css -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">
-
-    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
-
-</head>
 <body>
 <main class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main">
-    <?=$this->section('navbar-Dapp', $this->fetch('navbar-Dapp', ['view' => $view]))?>
+    <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
     <div class="container">
-        <div class="dappContainer">
+        <div class="dapp-container">
         <div class="Top">
-            <div class="Delegate"><div class="DelegateText">Delegate</div></div>
-            <div class="selectContainer">
-                    <div class="Box">
-                        <div class="selectBox">
+            <div class="delegate"><div class="delegate-text">Delegate</div></div>
+            <div class="select-container">
+                    <div class="dapp-box">
+                        <div class="select-box">
                         <?php if (isset($view['results']['nodata'])): ?>
                             <?=$view['results']['nodata'] ?>
                         <?php else: ?>
-                            <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork">
+                            <select name="SelectedNetwork" id="SelectedNetwork" class="selected-network">
                             <?php foreach($view['results'] as $key => $networks): ?>
                                 <option value="<?=$networks['id'] ?>" data-chainidhex="<?='0x' . dechex($networks['chainid']) ?>"data-rpcurl="<?=$networks['rpcurl'] ?>" data-registrycontract="<?=$networks['registrycontract'] ?>"><?=$networks['chainidentifier'] ?></option>
                             <?php endforeach; ?>
@@ -63,10 +34,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="wrapBoxFTSO" id="wrapbox-1">
-                    <div class="wrapBoxContent">
-                        <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="delegatedIcon" id="delegatedIcon1">
-                        <select class="SelectedFTSO" id="ftso-1" required>
+                <div class="wrap-box-ftso" id="wrapbox-1">
+                    <div class="wrap-box-content">
+                        <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="delegated-icon" id="delegatedIcon1">
+                        <select class="selected-ftso" id="ftso-1" required>
                             <option value="" disabled selected hidden>Select FTSO</option>
                         </select>
                         <input id="Amount1" class="amount"  type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0%">
@@ -94,19 +65,19 @@
                     </div>
                 </div>
             </div> -->
-            <div class="wrapBoxFTSO" id="wrapbox-2">
-                <div class="wrapBoxContent">
-                    <img src='<?=$view['urlbaseaddr'] ?>img/FLR.svg' class="delegatedIcon" id="delegatedIcon2">
-                    <select class="SelectedFTSO" id="ftso-2" required>
+            <div class="wrap-box-ftso" id="wrapbox-2">
+                <div class="wrap-box-content">
+                    <img src='<?=$view['urlbaseaddr'] ?>img/FLR.svg' class="delegated-icon" id="delegatedIcon2">
+                    <select class="selected-ftso" id="ftso-2" required>
                         <option value="" disabled selected hidden data-ftso="0">Select FTSO</option>
                     </select>
                     <input id="Amount2" class="amount" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0%">
                 </div>
             </div>
 
-            <div class="Buttons">
-            <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText" id="ConnectWalletText">Connect Wallet</i></button>
-                <button id="ClaimButton" class="ClaimButton"><i class="ClaimButtonText" id="ClaimButtonText">Enter Amount</i></button>
+            <div class="dapp-buttons">
+            <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ClaimButton" class="claim-button"><i class="claim-button-text" id="ClaimButtonText">Enter Amount</i></button>
             </div>
 
             <div class="dummytext">
@@ -115,7 +86,7 @@
                     <span id="address"></span>
                 </div> -->
                             
-                <div class="AddrWrap">
+                <div class="addr-wrap">
                     <span>FTSOCAN Dapp Version 0.9.0</span>
                 </div>
             </div>

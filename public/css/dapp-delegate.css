@@ -1,7 +1,7 @@
 body {
     padding-top: 9.5em;
     font-family: 'Poppins', sans-serif;
-    background-image: url("../img/Flare-Network-Red.png")!important;
+    background-image: url("../img/Flare-Network-Red.png") !important;
     background-size: cover;
 }
 
@@ -17,26 +17,26 @@ body {
     text-align: center;
 }
 
-.dappContainer {
+.dapp-container {
     border-top: 1px solid rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(236,236,236,0.6);
+    background: rgba(236, 236, 236, 0.6);
     display: inline-block;
     margin-top: 0px;
     padding: 30px 44px 25px;
     border-radius: 25px;
     width: calc(50% + 1em);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  }
-  
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .dappContainer {
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-    }
-  }
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
 
-.AddrWrap {
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .dapp-container {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+}
+
+.addr-wrap {
     text-align: left;
     font-size: 13px;
     color: #67696a;
@@ -44,12 +44,12 @@ body {
     margin-left: 10px;
 }
 
-.ConnectWallet {
+.connect-wallet {
     /* display: inline-block; */
     background-color: rgba(253, 0, 15, 0.8);
-    border-top: 1px solid rgba(255,255,255, 0.4);
-    border-bottom: 1px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     color: white;
     text-decoration: none;
     font-size: 18px;
@@ -59,7 +59,7 @@ body {
     width: 45%;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     float: left;
     margin-top: 25px;
     margin-left: 10px;
@@ -69,98 +69,98 @@ body {
     transition: 0.5s;
 }
 
-.ConnectWallet:hover {
+.connect-wallet:hover {
     letter-spacing: 1.5px;
 }
 
-.ConnectWalletText {
+.connect-wallet-text {
     font-style: normal;
 }
 
-.ConnectWalletText::before {
+.connect-wallet-text::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
 }
 
-.ConnectWallet:hover > .ConnectWalletText::before {
+.connect-wallet:hover > .connect-wallet-text::before {
     transform: skewX(45deg) translateX(200%);
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .ConnectWallet {
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
+    .connect-wallet {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
     }
 }
 
-.ClaimButton {
-float: right;
-margin-top: 25px;
-margin-right: 20px;
-border-radius: 30px;
-background-color: rgba(143, 143, 143, 0.8);
-border-top: 1px solid rgba(255,255,255, 0.4);
-border-bottom: 1px solid rgba(255,255,255, 0.4);
-box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-padding: 12px 20px;
-color: white;
-text-decoration: none;
-font-size: 18px;
-cursor: auto;
-border-left: none;
-border-right: none;
-width: 40%;
-letter-spacing: normal;
-transition: 0.5s;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+.claim-button {
+    float: right;
+    margin-top: 25px;
+    margin-right: 20px;
+    border-radius: 30px;
+    background-color: rgba(143, 143, 143, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: auto;
+    border-left: none;
+    border-right: none;
+    width: 40%;
+    letter-spacing: normal;
+    transition: 0.5s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.ClaimButtonText {
-font-style: normal;
+.claim-button-text {
+    font-style: normal;
 }
 
-.ClaimButtonText::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 50%;
-height: 100%;
-background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
-transform: skewX(45deg) translateX(0);
-transition: 0.5s;
+.claim-button-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
 }
 
-.ClaimButton:hover > .ClaimButtonText::before {
-transform: skewX(45deg) translateX(200%);
+.claim-button:hover > .claim-button-text::before {
+    transform: skewX(45deg) translateX(200%);
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-.ClaimButton {
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-}
-}
-
-.ClaimButton:hover {
-letter-spacing: 1.5px;
+    .claim-button {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
 }
 
-.Delegate {
+.claim-button:hover {
+    letter-spacing: 1.5px;
+}
+
+.delegate {
     position: relative;
-    background-color: rgba(255,255,255, 0.6);
-    border-top: 1px solid rgba(255,255,255, 0.4);
-    border-bottom: 1px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    background-color: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     color: #fff;
     font-size: 20px;
     padding: 12px 25px;
@@ -170,16 +170,16 @@ letter-spacing: 1.5px;
     cursor: default;
     border-left: none;
     border-right: none;
-    overflow: hidden!important; 
+    overflow: hidden !important;
 }
 
-.DelegateText {
-    color: #383a3b!important;
+.delegate-text {
+    color: #383a3b !important;
     z-index: 3;
     position: relative;
 }
 
-.Delegate::after {
+.delegate::after {
     z-index: 1;
     content: '';
     position: absolute;
@@ -187,17 +187,17 @@ letter-spacing: 1.5px;
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.3), transparent);
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.3), transparent);
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
     overflow: hidden;
 }
 
-.networkLabel {
+.network-label {
     padding-right: 10px;
 }
 
-.wrapBox {
+.wrap-box {
     position: relative;
     white-space: nowrap;
     overflow: hidden;
@@ -205,10 +205,10 @@ letter-spacing: 1.5px;
     justify-content: right;
     align-items: right;
     text-align: right;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     border-top: 1px solid rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255,255,255,0.6);
+    background: rgba(255, 255, 255, 0.6);
     padding-right: 1.2em;
     padding-top: .2em;
     margin-top: 20px;
@@ -218,7 +218,7 @@ letter-spacing: 1.5px;
     border-radius: 25px;
 }
 
-.wrapBoxContent {
+.wrap-box-content {
     position: absolute;
     width: 100%;
     height: 9.5rem;
@@ -226,19 +226,19 @@ letter-spacing: 1.5px;
     padding-top: .2em;
 }
 
-.wrapBoxContent::after {
+.wrap-box-content::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 52.5%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent);
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
 }
 
-.wrapBoxFTSO {
+.wrap-box-ftso {
     position: relative;
     white-space: nowrap;
     overflow: hidden;
@@ -246,10 +246,10 @@ letter-spacing: 1.5px;
     justify-content: right;
     align-items: right;
     text-align: right;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     border-top: 1px solid rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255,255,255,0.6);
+    background: rgba(255, 255, 255, 0.6);
     padding-right: 1.2em;
     padding-top: .2em;
     margin-top: 20px;
@@ -259,7 +259,7 @@ letter-spacing: 1.5px;
     border-radius: 25px;
 }
 
-.Wrapper {
+.wrapper {
     text-align: right;
     font-size: 2.4rem;
     color: #383a3b;
@@ -267,7 +267,7 @@ letter-spacing: 1.5px;
     margin-top: 27px;
 }
 
-.tokenIdentifier {
+.token-identifier {
     font-size: 2.4rem;
     left: -1em;
     margin-top: 27px;
@@ -276,7 +276,7 @@ letter-spacing: 1.5px;
 }
 
 
-.ftsoIdentifier {
+.ftso-identifier {
     font-size: 2.4rem;
     padding-left: 1.7em;
     margin-top: 27px;
@@ -295,15 +295,15 @@ letter-spacing: 1.5px;
     margin-left: 20%;
     font-size: 2.4rem;
     padding-bottom: 10px;
-    background: none!important;
-    
+    background: none !important;
+
 }
 
 .amount:focus {
-    outline:none !important;
+    outline: none !important;
 }
 
-.AddrWrap {
+.addr-wrap {
     text-align: left;
     font-size: 13px;
     color: #67696a;
@@ -315,28 +315,30 @@ letter-spacing: 1.5px;
     color: #000;
     margin-top: 15px;
     float: left;
-    width: 25%!important; height: 50%!important;
+    width: 25% !important;
+    height: 50% !important;
     text-align: left;
     justify-content: left;
     align-items: left;
 }
 
-.delegatedIcon {
+.delegated-icon {
     margin-top: 20px;
     margin-left: 30px;
     float: left;
-    width: 40px; height: 40px;
+    width: 40px;
+    height: 40px;
     text-align: left;
     justify-content: left;
     align-items: left;
 }
 
-.SelectedFTSO {
+.selected-ftso {
     position: absolute;
     z-index: 100;
     width: 50%;
     outline: none;
-    font-size: 2.4rem!important;
+    font-size: 2.4rem !important;
     padding: 30px 20px;
     cursor: pointer;
     border-radius: .3em;
@@ -359,21 +361,21 @@ letter-spacing: 1.5px;
 }
 
 
-.SelectedFTSO option {
+.selected-ftso option {
     font-size: 2rem;
 }
 
-.SelectedNetwork {
+.selected-network {
     outline: none;
-    font-size: 20px!important;
+    font-size: 20px !important;
     padding: .7em 20px;
     cursor: pointer;
     border-radius: .3em;
     margin-right: 0em;
     background-color: rgba(255, 255, 255, 0.8);
-    border-top: 1.5px solid rgba(255,255,255, 0.4);
-    border-bottom: 1.5px solid rgba(255,255,255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     border-left: none;
     border-right: none;
     color: #383a3b !important;
@@ -389,12 +391,12 @@ letter-spacing: 1.5px;
     letter-spacing: normal;
 }
 
-.selectBox {
+.select-box {
     overflow: hidden;
     white-space: nowrap;
 }
 
-.selectBox::after {
+.select-box::after {
     position: absolute;
     display: inline-block;
     content: '';
@@ -402,71 +404,71 @@ letter-spacing: 1.5px;
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent);
     transform: skewX(45deg) translateX(12px);
     transition: 0.5s;
 }
 
-.selectBox:hover::after {
+.select-box:hover::after {
     transform: skewX(45deg) translateX(250%);
 }
 
-
-.selectContainer {
+.select-container {
     text-align: right;
     position: relative;
 }
 
-.Box {
+.dapp-box {
     position: relative;
     height: 54px;
     display: inline-block;
     overflow: hidden;
 }
 
-.selectBox:focus,
-.selectBox:hover > .SelectedNetwork {
+.select-box:focus,
+.select-box:hover > .selected-network {
     outline: none;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23fd000f;" /></svg>');
     color: #fd000f !important;
     letter-spacing: 0.5px;
 }
 
-.SelectedNetwork option {
+.selected-network option {
     background-color: #fff;
     color: #fd000f;
 }
 
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
-
     body {
-        padding: 8.5em 0 0 0!important;
+        padding: 8.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
         background-size: 350%;
     }
 
-    .wrapBoxFTSO {
+    .wrap-box-ftso {
         height: 9rem;
         margin: 10px 0 0;
     }
 
     .container {
-        padding: 0 10px!important;
+        padding: 0 10px !important;
         height: fit-content;
     }
-    .dappContainer {
+
+    .dapp-container {
         padding: 25px 10px 17px;
         width: 100%;
     }
-    .Buttons {
+
+    .dapp-buttons {
         margin-top: 15px;
         box-sizing: border-box;
         display: grid;
         grid: none;
-        grid-auto-flow: row!important;
+        grid-auto-flow: row !important;
         grid-row: 1;
         grid-gap: 15px;
         height: fit-content;
@@ -475,7 +477,7 @@ letter-spacing: 1.5px;
         text-align: center;
     }
 
-    .ConnectWallet {
+    .connect-wallet {
         padding: 8px 20px;
         height: 45px;
         width: 70%;
@@ -483,7 +485,7 @@ letter-spacing: 1.5px;
         grid-row: 1;
     }
 
-    .ClaimButton {
+    .claim-button {
         padding: 8px 20px;
         height: 45px;
         width: 70%;
@@ -491,8 +493,8 @@ letter-spacing: 1.5px;
         grid-row: 2;
     }
 
-    .SelectedFTSO {
-        font-size: 2rem!important;
+    .selected-ftso {
+        font-size: 2rem !important;
         width: 60%;
         padding: 25px 20px;
     }
@@ -501,58 +503,59 @@ letter-spacing: 1.5px;
         margin: 0;
     }
 
-    .AddrWrap {
+    .addr-wrap {
         margin: 10px 10px 0;
     }
 
-    .Delegate {
+    .delegate {
         width: 45%;
         padding: 10px 0;
     }
 
-    .Box {
+    .dapp-box {
         height: 46px;
         padding: 0;
     }
 
-    .SelectedNetwork {
+    .selected-network {
         padding: 0.5em 20px;
     }
 
-    .selectContainer {
+    .select-container {
         height: fit-content;
     }
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
-
     body {
-        padding: 8.5em 0 0 0!important;
+        padding: 8.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
         background-size: 300%;
     }
 
-    .wrapBoxFTSO {
+    .wrap-box-ftso {
         height: 9rem;
         margin: 10px 0 0;
     }
 
     .container {
-        padding: 0 10px!important;
+        padding: 0 10px !important;
         height: fit-content;
     }
-    .dappContainer {
+
+    .dapp-container {
         padding: 30px 44px 25px;
         width: 80%;
     }
-    .Buttons {
+
+    .dapp-buttons {
         margin-top: 15px;
         box-sizing: border-box;
         display: grid;
         grid: none;
-        grid-auto-flow: row!important;
+        grid-auto-flow: row !important;
         grid-row: 1;
         grid-gap: 15px;
         height: fit-content;
@@ -561,7 +564,7 @@ letter-spacing: 1.5px;
         text-align: center;
     }
 
-    .ConnectWallet {
+    .connect-wallet {
         padding: 8px 20px;
         height: 45px;
         width: 70%;
@@ -569,7 +572,7 @@ letter-spacing: 1.5px;
         grid-row: 1;
     }
 
-    .ClaimButton {
+    .claim-button {
         padding: 8px 20px;
         height: 45px;
         width: 70%;
@@ -577,8 +580,8 @@ letter-spacing: 1.5px;
         grid-row: 2;
     }
 
-    .SelectedFTSO {
-        font-size: 2rem!important;
+    .selected-ftso {
+        font-size: 2rem !important;
         width: 60%;
         padding: 25px 20px;
     }
@@ -587,58 +590,59 @@ letter-spacing: 1.5px;
         margin: 0;
     }
 
-    .AddrWrap {
+    .addr-wrap {
         margin: 10px 10px 0;
     }
 
-    .Delegate {
+    .delegate {
         width: 45%;
         padding: 10px 0;
     }
 
-    .Box {
+    .dapp-box {
         height: 46px;
         padding: 0;
     }
 
-    .SelectedNetwork {
+    .selected-network {
         padding: 0.5em 20px;
     }
 
-    .selectContainer {
+    .select-container {
         height: fit-content;
     }
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-
     body {
-        padding: 8.5em 0 0 0!important;
+        padding: 8.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
         background-size: 150%;
     }
 
-    .wrapBoxFTSO {
+    .wrap-box-ftso {
         height: 9rem;
         margin: 10px 0 0;
     }
 
     .container {
-        padding: 0 10px!important;
+        padding: 0 10px !important;
         height: fit-content;
     }
-    .dappContainer {
+
+    .dapp-container {
         padding: 30px 44px 25px;
         width: 80%;
     }
-    .Buttons {
+
+    .dapp-buttons {
         margin-top: 15px;
         box-sizing: border-box;
         display: grid;
         grid: none;
-        grid-auto-flow: row!important;
+        grid-auto-flow: row !important;
         grid-row: 1;
         grid-gap: 15px;
         height: fit-content;
@@ -647,7 +651,7 @@ letter-spacing: 1.5px;
         text-align: center;
     }
 
-    .ConnectWallet {
+    .connect-wallet {
         padding: 8px 20px;
         height: 45px;
         width: 70%;
@@ -655,7 +659,7 @@ letter-spacing: 1.5px;
         grid-row: 1;
     }
 
-    .ClaimButton {
+    .claim-button {
         padding: 8px 20px;
         height: 45px;
         width: 70%;
@@ -663,8 +667,8 @@ letter-spacing: 1.5px;
         grid-row: 2;
     }
 
-    .SelectedFTSO {
-        font-size: 2rem!important;
+    .selected-ftso {
+        font-size: 2rem !important;
         width: 60%;
         padding: 25px 20px;
     }
@@ -673,25 +677,25 @@ letter-spacing: 1.5px;
         margin: 0;
     }
 
-    .AddrWrap {
+    .addr-wrap {
         margin: 10px 10px 0;
     }
 
-    .Delegate {
+    .delegate {
         width: 45%;
         padding: 10px 0;
     }
 
-    .Box {
+    .dapp-box {
         height: 46px;
         padding: 0;
     }
 
-    .SelectedNetwork {
+    .selected-network {
         padding: 0.5em 20px;
     }
 
-    .selectContainer {
+    .select-container {
         height: fit-content;
     }
 }

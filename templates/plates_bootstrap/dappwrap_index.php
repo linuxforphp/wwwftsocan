@@ -3,76 +3,51 @@
 <!--[if IE 7]> <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html lang="en" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
-<head>
 
-    <meta charset="utf-8">
-    <!-- Always force latest IE rendering engine or request Chrome Frame -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <!-- Mobile Specific Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Meta Description -->
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="<?=$view['description'] ?>">
-    <meta name="author" content="<?=$view['author'] ?>">
-    <meta name="keywords" content="flare, flare networks, servers, node, unleashing value, linux, docker, asclinux, linux for php, lfphp">
-    <link rel="icon" href="<?=$view['favicon'] ?>">
+<?php if (isset($view['headjs'])): ?>
+    <?=$this->section('headjs', $this->fetch('headjs', ['view' => $view]))?>
+<?php else: ?>
+    <?=$this->section('head', $this->fetch('head', ['view' => $view]))?>
+<?php endif ?>
 
-    <link rel="apple-touch-icon" href="<?=$view['urlbaseaddr'] ?>apple-touch-icon.png">
-
-    <title><?=$view['title'] ?></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" type='text/css'> 
-
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/dappWrap.css">
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/font-awesome.min.css">
-    <!-- bootstrap.min -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery.fancybox.css">
-    <!-- bootstrap.min -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/bootstrap.min.css">
-    <!-- animate.css -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/glob@10.3.4/dist/mjs/glob.min.js"></script>
-    <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
-
-</head>
 <body>
-
 <main class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main">
-    <?=$this->section('navbar-Dapp', $this->fetch('navbar-Dapp', ['view' => $view]))?>
-    <div class="container">
-        <div class="dappContainer">
-            <div class="Top">
-                <button class="wrapUnwrap" type="button" id="wrapUnwrap" value="false">
-                    <a class="wrapUnwrapText">
-                        <span id="Wrap" class="Wrap">Wrap</span> / <span id="Unwrap" class="Unwrap">Unwrap</span>
-                    </a>
-                </button>
-                <div class="selectContainer">
-                    <div class="Box">
-                        <div class="selectBox">
-                        <?php if (isset($view['results']['nodata'])): ?>
-                            <?=$view['results']['nodata'] ?>
-                        <?php else: ?>
-                            <select name="SelectedNetwork" id="SelectedNetwork" class="SelectedNetwork">
-                            <?php foreach($view['results'] as $key => $networks): ?>
-                                <option value="<?=$networks['id'] ?>" data-chainidhex="<?='0x' . dechex($networks['chainid']) ?>"data-rpcurl="<?=$networks['rpcurl'] ?>" data-registrycontract="<?=$networks['registrycontract'] ?>"><?=$networks['chainidentifier'] ?></option>
-                            <?php endforeach; ?>
-                                <!-- <option value="1">FLR</option> 
-                                <option value="2" selected="selected">SGB</option>  -->
-                            </select>
-                        <?php endif ?>
+    <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
+        <div class="dapp-container p-2">
+            <div class="top">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button class="wrap-unwrap float-left" type="button" id="wrapUnwrap" value="false">
+                            <a class="wrap-unwrap-text">
+                                <span id="Wrap" class="wrap">Wrap</span> / <span id="Unwrap" class="unwrap">Unwrap</span>
+                            </a>
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="select-container">
+                            <div class="dapp-box">
+                                <div class="select-box">
+                                    <?php if (isset($view['results']['nodata'])): ?>
+                                        <?=$view['results']['nodata'] ?>
+                                    <?php else: ?>
+                                        <select name="SelectedNetwork" id="SelectedNetwork" class="selected-network">
+                                            <?php foreach($view['results'] as $key => $networks): ?>
+                                                <option value="<?=$networks['id'] ?>" data-chainidhex="<?='0x' . dechex($networks['chainid']) ?>"data-rpcurl="<?=$networks['rpcurl'] ?>" data-registrycontract="<?=$networks['registrycontract'] ?>"><?=$networks['chainidentifier'] ?></option>
+                                            <?php endforeach; ?>
+                                            <!-- <option value="1">FLR</option>
+                                            <option value="2" selected="selected">SGB</option>  -->
+                                        </select>
+                                    <?php endif ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="wrapBox">
-                <span class="wrapBoxContent">
-                    <svg id="FromIcon" class="logoFrom" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
+            <div class="row">
+                <div class="wrap-box">
+                <span class="wrap-box-content">
+                    <svg id="FromIcon" class="logo-from" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
                         <g id="layer2">
                             <g id="layer1-2" class="AssetLogo">
                                 <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
@@ -84,60 +59,65 @@
                             </g>
                         </g>
                     </svg>
-                    <div class="tokenIdentifier">
+                    <div class="token-identifier">
                         <span id="tokenIdentifier"></span>
                     </div>
-                    <input id="AmountFrom" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                    <div class="Wrapper">
+                    <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                    <div class="wrapper">
                         <span>Balance:</span>
                         <span id="Balance">0.0</span>
-                    </div></div>
+                    </div>
+                </div>
                 </span>
-            <div class="wrapBox">
-                <span class="wrapBoxContent">
-                    <svg id="ToIcon" class="logoTo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
-                        <g id="layer3">
-                            <g id="layer1-3">
-                                <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
-                                <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
-                                <polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon>
-                                <polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon>
-                                <polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon>
-                                <polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon>
+            </div>
+            <div class="row">
+                <div class="wrap-box">
+                    <span class="wrap-box-content">
+                        <svg id="ToIcon" class="logo-to" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor">
+                            <g id="layer3">
+                                <g id="layer1-3">
+                                    <polygon points="124.29 316.35 0 538.51 101.68 508.22 124.29 316.35"></polygon>
+                                    <polygon points="259.45 315.45 135.35 299.46 119.98 431.6 300.07 320.69 259.45 315.45"></polygon>
+                                    <polygon points="195.58 206.32 233.21 158.92 40.08 0 133.09 285.06 195.58 206.32"></polygon>
+                                    <polygon points="363.82 188.11 343.46 245.8 383.66 282.19 363.82 188.11"></polygon>
+                                    <polygon points="263.6 221.16 263.6 221.16 238.46 166.78 215.95 195.14 139.88 290.97 265.69 307.18 305.76 312.35 263.6 221.16"></polygon>
+                                    <polygon points="357 180.39 273.62 221.37 312.7 305.92 357 180.39"></polygon>
+                                </g>
                             </g>
-                        </g>
-                    </svg>
-                    <div class="tokenIdentifier">
-                            <span id="wrappedTokenIdentifier"></span>
-                    </div>
-                    <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                    <div class="Wrapper">
-                        <span>Balance:</span>
-                        <span id="TokenBalance">0.0</span>
-                    </div>
-                </span>
+                        </svg>
+                        <div class="token-identifier">
+                                <span id="wrappedTokenIdentifier"></span>
+                        </div>
+                        <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                        <div class="wrapper">
+                            <span>Balance:</span>
+                            <span id="TokenBalance">0.0</span>
+                        </div>
+                    </span>
+                </div>
             </div>
-
-            <!--<div class="h">FTSO Can dApp Example</div> -->
-
-
-
-            <div class="Buttons">
-                <button id="ConnectWallet" class="ConnectWallet"><i class="ConnectWalletText" id="ConnectWalletText">Connect Wallet</i></button>
-                <button id="WrapButton" class="WrapButton"><i class="WrapButtonText" id="WrapButtonText">Enter Amount</i></button>
+            <div class="row">
+                    <div class="col-sm-6">
+                        <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button id="WrapButton" class="wrap-button"><i class="wrap-button-text" id="WrapButtonText">Enter Amount</i></button>
+                    </div>
             </div>
-            <div class="dummytext">
-                <!-- <div class="AddrWrap">
-                    <span>My address is</span>
-                    <span id="address"></span>
-                </div> -->
-                            
-                <div class="AddrWrap">
-                    <span>FTSOCAN Dapp Version 0.9.0</span>
+            <div class="row">
+                <div class="dummytext">
+                    <!-- <div class="AddrWrap">
+                        <span>My address is</span>
+                        <span id="address"></span>
+                    </div> -->
+
+                    <div class="addr-wrap">
+                        <span>FTSOCAN DApp, version 0.9.0.</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
 </main>
 
 <?php if ($view['bodyjs'] === 1): ?>

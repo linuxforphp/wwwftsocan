@@ -102,9 +102,11 @@ class DappClaimController extends AggregateRootController implements AggregateEv
 
     public function onDispatch(AscmvcEvent $event)
     {
-        $this->view['saved'] = 0;
+        $app = $event->getApplication();
 
-        $this->view['error'] = 0;
+        $baseConfig = $app->getBaseConfig();
+
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-claim.css';
     }
 
     /**
