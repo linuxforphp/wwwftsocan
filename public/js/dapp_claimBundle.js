@@ -155,6 +155,10 @@
         }
     }
 
+    function ToNumber(foo) {
+        return Number(foo)
+    }
+
     isNetworkValue(networkValue)
     showTokenIdentifiers(wrappedTokenIdentifier)
 
@@ -348,7 +352,7 @@
 
             console.log(`Ftso list: `, delegatedFtsos);
 
-            console.log(epochsUnclaimed)
+            console.log(Number(epochsUnclaimed[0]))
 
             var ClaimableAmountFd
 
@@ -494,7 +498,7 @@
 
             console.log(`Ftso list: `, delegatedFtsos);
 
-            console.log(epochsUnclaimed)
+            console.log(Number(epochsUnclaimed[0]))
 
             var ClaimableAmountFd
 
@@ -599,26 +603,30 @@
 
                 var transactionParameters
 
-                if (Checkbox.checked) {
-                    transactionParameters = {
-                        from: account,
-                        to: ftsoRewardAddr,
-                        data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, true).encodeABI(),
-                    };
-                } else {
-                    transactionParameters = {
-                        from: account,
-                        to: ftsoRewardAddr,
-                        data: ftsoRewardContract.methods.claimFromDataProviders(account, account, epochsUnclaimed, DelegatedFtsoaddresses, false).encodeABI(),
-                    };
+                for (var p = 0; p < epochsUnclaimed.length; p++) {
+                    if (Checkbox.checked) {
+                        transactionParameters = {
+                            from: account,
+                            to: ftsoRewardAddr,
+                            data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), true).encodeABI(),
+                        };
+                    } else {
+                        transactionParameters = {
+                            from: account,
+                            to: ftsoRewardAddr,
+                            data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), false).encodeABI(),
+                        };
+                    }
+    
+                    await provider.request({
+                        method: 'eth_sendTransaction',
+                        params: [transactionParameters],
+                    })
                 }
 
-                await provider.request({
-                    method: 'eth_sendTransaction',
-                    params: [transactionParameters],
-                })
-
                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                showRewards(0.0)
+                switchButtonColorBack();
                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
             } catch (error) {
                 console.log(error);
@@ -672,6 +680,8 @@ if (!provider) {
                 })
             }
 
+            showFdRewards(0.0);
+            switchFdButtonColorBack();
             const tokenBalance = await tokenContract.methods.balanceOf(account).call();
             showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
         } catch (error) {
