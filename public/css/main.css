@@ -80,6 +80,7 @@ ul.delegation {
 
 .jumbotron {
     color: #fff;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
 .jumbotron-content img {
@@ -717,6 +718,7 @@ h1.navbar-brand > a:hover, h1.navbar-brand > a:focus {
     background: url("../img/Component-1.png") no-repeat;
     background-size: cover;
     color: #fff;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
 #about h2 {
