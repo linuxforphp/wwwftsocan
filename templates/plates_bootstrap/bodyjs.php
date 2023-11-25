@@ -75,14 +75,6 @@
             url = 'https://flare.xyz/ftso-a-breakdown/';
 
             window.open(url, '_blank').focus();
-        } else if (option === 3) {
-            url = 'https://portal.flare.network/';
-
-            window.open(url, '_blank').focus();
-        } else {
-            url = 'https://flare-explorer.flare.network/';
-
-            window.open(url, '_blank').focus();
         }
     }
 </script>

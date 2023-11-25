@@ -31,6 +31,31 @@ $baseConfig['routes'] = [
         '/sgbexplorer[/{action}]',
         'sgbexplorer',
     ],
+    [
+        'GET',
+        '/faq[/{action}]',
+        'faq',
+    ],
+    [
+        'GET',
+        '/delegate[/{action}]',
+        'delegate',
+    ],
+    [
+        'GET',
+        '/stake[/{action}]',
+        'stake',
+    ],
+    [
+        'GET',
+        '/flrexplorer[/{action}]',
+        'flrexplorer',
+    ],
+    [
+        'GET',
+        '/sgbexplorer[/{action}]',
+        'sgbexplorer',
+    ],
     /*[
         ['GET', 'POST'],
         '/products[/{action}[/{id:[0-9]+}]]',

@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="item testimonial-item text-center">
-                            <img src="<?=$view['urlbaseaddr'] ?>img/sgb.svg" alt="About Flare Networks">
+                            <img src="<?=$view['urlbaseaddr'] ?>img/sgb-red.svg" alt="About Flare Networks">
                             <div class="clearfix">
                                 <span>Earn SGB and FLR</span>
                                 <p>Passive income is at hand!<br />
