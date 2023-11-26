@@ -1,127 +1,19 @@
-@font-face {
-    font-family: FontAwesome;
-    src: url(../fonts/fontawesome-webfont.woff);
-}
-
-body {
-    padding-top: 9.5em;
-    font-family: 'Poppins', sans-serif;
-    background-image: url("../img/Flare-Network-Red.png") !important;
-    background-size: cover;
-}
-
-.h {
-    font-size: 28px;
-    color: #383a3b;
-    margin-top: 40px
-}
-
-.container {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.dapp-container {
-    border-top: 1px solid rgba(255, 255, 255, 0.6);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(236, 236, 236, 0.6);
-    display: inline-block;
-    margin-top: 0px;
-    padding: 30px 44px 25px;
-    border-radius: 25px;
-    width: calc(50% + 1em);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-}
-
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .dapp-container {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-}
-
-.addr-wrap {
-    text-align: left;
-    font-size: 13px;
-    color: #67696a;
-    margin-top: 10px;
-    margin-left: 10px;
-}
-
-.connect-wallet {
-    /* display: inline-block; */
-    background-color: rgba(253, 0, 15, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: pointer;
-    border-left: none;
-    border-right: none;
-    width: 170px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    float: left;
-    margin-top: 25px;
-    margin-left: 0px;
-    padding: 12px 0px;
-    border-radius: 30px;
-    letter-spacing: normal;
-    transition: 0.5s;
-}
-
-.connect-wallet:hover {
-    letter-spacing: 1.5px;
-}
-
-.connect-wallet-text {
-    font-style: normal;
-}
-
-.connect-wallet-text::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
-    transform: skewX(45deg) translateX(0);
-    transition: 0.5s;
-}
-
-.connect-wallet:hover > .connect-wallet-text::before {
-    transform: skewX(45deg) translateX(200%);
-}
-
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .connect-wallet {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-}
-
 .claim-button {
     float: right;
-    margin-top: 25px;
-    margin-left: 15px;
+    margin: 20px;
     border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    padding: 12px 0px;
+    padding: 20px;
     color: white;
     text-decoration: none;
     font-size: 18px;
     cursor: auto;
     border-left: none;
     border-right: none;
-    width: 140px;
+    width: 90%;
     letter-spacing: normal;
     transition: 0.5s;
     overflow: hidden;
@@ -138,15 +30,15 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
-    transform: skewX(45deg) translateX(0);
+    width: auto;
+    height: auto;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(45deg) translateX(0); */
     transition: 0.5s;
 }
 
 .claim-button:hover > .claim-button-text::before {
-    transform: skewX(45deg) translateX(200%);
+    /* transform: skewX(45deg) translateX(200%); */
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
@@ -162,21 +54,20 @@ body {
 
 .claim-fd-button {
     float: right;
-    margin-top: 25px;
-    margin-left: 15px;
+    margin: 20px;
     border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    padding: 12px 0px;
+    padding: 20px;
     color: white;
     text-decoration: none;
     font-size: 18px;
     cursor: auto;
     border-left: none;
     border-right: none;
-    width: 140px;
+    width: 90%;
     letter-spacing: normal;
     transition: 0.5s;
     overflow: hidden;
@@ -193,15 +84,15 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
-    transform: skewX(45deg) translateX(0);
+    width: auto;
+    height: auto;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(45deg) translateX(0); */
     transition: 0.5s;
 }
 
 .claim-fd-button:hover > .claim-fd-button-text::before {
-    transform: skewX(45deg) translateX(200%);
+    /* transform: skewX(45deg) translateX(200%); */
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
@@ -224,7 +115,7 @@ body {
     grid-column: 1;
     grid-gap: 0px;
     height: fit-content;
-    width: 100%;
+    width: auto;
     place-items: left;
     text-align: center;
 }
@@ -260,10 +151,10 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.3), transparent);
-    transform: skewX(45deg) translateX(0);
+    width: auto;
+    height: auto;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.3), transparent);
+    transform: skewX(45deg) translateX(0); */
     transition: 0.5s;
     overflow: hidden;
 }
@@ -274,7 +165,7 @@ body {
 }
 
 .rewards:hover::after {
-    transform: skewX(45deg) translateX(200%);
+    /* transform: skewX(45deg) translateX(200%); */
 }
 
 .rewards-text > input {
@@ -317,95 +208,12 @@ body {
     position: relative;
 }
 
-.network-label {
-    padding-right: 10px;
-}
-
-.wrap-box {
-    position: relative;
-    white-space: nowrap;
-    overflow: hidden;
-    height: 9.5rem;
-    justify-content: right;
-    align-items: right;
-    text-align: right;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.6);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.6);
-    padding-right: 1.2em;
-    padding-top: .2em;
-    margin-top: 20px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    border-radius: 25px;
-}
-
-.wrap-box-content {
-    position: absolute;
-    width: 100%;
-    height: 9.5rem;
-    padding-right: 1.2em;
-    padding-top: .2em;
-}
-
-.wrap-box-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent);
-    transform: skewX(45deg) translateX(0);
-    transition: 0.5s;
-}
-
-.wrap-box-ftso {
-    position: relative;
-    white-space: nowrap;
-    overflow: hidden;
-    height: 9.5rem;
-    justify-content: right;
-    align-items: right;
-    text-align: right;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.6);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.6);
-    padding-right: 1.2em;
-    padding-top: .2em;
-    margin-top: 20px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    border-radius: 25px;
-}
-
 .wrapper {
     text-align: right;
     font-size: 2.4rem;
     color: #383a3b;
     margin-right: 20px;
     margin-top: 27px;
-}
-
-.token-identifier {
-    font-size: 2.4rem;
-    left: -1em;
-    margin-top: 27px;
-    float: left;
-    text-align: left;
-}
-
-
-.ftso-identifier {
-    font-size: 2.4rem;
-    padding-left: 1.7em;
-    margin-top: 27px;
-    float: left;
-    text-align: left;
 }
 
 .delegated-icon {
@@ -419,108 +227,18 @@ body {
     align-items: left;
 }
 
-.dummytext {
-    margin-top: 20px;
-}
-
 .logo {
     color: #000;
     margin-top: 15px;
     float: left;
-    width: 25% !important;
-    height: 50% !important;
+    width: auto !important;
+    height: auto !important;
     text-align: left;
     justify-content: left;
     align-items: left;
 }
 
-select {
-    outline: none;
-    font-size: 20px !important;
-    padding: .7em 20px;
-    cursor: pointer;
-    border-radius: .3em;
-    margin-right: 3em;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-top: 1.5px solid rgba(255, 255, 255, 0.4);
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border-left: none;
-    border-right: none;
-    color: #383a3b !important;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%2367696a;" /></svg>');
-    background-position: right 20px top 50%;
-    background-repeat: no-repeat;
-    background-size: 12px;
-    padding-right: 40px;
-    transition: 0.5s;
-    letter-spacing: normal;
-}
-
-.select-box {
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.select-box::after {
-    position: absolute;
-    display: inline-block;
-    content: '';
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent);
-    transform: skewX(45deg) translateX(12px);
-    transition: 0.5s;
-}
-
-.select-box:hover::after {
-    transform: skewX(45deg) translateX(250%);
-}
-
-
-.select-container {
-    text-align: right;
-    position: relative;
-}
-
-.dapp-box {
-    position: relative;
-    height: 54px;
-    display: inline-block;
-    overflow: hidden;
-}
-
-.select-box:focus,
-.select-box:hover > select {
-    outline: none;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23fd000f;" /></svg>');
-    color: #fd000f !important;
-    letter-spacing: 0.5px;
-}
-
-select option {
-    background-color: #fff;
-    color: #fd000f;
-}
-
 @media only screen and (min-width: 0px) and (max-width: 480px) {
-    body {
-        padding: 8.5em 0 0 0 !important;
-        background-repeat: no-repeat;
-        background-position-x: left 50%;
-        background-position-y: bottom 100%;
-        background-size: 350%;
-    }
-
-    .wrap-box {
-        height: 9rem;
-        margin: 10px 0 0;
-    }
 
     .wrap-box-ftso {
         height: 9rem;
@@ -545,42 +263,10 @@ select option {
         font-size: 2rem;
     }
 
-    .container {
-        padding: 0 10px !important;
-        height: fit-content;
-    }
-
-    .dapp-container {
-        padding: 25px 10px 17px;
-        width: 100%;
-    }
-
-    .dapp-buttons {
-        margin-top: 15px;
-        box-sizing: border-box;
-        display: grid;
-        grid: none;
-        grid-auto-flow: row !important;
-        grid-row: 1;
-        grid-gap: 15px;
-        height: fit-content;
-        width: 100%;
-        place-items: center;
-        text-align: center;
-    }
-
-    .connect-wallet {
-        padding: 8px 20px;
-        height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 1;
-    }
-
     .claim-button {
         padding: 8px 20px;
         height: 45px;
-        width: 70%;
+        width: auto;
         margin: 0;
         grid-row: 2;
     }
@@ -589,21 +275,13 @@ select option {
     .claim-fd-button {
         padding: 8px 20px;
         height: 45px;
-        width: 70%;
+        width: auto;
         margin: 0;
         grid-row: 3;
     }
 
-    .dummytext {
-        margin: 0;
-    }
-
-    .addr-wrap {
-        margin: 10px 10px 0;
-    }
-
     .rewards {
-        width: 55%;
+        width: auto;
         padding: 10px 0;
     }
 
@@ -614,10 +292,6 @@ select option {
     .dapp-box {
         height: 46px;
         padding: 0;
-    }
-
-    select {
-        padding: 0.5em 20px;
     }
 
     .select-container {
@@ -626,18 +300,6 @@ select option {
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
-    body {
-        padding: 8.5em 0 0 0 !important;
-        background-repeat: no-repeat;
-        background-position-x: left 50%;
-        background-position-y: bottom 100%;
-        background-size: 300%;
-    }
-
-    .wrap-box {
-        height: 9rem;
-        margin: 10px 0 0;
-    }
 
     .wrap-box-ftso {
         height: 9rem;
@@ -662,42 +324,10 @@ select option {
         font-size: 2rem;
     }
 
-    .container {
-        padding: 0 10px !important;
-        height: fit-content;
-    }
-
-    .dapp-container {
-        padding: 30px 44px 25px;
-        width: 80%;
-    }
-
-    .dapp-buttons {
-        margin-top: 15px;
-        box-sizing: border-box;
-        display: grid;
-        grid: none;
-        grid-auto-flow: row !important;
-        grid-row: 1;
-        grid-gap: 15px;
-        height: fit-content;
-        width: 100%;
-        place-items: center;
-        text-align: center;
-    }
-
-    .connect-wallet {
-        padding: 8px 20px;
-        height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 1;
-    }
-
     .claim-button {
         padding: 8px 20px;
         height: 45px;
-        width: 70%;
+        width: auto;
         margin: 0;
         grid-row: 2;
     }
@@ -705,21 +335,13 @@ select option {
     .claim-fd-button {
         padding: 8px 20px;
         height: 45px;
-        width: 70%;
+        width: auto;
         margin: 0;
         grid-row: 3;
     }
 
-    .dummytext {
-        margin: 0;
-    }
-
-    .addr-wrap {
-        margin: 10px 10px 0;
-    }
-
     .rewards {
-        width: 55%;
+        width: auto;
         padding: 10px 0;
     }
 
@@ -730,10 +352,6 @@ select option {
     .dapp-box {
         height: 46px;
         padding: 0;
-    }
-
-    select {
-        padding: 0.5em 20px;
     }
 
     .select-container {
@@ -742,18 +360,6 @@ select option {
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-    body {
-        padding: 8.5em 0 0 0 !important;
-        background-repeat: no-repeat;
-        background-position-x: left 50%;
-        background-position-y: bottom 100%;
-        background-size: 170%;
-    }
-
-    .wrap-box {
-        height: 9rem;
-        margin: 10px 0 0;
-    }
 
     .wrap-box-ftso {
         height: 9rem;
@@ -778,42 +384,10 @@ select option {
         font-size: 2rem;
     }
 
-    .container {
-        padding: 0 10px !important;
-        height: fit-content;
-    }
-
-    .dapp-container {
-        padding: 30px 44px 25px;
-        width: 80%;
-    }
-
-    .dapp-buttons {
-        margin-top: 15px;
-        box-sizing: border-box;
-        display: grid;
-        grid: none;
-        grid-auto-flow: row !important;
-        grid-row: 1;
-        grid-gap: 15px;
-        height: fit-content;
-        width: 100%;
-        place-items: center;
-        text-align: center;
-    }
-
-    .connect-wallet {
-        padding: 8px 20px;
-        height: 45px;
-        width: 70%;
-        margin: 0;
-        grid-row: 1;
-    }
-
     .claim-button {
         padding: 8px 20px;
         height: 45px;
-        width: 70%;
+        width: auto;
         margin: 0;
         grid-row: 2;
     }
@@ -821,21 +395,13 @@ select option {
     .claim-fd-button {
         padding: 8px 20px;
         height: 45px;
-        width: 70%;
+        width: auto;
         margin: 0;
         grid-row: 3;
     }
 
-    .dummytext {
-        margin: 0;
-    }
-
-    .addr-wrap {
-        margin: 10px 10px 0;
-    }
-
     .rewards {
-        width: 55%;
+        width: auto;
         padding: 10px 0;
     }
 
@@ -846,10 +412,6 @@ select option {
     .dapp-box {
         height: 46px;
         padding: 0;
-    }
-
-    select {
-        padding: 0.5em 20px;
     }
 
     .select-container {

@@ -108,6 +108,8 @@ class DappClaimController extends AggregateRootController implements AggregateEv
 
         $this->view['dappName'] = $baseConfig['dappName'];
 
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-main.css';
+
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-claim.css';
     }
 
