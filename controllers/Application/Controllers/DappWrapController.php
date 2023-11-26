@@ -11,12 +11,10 @@ use Ascmvc\EventSourcing\Event\Event;
 use Ascmvc\EventSourcing\EventDispatcher;
 use Ascmvc\EventSourcing\Event\AggregateEvent;
 use Ascmvc\Mvc\AscmvcEvent;
-use Pimple\Container;
-use Laminas\Diactoros\Response;
 
 class DappWrapController extends AggregateRootController implements AggregateEventListenerInterface
 {
-    const READ_REQUESTED =  'networks_read_received';
+    const READ_REQUESTED = 'networks_read_received';
 
     // Define the Aggregate's invokable listeners.
     protected $aggregateListenerNames = [
@@ -139,7 +137,7 @@ class DappWrapController extends AggregateRootController implements AggregateEve
     public function preIndexAction($vars = null)
     {
         if (isset($vars['get']['id'])) {
-            $networkArray['id'] = (string) $vars['get']['id'];
+            $networkArray['id'] = (string)$vars['get']['id'];
         } else {
             $networkArray = [];
         }
@@ -168,7 +166,7 @@ class DappWrapController extends AggregateRootController implements AggregateEve
         $this->view['bodyjs'] = 1;
 
         $this->view['dappwrap'] = 1;
-        
+
         $this->view['templatefile'] = 'dapp_index';
 
         return $this->view;

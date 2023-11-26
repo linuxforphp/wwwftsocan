@@ -16,7 +16,7 @@ use Laminas\Diactoros\Response;
 
 class DappDelegateController extends AggregateRootController implements AggregateEventListenerInterface
 {
-    const READ_REQUESTED =  'networks_read_received';
+    const READ_REQUESTED = 'networks_read_received';
 
     // Define the Aggregate's invokable listeners.
     protected $aggregateListenerNames = [
@@ -139,7 +139,7 @@ class DappDelegateController extends AggregateRootController implements Aggregat
     public function preIndexAction($vars = null)
     {
         if (isset($vars['get']['id'])) {
-            $networkArray['id'] = (string) $vars['get']['id'];
+            $networkArray['id'] = (string)$vars['get']['id'];
         } else {
             $networkArray = [];
         }
@@ -168,7 +168,7 @@ class DappDelegateController extends AggregateRootController implements Aggregat
         $this->view['bodyjs'] = 1;
 
         $this->view['dappdelegate'] = 1;
-        
+
         $this->view['templatefile'] = 'dapp_index';
 
         return $this->view;

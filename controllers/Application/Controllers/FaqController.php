@@ -11,9 +11,9 @@ class FaqController extends Controller
         $this->view['headjs'] = 1;
 
         $this->view['bodyjs'] = 1;
-        
+
         $this->view['templatefile'] = 'faq_index';
-        
+
         return $this->view;
     }
 }
