@@ -106,6 +106,8 @@ class DappWrapController extends AggregateRootController implements AggregateEve
 
         $baseConfig = $app->getBaseConfig();
 
+        $this->view['dappName'] = $baseConfig['dappName'];
+
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-wrap.css';
     }
 
@@ -162,8 +164,10 @@ class DappWrapController extends AggregateRootController implements AggregateEve
         $this->view['headjs'] = 1;
 
         $this->view['bodyjs'] = 1;
+
+        $this->view['dappwrap'] = 1;
         
-        $this->view['templatefile'] = 'dappwrap_index';
+        $this->view['templatefile'] = 'dapp_index';
 
         return $this->view;
     }

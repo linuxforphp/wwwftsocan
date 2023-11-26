@@ -106,6 +106,8 @@ class DappDelegateController extends AggregateRootController implements Aggregat
 
         $baseConfig = $app->getBaseConfig();
 
+        $this->view['dappName'] = $baseConfig['dappName'];
+
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-delegate.css';
     }
 
@@ -162,8 +164,10 @@ class DappDelegateController extends AggregateRootController implements Aggregat
         $this->view['headjs'] = 1;
 
         $this->view['bodyjs'] = 1;
+
+        $this->view['dappdelegate'] = 1;
         
-        $this->view['templatefile'] = 'dappdelegate_index';
+        $this->view['templatefile'] = 'dapp_index';
 
         return $this->view;
     }
