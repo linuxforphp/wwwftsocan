@@ -29,11 +29,21 @@
 <?php if ($view['bodyjs'] === 1): ?>
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
-<!-- <script href="../../Dapp/index.js"></script> -->
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat_flare_abi.js"></script>
+
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare_abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/human_standard_token_abi.js"></script>
 
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrapBundle.js"></script>
+<?php if (isset($view['dappwrap'])): ?>
+    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_wrapBundle.js"></script>
+<?php endif ?>
+<?php if (isset($view['dappdelegate'])): ?>
+    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim_setup_abi.js"></script>
+    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_delegateBundle.js"></script>
+<?php endif ?>
+<?php if (isset($view['dappclaim'])): ?>
+    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso_reward_abi.js"></script>
+    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution_abi.js"></script>
+    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp_claimBundle.js"></script>
+<?php endif ?>
 </body>
 </html>
