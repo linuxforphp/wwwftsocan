@@ -3,7 +3,6 @@
     // dapp_claim.js
     var ftso1 = document.getElementById("ftso-1");
     var ftso2 = document.getElementById("ftso-2");
-    var csmAbi = claimSetupAbi
     var ftsoRewardAbiLocal = ftsoRewardAbi
     var isRealValue = false;
     // var icon = document.getElementById("Icon");
@@ -27,13 +26,13 @@
     }
 
     function isInput1() {
-        if (Number(amount1.value.replace(/[^0-9]/g, '')) < 1 | Number(Amount1.value.replace(/^0-9]/g, '')) > 100) {
+        if (Number(amount1.value.replace(/[^0-9]/g, '')) < 1 || Number(Amount1.value.replace(/^0-9]/g, '')) > 100) {
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "auto";
             document.getElementById("ClaimButtonText").innerText = "Enter Amount";
             isRealValue = false;
         } else {
-            if (Number(amount1.value.replace(/[^0-9]/g, '')) == 50 || Number(Amount1.value.replace(/[^0-9]/g, '')) == 100) {
+            if (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 || Number(Amount1.value.replace(/[^0-9]/g, '')) === 100) {
                 document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                 document.getElementById("ClaimButton").style.cursor = "pointer";
                 isRealValue = true;
@@ -49,14 +48,14 @@
     }
 
     function isInput2() {
-        if (Number(amount2.value.replace(/[^0-9]/g, '')) < 1 | Number(Amount2.value.replace(/[^0-9]/g, '')) > 100) {
+        if (Number(amount2.value.replace(/[^0-9]/g, '')) < 1 || Number(Amount2.value.replace(/[^0-9]/g, '')) > 100) {
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "auto";
             document.getElementById("ClaimButtonText").innerText = "Enter Amount";
             isRealValue = false;
             isAmount2Active = false;
         } else {
-            if (Number(amount2.value.replace(/[^0-9]/g, '')) == 50 || Number(Amount2.value.replace(/[^0-9]/g, '')) == 100) {
+            if (Number(amount2.value.replace(/[^0-9]/g, '')) === 50 || Number(Amount2.value.replace(/[^0-9]/g, '')) === 100) {
                 document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                 document.getElementById("ClaimButton").style.cursor = "pointer";
                 isRealValue = true;
@@ -80,15 +79,15 @@
     }
 
     function isInput3() {
-        if (Number(amount1.value.replace(/[^0-9]/g, '')) + Number(amount2.value.replace(/[^0-9]/g, '')) > 100 | Number(ftso1?.options[ftso1.selectedIndex].getAttribute('data-ftso')) == 0) {
+        if (Number(amount1.value.replace(/[^0-9]/g, '')) + Number(amount2.value.replace(/[^0-9]/g, '')) > 100 || Number(ftso1?.options[ftso1.selectedIndex].getAttribute('data-ftso')) === 0) {
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "auto";
             document.getElementById("ClaimButtonText").innerText = "Enter Amount";
             isRealValue = false;
             isAmount2Active = false;
         } else {
-            if (Number(amount2.value.replace(/[^0-9]/g, '')) != '') {
-                if (ftso2?.options[ftso2.selectedIndex].getAttribute('data-ftso') == "0") {
+            if (Number(amount2.value.replace(/[^0-9]/g, '')) !== 0 && amount2.value.replace(/[^0-9]/g, '') !== '') {
+                if (ftso2?.options[ftso2.selectedIndex].getAttribute('data-ftso') === "0") {
                     document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
                     document.getElementById("ClaimButton").style.cursor = "auto";
                     document.getElementById("ClaimButtonText").innerText = "Enter Amount";
@@ -134,7 +133,6 @@
 
     async function populateFtsos() {
         var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
-        let img;
         let web32 = new Web3(rpcUrl);
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
         try {
@@ -156,7 +154,7 @@
 
                         if (ftsoJsonList.includes(ftsoList[i])) {
                             for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                                if (FtsoInfo.providers[f].address == ftsoList[i]) {
+                                if (FtsoInfo.providers[f].address === ftsoList[i]) {
                                     indexNumber = f
                                     //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
 
@@ -230,7 +228,7 @@
 
     // if network value is 1, FLR, if it is 2, SGB.
     function isNetworkValue(networkValue) {
-        if (networkValue == 1 | networkValue == 4) {
+        if (networkValue === 1 || networkValue === 4) {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
         } else {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
@@ -248,7 +246,7 @@
         chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
         networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 
-        if (networkValue == 1 | networkValue == 4) {
+        if (networkValue === 1 || networkValue === 4) {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             isInput1();
             if (isAmount2Active) {
@@ -280,7 +278,7 @@
 
         //If we have already logged in the account, show new results, else, do nothing
 
-        if (connectWalletBool == false) {
+        if (connectWalletBool === false) {
             if (!provider) {
                 alert("MetaMask is not installed, please install it.");
             } else {
@@ -289,7 +287,7 @@
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
                 try {
                     const isUnlocked = isWalletUnlocked();
-                    if (await isUnlocked != "false") {
+                    if (await isUnlocked !== "false") {
                         const SmartContracts = await flareContract.methods.getAllContracts().call();
                         const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
                         const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
@@ -319,7 +317,7 @@
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
         document.getElementById("ConnectWallet").addEventListener("click", async () => {
-            if (connectWalletBool == false) {
+            if (connectWalletBool === false) {
                 connectWalletBool = true;
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
@@ -428,7 +426,7 @@
     }
 
     provider.on("accountsChanged", async (accounts) => {
-        if (accounts.length != 0) {
+        if (accounts.length !== 0) {
             console.log("accountsChanged");
             const account = accounts[0];
             showAccountAddress(account);

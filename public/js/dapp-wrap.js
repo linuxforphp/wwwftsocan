@@ -24,7 +24,7 @@
   async function switchIconColor() {
     // Switching everything...
 
-    if (wrapUnwrapButton.value == "false") {
+    if (wrapUnwrapButton.value === "false") {
       wrapBool = false;
       wrapUnwrapButton.value = "true";
       fromIcon.style.color = "#000";
@@ -43,7 +43,7 @@
       showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
       isInput();
     }
-    if (connectWalletBool == true) {
+    if (connectWalletBool === true) {
       if (!provider) {
         alert("MetaMask is not installed, please install it.");
       } else {
@@ -52,7 +52,7 @@
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
         try {
           const isUnlocked = isWalletUnlocked();
-          if (await isUnlocked != "false") {
+          if (await isUnlocked !== "false") {
             const SmartContracts = await flareContract.methods.getAllContracts().call();
             const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
             const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
@@ -65,7 +65,7 @@
             const balance = await web32.eth.getBalance(account);
             const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-            if (wrapBool == false) {
+            if (wrapBool === false) {
               showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
               showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
             } else {
@@ -95,10 +95,7 @@
   // Has the wallet already been unlocked?
 
   async function isWalletUnlocked() {
-    
-    var unlocked = provider._metamask.isUnlocked() 
-
-    return unlocked;
+    return provider._metamask.isUnlocked()
   }
 
 // is a valid input?
@@ -114,7 +111,7 @@
       document.getElementById("WrapButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
       document.getElementById("WrapButton").style.cursor = "pointer";
       isRealValue = true;
-      if (wrapBool == true) {
+      if (wrapBool === true) {
         document.getElementById("WrapButtonText").innerText = "Wrap";
       } else {
         document.getElementById("WrapButtonText").innerText = "Unwrap";
@@ -134,7 +131,7 @@
 
   // if network value is 1, FLR, if it is 2, SGB.
   function isNetworkValue(networkValue) {
-    if (networkValue == 1 | networkValue == 4) {
+    if (networkValue === 1 || networkValue === 4) {
       tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
       wrappedTokenIdentifier = "W" + tokenIdentifier;
       document.getElementById("layer2").innerHTML = flrLogo;
@@ -161,7 +158,7 @@
     chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
     networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 
-    if (networkValue == 1 | networkValue == 4) {
+    if (networkValue === 1 || networkValue === 4) {
       tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
       wrappedTokenIdentifier = "W" + tokenIdentifier;
       document.getElementById("layer2").innerHTML = flrLogo;
@@ -204,7 +201,7 @@
           params: [{ chainId: chainidhex }],
         })
         const isUnlocked = isWalletUnlocked();
-        if (await isUnlocked != "false") {
+        if (await isUnlocked !== "false") {
           const SmartContracts = await flareContract.methods.getAllContracts().call();
           const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
           const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
@@ -230,7 +227,7 @@
 
     //If we have already logged in the account, show new results, else, do nothing
 
-    if (connectWalletBool == true) {
+    if (connectWalletBool === true) {
       if (!provider) {
         alert("MetaMask is not installed, please install it.");
       } else {
@@ -239,7 +236,7 @@
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
         try {
           const isUnlocked = isWalletUnlocked();
-          if (await isUnlocked != "false") {
+          if (await isUnlocked !== "false") {
             const SmartContracts = await flareContract.methods.getAllContracts().call();
             const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0],"WNat");
             const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
@@ -264,8 +261,6 @@
           console.log(error);
         }
       }
-    } else {
-      return
     }
   };
 
@@ -277,7 +272,7 @@
   } else {
     console.log("isMetaMask=", provider.isMetaMask);
     document.getElementById("ConnectWallet").addEventListener("click", async () => {
-      if (connectWalletBool == false) {
+      if (connectWalletBool === false) {
         connectWalletBool = true;
         let web32 = new Web3(rpcUrl);
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
@@ -335,7 +330,7 @@
 
   provider.on("accountsChanged", async (accounts) => {
     console.log("accountsChanged");
-    if (accounts.length != 0) {
+    if (accounts.length !== 0) {
       let web32 = new Web3(rpcUrl);
       let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
       try {
@@ -395,8 +390,8 @@
 
             const accounts = await provider.request({ method: 'eth_requestAccounts' });
             const account = accounts[0];
-            const balance = await web32.eth.getBalance(account);
-            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+            let balance = await web32.eth.getBalance(account);
+            let tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
             const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''))
 

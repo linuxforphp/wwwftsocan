@@ -77,7 +77,7 @@
 
     // if network value is 1, FLR, if it is 2, SGB.
     function isNetworkValue(networkValue) {
-        if (networkValue == 1 | networkValue == 4) {
+        if (networkValue === 1 || networkValue === 4) {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
             wrappedTokenIdentifier = 'W' + tokenIdentifier;
@@ -102,7 +102,7 @@
         chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
         networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 
-        if (networkValue == 1 | networkValue == 4) {
+        if (networkValue === 1 || networkValue === 4) {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
             wrappedTokenIdentifier = 'W' + tokenIdentifier;
@@ -136,7 +136,7 @@
 
         //If we have already logged in the account, show new results, else, do nothing
 
-        if (connectWalletBool == false) {
+        if (connectWalletBool === false) {
             if (!provider) {
                 alert("MetaMask is not installed, please install it.");
             } else {
@@ -145,7 +145,7 @@
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
                 try {
                     const isUnlocked = isWalletUnlocked();
-                    if (await isUnlocked != "false") {
+                    if (await isUnlocked !== "false") {
                         const SmartContracts = await flareContract.methods.getAllContracts().call();
                         const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
                         const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
@@ -175,7 +175,7 @@
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
         document.getElementById("ConnectWallet").addEventListener("click", async () => {
-            if (connectWalletBool == false) {
+            if (connectWalletBool === false) {
                 connectWalletBool = true;
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
@@ -248,12 +248,12 @@
 
                                 let indexNumber;
 
-                                if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length == 0) {
+                                if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length === 0) {
                                     for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                                        if (FtsoInfo.providers[f].address == delegatedFtsos[i]) {
+                                        if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
                                             indexNumber = f;
 
-                                            insert += `<div class="wrapBoxFTSO"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            insert += `<div class="wrapBoxFTSO"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                             delegatedFtsoElement.innerHTML = insert;
                                             console.log(`Ftso `, i, ` is valid!`);
                                             console.log(Bips);
@@ -286,7 +286,7 @@
 
                     console.log(Number(epochsUnclaimed[0]));
 
-                    var claimableAmountFd;
+                    let claimableAmountFd;
 
                     const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
@@ -394,12 +394,12 @@
 
                                 let indexNumber;
 
-                                if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length == 0) {
+                                if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length === 0) {
                                     for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                                        if (FtsoInfo.providers[f].address == delegatedFtsos[i]) {
+                                        if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
                                             indexNumber = f;
 
-                                            insert += `<div class="wrapBoxFTSO" data-addr"${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            insert += `<div class="wrapBoxFTSO" data-addr"${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                             delegatedFtsoElement.innerHTML = insert;
                                             console.log(`Ftso `, i, ` is valid!`);
                                             console.log(Bips);
@@ -479,7 +479,7 @@
 
     provider.on("accountsChanged", async (accounts) => {
         console.log("accountsChanged");
-        if (accounts.length != 0) {
+        if (accounts.length !== 0) {
             let web32 = new Web3(rpcUrl);
             let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
             try {
