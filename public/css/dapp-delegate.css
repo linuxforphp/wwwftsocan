@@ -1,25 +1,28 @@
 .claim-button {
     float: right;
-    margin-top: 25px;
-    margin-right: 20px;
+    margin: 20px;
     border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    padding: 12px 20px;
+    padding: 20px;
     color: white;
     text-decoration: none;
     font-size: 18px;
     cursor: auto;
     border-left: none;
     border-right: none;
-    width: auto;
+    width: 90%;
     letter-spacing: normal;
     transition: 0.5s;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.amount {
+    width: 10%!important;
 }
 
 .claim-button-text {
@@ -150,6 +153,22 @@
 
 .selected-ftso option {
     font-size: 2rem;
+}
+
+.wrap-box-ftso {
+    overflow: visible!important;
+}
+
+.wrap-box-content {
+    overflow: visible!important;
+}
+
+.row {
+    overflow: visible;
+}
+
+.row::before {
+    overflow: visible;
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {

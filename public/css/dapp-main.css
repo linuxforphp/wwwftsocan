@@ -267,7 +267,7 @@ body {
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
     body {
-        padding: 8.5em 0 0 0 !important;
+        padding: 9.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
@@ -290,7 +290,7 @@ body {
     }
 
     .dapp-container {
-        padding: 10px !important;
+        padding: 30px 24px 25px !important;
         width: auto;
     }
 
@@ -331,7 +331,7 @@ body {
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
     body {
-        padding: 8.5em 0 0 0 !important;
+        padding: 9.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
@@ -354,7 +354,7 @@ body {
     }
 
     .dapp-container {
-        padding: 10px !important;
+        padding: 30px 24px 25px !important;
         width: auto;
     }
 
@@ -399,7 +399,7 @@ body {
 
 @media (min-width: 768px) and (max-width: 979px) {
     body {
-        padding: 8.5em 0 0 0 !important;
+        padding: 9.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
@@ -417,7 +417,7 @@ body {
     }
 
     .dapp-container {
-        padding: 10px;
+        padding: 30px 24px 25px;
         width: auto;
     }
 
