@@ -149,7 +149,7 @@ a:hover, a:active, a:focus {
     .wrap-button {
         padding: 10px;
         height: 45px;
-        width: auto;
+        width: 40%;
         margin: 10px;
     }
 

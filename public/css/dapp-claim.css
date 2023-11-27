@@ -1,6 +1,22 @@
+.col-sm-4 {
+    align-items: center;
+    padding: 0 30px 0 0;
+}
+
+.token-identifier {
+    margin-top: 30px!important;
+}
+
+.connect-wallet {
+    margin-left: 20px;
+    height: auto;
+    width: 90%;
+    padding: 20px;
+}
+
 .claim-button {
     float: right;
-    margin: 20px;
+    margin: 20px 0 0;
     border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
@@ -13,7 +29,7 @@
     cursor: auto;
     border-left: none;
     border-right: none;
-    width: 90%;
+    width: 100%;
     letter-spacing: normal;
     transition: 0.5s;
     overflow: hidden;
@@ -54,7 +70,7 @@
 
 .claim-fd-button {
     float: right;
-    margin: 20px;
+    margin: 20px 0 0 20px;
     border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
@@ -67,7 +83,7 @@
     cursor: auto;
     border-left: none;
     border-right: none;
-    width: 90%;
+    width: 100%;
     letter-spacing: normal;
     transition: 0.5s;
     overflow: hidden;
@@ -106,19 +122,19 @@
     letter-spacing: 1.5px;
 }
 
-.dapp-buttons {
-    margin-top: 15px;
-    box-sizing: border-box;
-    display: grid;
-    grid: none;
-    grid-auto-flow: column !important;
-    grid-column: 1;
-    grid-gap: 0px;
-    height: fit-content;
-    width: auto;
-    place-items: left;
-    text-align: center;
-}
+/*.dapp-buttons {*/
+/*    margin-top: 15px;*/
+/*    box-sizing: border-box;*/
+/*    display: grid;*/
+/*    grid: none;*/
+/*    grid-auto-flow: column !important;*/
+/*    grid-column: 1;*/
+/*    grid-gap: 0px;*/
+/*    height: fit-content;*/
+/*    width: auto;*/
+/*    place-items: left;*/
+/*    text-align: center;*/
+/*}*/
 
 .rewards {
     position: relative;
@@ -209,11 +225,13 @@
 }
 
 .wrapper {
+    float: right;
+    width: 50%;
     text-align: right;
     font-size: 2.4rem;
     color: #383a3b;
     margin-right: 20px;
-    margin-top: 27px;
+    margin-top: 30px;
 }
 
 .delegated-icon {
@@ -229,16 +247,22 @@
 
 .logo {
     color: #000;
-    margin-top: 15px;
+    margin: 15px 35px;
+    margin-right: 45px;
     float: left;
-    width: auto !important;
-    height: auto !important;
+    width: 6.5% !important;
+    height: 6.5% !important;
     text-align: left;
     justify-content: left;
     align-items: left;
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
+
+    .logo {
+        width: 8% !important;
+        height: 8% !important;
+    }
 
     .wrap-box-ftso {
         height: 9rem;
@@ -256,32 +280,43 @@
     }
 
     .wrapper {
-        font-size: 2rem;
+        width: 45%;
     }
 
     .token-identifier {
-        font-size: 2rem;
+        margin-top: 30px!important;
+    }
+
+    .connect-wallet {
+        margin-left: 25%;
+        height: 45px;
+        width: auto;
+        padding: 10px 20px;
     }
 
     .claim-button {
-        padding: 8px 20px;
+        float: left;
+        margin-top: 0;
+        margin-bottom: 20px;
+        margin-left: 20px;
         height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 2;
+        width: 40%;
+        padding: 10px 20px;
     }
 
 
     .claim-fd-button {
-        padding: 8px 20px;
+        float: left;
+        margin-top: 0;
+        margin-left: 20px;
+        margin-bottom: 20px;
         height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 3;
+        width: 40%;
+        padding: 10px 20px;
     }
 
     .rewards {
-        width: auto;
+        width: 177px;
         padding: 10px 0;
     }
 
@@ -301,6 +336,11 @@
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
 
+    .logo {
+        width: 8% !important;
+        height: 8% !important;
+    }
+
     .wrap-box-ftso {
         height: 9rem;
         margin: 10px 0 0;
@@ -311,37 +351,41 @@
         margin-left: 15px;
     }
 
+    .connect-wallet {
+        margin-left: 25%;
+        height: 45px;
+        width: auto;
+        padding: 10px 20px;
+    }
+
+    .claim-button {
+        float: left;
+        margin-top: 0;
+        margin-bottom: 20px !important;
+        margin-left: 20px !important;
+        height: 45px !important;
+        width: 40% !important;
+        padding: 10px 20px !important;
+    }
+
+
+    .claim-fd-button {
+        float: left;
+        margin-top: 0;
+        margin-left: 20px !important;
+        margin-bottom: 20px !important;
+        height: 45px !important;
+        width: 40% !important;
+        padding: 10px 20px !important;
+    }
+
     .ftso-identifier {
         font-size: 2rem;
         padding-left: 0.7em;
     }
 
-    .wrapper {
-        font-size: 2rem;
-    }
-
-    .token-identifier {
-        font-size: 2rem;
-    }
-
-    .claim-button {
-        padding: 8px 20px;
-        height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 2;
-    }
-
-    .claim-fd-button {
-        padding: 8px 20px;
-        height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 3;
-    }
-
     .rewards {
-        width: auto;
+        width: 177px;
         padding: 10px 0;
     }
 
@@ -376,32 +420,36 @@
         padding-left: 0.7em;
     }
 
-    .wrapper {
-        font-size: 2rem;
-    }
-
-    .token-identifier {
-        font-size: 2rem;
+    .connect-wallet {
+        margin-left: 30%;
+        height: 45px;
+        width: 40%;
+        padding: 10px 20px;
     }
 
     .claim-button {
-        padding: 8px 20px;
-        height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 2;
+        float: left;
+        margin-top: 0;
+        margin-bottom: 20px !important;
+        margin-left: 30px !important;
+        height: 45px !important;
+        width: 70% !important;
+        padding: 10px 20px !important;
     }
 
+
     .claim-fd-button {
-        padding: 8px 20px;
-        height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 3;
+        float: left;
+        margin-top: 0;
+        margin-left: 30px !important;
+        margin-bottom: 20px !important;
+        height: 45px !important;
+        width: 70% !important;
+        padding: 10px 20px !important;
     }
 
     .rewards {
-        width: auto;
+        width: 177px;
         padding: 10px 0;
     }
 

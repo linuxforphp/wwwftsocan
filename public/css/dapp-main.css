@@ -131,6 +131,11 @@ body {
     border-radius: 25px;
 }
 
+.wrap-box-content {
+    width: auto;
+    height: auto;
+}
+
 .wrap-box-content::before {
     content: '';
     position: absolute;
@@ -294,17 +299,17 @@ body {
         width: auto;
     }
 
-    .dapp-buttons {
-        margin: 15px;
-        box-sizing: border-box;
-        display: grid;
-        width: auto;
-        place-items: center;
-        text-align: center;
-    }
+    /*.dapp-buttons {*/
+    /*    margin: 15px;*/
+    /*    box-sizing: border-box;*/
+    /*    display: grid;*/
+    /*    width: auto;*/
+    /*    place-items: center;*/
+    /*    text-align: center;*/
+    /*}*/
 
     .connect-wallet {
-        padding: 10px;
+        padding: 10px 20px;
         height: 45px;
         width: auto;
         margin: 10px;
@@ -358,13 +363,13 @@ body {
         width: auto;
     }
 
-    .dapp-buttons {
-        margin: 15px;
-        box-sizing: border-box;
-        width: auto;
-        place-items: center;
-        text-align: center;
-    }
+    /*.dapp-buttons {*/
+    /*    margin: 15px;*/
+    /*    box-sizing: border-box;*/
+    /*    width: auto;*/
+    /*    place-items: center;*/
+    /*    text-align: center;*/
+    /*}*/
 
     .connect-wallet {
         padding: 10px;
@@ -389,7 +394,7 @@ body {
     }
 
     .selected-network {
-        padding: 10px;
+        padding: 10px 20px;
     }
 
     .select-container {
@@ -421,14 +426,14 @@ body {
         width: auto;
     }
 
-    .dapp-buttons {
-        margin: 15px;
-        box-sizing: border-box;
-        display: grid;
-        width: auto;
-        place-items: center;
-        text-align: center;
-    }
+    /*.dapp-buttons {*/
+    /*    margin: 15px;*/
+    /*    box-sizing: border-box;*/
+    /*    display: grid;*/
+    /*    width: auto;*/
+    /*    place-items: center;*/
+    /*    text-align: center;*/
+    /*}*/
 
     .connect-wallet {
         padding: 10px;
@@ -453,7 +458,7 @@ body {
     }
 
     .selected-network {
-        padding: 10px;
+        padding: 10px 20px;
     }
 
     .select-container {

@@ -173,21 +173,29 @@
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
 
+    .connect-wallet {
+        float: left;
+    }
+
+    .amount {
+        width: 15%!important;
+    }
+
     .claim-button {
+        float: right;
         padding: 10px;
+        margin: 10px;
         height: 45px;
-        width: auto;
-        grid-row: 2;
+        width: 40%;
     }
 
     .selected-ftso {
-        font-size: 2rem !important;
         width: auto;
         padding: 25px 20px;
     }
 
     .delegate {
-        width: auto;
+        width: 120px;
         padding: 10px 0;
     }
 
@@ -203,27 +211,35 @@
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
 
+    .connect-wallet {
+        float: left;
+        margin: 10px;
+    }
+
+    .amount {
+        width: 15%!important;
+    }
+
     .wrap-box-ftso {
         height: 9rem;
         margin: 10px 0 0;
     }
 
     .claim-button {
-        padding: 8px 20px;
+        float: right;
+        padding: 10px;
+        margin: 10px;
         height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 2;
+        width: 40%;
     }
 
     .selected-ftso {
-        font-size: 2rem !important;
         width: auto;
         padding: 25px 20px;
     }
 
     .delegate {
-        width: auto;
+        width: 120px;
         padding: 10px 0;
     }
 
@@ -239,27 +255,35 @@
 
 @media (min-width: 768px) and (max-width: 979px) {
 
+    .connect-wallet {
+        float: left;
+        margin: 10px;
+    }
+
     .wrap-box-ftso {
         height: 9rem;
         margin: 10px 0 0;
     }
 
+    .amount {
+        width: 15%!important;
+    }
+
     .claim-button {
-        padding: 8px 20px;
+        float: right;
+        padding: 10px;
+        margin: 10px;
         height: 45px;
-        width: auto;
-        margin: 0;
-        grid-row: 2;
+        width: 40%;
     }
 
     .selected-ftso {
-        font-size: 2rem !important;
         width: auto;
         padding: 25px 20px;
     }
 
     .delegate {
-        width: auto;
+        width: 120px;
         padding: 10px 0;
     }
 
