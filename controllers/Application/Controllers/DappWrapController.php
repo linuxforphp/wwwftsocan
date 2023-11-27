@@ -107,8 +107,11 @@ class DappWrapController extends AggregateRootController implements AggregateEve
         $this->view['dappName'] = $baseConfig['dappName'];
 
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-main.css';
-
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-wrap.css';
+
+        $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/glob.min.js';
+        $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/web3.min.js';
+        $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/metamask-sdk.js';
     }
 
     /**

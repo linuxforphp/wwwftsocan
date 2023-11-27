@@ -29,11 +29,6 @@
 <!-- Custom functions -->
 <script src="<?=$view['urlbaseaddr'] ?>js/main.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/glob@10.3.4/dist/mjs/glob.min.js"></script>
-<script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-<script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
-
 <script>
     feather.replace()
 </script>

@@ -11,8 +11,6 @@ use Ascmvc\EventSourcing\Event\Event;
 use Ascmvc\EventSourcing\EventDispatcher;
 use Ascmvc\EventSourcing\Event\AggregateEvent;
 use Ascmvc\Mvc\AscmvcEvent;
-use Pimple\Container;
-use Laminas\Diactoros\Response;
 
 class DappClaimController extends AggregateRootController implements AggregateEventListenerInterface
 {
@@ -109,8 +107,11 @@ class DappClaimController extends AggregateRootController implements AggregateEv
         $this->view['dappName'] = $baseConfig['dappName'];
 
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-main.css';
-
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-claim.css';
+
+        $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/glob.min.js';
+        $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/web3.min.js';
+        $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/metamask-sdk.js';
     }
 
     /**
