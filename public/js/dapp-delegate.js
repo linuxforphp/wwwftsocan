@@ -1,9 +1,9 @@
 "use strict";
 (() => {
     // dapp_claim.js
+    var voterWhitelisterAbiLocal = voterWhitelisterAbi
     var ftso1 = document.getElementById("ftso-1");
     var ftso2 = document.getElementById("ftso-2");
-    var ftsoRewardAbiLocal = ftsoRewardAbi
     var isRealValue = false;
     // var icon = document.getElementById("Icon");
     var claimBool = false
@@ -191,7 +191,7 @@
         isInput2();
     }
 
-    amount1.addEventListener('keyup', function () {
+    amount1.addEventListener('input', function () {
         var str = this.value;
         var suffix = "%";
 
@@ -201,15 +201,20 @@
 
         var actualLength = str.length - suffix.length;
 
-        // set the value
-        this.value = str.substring(0, actualLength) + suffix;
+        if (actualLength === 0) {
+            this.value = str.substring(0, actualLength)
 
-        // set cursor position
-        this.setSelectionRange(actualLength, actualLength);
+            this.setSelectionRange(actualLength, actualLength);
+        } else {
+            this.value = str.substring(0, actualLength) + suffix;
+
+            // set cursor position
+            this.setSelectionRange(actualLength, actualLength);
+        }
     });
 
 
-    amount2.addEventListener('keydown', function () {
+    amount2.addEventListener('input', function () {
         var str = this.value;
         var suffix = "%";
 
@@ -219,11 +224,16 @@
 
         var actualLength = str.length - suffix.length;
 
-        // set the value
-        this.value = str.substring(0, actualLength) + suffix;
+        if (actualLength === 0) {
+            this.value = str.substring(0, actualLength)
 
-        // set cursor position
-        this.setSelectionRange(actualLength, actualLength);
+            this.setSelectionRange(actualLength, actualLength);
+        } else {
+            this.value = str.substring(0, actualLength) + suffix;
+
+            // set cursor position
+            this.setSelectionRange(actualLength, actualLength);
+        }
     });
 
     // if network value is 1, FLR, if it is 2, SGB.
@@ -325,12 +335,8 @@
                     const SmartContracts = await flareContract.methods.getAllContracts().call();
                     const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
                     const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-                    const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0], "FtsoRewardManager");
-                    const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
 
                     let tokenContract = new web32.eth.Contract(wnatAbi, wrappedTokenAddr);
-
-                    let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
 
                     const accounts = (await provider.send("eth_requestAccounts")).result;
                     const account = accounts[0];
@@ -338,31 +344,6 @@
                     const balance = await web32.eth.getBalance(account);
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-
-                    // Getting the unclaimed Rewards and affecting the Claim button
-
-                    const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-
-                    let unclaimedAmount = 0;
-
-                    let l;
-
-                    for (var k = 0; k < epochsUnclaimed.length; k++) {
-                        l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
-                        unclaimedAmount += Number(l[1]);
-                    }
-
-                    const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether");
-
-                    showRewards(round(convertedRewards));
-
-                    //Changing the color of Claim button
-
-                    if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
-                        switchButtonColor();
-                    } else {
-                        switchButtonColorBack();
-                    }
 
                     console.log(`Account `, account, ` has `, balance, ` tokens `, tokenBalance, ` wrapped tokens, and `, UnclaimedAmount, ` unclaimed tokens.`);
                     console.log(`Smart contract list: `, SmartContracts);
@@ -379,12 +360,8 @@
                     const SmartContracts = await flareContract.methods.getAllContracts().call();
                     const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
                     const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-                    const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0], "FtsoRewardManager");
-                    const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
 
                     let tokenContract = new web32.eth.Contract(wnatAbi, wrappedTokenAddr);
-
-                    let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
 
                     const accounts = (await provider.send("eth_requestAccounts")).result;
                     const account = accounts[0];
@@ -392,29 +369,6 @@
                     const balance = await web32.eth.getBalance(account);
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-
-                    // Getting the unclaimed Rewards and affecting the Claim button
-
-                    const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-
-                    let unclaimedAmount = 0;
-
-                    let l;
-
-                    for (var k = 0; k < epochsUnclaimed.length; k++) {
-                        l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
-                       unclaimedAmount += Number(l[1]);
-                    }
-
-                    const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether");
-
-                    showRewards(round(convertedRewards));
-
-                    //Changing the color of Claim button
-
-                    if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
-                        switchButtonColor()
-                    }
 
                     console.log(`Account `, account, ` has `, balance, ` tokens `, tokenBalance, ` wrapped tokens, and `, unclaimedAmount, ` unclaimed tokens.`);
                     console.log(`Smart contract list: `, SmartContracts);
