@@ -105,6 +105,7 @@ class DappWrapController extends AggregateRootController implements AggregateEve
         $baseConfig = $app->getBaseConfig();
 
         $this->view['dappName'] = $baseConfig['dappName'];
+        $this->view['env'] = $baseConfig['env'];
 
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-main.css';
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-wrap.css';
@@ -159,7 +160,24 @@ class DappWrapController extends AggregateRootController implements AggregateEve
     public function indexAction($vars = null)
     {
         if (isset($this->results) && !empty($this->results)) {
-            $this->view['results'] = $this->results;
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
         } else {
             $this->view['results']['nodata'] = 'No results';
         }
