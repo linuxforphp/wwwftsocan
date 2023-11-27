@@ -38,6 +38,7 @@
     <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp-wrap.js"></script>
 <?php endif ?>
 <?php if (isset($view['dappdelegate'])): ?>
+    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
     <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
     <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp-delegate.js"></script>
 <?php endif ?>
