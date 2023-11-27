@@ -196,7 +196,7 @@
 
                     let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
 
-                    let voterWhitelistContract = new web32.eth.Contract(voterWhitelisterAbiLocal, voterWhitelistAddr);
+                    let voterWhitelistContract = new web32.eth.Contract(F, voterWhitelistAddr);
 
                     const accounts = (await provider.send("eth_requestAccounts")).result;
                     const account = accounts[0];
@@ -512,52 +512,54 @@
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
         document.getElementById("ClaimButton").addEventListener("click", async () => {
-            let web32 = new Web3(rpcUrl);
-            let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
-            try {
-                const accounts = (await provider.send("eth_requestAccounts")).result;
-                const account = accounts[0];
+            if (claimBool === true) {
+                let web32 = new Web3(rpcUrl);
+                let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+                try {
+                    const accounts = (await provider.send("eth_requestAccounts")).result;
+                    const account = accounts[0];
 
-                const SmartContracts = await flareContract.methods.getAllContracts().call();
-                const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-                const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                    const SmartContracts = await flareContract.methods.getAllContracts().call();
+                    const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
+                    const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
 
-                let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0], "FtsoRewardManager");
-                const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
-                let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
+                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+                    const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0], "FtsoRewardManager");
+                    const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
+                    let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
 
-                const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
+                    const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
 
-                var transactionParameters
+                    var transactionParameters
 
-                for (var p = 0; p < epochsUnclaimed.length; p++) {
-                    if (checkBox.checked) {
-                        transactionParameters = {
-                            from: account,
-                            to: ftsoRewardAddr,
-                            data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), true).encodeABI(),
-                        };
-                    } else {
-                        transactionParameters = {
-                            from: account,
-                            to: ftsoRewardAddr,
-                            data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), false).encodeABI(),
-                        };
+                    for (var p = 0; p < epochsUnclaimed.length; p++) {
+                        if (checkBox.checked) {
+                            transactionParameters = {
+                                from: account,
+                                to: ftsoRewardAddr,
+                                data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), true).encodeABI(),
+                            };
+                        } else {
+                            transactionParameters = {
+                                from: account,
+                                to: ftsoRewardAddr,
+                                data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), false).encodeABI(),
+                            };
+                        }
+
+                        await provider.request({
+                            method: 'eth_sendTransaction',
+                            params: [transactionParameters],
+                        });
                     }
 
-                    await provider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters],
-                    });
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                    showRewards(0.0);
+                    switchButtonColorBack();
+                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                } catch (error) {
+                    console.log(error);
                 }
-
-                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                showRewards(0.0);
-                switchButtonColorBack();
-                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-            } catch (error) {
-                console.log(error);
             }
         })
     }
@@ -567,53 +569,55 @@
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
         document.getElementById("ClaimFdButton").addEventListener("click", async () => {
-            let web32 = new Web3(rpcUrl);
-            let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
-            try {
-                const accounts = (await provider.send("eth_requestAccounts")).result;
-                const account = accounts[0];
+            if (fdClaimBool === true) {
+                let web32 = new Web3(rpcUrl);
+                let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+                try {
+                    const accounts = (await provider.send("eth_requestAccounts")).result;
+                    const account = accounts[0];
 
-                const SmartContracts = await flareContract.methods.getAllContracts().call();
-                const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-                const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                    const SmartContracts = await flareContract.methods.getAllContracts().call();
+                    const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
+                    const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
 
-                let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
 
-                const DistributionDelegatorsIndex = getKeyByValue(Object.values(SmartContracts)[0], "DistributionToDelegators");
-                const DistributionDelegatorsAddr = SmartContracts[1][DistributionDelegatorsIndex];
-                let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
+                    const DistributionDelegatorsIndex = getKeyByValue(Object.values(SmartContracts)[0], "DistributionToDelegators");
+                    const DistributionDelegatorsAddr = SmartContracts[1][DistributionDelegatorsIndex];
+                    let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
 
-                const ClaimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
+                    const ClaimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-                var transactionParameters
+                    var transactionParameters
 
-                for (var i = 0; i < ClaimableMonths.length; i++) {
-                    if (checkBox.checked) {
-                        transactionParameters = {
-                            from: account,
-                            to: DistributionDelegatorsAddr,
-                            data: DistributionDelegatorsContract.methods.claim(account, account, ClaimableMonths[i], true).encodeABI(),
-                        };
-                    } else {
-                        transactionParameters = {
-                            from: account,
-                            to: DistributionDelegatorsAddr,
-                            data: DistributionDelegatorsContract.methods.claim(account, account, ClaimableMonths[i], false).encodeABI(),
-                        };
+                    for (var i = 0; i < ClaimableMonths.length; i++) {
+                        if (checkBox.checked) {
+                            transactionParameters = {
+                                from: account,
+                                to: DistributionDelegatorsAddr,
+                                data: DistributionDelegatorsContract.methods.claim(account, account, ClaimableMonths[i], true).encodeABI(),
+                            };
+                        } else {
+                            transactionParameters = {
+                                from: account,
+                                to: DistributionDelegatorsAddr,
+                                data: DistributionDelegatorsContract.methods.claim(account, account, ClaimableMonths[i], false).encodeABI(),
+                            };
+                        }
+
+                        await provider.request({
+                            method: 'eth_sendTransaction',
+                            params: [transactionParameters],
+                        })
                     }
 
-                    await provider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters],
-                    })
+                    showFdRewards(0.0);
+                    switchFdButtonColorBack();
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                } catch (error) {
+                    console.log(error);
                 }
-
-                showFdRewards(0.0);
-                switchFdButtonColorBack();
-                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-            } catch (error) {
-                console.log(error);
             }
         })
     }

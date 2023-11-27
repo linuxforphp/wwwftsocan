@@ -58,13 +58,18 @@
 
         <div class="row">
             <div class="dapp-buttons">
-                <div class="col-sm-4">
+                <div class="col-sm-12">
                     <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
                 </div>
-                <div class="col-sm-4">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="dapp-buttons">
+                <div class="col-sm-6">
                     <button id="ClaimButton" class="claim-button"><i class="claim-button-text" id="ClaimButtonText">0.0</i></button>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <button id="ClaimFdButton" class="claim-fd-button"><i class="claim-fd-button-text" id="ClaimFdButtonText">0.0</i></button>
                 </div>
             </div>
