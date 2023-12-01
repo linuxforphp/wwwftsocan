@@ -10,7 +10,7 @@
 Fixed Navigation
 ==================================== -->
 <header id="navigation" class="navbar-inverse navbar-fixed-top animated-header">
-    <div class="container">
+    <div class="container" style="margin-bottom: 1em;">
         <div class="navbar-header">
             <!-- responsive nav button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -34,13 +34,38 @@ Fixed Navigation
         <!-- main nav -->
         <nav class="collapse navbar-collapse navbar-right" role="navigation">
             <ul id="nav" class="nav navbar-nav">
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">Wrap</a></li>
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappdelegate/index')">Delegate</a></li>
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappclaim/index')">Rewards</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>index')">Home</a></li>
+                <li id="delegate-dropdown">
+                    <a href="#" class="delegate-dropdown">Delegation Tools <i class="fas fa-caret-down"></i></a>
+                    <div class="dd-menu">
+                        <div class="dropdown-menu-dapp" style="left: 0px;">
+                            <ul>
+                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">Dapp<sup><strong> NEW!</strong></sup></a></li>
+                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>delegate/index')">Flare Portal</a></li>
+                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>stake/index')">FlareStake Tool</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>faq/index')">FAQ</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(2)">About</a></li>
             </ul>
         </nav>
         <!-- /main nav -->
     </div>
+    <!-- secondary nav -->
+    <nav class="navbar-dapp-actions navbar-expand">
+        <div class="container">
+            <div class="collapse navbar-collapse static-top navbar-right" role="navigation">
+                <ul class="nav navbar-nav navbar-nav-dapp nav-item">
+                    <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">Wrap</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappdelegate/index')">Delegate</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappclaim/index')">Rewards</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- /secondary nav -->
 </header>
 <!--
 End Fixed Navigation

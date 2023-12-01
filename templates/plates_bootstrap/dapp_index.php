@@ -13,7 +13,7 @@
 <body>
 <main class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main">
     <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
-        <div class="dapp-container p-2">
+        <div class="dapp-container">
             <?php if (isset($view['dappwrap'])): ?>
                 <?=$this->section('dappwrap', $this->fetch('dappwrap', ['view' => $view]))?>
             <?php endif ?>

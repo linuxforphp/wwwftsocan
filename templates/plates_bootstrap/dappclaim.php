@@ -51,11 +51,9 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div id="after"></div>
         </div>
-
         <div class="row">
             <div class="dapp-buttons">
                 <div class="col-sm-12">
@@ -63,7 +61,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="dapp-buttons">
                 <div class="col-sm-6">
@@ -74,7 +71,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="dummytext">                       
                 <div class="addr-wrap">
