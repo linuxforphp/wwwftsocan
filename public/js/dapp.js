@@ -1,14 +1,14 @@
-// simple math function
+// Simple math function.
 function round(num) {
     return +(Math.round(num + "e+4") + "e-4");
 }
 
-// show user's account address
+// Show user's account address.
 function showAccountAddress(address) {
     document.getElementById('ConnectWalletText').innerText = address;
 }
 
-// getting the key of a function by its name
+// Getting the key of a function by its name.
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
@@ -17,7 +17,7 @@ function showTokenBalance(tokenBalanceAddress) {
     document.getElementById("TokenBalance").innerText = tokenBalanceAddress;
 }
 
-// is value a number?
+// Is value a number?
 function isNumber(value) {
     if (void 0 === value || null === value) {
         return false;
@@ -41,7 +41,8 @@ const MMSDK = new MetaMaskSDK.MetaMaskSDK({
     logging: {
         sdk: false,
     }
-})
+});
+
 var provider = window.ethereum;
 var selectedNetwork = document.getElementById("SelectedNetwork");
 var ercAbi = wnatAbi;

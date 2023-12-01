@@ -1,4 +1,5 @@
 "use strict";
+
 (() => {
     // dapp_claim.js
     var voterWhitelisterAbiLocal = voterWhitelisterAbi
@@ -12,17 +13,16 @@
     var isAmount2Active = false;
 
     // switch claim button to claimable
-
     function switchButtonColor() {
         document.getElementById('ClaimButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimBool = true;
-        document.getElementById('ClaimButton').style.cursor = "pointer"
+        document.getElementById('ClaimButton').style.cursor = "pointer";
     }
 
     function switchButtonColorBack() {
         document.getElementById('ClaimButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         claimBool = false;
-        document.getElementById('ClaimButton').style.cursor = "auto"
+        document.getElementById('ClaimButton').style.cursor = "auto";
     }
 
     function isInput1() {
@@ -69,6 +69,7 @@
                 isRealValue = false;
                 isAmount2Active = false;
             }
+
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "pointer";
             isRealValue = true;
@@ -110,8 +111,7 @@
         }
     }
 
-    //Checking if Metamask wallet is unlocked
-
+    //Checking if Metamask wallet is unlocked.
     async function isWalletUnlocked() {
         const Web3provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -129,12 +129,12 @@
     }
 
 
-    // Populate select elements
-
+    // Populate select elements.
     async function populateFtsos() {
         var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
         let web32 = new Web3(rpcUrl);
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+
         try {
             const SmartContracts = await flareContract.methods.getAllContracts().call();
             const voterWhitelistIndex = getKeyByValue(Object.values(SmartContracts)[0], "VoterWhitelister");
@@ -143,30 +143,30 @@
 
             const ftsoList = await voterWhitelistContract.methods.getFtsoWhitelistedPriceProviders(0).call();
 
-            const ftsoJsonList = JSON.stringify(ftsoList)
+            const ftsoJsonList = JSON.stringify(ftsoList);
 
             fetch('https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json')
                 .then(res => res.json())
                 .then(FtsoInfo => {
                     for (var i = 0; i < ftsoList.length; i++) {
-
-                        let indexNumber
+                        let indexNumber;
 
                         if (ftsoJsonList.includes(ftsoList[i])) {
                             for (var f = 0; f < FtsoInfo.providers.length; f++) {
                                 if (FtsoInfo.providers[f].address === ftsoList[i]) {
-                                    indexNumber = f
+                                    indexNumber = f;
                                     //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
 
                                     insert += `<option value="${i}" data-img="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
                                     ftso1.innerHTML = insert;
                                     ftso2.innerHTML = insert;
-                                    console.log(FtsoInfo.providers[indexNumber].name)
+
+                                    console.log(FtsoInfo.providers[indexNumber].name);
                                 }
                             }
                         } else {
                             alert('The FTSO you have delegated to is invalid!');
-                            break
+                            break;
                         }
                     }
                 })
@@ -178,16 +178,16 @@
     populateFtsos();
 
     ftso1.onchange = async () => {
-        var img = ftso1?.options[ftso1.selectedIndex].getAttribute('data-img')
-        var delegatedicon = document.getElementById("delegatedIcon1")
-        delegatedicon.src = img
+        var img = ftso1?.options[ftso1.selectedIndex].getAttribute('data-img');
+        var delegatedicon = document.getElementById("delegatedIcon1");
+        delegatedicon.src = img;
         isInput1();
     }
 
     ftso2.onchange = async () => {
-        var img = ftso2?.options[ftso2.selectedIndex].getAttribute('data-img')
-        var delegatedicon = document.getElementById("delegatedIcon2")
-        delegatedicon.src = img
+        var img = ftso2?.options[ftso2.selectedIndex].getAttribute('data-img');
+        var delegatedicon = document.getElementById("delegatedIcon2");
+        delegatedicon.src = img;
         isInput2();
     }
 
@@ -225,7 +225,7 @@
         var actualLength = str.length - suffix.length;
 
         if (actualLength === 0) {
-            this.value = str.substring(0, actualLength)
+            this.value = str.substring(0, actualLength);
 
             this.setSelectionRange(actualLength, actualLength);
         } else {
@@ -236,7 +236,7 @@
         }
     });
 
-    // if network value is 1, FLR, if it is 2, SGB.
+    // If network value is 1 or 4, FLR or C2FLR, else SGB or CFLR.
     function isNetworkValue(networkValue) {
         if (networkValue === 1 || networkValue === 4) {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
@@ -247,6 +247,7 @@
 
     isNetworkValue(networkValue);
     isInput1();
+
     if (isAmount2Active) {
         isInput2();
     }
@@ -259,23 +260,25 @@
         if (networkValue === 1 || networkValue === 4) {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             isInput1();
+
             if (isAmount2Active) {
                 isInput2();
             }
         } else {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             isInput1();
+
             if (isAmount2Active) {
                 isInput2();
             }
         }
 
-        //Alert Metamask to switch
-
+        // Alert Metamask to switch.
         if (!provider) {
             alert("MetaMask is not installed, please install it.");
         } else {
             console.log("isMetaMask=", provider.isMetaMask);
+
             try {
                 await provider.request({
                     method: 'wallet_switchEthereumChain',
@@ -286,17 +289,19 @@
             }
         }
 
-        //If we have already logged in the account, show new results, else, do nothing
-
+        // If we have already logged in the account, show new results, else do nothing.
         if (connectWalletBool === false) {
             if (!provider) {
                 alert("MetaMask is not installed, please install it.");
             } else {
                 console.log("isMetaMask=", provider.isMetaMask);
+
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+
                 try {
                     const isUnlocked = isWalletUnlocked();
+
                     if (await isUnlocked !== "false") {
                         const SmartContracts = await flareContract.methods.getAllContracts().call();
                         const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
@@ -319,25 +324,24 @@
         }
     };
 
-    // When the Connect Wallet button is clicked, we connect the wallet (duh), and if it
+    // When the Connect Wallet button is clicked, we connect the wallet, and if it
     // has already been clicked, we copy the public address to the clipboard.
-
     if (!provider) {
         alert("MetaMask is not installed, please install it.");
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
+
         document.getElementById("ConnectWallet").addEventListener("click", async () => {
             if (connectWalletBool === false) {
                 connectWalletBool = true;
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+
                 try {
                     const SmartContracts = await flareContract.methods.getAllContracts().call();
                     const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
                     const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-
                     let tokenContract = new web32.eth.Contract(wnatAbi, wrappedTokenAddr);
-
                     const accounts = (await provider.send("eth_requestAccounts")).result;
                     const account = accounts[0];
                     showAccountAddress(account);
@@ -352,17 +356,15 @@
                 }
             } else {
                 navigator.clipboard.writeText(document.getElementById("ConnectWalletText").innerText);
-
                 connectWalletBool = true;
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+
                 try {
                     const SmartContracts = await flareContract.methods.getAllContracts().call();
                     const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
                     const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-
                     let tokenContract = new web32.eth.Contract(wnatAbi, wrappedTokenAddr);
-
                     const accounts = (await provider.send("eth_requestAccounts")).result;
                     const account = accounts[0];
                     showAccountAddress(account);
@@ -382,6 +384,7 @@
     provider.on("accountsChanged", async (accounts) => {
         if (accounts.length !== 0) {
             console.log("accountsChanged");
+
             const account = accounts[0];
             showAccountAddress(account);
         } else {
@@ -397,12 +400,14 @@
         alert("MetaMask is not installed, please install it.");
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
+
         document.getElementById("ClaimButton").addEventListener("click", async () => {
             if (!isRealValue) {
                 alert("Please enter valid value");
             } else {
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+
                 try {
                     const SmartContracts = await flareContract.methods.getAllContracts().call();
                     const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
