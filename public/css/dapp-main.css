@@ -340,10 +340,10 @@ body {
     /*}*/
 
     .connect-wallet {
-        padding: 10px 20px;
-        height: 45px;
-        width: 40%;
-        margin: 10px;
+        float: none;
+        height: auto;
+        width: auto;
+        margin: auto;
     }
 
     .dummytext {
