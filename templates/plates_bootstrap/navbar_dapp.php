@@ -56,7 +56,7 @@ Fixed Navigation
     <!-- secondary nav -->
     <nav class="navbar-dapp-actions navbar-expand">
         <div class="container">
-            <div class="collapse navbar-collapse static-top navbar-right" role="navigation">
+            <div class="collapse navbar-collapse static-top navbar-right" role="navigation" style="border: none; box-shadow: none; -webkit-box-shadow: none;">
                 <ul class="nav navbar-nav navbar-nav-dapp nav-item">
                     <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">Wrap</a></li>
                     <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappdelegate/index')">Delegate</a></li>

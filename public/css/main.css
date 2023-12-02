@@ -462,6 +462,7 @@ ul.delegation {
 .navbar-nav li:hover .dropdown-menu-dapp,
 .navbar-nav li:active .dropdown-menu-dapp,
 .navbar-nav li.hover .dropdown-menu-dapp {
+    z-index: 100 !important;
     border-radius: 10px !important;
     padding: 0;
     box-sizing: border-box;
@@ -1553,6 +1554,7 @@ textarea.form-control {
 
     .navbar-nav li:hover .dropdown-menu-dapp,
     .navbar-nav li:active .dropdown-menu-dapp {
+        z-index: 100 !important;
         border-radius: 0 !important;
         padding: 0;
         box-sizing: border-box;
@@ -1566,6 +1568,7 @@ textarea.form-control {
     }
 
     .navbar-nav li.hover .dropdown-menu-dapp {
+        z-index: 100 !important;
         border-radius: 0 !important;
         padding: 0;
         box-sizing: border-box;
@@ -1817,16 +1820,6 @@ textarea.form-control {
         width: 380px;
     }
 
-    .faq .faq-panel div {
-        display: grid;
-        grid: none;
-        grid-auto-flow: row !important;
-        grid-row: 2;
-        grid-gap: 0;
-        width: 448px;
-    }
-
-
     .delegate-dropdown {
         padding: 0;
     }
@@ -1850,6 +1843,7 @@ textarea.form-control {
 
     .navbar-nav li:hover .dropdown-menu-dapp,
     .navbar-nav li:active .dropdown-menu-dapp {
+        z-index: 100 !important;
         border-radius: 0 !important;
         padding: 0;
         box-sizing: border-box;
@@ -1863,6 +1857,7 @@ textarea.form-control {
     }
 
     .navbar-nav li.hover .dropdown-menu-dapp {
+        z-index: 100 !important;
         border-radius: 0 !important;
         padding: 0;
         box-sizing: border-box;

@@ -63,11 +63,25 @@
                     <p>To be able to interact with Ethereum chains such as <strong>Flare</strong> , <strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</strong> , you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p>
                     <a href="https://metamask.io/download/" class="shinyButton"><i class="shinyButtonText">Download Metamask</i></a><br>
                     <p>Then, once your account has been created, you need to add the <strong>Flare</strong> and <strong>Songbird</strong> ETH chains.<br></p>
-                    <div><button class="shinyButton" id="addFlr"><i class="shinyButtonText">Add Flare</i></button>
-                    <button class="shinyButton" id="addSgb"><i class="shinyButtonText">Add Songbird</i></button></div><br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="shinyButton" id="addFlr"><i class="shinyButtonText">Add Flare</i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="shinyButton" id="addSgb"><i class="shinyButtonText">Add Songbird</i></button>
+                        </div>
+                    </div>
+                    <br />
                     <p>To make sure that you can see your Wrapped tokens, you can also add the "WFLR" and "WSGB" tokens to the <strong>Flare</strong> and <strong>Songbird</strong> networks respectfully.<i class="footnote asterisk">*</i></p>
-                    <div><button class="shinyButton" id="addWflr"><i class="shinyButtonText">Add WFLR</i></button>
-                    <button class="shinyButton" id="addWsgb"><i class="shinyButtonText">Add WSGB</i></button></div><br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="shinyButton" id="addWflr"><i class="shinyButtonText">Add WFLR</i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="shinyButton" id="addWsgb"><i class="shinyButtonText">Add WSGB</i></button>
+                        </div>
+                    </div>
+                    <br />
                     <p><i class="footnote">*Please note that adding the tokens will only permit you to view them. To actually own WSGB or WFLR, you will need to buy some SGB or FLR from an exchange, and wrap them.</i></p>
                 </div>
             </div>
