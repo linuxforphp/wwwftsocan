@@ -1,4 +1,4 @@
-var acc = document.getElementsByClassName("accordion");
+var acc = document.getElementsByClassName("faq-accordion");
 
 const addFlr = document.getElementById('addFlr');
 const addSgb = document.getElementById('addSgb');

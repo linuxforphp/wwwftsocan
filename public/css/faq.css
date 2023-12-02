@@ -60,12 +60,12 @@ h2::after {
 }
 
 
-.active, button.accordion:hover {
+.active, button.faq-accordion:hover {
     background: rgba(236,236,236,0.7);
     color: #EF0000;
 }
 
-button.accordion {
+button.faq-accordion {
     position: relative;
     overflow: hidden;
     border-radius: 30px;
@@ -88,7 +88,7 @@ button.accordion {
     font-weight: bold;
 }
 
-button.accordion::after {
+button.faq-accordion::after {
     position: absolute;
     display: inline-block;
     content: '';
@@ -101,27 +101,27 @@ button.accordion::after {
     transition: 0.7s;
 }
 
-button.accordion:hover::after {
+button.faq-accordion:hover::after {
     transform: skewX(45deg) translateX(200%);
 }
 
-button.accordion strong {
+button.faq-accordion strong {
     transition: 1s;
     z-index: 100;
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    button.accordion {
+    button.faq-accordion {
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
   }
 
-button.accordion:hover {
+button.faq-accordion:hover {
     color: rgb(253,0,15)!important;
 }
 
-button.accordion.active {
+button.faq-accordion.active {
     overflow: hidden;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -132,15 +132,15 @@ button.accordion.active {
     border-bottom-right-radius: 0;
 }
 
-button.accordion.active::after {
+button.faq-accordion.active::after {
     transform: skewX(45deg) translateX(200%);
 }
 
-button.accordion i {
+button.faq-accordion i {
     font-size: 1.6rem;
 }
 
-button.accordion.active + .pannel {
+button.faq-accordion.active + .faq-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -154,13 +154,13 @@ button.accordion.active + .pannel {
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    button.accordion.active + .pannel {
+    button.faq-accordion.active + .faq-panel {
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
   }
 
-.faq .pannel {
+.faq .faq-panel {
     display: none;
     max-height: 0;
     opacity: 0;
@@ -168,7 +168,7 @@ button.accordion.active + .pannel {
     will-change: display, opacity, max-height;
 }
 
-.faq .pannel p {
+.faq .faq-panel p {
     width: 100%;
     text-align: left;
     color: rgb(0,0,0);
@@ -194,7 +194,7 @@ button.accordion.active + .pannel {
     line-height: 2.7rem!important;
 }
 
-.faq .pannel div {
+.faq .faq-panel div {
     box-sizing: border-box;
     padding: 0 5rem 3rem 3rem;
     display: grid;
@@ -270,7 +270,7 @@ a.link {
         width: 80%;
     }
 
-    .faq .pannel div {
+    .faq .faq-panel div {
         padding: 0;
         display: grid;
         grid: none;
@@ -288,7 +288,7 @@ a.link {
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-    .faq .pannel div {
+    .faq .faq-panel div {
         grid-gap: 10%;
     }
 

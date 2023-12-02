@@ -45,10 +45,10 @@
             <h2 class="sec-title text-center"><strong>Frequently Asked Questions</strong></h2>
 
             <div class="faq">
-                <button class="accordion">
+                <button class="faq-accordion">
                     <strong>What is FTSO Canada? </strong><i class="fas fa-caret-down"></i>
                 </button>
-                <div class="pannel">
+                <div class="faq-panel">
                     <p><strong>FTSO Canada</strong> is one of the <strong>Flare</strong> Network's many FTSOs (Flare Time Series Oracle). <br> 
                     It provides applications on the <strong>Flare</strong> Network with highly accurate and decentralized data, such as cryptocurrency prices, and transaction validation. To learn more about FTSOs, you can visit 
                     <a class="link" href="#" onclick="getDocsPageNewTab(2)">Flare's official post about FTSOs</a></p>
@@ -56,10 +56,10 @@
             </div>
 
             <div class="faq">
-                <button class="accordion">
-                    <strong>How Do I Get "Flare" or "Songbird" On My Browser? </strong><i class="fas fa-caret-down"></i>
+                <button class="faq-accordion">
+                    <strong>How Do I get "Flare" or "Songbird" installed in my browser? </strong><i class="fas fa-caret-down"></i>
                 </button>
-                <div class="pannel">
+                <div class="faq-panel">
                     <p>To be able to interact with Ethereum chains such as <strong>Flare</strong> , <strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</strong> , you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p>
                     <a href="https://metamask.io/download/" class="shinyButton"><i class="shinyButtonText">Download Metamask</i></a><br>
                     <p>Then, once your account has been created, you need to add the <strong>Flare</strong> and <strong>Songbird</strong> ETH chains.<br></p>
@@ -68,29 +68,29 @@
                     <p>To make sure that you can see your Wrapped tokens, you can also add the "WFLR" and "WSGB" tokens to the <strong>Flare</strong> and <strong>Songbird</strong> networks respectfully.<i class="footnote asterisk">*</i></p>
                     <div><button class="shinyButton" id="addWflr"><i class="shinyButtonText">Add WFLR</i></button>
                     <button class="shinyButton" id="addWsgb"><i class="shinyButtonText">Add WSGB</i></button></div><br>
-                    <p><i class="footnote">*Please note that adding the tokens will only permit you to view them. To actually own SGB or FLR, you will need to buy some from an exchange.</i></p>
+                    <p><i class="footnote">*Please note that adding the tokens will only permit you to view them. To actually own WSGB or WFLR, you will need to buy some SGB or FLR from an exchange, and wrap them.</i></p>
                 </div>
             </div>
 
             <div class="faq">
-                <button class="accordion">
-                    <strong>How Can I Wrap my Flare or Songbird Tokens into WFLR or WSGB? </strong><i class="fas fa-caret-down"></i>
+                <button class="faq-accordion">
+                    <strong>How can I wrap my Flare or Songbird tokens into WFLR or WSGB? </strong><i class="fas fa-caret-down"></i>
                 </button>
-                <div class="pannel">
+                <div class="faq-panel">
                     <p>There are multiple options for wrapping, delegating, or even claiming your <strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use our official <br> 
-                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Wrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
-                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted Dapp made by the Flare community.</p>
+                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
+                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted DApp made by the Flare community.</p>
                 </div>
             </div>
 
             <div class="faq">
-                <button class="accordion">
-                    <strong>How Can I Delegate my Flare or Songbird Tokens to earn Rewards? </strong><i class="fas fa-caret-down"></i>
+                <button class="faq-accordion">
+                    <strong>How can I delegate my Flare or Songbird tokens in order to earn rewards? </strong><i class="fas fa-caret-down"></i>
                 </button>
-                <div class="pannel">
+                <div class="faq-panel">
                     <p>There are multiple options for wrapping, delegating, or even claiming your <strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use our official <br> 
-                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>Dapp_Wrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
-                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted Dapp made by the Flare community.</p>
+                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
+                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted DApp made by the Flare community.</p>
                 </div>
             </div>
         </div>    

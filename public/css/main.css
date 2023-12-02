@@ -1817,7 +1817,7 @@ textarea.form-control {
         width: 380px;
     }
 
-    .faq .pannel div {
+    .faq .faq-panel div {
         display: grid;
         grid: none;
         grid-auto-flow: row !important;
