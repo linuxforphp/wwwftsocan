@@ -347,6 +347,9 @@ body {
         min-width: 178px;
         max-width: 179px;
         margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .dummytext {
@@ -406,10 +409,15 @@ body {
     /*}*/
 
     .connect-wallet {
-        padding: 10px;
-        height: 45px;
+        float: none;
+        height: auto;
         width: auto;
-        margin: 10px;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .dummytext {

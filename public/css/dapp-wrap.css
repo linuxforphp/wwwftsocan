@@ -152,6 +152,7 @@ a:hover, a:active, a:focus {
         min-width: 178px;
         max-width: 179px;
         margin: auto;
+        padding: 15px 20px;
     }
 
     .addr-wrap {
@@ -172,12 +173,14 @@ a:hover, a:active, a:focus {
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
-
     .wrap-button {
-        padding: 10px;
-        height: 45px;
+        float: none;
+        height: auto;
         width: auto;
-        margin: 10px;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        padding: 15px 20px;
     }
 
     .wrap-unwrap {
@@ -192,7 +195,6 @@ a:hover, a:active, a:focus {
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-
     .wrap-button {
         padding: 10px;
         height: 45px;

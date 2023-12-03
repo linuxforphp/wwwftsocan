@@ -183,6 +183,7 @@
         min-width: 178px;
         max-width: 179px;
         margin: auto;
+        padding: 15px 20px;
     }
 
     .selected-ftso {
@@ -205,7 +206,7 @@
     }
 }
 
-@media only screen and (min-width: 480px) and (max-width: 767px) {
+@media only screen and (min-width: 481px) and (max-width: 767px) {
     .amount {
         width: 15%!important;
     }
@@ -216,11 +217,13 @@
     }
 
     .claim-button {
-        float: right;
-        padding: 10px;
-        margin: 10px;
-        height: 45px;
-        width: 40%;
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        padding: 15px 20px;
     }
 
     .selected-ftso {

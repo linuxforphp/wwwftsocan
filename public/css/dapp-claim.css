@@ -295,26 +295,31 @@
         min-width: 178px;
         max-width: 179px;
         margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .claim-button {
-        padding: 20px;
         float: none;
         height: auto;
         width: auto;
         min-width: 178px;
         max-width: 179px;
         margin: auto;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .claim-fd-button {
-        padding: 20px;
         float: none;
         height: auto;
         width: auto;
         min-width: 178px;
         max-width: 179px;
         margin: auto;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .rewards {
@@ -353,30 +358,37 @@
     }
 
     .connect-wallet {
-        margin-left: 25%;
-        height: 45px;
+        float: none;
+        height: auto;
         width: auto;
-        padding: 10px 20px;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .claim-button {
-        float: left;
-        margin-top: 0;
-        margin-bottom: 20px !important;
-        margin-left: 20px !important;
-        height: 45px !important;
-        width: 40% !important;
-        padding: 10px 20px !important;
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .claim-fd-button {
-        float: left;
-        margin-top: 0;
-        margin-left: 20px !important;
-        margin-bottom: 20px !important;
-        height: 45px !important;
-        width: 40% !important;
-        padding: 10px 20px !important;
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-bottom: 10px;
+        padding: 15px 20px;
     }
 
     .ftso-identifier {
