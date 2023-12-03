@@ -238,7 +238,7 @@
 
     // If network value is 1 or 4, FLR or C2FLR, else SGB or CFLR.
     function isNetworkValue(networkValue) {
-        if (networkValue === 1 || networkValue === 4) {
+        if (networkValue === '1' || networkValue === '4') {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
         } else {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
@@ -257,7 +257,7 @@
         chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
         networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 
-        if (networkValue === 1 || networkValue === 4) {
+        if (networkValue === '1' || networkValue === '4') {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
             isInput1();
 

@@ -134,7 +134,7 @@
 
     // If network value is 1 or 4, FLR or C2FLR, else SGB or CFLR.
     function isNetworkValue(networkValue) {
-        if (networkValue === 1 || networkValue === 4) {
+        if (networkValue === '1' || networkValue === '4') {
             tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
             wrappedTokenIdentifier = "W" + tokenIdentifier;
             document.getElementById("layer2").innerHTML = flrLogo;
@@ -159,7 +159,7 @@
         chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
         networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 
-        if (networkValue === 1 || networkValue === 4) {
+        if (networkValue === '1' || networkValue === '4') {
             tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
             wrappedTokenIdentifier = "W" + tokenIdentifier;
             document.getElementById("layer2").innerHTML = flrLogo;
