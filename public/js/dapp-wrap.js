@@ -49,8 +49,6 @@
                 downloadMetamaskFlag = true;
                 downloadMetamask();
             } else {
-                console.log(wrapBool);
-
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -77,13 +75,11 @@
                             showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                             showBalance(round(web32.utils.fromWei(balance, "ether")));
                         }
-
-                        console.log(`Account `, account, ` has `, balance, ` tokens, and `, tokenBalance, ` wrapped tokens.`);
                     } else {
                         $.alert("You are not connected!");
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         }
@@ -193,8 +189,6 @@
             downloadMetamaskFlag = true;
             downloadMetamask();
         } else {
-            console.log("isMetaMask=", provider.isMetaMask);
-
             let web32 = new Web3(rpcUrl);
             let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -226,7 +220,7 @@
                     }
                 }
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         }
 
@@ -236,8 +230,6 @@
                 downloadMetamaskFlag = true;
                 downloadMetamask();
             } else {
-                console.log("isMetaMask=", provider.isMetaMask);
-
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -265,7 +257,7 @@
                         $.alert("You are not connected!");
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         }
@@ -278,7 +270,6 @@
         downloadMetamaskFlag = true;
         downloadMetamask();
     } else {
-        console.log("isMetaMask=", provider.isMetaMask);
         document.getElementById("ConnectWallet").addEventListener("click", async () => {
             if (connectWalletBool === false) {
                 connectWalletBool = true;
@@ -304,7 +295,7 @@
                         showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             } else {
                 navigator.clipboard.writeText(document.getElementById("ConnectWalletText").innerText);
@@ -330,15 +321,13 @@
                         showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         });
     }
 
     provider.on("accountsChanged", async (accounts) => {
-        console.log("accountsChanged");
-
         if (accounts.length !== 0) {
             let web32 = new Web3(rpcUrl);
             let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
@@ -361,7 +350,7 @@
                     showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
                 }
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
@@ -380,8 +369,6 @@
         downloadMetamaskFlag = true;
         downloadMetamask();
     } else {
-        console.log("isMetaMask=", provider.isMetaMask);
-
         document.getElementById("WrapButton").addEventListener("click", async () => {
             if (!isRealValue) {
                 $.alert("Please enter valid value");
@@ -405,8 +392,6 @@
                         if (amountFromValue >= Number(web32.utils.fromWei(balance, "ether"))) {
                             $.alert("Insufficient Balance!");
                         } else {
-                            console.log(`Wrapping`, amountFromValueWei, `tokens from account:`, account);
-
                             const transactionParameters = {
                                 from: account,
                                 to: wrappedTokenAddr,
@@ -431,7 +416,7 @@
                             }
                         }
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
                 } else {
                     try {
@@ -449,8 +434,6 @@
                         if (amountFromValue >= Number(web32.utils.fromWei(tokenBalance, "ether"))) {
                             $.alert("Insufficient Balance!");
                         } else {
-                            console.log(`Unwrapping`, amountFromValueWei, `tokens from the Blockchain`);
-
                             const transactionParameters = {
                                 from: account,
                                 to: wrappedTokenAddr,
@@ -475,7 +458,7 @@
                             }
                         }
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
                 }
             }

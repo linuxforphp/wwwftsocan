@@ -115,15 +115,13 @@
             downloadMetamaskFlag = true;
             downloadMetamask();
         } else {
-            console.log("isMetaMask=", provider.isMetaMask);
-
             try {
                 await provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{chainId: chainidhex}],
                 })
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         }
 
@@ -133,8 +131,6 @@
                 downloadMetamaskFlag = true;
                 downloadMetamask();
             } else {
-                console.log("isMetaMask=", provider.isMetaMask);
-
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -151,10 +147,9 @@
                         showAccountAddress(account);
                         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        console.log(`Account `, account, ` has `, tokenBalance, ` wrapped tokens.`);
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         }
@@ -166,8 +161,6 @@
         downloadMetamaskFlag = true;
         downloadMetamask();
     } else {
-        console.log("isMetaMask=", provider.isMetaMask);
-
         document.getElementById("ConnectWallet").addEventListener("click", async () => {
             if (connectWalletBool === false) {
                 connectWalletBool = true;
@@ -236,9 +229,6 @@
 
                                             insert += `<div class="wrapBoxFTSO"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                             delegatedFtsoElement.innerHTML = insert;
-                                            console.log(`Ftso `, i, ` is valid!`);
-                                            console.log(Bips);
-                                            console.log(FtsoInfo.providers[indexNumber].name);
                                         }
                                     }
                                 } else {
@@ -258,9 +248,6 @@
                     }
 
                     const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether");
-
-                    console.log(`Ftso list: `, delegatedFtsos);
-                    console.log(Number(epochsUnclaimed[0]));
 
                     let claimableAmountFd;
                     const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
@@ -287,11 +274,8 @@
                     } else {
                         switchFdButtonColorBack();
                     }
-
-                    console.log(`Account `, account, ` has `, balance, ` tokens `, tokenBalance, ` wrapped tokens, and `, unclaimedAmount, ` unclaimed tokens.`);
-                    console.log(`Smart contract list: `, SmartContracts);
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             } else {
                 connectWalletBool = true;
@@ -359,10 +343,6 @@
                                             indexNumber = f;
                                             insert += `<div class="wrapBoxFTSO" data-addr"${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                             delegatedFtsoElement.innerHTML = insert;
-
-                                            console.log(`Ftso `, i, ` is valid!`);
-                                            console.log(Bips);
-                                            console.log(FtsoInfo.providers[indexNumber].name);
                                         }
                                     }
                                 } else {
@@ -382,9 +362,6 @@
                     }
 
                     const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether");
-
-                    console.log(`Ftso list: `, delegatedFtsos);
-                    console.log(Number(epochsUnclaimed[0]));
 
                     var claimableAmountFd;
                     const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
@@ -412,11 +389,8 @@
                         showFdRewards(0.0);
                         switchFdButtonColorBack();
                     }
-
-                    console.log(`Account `, account, ` has `, balance, ` tokens `, tokenBalance, ` wrapped tokens, and `, unclaimedAmount, ` unclaimed tokens.`);
-                    console.log(`Smart contract list: `, SmartContracts);
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         });
@@ -424,8 +398,6 @@
 
     if (typeof accounts !== 'undefined' && accounts !== []) {
         provider.on("accountsChanged", async (accounts) => {
-            console.log("accountsChanged");
-
             if (accounts.length !== 0) {
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
@@ -440,7 +412,7 @@
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error);
                 }
             } else {
                 document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
@@ -458,8 +430,6 @@
         downloadMetamaskFlag = true;
         downloadMetamask();
     } else {
-        console.log("isMetaMask=", provider.isMetaMask);
-
         document.getElementById("ClaimButton").addEventListener("click", async () => {
             if (claimBool === true) {
                 let web32 = new Web3(rpcUrl);
@@ -504,7 +474,7 @@
                     switchButtonColorBack();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         })
@@ -514,8 +484,6 @@
         downloadMetamaskFlag = true;
         downloadMetamask();
     } else {
-        console.log("isMetaMask=", provider.isMetaMask);
-
         document.getElementById("ClaimFdButton").addEventListener("click", async () => {
             if (fdClaimBool === true) {
                 let web32 = new Web3(rpcUrl);
@@ -560,7 +528,7 @@
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         })

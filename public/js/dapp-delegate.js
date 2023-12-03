@@ -160,8 +160,6 @@
                                     insert += `<option value="${i}" data-img="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
                                     ftso1.innerHTML = insert;
                                     ftso2.innerHTML = insert;
-
-                                    console.log(FtsoInfo.providers[indexNumber].name);
                                 }
                             }
                         } else {
@@ -171,7 +169,7 @@
                     }
                 })
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -278,15 +276,13 @@
             downloadMetamaskFlag = true;
             downloadMetamask();
         } else {
-            console.log("isMetaMask=", provider.isMetaMask);
-
             try {
                 await provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{chainId: chainidhex}],
                 })
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         }
 
@@ -296,8 +292,6 @@
                 downloadMetamaskFlag = true;
                 downloadMetamask();
             } else {
-                console.log("isMetaMask=", provider.isMetaMask);
-
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -315,12 +309,11 @@
                         showAccountAddress(account);
                         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        console.log(`Account `, account, ` has `, tokenBalance, ` wrapped tokens.`);
                     } else {
                         $.alert("You are not connected!");
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         }
@@ -332,8 +325,6 @@
         downloadMetamaskFlag = true;
         downloadMetamask();
     } else {
-        console.log("isMetaMask=", provider.isMetaMask);
-
         document.getElementById("ConnectWallet").addEventListener("click", async () => {
             if (connectWalletBool === false) {
                 connectWalletBool = true;
@@ -351,11 +342,8 @@
                     const balance = await web32.eth.getBalance(account);
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-
-                    console.log(`Account `, account, ` has `, balance, ` tokens `, tokenBalance, ` wrapped tokens, and `, UnclaimedAmount, ` unclaimed tokens.`);
-                    console.log(`Smart contract list: `, SmartContracts);
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             } else {
                 navigator.clipboard.writeText(document.getElementById("ConnectWalletText").innerText);
@@ -374,11 +362,8 @@
                     const balance = await web32.eth.getBalance(account);
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-
-                    console.log(`Account `, account, ` has `, balance, ` tokens `, tokenBalance, ` wrapped tokens, and `, unclaimedAmount, ` unclaimed tokens.`);
-                    console.log(`Smart contract list: `, SmartContracts);
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         });
@@ -386,8 +371,6 @@
 
     provider.on("accountsChanged", async (accounts) => {
         if (accounts.length !== 0) {
-            console.log("accountsChanged");
-
             const account = accounts[0];
             showAccountAddress(account);
         } else {
@@ -403,8 +386,6 @@
         downloadMetamaskFlag = true;
         downloadMetamask();
     } else {
-        console.log("isMetaMask=", provider.isMetaMask);
-
         document.getElementById("ClaimButton").addEventListener("click", async () => {
             if (!isRealValue) {
                 $.alert("Please enter valid value");
@@ -499,7 +480,7 @@
                         });
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         })
