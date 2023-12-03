@@ -61,7 +61,7 @@
                 </button>
                 <div class="faq-panel">
                     <p>To be able to interact with Ethereum chains such as <strong>Flare</strong> , <strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</strong> , you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p>
-                    <a href="https://metamask.io/download/" class="shinyButton"><i class="shinyButtonText">Download Metamask</i></a><br>
+                    <a href="#" class="shinyButton" onclick="getDocsPageNewTab(5)><i class="shinyButtonText">Download Metamask</i></a><br>
                     <p>Then, once your account has been created, you need to add the <strong>Flare</strong> and <strong>Songbird</strong> ETH chains.<br></p>
                     <div class="row">
                         <div class="col-sm-6">

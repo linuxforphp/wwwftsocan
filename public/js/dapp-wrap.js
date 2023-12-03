@@ -45,8 +45,9 @@
         }
 
         if (connectWalletBool === true) {
-            if (!provider) {
-                alert("MetaMask is not installed, please install it.");
+            if (!provider && downloadMetamaskFlag === false) {
+                downloadMetamaskFlag = true;
+                downloadMetamask();
             } else {
                 console.log(wrapBool);
 
@@ -79,7 +80,7 @@
 
                         console.log(`Account `, account, ` has `, balance, ` tokens, and `, tokenBalance, ` wrapped tokens.`);
                     } else {
-                        alert("You are not connected!");
+                        $.alert("You are not connected!");
                     }
                 } catch (error) {
                     console.log(error);
@@ -188,8 +189,9 @@
         }
 
         //Alert Metamask to switch
-        if (!provider) {
-            alert("MetaMask is not installed, please install it.");
+        if (!provider && downloadMetamaskFlag === false) {
+            downloadMetamaskFlag = true;
+            downloadMetamask();
         } else {
             console.log("isMetaMask=", provider.isMetaMask);
 
@@ -230,8 +232,9 @@
 
         //If we have already logged in the account, show new results, else do nothing.
         if (connectWalletBool === true) {
-            if (!provider) {
-                alert("MetaMask is not installed, please install it.");
+            if (!provider && downloadMetamaskFlag === false) {
+                downloadMetamaskFlag = true;
+                downloadMetamask();
             } else {
                 console.log("isMetaMask=", provider.isMetaMask);
 
@@ -259,7 +262,7 @@
                             showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
                         }
                     } else {
-                        alert("You are not connected!");
+                        $.alert("You are not connected!");
                     }
                 } catch (error) {
                     console.log(error);
@@ -271,8 +274,9 @@
     // When the Connect Wallet button is clicked, we connect the wallet (duh), and if it
     // has already been clicked, we copy the public address to the clipboard.
 
-    if (!provider) {
-        alert("MetaMask is not installed, please install it.");
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
         document.getElementById("ConnectWallet").addEventListener("click", async () => {
@@ -372,14 +376,15 @@
     document.querySelector("#AmountFrom").addEventListener("input", copyInput);
 
     // If the input is valid, we wrap on click of "WrapButton"
-    if (!provider) {
-        alert("MetaMask is not installed, please install it.");
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
 
         document.getElementById("WrapButton").addEventListener("click", async () => {
             if (!isRealValue) {
-                alert("Please enter valid value");
+                $.alert("Please enter valid value");
             } else {
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
@@ -398,7 +403,7 @@
                         const amountFromValueWei = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16)
 
                         if (amountFromValue >= Number(web32.utils.fromWei(balance, "ether"))) {
-                            alert("Insufficient Balance!");
+                            $.alert("Insufficient Balance!");
                         } else {
                             console.log(`Wrapping`, amountFromValueWei, `tokens from account:`, account);
 
@@ -442,7 +447,7 @@
                         const amountFromValueWei = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16);
 
                         if (amountFromValue >= Number(web32.utils.fromWei(tokenBalance, "ether"))) {
-                            alert("Insufficient Balance!");
+                            $.alert("Insufficient Balance!");
                         } else {
                             console.log(`Unwrapping`, amountFromValueWei, `tokens from the Blockchain`);
 

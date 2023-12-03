@@ -1,4 +1,32 @@
 // Simple math function.
+
+function downloadMetamask() {
+    $.confirm({
+        escapeKey: true,
+        backgroundDismiss: false,
+        icon: 'fa fa-warning red',
+        title: '<br>Metamask is not installed!',
+        content: 'Would you like to install Metamask in your browser?',
+        type: 'red',
+        theme: 'material',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            yes: {
+                btnClass: 'btn-red',
+                keys: ['enter'],
+                action: function() {
+                    var url = 'https://metamask.io/download/';
+
+                    window.open(url, '_blank').focus();
+                },
+            },
+            no: {
+            }
+        }
+    });
+}
+
 function round(num) {
     return +(Math.round(num + "e+4") + "e-4");
 }
@@ -52,3 +80,4 @@ var rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribut
 var chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
 var networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 var connectWalletBool = false;
+var downloadMetamaskFlag = false;

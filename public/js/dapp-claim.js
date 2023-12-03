@@ -111,8 +111,9 @@
         }
 
         // Alert Metamask to switch.
-        if (!provider) {
-            alert("MetaMask is not installed, please install it.");
+        if (!provider && downloadMetamaskFlag === false) {
+            downloadMetamaskFlag = true;
+            downloadMetamask();
         } else {
             console.log("isMetaMask=", provider.isMetaMask);
 
@@ -128,8 +129,9 @@
 
         // If we have already logged in the account, show new results, else do nothing.
         if (connectWalletBool === false) {
-            if (!provider) {
-                alert("MetaMask is not installed, please install it.");
+            if (!provider && downloadMetamaskFlag === false) {
+                downloadMetamaskFlag = true;
+                downloadMetamask();
             } else {
                 console.log("isMetaMask=", provider.isMetaMask);
 
@@ -150,8 +152,6 @@
                         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                         console.log(`Account `, account, ` has `, tokenBalance, ` wrapped tokens.`);
-                    } else {
-                        alert("You are not connected!");
                     }
                 } catch (error) {
                     console.log(error);
@@ -162,8 +162,9 @@
 
     // When the Connect Wallet button is clicked, we connect the wallet, and if it
     // has already been clicked, we copy the public address to the clipboard.
-    if (!provider) {
-        alert("MetaMask is not installed, please install it.");
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
 
@@ -186,7 +187,7 @@
                     let tokenContract = new web32.eth.Contract(wnatAbi, wrappedTokenAddr);
                     let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
                     let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
-                    let voterWhitelistContract = new web32.eth.Contract(F, voterWhitelistAddr);
+                    let voterWhitelistContract = new web32.eth.Contract(voterWhitelisterAbi, voterWhitelistAddr);
                     const accounts = (await provider.send("eth_requestAccounts")).result;
                     const account = accounts[0];
                     showAccountAddress(account);
@@ -241,8 +242,7 @@
                                         }
                                     }
                                 } else {
-                                    alert('The FTSO you have delegated to is invalid!');
-                                    break;
+                                    $.alert('The FTSO you have delegated to is invalid!');
                                 }
                             }
                         })
@@ -366,8 +366,7 @@
                                         }
                                     }
                                 } else {
-                                    alert('The FTSO you have delegated to is invalid!');
-                                    break;
+                                    $.alert('The FTSO you have delegated to is invalid!');
                                 }
                             }
                         })
@@ -421,47 +420,43 @@
                 }
             }
         });
+    }
 
-        provider.on("accountsChanged", function (accounts, balance, tokenBalance) {
-            console.log("accountsChanged", accounts, balance, tokenBalance);
-            const account = accounts[0];
-            showAccountAddress(account);
-            showTokenBalance(round(web3.utils.fromWei(tokenBalance, "ether")));
+    if (typeof accounts !== 'undefined' && accounts !== []) {
+        provider.on("accountsChanged", async (accounts) => {
+            console.log("accountsChanged");
+
+            if (accounts.length !== 0) {
+                let web32 = new Web3(rpcUrl);
+                let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+
+                try {
+                    const SmartContracts = await flareContract.methods.getAllContracts().call();
+                    const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
+                    const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+                    const account = accounts[0];
+                    showAccountAddress(account);
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                } catch (error) {
+                    console.log(error)
+                }
+            } else {
+                document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+                showTokenBalance(0.0);
+                showRewards(0.0);
+                showFdRewards(0.0);
+                switchButtonColorBack();
+                switchFdButtonColorBack();
+                connectWalletBool = false;
+            }
         });
     }
 
-    provider.on("accountsChanged", async (accounts) => {
-        console.log("accountsChanged");
-
-        if (accounts.length !== 0) {
-            let web32 = new Web3(rpcUrl);
-            let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
-
-            try {
-                const SmartContracts = await flareContract.methods.getAllContracts().call();
-                const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-                const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-                let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                const account = accounts[0];
-                showAccountAddress(account);
-                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-            } catch (error) {
-                console.log(error)
-            }
-        } else {
-            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-            showTokenBalance(0.0);
-            showRewards(0.0);
-            showFdRewards(0.0);
-            switchButtonColorBack();
-            switchFdButtonColorBack();
-            connectWalletBool = false;
-        }
-    });
-
-    if (!provider) {
-        alert("MetaMask is not installed, please install it.");
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
 
@@ -515,8 +510,9 @@
         })
     }
 
-    if (!provider) {
-        alert("MetaMask is not installed, please install it.");
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
 

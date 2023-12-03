@@ -274,8 +274,9 @@
         }
 
         // Alert Metamask to switch.
-        if (!provider) {
-            alert("MetaMask is not installed, please install it.");
+        if (!provider && downloadMetamaskFlag === false) {
+            downloadMetamaskFlag = true;
+            downloadMetamask();
         } else {
             console.log("isMetaMask=", provider.isMetaMask);
 
@@ -291,8 +292,9 @@
 
         // If we have already logged in the account, show new results, else do nothing.
         if (connectWalletBool === false) {
-            if (!provider) {
-                alert("MetaMask is not installed, please install it.");
+            if (!provider && downloadMetamaskFlag === false) {
+                downloadMetamaskFlag = true;
+                downloadMetamask();
             } else {
                 console.log("isMetaMask=", provider.isMetaMask);
 
@@ -315,7 +317,7 @@
                         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                         console.log(`Account `, account, ` has `, tokenBalance, ` wrapped tokens.`);
                     } else {
-                        alert("You are not connected!");
+                        $.alert("You are not connected!");
                     }
                 } catch (error) {
                     console.log(error);
@@ -326,8 +328,9 @@
 
     // When the Connect Wallet button is clicked, we connect the wallet, and if it
     // has already been clicked, we copy the public address to the clipboard.
-    if (!provider) {
-        alert("MetaMask is not installed, please install it.");
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
 
@@ -396,14 +399,15 @@
     document.querySelector("#Amount1").addEventListener("input", isInput1);
     document.querySelector("#Amount2").addEventListener("input", isInput2);
 
-    if (!provider) {
-        alert("MetaMask is not installed, please install it.");
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
         console.log("isMetaMask=", provider.isMetaMask);
 
         document.getElementById("ClaimButton").addEventListener("click", async () => {
             if (!isRealValue) {
-                alert("Please enter valid value");
+                $.alert("Please enter valid value");
             } else {
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
