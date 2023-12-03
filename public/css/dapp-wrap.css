@@ -150,6 +150,7 @@ a:hover, a:active, a:focus {
         height: auto;
         width: auto;
         min-width: 178px;
+        max-width: 179px;
         margin: auto;
     }
 

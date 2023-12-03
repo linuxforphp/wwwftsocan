@@ -292,6 +292,8 @@
         float: none;
         height: auto;
         width: auto;
+        min-width: 178px;
+        max-width: 179px;
         margin: auto;
     }
 
@@ -301,6 +303,7 @@
         height: auto;
         width: auto;
         min-width: 178px;
+        max-width: 179px;
         margin: auto;
     }
 
@@ -310,6 +313,7 @@
         height: auto;
         width: auto;
         min-width: 178px;
+        max-width: 179px;
         margin: auto;
     }
 
