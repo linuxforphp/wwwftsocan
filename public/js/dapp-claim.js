@@ -463,9 +463,13 @@
                             };
                         }
 
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                         });
                     }
 
@@ -474,7 +478,7 @@
                     switchButtonColorBack();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                 } catch (error) {
-                    // console.log(error);
+                    showFail();
                 }
             }
         })
@@ -517,10 +521,14 @@
                             };
                         }
 
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
-                        })
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
+                        });
                     }
 
                     showFdRewards(0.0);
@@ -528,7 +536,7 @@
                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                 } catch (error) {
-                    // console.log(error);
+                    showFail();
                 }
             }
         })

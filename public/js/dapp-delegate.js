@@ -422,9 +422,13 @@
                             data: tokenContract.methods.undelegateAll().send({from: account}),
                         };
 
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                         });
 
                         transactionParameters = {
@@ -433,9 +437,13 @@
                             data: tokenContract.methods.delegate(addr1, bips1).send({from: account}),
                         };
 
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                         });
 
                         transactionParameters = {
@@ -444,9 +452,13 @@
                             data: tokenContract.methods.delegate(addr2, bips2).send({from: account}),
                         };
 
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                         });
                     } else {
                         const value1 = amount1.value;
@@ -463,9 +475,13 @@
                             data: tokenContract.methods.undelegateAll().send({from: account}),
                         };
 
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                            .then((txHash) => showConfirm(txHash))
+                            .catch((error) => showFail());
                         });
 
                         transactionParameters = {
@@ -474,13 +490,17 @@
                             data: tokenContract.methods.delegate(addr1, bips1).send({from: account}),
                         };
 
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                         });
                     }
                 } catch (error) {
-                    // console.log(error);
+                    showFail();
                 }
             }
         })

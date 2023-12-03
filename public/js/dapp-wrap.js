@@ -373,6 +373,7 @@
             if (!isRealValue) {
                 $.alert("Please enter valid value");
             } else {
+
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -399,9 +400,13 @@
                                 value: amountFromValueWei
                             };
 
-                            await provider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
+                            showSpinner(async () => {
+                                await provider.request({
+                                    method: 'eth_sendTransaction',
+                                    params: [transactionParameters],
+                                })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                             });
 
                             balance = await web32.eth.getBalance(account);
@@ -416,7 +421,7 @@
                             }
                         }
                     } catch (error) {
-                        // console.log(error);
+                        showFail();
                     }
                 } else {
                     try {
@@ -441,9 +446,13 @@
                                 value: amountFromValueWei,
                             };
 
-                            await provider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
+                            showSpinner(async () => {
+                                await provider.request({
+                                    method: 'eth_sendTransaction',
+                                    params: [transactionParameters],
+                                })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                             });
 
                             balance = await web32.eth.getBalance(account);
@@ -458,7 +467,7 @@
                             }
                         }
                     } catch (error) {
-                        // console.log(error);
+                        showFail();
                     }
                 }
             }
