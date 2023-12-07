@@ -9,7 +9,7 @@
     var tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
     var wrappedTokenIdentifier = "W" + tokenIdentifier;
     var checkBox = document.getElementById("RewardsCheck");
-    var icon = document.getElementById("Icon");
+    // var icon = document.getElementById("Icon");
     var claimBool = false;
     var fdClaimBool = false;
     document.getElementById('layer3').innerHTML = flrLogo;
@@ -55,7 +55,6 @@
     // Checking if Metamask wallet is unlocked.
     async function isWalletUnlocked() {
         const Web3provider = new ethers.providers.Web3Provider(window.ethereum);
-
         let unlocked;
 
         try {
@@ -129,7 +128,7 @@
                 await provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{chainId: chainidhex}],
-                })
+                });
             } catch (error) {
                 // console.log(error);
             }
@@ -229,15 +228,13 @@
                         .then(res => res.json())
                         .then(FtsoInfo => {
                             for (var i = 0; i < delegatedFtsos.length; i++) {
-
                                 let indexNumber;
 
                                 if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length === 0) {
                                     for (var f = 0; f < FtsoInfo.providers.length; f++) {
                                         if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
                                             indexNumber = f;
-
-                                            insert += `<div class="wrap-box-ftso"><div class="wrap-box-content"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegated-name">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            insert += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegated-name">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                             delegatedFtsoElement.innerHTML = insert;
                                         }
                                     }
@@ -268,7 +265,7 @@
 
                     var bucketTotal = await web32.eth.getBalance(ftsoRewardAddr);
 
-                    //Changing the color of Claim buttons.
+                    // Changing the color of Claim buttons.
                     if (Number(round(convertedRewards)) >= 1 && Number(round(convertedRewards)) < bucketTotal) {
                         showRewards(round(convertedRewards));
                         switchButtonColor();
@@ -344,14 +341,13 @@
                         .then(res => res.json())
                         .then(FtsoInfo => {
                             for (var i = 0; i < delegatedFtsos.length; i++) {
-
                                 let indexNumber;
 
                                 if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length === 0) {
                                     for (var f = 0; f < FtsoInfo.providers.length; f++) {
                                         if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
                                             indexNumber = f;
-                                            insert += `<div class="wrapBoxFTSO" data-addr"${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            insert += `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                             delegatedFtsoElement.innerHTML = insert;
                                         }
                                     }

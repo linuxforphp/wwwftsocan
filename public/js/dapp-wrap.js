@@ -14,7 +14,7 @@
     document.getElementById("layer2").innerHTML = flrLogo;
     document.getElementById("layer3").innerHTML = flrLogo;
 
-    // show the current token identifiers
+    // Show the current token identifiers.
     function showTokenIdentifiers(token, wrappedToken) {
         document.getElementById("tokenIdentifier").innerText = token;
         document.getElementById("wrappedTokenIdentifier").innerText = wrappedToken;
@@ -87,17 +87,17 @@
         switchIconColor();
     });
 
-    //Functions to show the requested info
+    // Functions to show the requested info.
     function showBalance(balanceAddress) {
         document.getElementById("Balance").innerText = balanceAddress;
     }
 
     // Has the wallet already been unlocked?
     async function isWalletUnlocked() {
-        return provider._metamask.isUnlocked()
+        return provider._metamask.isUnlocked();
     }
 
-    // is a valid input?
+    // Is there a valid input?
     function isInput() {
         if (Number(amountFrom.value.replace(/[^0-9]/g, '')) < 1) {
             document.getElementById("WrapButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
@@ -118,7 +118,7 @@
     }
 
 
-    // copy an input
+    // Copy the input.
     function copyInput() {
         if (isNumber(amountFrom.value)) {
             amountTo.value = amountFrom.value;
@@ -154,7 +154,7 @@
     showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
     isInput();
 
-    //When Selected Network Changes, alert Metamask
+    // When Selected Network Changes, alert Metamask.
     selectedNetwork.onchange = async () => {
         rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
         chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
@@ -201,7 +201,7 @@
             isInput();
         }
 
-        //Alert Metamask to switch
+        // Alert Metamask to switch.
         if (!provider && downloadMetamaskFlag === false) {
             downloadMetamaskFlag = true;
             downloadMetamask();
@@ -241,7 +241,7 @@
             }
         }
 
-        //If we have already logged in the account, show new results, else do nothing.
+        // If we have already logged in the account, show new results, else do nothing.
         if (connectWalletBool === true) {
             if (!provider && downloadMetamaskFlag === false) {
                 downloadMetamaskFlag = true;
@@ -280,7 +280,7 @@
         }
     };
 
-    // When the Connect Wallet button is clicked, we connect the wallet (duh), and if it
+    // When the Connect Wallet button is clicked, we connect the wallet, and if it
     // has already been clicked, we copy the public address to the clipboard.
 
     if (!provider && downloadMetamaskFlag === false) {
@@ -344,38 +344,40 @@
         });
     }
 
-    provider.on("accountsChanged", async (accounts) => {
-        if (accounts.length !== 0) {
-            let web32 = new Web3(rpcUrl);
-            let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+    if (typeof accounts !== 'undefined' && accounts !== []) {
+        provider.on("accountsChanged", async (accounts) => {
+            if (accounts.length !== 0) {
+                let web32 = new Web3(rpcUrl);
+                let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
-            try {
-                const SmartContracts = await flareContract.methods.getAllContracts().call();
-                const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-                const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-                let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                const account = accounts[0];
-                showAccountAddress(account);
-                const balance = await web32.eth.getBalance(account);
-                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                try {
+                    const SmartContracts = await flareContract.methods.getAllContracts().call();
+                    const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
+                    const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+                    const account = accounts[0];
+                    showAccountAddress(account);
+                    const balance = await web32.eth.getBalance(account);
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-                if (wrapBool) {
-                    showBalance(round(web32.utils.fromWei(balance, "ether")));
-                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                } else {
-                    showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                    showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+                    if (wrapBool) {
+                        showBalance(round(web32.utils.fromWei(balance, "ether")));
+                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                    } else {
+                        showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                        showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+                    }
+                } catch (error) {
+                    // console.log(error)
                 }
-            } catch (error) {
-                // console.log(error)
+            } else {
+                document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+                showBalance(0.0);
+                showTokenBalance(0.0);
+                connectWalletBool = false;
             }
-        } else {
-            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-            showBalance(0.0);
-            showTokenBalance(0.0);
-            connectWalletBool = false;
-        }
-    });
+        });
+    }
 
     // We check if the input is valid, then copy it to the wrapped tokens section.
     document.querySelector("#AmountFrom").addEventListener("input", isInput);
@@ -390,7 +392,6 @@
             if (!isRealValue) {
                 $.alert("Please enter valid value");
             } else {
-
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -404,8 +405,8 @@
                         const account = accounts[0];
                         let balance = await web32.eth.getBalance(account);
                         let tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                        const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''))
-                        const amountFromValueWei = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16)
+                        const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''));
+                        const amountFromValueWei = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16);
 
                         if (amountFromValue >= Number(web32.utils.fromWei(balance, "ether"))) {
                             $.alert("Insufficient Balance!");

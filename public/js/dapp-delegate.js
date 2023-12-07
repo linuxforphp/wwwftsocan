@@ -2,17 +2,17 @@
 
 (() => {
     // dapp_claim.js
-    var voterWhitelisterAbiLocal = voterWhitelisterAbi
+    var voterWhitelisterAbiLocal = voterWhitelisterAbi;
     var ftso1 = document.getElementById("ftso-1");
     var ftso2 = document.getElementById("ftso-2");
     var isRealValue = false;
     // var icon = document.getElementById("Icon");
-    var claimBool = false
+    var claimBool = false;
     var amount1 = document.getElementById("Amount1");
     var amount2 = document.getElementById("Amount2");
     var isAmount2Active = false;
 
-    // switch claim button to claimable
+    // Switch claim button to claimable.
     function switchButtonColor() {
         document.getElementById('ClaimButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimBool = true;
@@ -111,10 +111,9 @@
         }
     }
 
-    //Checking if Metamask wallet is unlocked.
+    // Checking if Metamask wallet is unlocked.
     async function isWalletUnlocked() {
         const Web3provider = new ethers.providers.Web3Provider(window.ethereum);
-
         let unlocked;
 
         try {
@@ -200,17 +199,16 @@
         var actualLength = str.length - suffix.length;
 
         if (actualLength === 0) {
-            this.value = str.substring(0, actualLength)
+            this.value = str.substring(0, actualLength);
 
             this.setSelectionRange(actualLength, actualLength);
         } else {
             this.value = str.substring(0, actualLength) + suffix;
 
-            // set cursor position
+            // Set cursor position.
             this.setSelectionRange(actualLength, actualLength);
         }
     });
-
 
     amount2.addEventListener('input', function () {
         var str = this.value;
@@ -229,7 +227,7 @@
         } else {
             this.value = str.substring(0, actualLength) + suffix;
 
-            // set cursor position
+            // Set cursor position.
             this.setSelectionRange(actualLength, actualLength);
         }
     });
@@ -282,7 +280,7 @@
                 await provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{chainId: chainidhex}],
-                })
+                });
             } catch (error) {
                 // console.log(error);
             }
@@ -371,15 +369,17 @@
         });
     }
 
-    provider.on("accountsChanged", async (accounts) => {
-        if (accounts.length !== 0) {
-            const account = accounts[0];
-            showAccountAddress(account);
-        } else {
-            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-            connectWalletBool = false;
-        }
-    });
+    if (typeof accounts !== 'undefined' && accounts !== []) {
+        provider.on("accountsChanged", async (accounts) => {
+            if (accounts.length !== 0) {
+                const account = accounts[0];
+                showAccountAddress(account);
+            } else {
+                document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+                connectWalletBool = false;
+            }
+        });
+    }
 
     document.querySelector("#Amount1").addEventListener("input", isInput1);
     document.querySelector("#Amount2").addEventListener("input", isInput2);
