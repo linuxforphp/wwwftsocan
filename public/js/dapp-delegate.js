@@ -2,6 +2,7 @@
 
 (() => {
     // dapp_claim.js
+    var dappUrlBaseAddr = document.getElementById("MainSection").getAttribute('data-urlbaseaddr');
     var voterWhitelisterAbiLocal = voterWhitelisterAbi;
     var ftso1 = document.getElementById("ftso-1");
     var ftso2 = document.getElementById("ftso-2");
@@ -144,7 +145,8 @@
 
             const ftsoJsonList = JSON.stringify(ftsoList);
 
-            fetch('https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json')
+            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
+            fetch('https://' + dappUrlBaseAddr + '/bifrost-wallet.providerlist.json')
                 .then(res => res.json())
                 .then(FtsoInfo => {
                     for (var i = 0; i < ftsoList.length; i++) {
@@ -156,7 +158,8 @@
                                     indexNumber = f;
                                     //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
 
-                                    insert += `<option value="${i}" data-img="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                    insert += `<option value="${i}" data-img="https://${dappUrlBaseAddr}/assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
                                     ftso1.innerHTML = insert;
                                     ftso2.innerHTML = insert;
                                 }

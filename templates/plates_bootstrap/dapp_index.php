@@ -13,7 +13,7 @@
 <body>
 
 <?php if ($view['dappActive'] === true): ?>
-    <main class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main">
+    <main id="MainSection" class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main" data-urlbaseaddr="<?=$view['urlbaseaddr'] ?>">
         <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
             <div class="dapp-container">
                 <?php if (isset($view['dappwrap'])): ?>
