@@ -132,6 +132,8 @@
     // Populate select elements.
     async function populateFtsos() {
         var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
+        var insert1 = '';
+        var insert2 = '';
         let web32 = new Web3(rpcUrl);
         let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
 
@@ -146,30 +148,38 @@
             const ftsoJsonList = JSON.stringify(ftsoList);
 
             // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
-            fetch('https://' + dappUrlBaseAddr + '/bifrost-wallet.providerlist.json')
+            fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
                 .then(res => res.json())
                 .then(FtsoInfo => {
-                    for (var i = 0; i < ftsoList.length; i++) {
-                        let indexNumber;
+                    FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                        if (ftsoJsonList.includes(ftsoList[i])) {
-                            for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                                if (FtsoInfo.providers[f].address === ftsoList[i]) {
-                                    indexNumber = f;
-                                    //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+                    let indexNumber;
 
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert += `<option value="${i}" data-img="https://${dappUrlBaseAddr}/assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
-                                    ftso1.innerHTML = insert;
-                                    ftso2.innerHTML = insert;
+                    for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                        for (var i = 0; i < ftsoList.length; i++) {
+                            if (FtsoInfo.providers[f].address === ftsoList[i]) {
+                                indexNumber = f;
+                                //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+
+                                if (ftsoJsonList.includes(ftsoList[i])) {
+                                    if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert1 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                    } else {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert2 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                    }
+
+                                    ftso1.innerHTML = insert + insert1 + insert2;
+                                    ftso2.innerHTML = insert + insert1 + insert2;
+                                } else {
+                                    alert('The FTSO you have delegated to is invalid!');
+                                    break;
                                 }
                             }
-                        } else {
-                            alert('The FTSO you have delegated to is invalid!');
-                            break;
                         }
                     }
-                })
+                });
         } catch (error) {
             // console.log(error)
         }

@@ -223,30 +223,39 @@
                     const delegatedFtsos = delegatesOfUser[0];
                     const BipsJson = delegatesOfUser[1];
                     const Bips = BipsJson[0] / 100n;
-                    let insert = '';
+                    let insert1 = '';
+                    let insert2 = '';
 
                     // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
-                    fetch('https://' + dappUrlBaseAddr + '/bifrost-wallet.providerlist.json')
+                    fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
                         .then(res => res.json())
                         .then(FtsoInfo => {
-                            for (var i = 0; i < delegatedFtsos.length; i++) {
-                                let indexNumber;
+                            FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                                if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length === 0) {
-                                    for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                                        if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
-                                            indexNumber = f;
-                                            
-                                            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                            insert += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="https://${dappUrlBaseAddr}/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegated-name">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
-                                            delegatedFtsoElement.innerHTML = insert;
+                            var indexNumber;
+
+                            for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                                indexNumber = f;
+
+                                for (var i = 0; i < delegatedFtsos.length; i++) {
+                                    if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
+                                        if (ftsoJsonList.includes(delegatedFtsos[i])) {
+                                            if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                                insert1 = `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            } else {
+                                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                                insert2 += `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            }
+
+                                            delegatedFtsoElement.innerHTML = insert1 + insert2;
+                                        } else {
+                                            $.alert('The FTSO you have delegated to is invalid!');
                                         }
                                     }
-                                } else {
-                                    $.alert('The FTSO you have delegated to is invalid!');
                                 }
                             }
-                        })
+                        });
 
                     // Getting the unclaimed Rewards and affecting the Claim button.
                     const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
@@ -339,30 +348,39 @@
                     const delegatedFtsos = delegatesOfUser[0];
                     const BipsJson = delegatesOfUser[1];
                     const Bips = BipsJson[0] / 100n;
-                    let insert = '';
+                    let insert1 = '';
+                    let insert2 = '';
 
                     // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
-                    fetch('https://' + dappUrlBaseAddr + '/bifrost-wallet.providerlist.json')
+                    fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
                         .then(res => res.json())
                         .then(FtsoInfo => {
-                            for (var i = 0; i < delegatedFtsos.length; i++) {
-                                let indexNumber;
+                            FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                                if (ftsoJsonList.includes(delegatedFtsos[i]) || delegatedFtsos.length === 0) {
-                                    for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                                        if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
-                                            indexNumber = f;
+                            var indexNumber;
 
-                                            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                            insert += `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="https://${dappUrlBaseAddr}/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
-                                            delegatedFtsoElement.innerHTML = insert;
+                            for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                                indexNumber = f;
+
+                                for (var i = 0; i < delegatedFtsos.length; i++) {
+                                    if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
+                                        if (ftsoJsonList.includes(delegatedFtsos[i])) {
+                                            if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                                insert1 += `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            } else {
+                                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                                insert2 += `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            }
+
+                                            delegatedFtsoElement.innerHTML = insert1 + insert2;
+                                        } else {
+                                            $.alert('The FTSO you have delegated to is invalid!');
                                         }
                                     }
-                                } else {
-                                    $.alert('The FTSO you have delegated to is invalid!');
                                 }
                             }
-                        })
+                        });
 
                     // Getting the unclaimed Rewards and affecting the Claim button.
                     const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
