@@ -128,7 +128,6 @@
         return unlocked;
     }
 
-
     // Populate select elements.
     async function populateFtsos() {
         var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
@@ -474,8 +473,8 @@
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters3],
                             })
-                            .then((txHash) => showConfirm(txHash))
-                            .catch((error) => showFail());
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
                         });
                     }
                 } catch (error) {

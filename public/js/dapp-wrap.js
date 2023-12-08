@@ -117,7 +117,6 @@
         }
     }
 
-
     // Copy the input.
     function copyInput() {
         if (isNumber(amountFrom.value)) {
@@ -213,7 +212,8 @@
                 await provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{chainId: chainidhex}],
-                })
+                });
+
                 const isUnlocked = isWalletUnlocked();
 
                 if (await isUnlocked !== "false") {
@@ -423,8 +423,8 @@
                                     method: 'eth_sendTransaction',
                                     params: [transactionParameters],
                                 })
-                                .then((txHash) => showConfirm(txHash))
-                                .catch((error) => showFail());
+                                    .then((txHash) => showConfirm(txHash))
+                                    .catch((error) => showFail());
                             });
 
                             balance = await web32.eth.getBalance(account);
@@ -469,8 +469,8 @@
                                     method: 'eth_sendTransaction',
                                     params: [transactionParameters],
                                 })
-                                .then((txHash) => showConfirm(txHash))
-                                .catch((error) => showFail());
+                                    .then((txHash) => showConfirm(txHash))
+                                    .catch((error) => showFail());
                             });
 
                             balance = await web32.eth.getBalance(account);
