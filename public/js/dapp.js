@@ -22,6 +22,7 @@ async function showSpinner(doSomething) {
         }
     });
 }
+
 async function showConfirm(txHash) {
     $.confirm({
         escapeKey: true,

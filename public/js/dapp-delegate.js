@@ -394,7 +394,6 @@
             } else {
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
-                let batch = new web32.BatchRequest();
 
                 web32.setProvider(provider);
 
@@ -410,63 +409,64 @@
                 var addr1 = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-addr');
                 var addr2 = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-addr');
 
-                showSpinner(async () => {
-                    try {
-                        const SmartContracts = await flareContract.methods.getAllContracts().call();
-                        const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-                        const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                var transactionHashes
 
-                        let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+                try {
+                    const SmartContracts = await flareContract.methods.getAllContracts().call();
+                    const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
+                    const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+                    const accounts = await provider.request({method: 'eth_requestAccounts'});
+                    const account = accounts[0];
 
-                        const accounts = (await provider.send("eth_requestAccounts")).result;
-                        const account = accounts[0];
+                    const transactionParameters = {
+                        from: account,
+                        to: wrappedTokenAddr,
+                        data: tokenContract.methods.undelegateAll().encodeABI(),
+                    };
 
-                        var transactionParameters = {
-                            from: account,
-                            to: wrappedTokenAddr,
-                            data: tokenContract.methods.undelegateAll().send({from: account}),
-                        };
+                    const transactionParameters2 = {
+                        from: account,
+                        to: wrappedTokenAddr,
+                        data: tokenContract.methods.delegate(addr1, bips1).encodeABI(),
+                    };
 
-                        var transactionParameters2 = {
-                            from: account,
-                            to: wrappedTokenAddr,
-                            data: tokenContract.methods.delegate(addr1, bips1).send({from: account}),
-                        };
-
-                        var transactionParameters3 = {
-                            from: account,
-                            to: wrappedTokenAddr,
-                            data: tokenContract.methods.delegate(addr2, bips2).send({from: account}),
-                        };
-
-                        batch.add(web32.currentProvider.request({
+                    showSpinner(async () => {
+                        await provider.request({
                             method: 'eth_sendTransaction',
                             params: [transactionParameters],
                         })
                         .then((txHash) => showConfirm(txHash))
-                        .catch((error) => showFail()));
+                        .catch((error) => showFail());
+                    });
 
-                        batch.add(web32.currentProvider.request({
+                    showSpinner(async () => {
+                        await provider.request({
                             method: 'eth_sendTransaction',
                             params: [transactionParameters2],
                         })
                         .then((txHash) => showConfirm(txHash))
-                        .catch((error) => showFail()));
+                        .catch((error) => showFail());
+                    });
 
-                        if (isAmount2Active) {
-                            batch.add(web32.currentProvider.request({
+                    if (isAmount2Active) {
+                        const transactionParameters3 = {
+                            from: account,
+                            to: wrappedTokenAddr,
+                            data: tokenContract.methods.delegate(addr2, bips2).encodeABI(),
+                        };
+
+                        showSpinner(async () => {
+                            await provider.request({
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters3],
                             })
                             .then((txHash) => showConfirm(txHash))
-                            .catch((error) => showFail()));
-                        }
-
-                        batch.execute();
-                    } catch (error) {
-                        showFail();
+                            .catch((error) => showFail());
+                        });
                     }
-                });
+                } catch (error) {
+                }
             }
         })
     }
