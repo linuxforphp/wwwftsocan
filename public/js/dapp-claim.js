@@ -237,7 +237,7 @@
                                         if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
                                             indexNumber = f;
 
-                                            insert += `<div class="wrapBoxFTSO"><div class="wrapBoxContent"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                            insert += `<div class="wrap-box-ftso"><div class="wrap-box-content"><img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegated-name">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                             delegatedFtsoElement.innerHTML = insert;
                                         }
                                     }

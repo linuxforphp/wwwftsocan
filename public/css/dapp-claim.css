@@ -227,7 +227,7 @@
 
 .wrapper {
     float: right;
-    width: 50%;
+    width: 35%;
     text-align: right;
     font-size: 2.4rem;
     color: #383a3b;
@@ -239,8 +239,8 @@
     margin-top: 20px;
     margin-left: 30px;
     float: left;
-    width: 40px;
-    height: 40px;
+    width: 40px !important;
+    height: 40px !important;
     text-align: left;
     justify-content: left;
     align-items: left;
