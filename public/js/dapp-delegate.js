@@ -80,7 +80,7 @@
     }
 
     function isInput3() {
-        if (Number(amount1.value.replace(/[^0-9]/g, '')) + Number(amount2.value.replace(/[^0-9]/g, '')) > 100 || Number(ftso1?.options[ftso1.selectedIndex].getAttribute('data-ftso')) === 0) {
+        if (Number(amount1.value.replace(/[^0-9]/g, '')) + Number(amount2.value.replace(/[^0-9]/g, '')) > 100 || Number(ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-ftso')) === 0) {
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "auto";
             document.getElementById("ClaimButtonText").innerText = "Enter Amount";
@@ -88,7 +88,7 @@
             isAmount2Active = false;
         } else {
             if (Number(amount2.value.replace(/[^0-9]/g, '')) !== 0 && amount2.value.replace(/[^0-9]/g, '') !== '') {
-                if (ftso2?.options[ftso2.selectedIndex].getAttribute('data-ftso') === "0") {
+                if (ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-ftso') === "0") {
                     document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
                     document.getElementById("ClaimButton").style.cursor = "auto";
                     document.getElementById("ClaimButtonText").innerText = "Enter Amount";
@@ -176,14 +176,14 @@
     populateFtsos();
 
     ftso1.onchange = async () => {
-        var img = ftso1?.options[ftso1.selectedIndex].getAttribute('data-img');
+        var img = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-img');
         var delegatedicon = document.getElementById("delegatedIcon1");
         delegatedicon.src = img;
         isInput1();
     }
 
     ftso2.onchange = async () => {
-        var img = ftso2?.options[ftso2.selectedIndex].getAttribute('data-img');
+        var img = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-img');
         var delegatedicon = document.getElementById("delegatedIcon2");
         delegatedicon.src = img;
         isInput2();
@@ -237,11 +237,11 @@
     // If network value is 1 or 4, FLR or C2FLR, else SGB or CFLR.
     function isNetworkValue(networkValue) {
         if (networkValue === '1') {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
         } else if (networkValue === '2') {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
         } else {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
         }
     }
 
@@ -253,19 +253,19 @@
     }
 
     selectedNetwork.onchange = async () => {
-        rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-        chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
-        networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
+        rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
+        chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
+        networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
 
         if (networkValue === '1' || networkValue === '4') {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
             isInput1();
 
             if (isAmount2Active) {
                 isInput2();
             }
         } else {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
             isInput1();
 
             if (isAmount2Active) {
@@ -394,29 +394,32 @@
             } else {
                 let web32 = new Web3(rpcUrl);
                 let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
+                let batch = new web32.BatchRequest();
 
-                try {
-                    const SmartContracts = await flareContract.methods.getAllContracts().call();
-                    const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-                    const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                web32.setProvider(provider);
 
-                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+                const value1 = amount1.value;
+                const value2 = amount1.value;
 
-                    const accounts = (await provider.send("eth_requestAccounts")).result;
-                    const account = accounts[0];
+                const percent1 = value1.replace(/[^0-9]/g, '');
+                const percent2 = value2.replace(/[^0-9]/g, '');
 
-                    if (isAmount2Active) {
-                        const value1 = amount1.value;
-                        const value2 = amount1.value;
+                const bips1 = Number(percent1) * 100;
+                const bips2 = Number(percent2) * 100;
 
-                        const percent1 = value1.replace(/[^0-9]/g, '');
-                        const percent2 = value2.replace(/[^0-9]/g, '');
+                var addr1 = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-addr');
+                var addr2 = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-addr');
 
-                        const bips1 = Number(percent1) * 100;
-                        const bips2 = Number(percent2) * 100;
+                showSpinner(async () => {
+                    try {
+                        const SmartContracts = await flareContract.methods.getAllContracts().call();
+                        const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
+                        const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
 
-                        var addr1 = ftso1?.options[ftso1.selectedIndex].getAttribute('data-addr');
-                        var addr2 = ftso2?.options[ftso2.selectedIndex].getAttribute('data-addr');
+                        let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
+
+                        const accounts = (await provider.send("eth_requestAccounts")).result;
+                        const account = accounts[0];
 
                         var transactionParameters = {
                             from: account,
@@ -424,88 +427,46 @@
                             data: tokenContract.methods.undelegateAll().send({from: account}),
                         };
 
-                        showSpinner(async () => {
-                            await provider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
-                            })
-                                .then((txHash) => showConfirm(txHash))
-                                .catch((error) => showFail());
-                        });
-
-                        transactionParameters = {
+                        var transactionParameters2 = {
                             from: account,
                             to: wrappedTokenAddr,
                             data: tokenContract.methods.delegate(addr1, bips1).send({from: account}),
                         };
 
-                        showSpinner(async () => {
-                            await provider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
-                            })
-                                .then((txHash) => showConfirm(txHash))
-                                .catch((error) => showFail());
-                        });
-
-                        transactionParameters = {
+                        var transactionParameters3 = {
                             from: account,
                             to: wrappedTokenAddr,
                             data: tokenContract.methods.delegate(addr2, bips2).send({from: account}),
                         };
 
-                        showSpinner(async () => {
-                            await provider.request({
+                        batch.add(web32.currentProvider.request({
+                            method: 'eth_sendTransaction',
+                            params: [transactionParameters],
+                        })
+                        .then((txHash) => showConfirm(txHash))
+                        .catch((error) => showFail()));
+
+                        batch.add(web32.currentProvider.request({
+                            method: 'eth_sendTransaction',
+                            params: [transactionParameters2],
+                        })
+                        .then((txHash) => showConfirm(txHash))
+                        .catch((error) => showFail()));
+
+                        if (isAmount2Active) {
+                            batch.add(web32.currentProvider.request({
                                 method: 'eth_sendTransaction',
-                                params: [transactionParameters],
-                            })
-                                .then((txHash) => showConfirm(txHash))
-                                .catch((error) => showFail());
-                        });
-                    } else {
-                        const value1 = amount1.value;
-
-                        const percent1 = value1.replace(/[^0-9]/g, '');
-
-                        const bips1 = Number(percent1) * 100;
-
-                        var addr1 = ftso1?.options[ftso1.selectedIndex].getAttribute('data-addr');
-
-                        var transactionParameters = {
-                            from: account,
-                            to: wrappedTokenAddr,
-                            data: tokenContract.methods.undelegateAll().send({from: account}),
-                        };
-
-                        showSpinner(async () => {
-                            await provider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
+                                params: [transactionParameters3],
                             })
                             .then((txHash) => showConfirm(txHash))
-                            .catch((error) => showFail());
+                            .catch((error) => showFail()));
+                        }
 
-                            
-                        });
-
-                        transactionParameters = {
-                            from: account,
-                            to: wrappedTokenAddr,
-                            data: tokenContract.methods.delegate(addr1, bips1).send({from: account}),
-                        };
-
-                        showSpinner(async () => {
-                            await provider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
-                            })
-                                .then((txHash) => showConfirm(txHash))
-                                .catch((error) => showFail());
-                        });
+                        batch.execute();
+                    } catch (error) {
+                        showFail();
                     }
-                } catch (error) {
-                    showFail();
-                }
+                });
             }
         })
     }
