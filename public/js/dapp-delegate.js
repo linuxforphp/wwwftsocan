@@ -236,7 +236,9 @@
 
     // If network value is 1 or 4, FLR or C2FLR, else SGB or CFLR.
     function isNetworkValue(networkValue) {
-        if (networkValue === '1' || networkValue === '4') {
+        if (networkValue === '1') {
+            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+        } else if (networkValue === '2') {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
         } else {
             rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
@@ -482,6 +484,8 @@
                             })
                             .then((txHash) => showConfirm(txHash))
                             .catch((error) => showFail());
+
+                            
                         });
 
                         transactionParameters = {

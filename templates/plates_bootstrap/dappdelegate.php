@@ -27,7 +27,7 @@
                 <div class="wrap-box-content">
                     <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="delegated-icon" id="delegatedIcon1">
                     <select class="selected-ftso" id="ftso-1" required>
-                        <option value="" disabled selected hidden>Select FTSO</option>
+                        <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
                     </select>
                     <input id="Amount1" class="amount"  type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0%">
                 </div>
@@ -38,7 +38,7 @@
                 <div class="wrap-box-content">
                     <img src='<?=$view['urlbaseaddr'] ?>img/FLR.svg' class="delegated-icon" id="delegatedIcon2">
                     <select class="selected-ftso" id="ftso-2" required>
-                        <option value="" disabled selected hidden data-ftso="0">Select FTSO</option>
+                        <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
                     </select>
                     <input id="Amount2" class="amount" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0%">
                 </div>
