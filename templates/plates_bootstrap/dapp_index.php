@@ -32,21 +32,21 @@
 
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso-reward-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/dapp.js"></script>
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/flareutils.bundle.js"></script>
 
 <?php if (isset($view['dappwrap'])): ?>
-    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp-wrap.js"></script>
+    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappwrap.bundle.js"></script>
 <?php endif ?>
 <?php if (isset($view['dappdelegate'])): ?>
-    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
-    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
-    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp-delegate.js"></script>
+    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappdelegate.bundle.js"></script>
 <?php endif ?>
 <?php if (isset($view['dappclaim'])): ?>
-    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
-    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso-reward-abi.js"></script>
-    <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
-    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dapp-claim.js"></script>
+    <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappclaim.bundle.js"></script>
 <?php endif ?>
 </body>
 </html>
