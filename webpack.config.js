@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+    mode: 'production',
     entry: {
         dappwrap: './src/dapp-wrap.js',
         dappdelegate: './src/dapp-delegate.js',

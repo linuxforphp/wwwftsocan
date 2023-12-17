@@ -158,6 +158,21 @@ async function populateFtsos() {
     }
 }
 
+// Alert Metamask to switch.
+if (!provider && downloadMetamaskFlag === false) {
+    downloadMetamaskFlag = true;
+    downloadMetamask();
+} else {
+    try {
+        await provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{chainId: chainidhex}],
+        })
+    } catch (error) {
+        // console.log(error);
+    }
+}
+
 populateFtsos();
 
 ftso1.onchange = async () => {
@@ -344,14 +359,40 @@ if (!provider && downloadMetamaskFlag === false) {
         }
     });
 }
+if (typeof accounts !== 'undefined' && accounts !== []) {
+    window.ethereum.on("accountsChanged", async (accounts) => {
+        if (accounts.length !== 0) {
+            const account = accounts[0];
+            showAccountAddress(account);
+        } else {
+            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            connectWalletBool = false;
+        }
+    });
+}
 
-provider.on("accountsChanged", async (accounts) => {
-    if (accounts.length !== 0) {
-        const account = accounts[0];
-        showAccountAddress(account);
+window.ethereum.on("chainChanged", async (chosenChainId) => {
+    for (var i = 0; i < selectedNetwork?.options.length; i++) {
+        if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
+            selectedNetwork.value = selectedNetwork.options[i].value;
+            selectedNetwork.dispatchEvent(new Event('change'));
+
+            break
+        }
+    }
+
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
     } else {
-        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-        connectWalletBool = false;
+        try {
+            await provider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{chainId: chainidhex}],
+            })
+        } catch (error) {
+            // console.log(error);
+        }
     }
 });
 

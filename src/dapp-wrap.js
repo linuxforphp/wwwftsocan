@@ -149,6 +149,21 @@ function isNetworkValue(networkValue) {
     }
 }
 
+// Alert Metamask to switch.
+if (!provider && downloadMetamaskFlag === false) {
+    downloadMetamaskFlag = true;
+    downloadMetamask();
+} else {
+    try {
+        await provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{chainId: chainidhex}],
+        })
+    } catch (error) {
+        // console.log(error);
+    }
+}
+
 isNetworkValue(networkValue);
 showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
 isInput();
@@ -334,10 +349,7 @@ if (!provider && downloadMetamaskFlag === false) {
     });
 }
 
-if (!provider && downloadMetamaskFlag === false) {
-    downloadMetamaskFlag = true;
-    downloadMetamask();
-} else {
+if (typeof accounts !== 'undefined' && accounts !== []) {
     window.ethereum.on("accountsChanged", async (accounts) => {
         if (accounts.length !== 0) {
             let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
@@ -369,6 +381,31 @@ if (!provider && downloadMetamaskFlag === false) {
         }
     });
 }
+
+window.ethereum.on("chainChanged", async (chosenChainId) => {
+    for (var i = 0; i < selectedNetwork?.options.length; i++) {
+        if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
+            selectedNetwork.value = selectedNetwork.options[i].value;
+            selectedNetwork.dispatchEvent(new Event('change'));
+
+            break
+        }
+    }
+
+    if (!provider && downloadMetamaskFlag === false) {
+        downloadMetamaskFlag = true;
+        downloadMetamask();
+    } else {
+        try {
+            await provider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{chainId: chainidhex}],
+            })
+        } catch (error) {
+            // console.log(error);
+        }
+    }
+});
 
 // We check if the input is valid, then copy it to the wrapped tokens section.
 document.querySelector("#AmountFrom").addEventListener("input", isInput);
@@ -458,20 +495,21 @@ if (!provider && downloadMetamaskFlag === false) {
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters],
                             })
-                            .then((txHash) => showConfirm(txHash))
+                            .then((txHash) => async () => {
+                                showConfirm(txHash);
+                                balance = await web32.eth.getBalance(account);
+                                tokenBalance = await tokenContract.methods.balanceOf(account).call();
+
+                                if (wrapBool) {
+                                    showBalance(round(web32.utils.fromWei(balance, "ether")));
+                                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                                } else {
+                                    showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                                    showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+                                }
+                            })
                             .catch((error) => showFail());
                         });
-
-                        balance = await web32.eth.getBalance(account);
-                        tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-                        if (wrapBool) {
-                            showBalance(round(web32.utils.fromWei(balance, "ether")));
-                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        } else {
-                            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
-                        }
                     }
                 } catch (error) {
                     showFail();
