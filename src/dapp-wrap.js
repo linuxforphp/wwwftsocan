@@ -21,6 +21,21 @@ var toIcon = document.getElementById("ToIcon");
 document.getElementById("layer2").innerHTML = flrLogo;
 document.getElementById("layer3").innerHTML = flrLogo;
 
+// Alert Metamask to switch.
+if (!provider && downloadMetamaskFlag === false) {
+    downloadMetamaskFlag = true;
+    downloadMetamask();
+} else {
+    try {
+        await provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{chainId: chainidhex}],
+        })
+    } catch (error) {
+        // console.log(error);
+    }
+}
+
 // show the current token identifiers
 function showTokenIdentifiers(token, wrappedToken) {
     document.getElementById("tokenIdentifier").innerText = token;
@@ -146,21 +161,6 @@ function isNetworkValue(networkValue) {
         document.getElementById("layer2").innerHTML = costonLogo;
         document.getElementById("layer3").innerHTML = costonLogo;
         showTokenIdentifiers(tokenIdentifier, wrappedTokenIdentifier);
-    }
-}
-
-// Alert Metamask to switch.
-if (!provider && downloadMetamaskFlag === false) {
-    downloadMetamaskFlag = true;
-    downloadMetamask();
-} else {
-    try {
-        await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{chainId: chainidhex}],
-        })
-    } catch (error) {
-        // console.log(error);
     }
 }
 
