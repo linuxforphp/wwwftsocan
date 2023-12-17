@@ -16,6 +16,18 @@ body {
     text-align: center;
 }
 
+.site-content {
+    background: none;
+}
+
+h1, h2 {
+    font-weight: bold !important;
+}
+
+.main-section-padding {
+    padding: 0 0 70px 0;
+}
+
 /* change the background color */
 .navbar-dapp-actions {
     background-color: rgba(253, 0, 15, 0.8);
@@ -63,6 +75,10 @@ body {
     border-radius: 25px;
     width: auto;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.whoops {
+    padding: 30px 20% 25px;
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {

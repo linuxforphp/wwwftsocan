@@ -106,6 +106,7 @@ class DappDelegateController extends AggregateRootController implements Aggregat
 
         $this->view['dappName'] = $baseConfig['dappName'];
         $this->view['env'] = $baseConfig['env'];
+        $this->view['dappActive'] = $baseConfig['dappActive'];
 
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-main.css';
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-delegate.css';
