@@ -168,19 +168,32 @@ async function getChainIdHex() {
 
 window.onload = (event) => {
     isConnected()
-        .then(function () {
+        .then(async function () {
             document.getElementById("ConnectWallet").click();
 
-            var chainIdHexPromise = getChainIdHex();
-
-            chainIdHexPromise.then(chainIdHex => {
+            var chainIdHexPromise = await getChainIdHex().then(async function(chainIdHex) {
                 var networkSelectBox = document.getElementById('SelectedNetwork');
 
-                for (let i = 0; i < networkSelectBox.options.length; i++) {
-                    let optionChainIdHex = networkSelectBox.options[i].getAttribute('data-chainidhex');
+                for (var i = 0; i < networkSelectBox?.options.length; i++) {
+                    if (networkSelectBox?.options[i].getAttribute('data-chainidhex') === String(chainIdHex)) {
+                        networkSelectBox.options.selectedIndex = i;
+                        networkSelectBox.dispatchEvent(new Event('change'));
 
-                    if (optionChainIdHex === chainIdHex) {
-                        networkSelectBox.options[i].setAttribute('selected', 'selected');
+                        break;
+                    }
+                }
+
+                if (!provider && downloadMetamaskFlag === false) {
+                    downloadMetamaskFlag = true;
+                    downloadMetamask();
+                } else {
+                    try {
+                        await provider.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{chainId: chainidhex}],
+                        })
+                    } catch (error) {
+                        // console.log(error);
                     }
                 }
             });
