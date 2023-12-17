@@ -284,19 +284,17 @@ if (!provider && downloadMetamaskFlag === false) {
             try {
                 const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-                delete claimableMonths.__length__;
-                delete claimableMonths._endMonth;
-                delete claimableMonths._startMonth;
-
                 for (const property in claimableMonths) {
-                    try {
-                        unconvertedAmount = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, claimableMonths[property]).call();
-
-                        if (typeof Number(unconvertedAmount) !== 'undefined' && Number(unconvertedAmount) > 0) {
-                            claimableAmountFd += Number(web32.utils.fromWei(unconvertedAmount, "ether"));
+                    if (!property.includes("_")) {
+                        try {
+                            unconvertedAmount = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, claimableMonths[property]).call();
+    
+                            if (typeof Number(unconvertedAmount) !== 'undefined' && Number(unconvertedAmount) > 0) {
+                                claimableAmountFd += Number(web32.utils.fromWei(unconvertedAmount, "ether"));
+                            }
+                        } catch (error) {
+                            throw(error);
                         }
-                    } catch (error) {
-                        throw(error);
                     }
                 }
 
@@ -439,43 +437,42 @@ if (!provider && downloadMetamaskFlag === false) {
                 const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators");
                 let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
                 const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
-                
-                delete claimableMonths.__length__;
-                delete claimableMonths._endMonth;
-                delete claimableMonths._startMonth;
-                var transactionParameters
+
+                var transactionParameters;
 
                 for (const property in claimableMonths) {
-                    if (checkBox.checked) {
-                        transactionParameters = {
-                            from: account,
-                            to: DistributionDelegatorsAddr,
-                            data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], true).encodeABI(),
-                        };
-                    } else {
-                        transactionParameters = {
-                            from: account,
-                            to: DistributionDelegatorsAddr,
-                            data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], false).encodeABI(),
-                        };
+                    if (!property.includes("_")) {
+                        if (checkBox.checked) {
+                            transactionParameters = {
+                                from: account,
+                                to: DistributionDelegatorsAddr,
+                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], true).encodeABI(),
+                            };
+                        } else {
+                            transactionParameters = {
+                                from: account,
+                                to: DistributionDelegatorsAddr,
+                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], false).encodeABI(),
+                            };
+                        }
+    
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                                .then((txHash) => showConfirm(txHash))
+                                .catch((error) => showFail());
+                        });
+     
+                        showFdRewards(0.0);
+                        switchFdButtonColorBack();
+                        const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                     }
-
-                    showSpinner(async () => {
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
-                        })
-                            .then((txHash) => showConfirm(txHash))
-                            .catch((error) => showFail());
-                    });
                 }
-
-                showFdRewards(0.0);
-                switchFdButtonColorBack();
-                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
             } catch (error) {
-                
+                // console.log(error);
             }
         }
     })
