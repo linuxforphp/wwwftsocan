@@ -56,27 +56,10 @@ async function switchIconColor() {
         } else {
             let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
             try {
-                const isUnlocked = isWalletUnlocked();
+                const isUnlocked = isConnected();
 
                 if (await isUnlocked !== "false") {
-                    var contractName = "WNat"
-                    const wrappedTokenAddr = await GetContract(contractName);
-
-                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-
-                    const accounts = await provider.request({method: 'eth_requestAccounts'});
-                    const account = accounts[0];
-                    showAccountAddress(account);
-                    const balance = await web32.eth.getBalance(account);
-                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-                    if (wrapBool === false) {
-                        showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
-                        showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                    } else {
-                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        showBalance(round(web32.utils.fromWei(balance, "ether")));
-                    }
+                    document.getElementById("ConnectWallet").click();
                 } else {
                     $.alert("You are not connected!");
                 }
@@ -90,11 +73,6 @@ async function switchIconColor() {
 wrapUnwrapButton.addEventListener("click", async () => {
     switchIconColor();
 });
-
-// Has the wallet already been unlocked?
-async function isWalletUnlocked() {
-    return provider._metamask.isUnlocked()
-}
 
 // is a valid input?
 function isInput() {
@@ -212,26 +190,12 @@ selectedNetwork.onchange = async () => {
                 method: 'wallet_switchEthereumChain',
                 params: [{chainId: chainidhex}],
             })
-            const isUnlocked = isWalletUnlocked();
+            const isUnlocked = isConnected();
 
             if (await isUnlocked !== "false") {
-                var contractName = "WNat"
-                const wrappedTokenAddr = await GetContract(contractName);
-
-                let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                const accounts = await provider.request({method: 'eth_requestAccounts'});
-                const account = accounts[0];
-                showAccountAddress(account);
-                const balance = await web32.eth.getBalance(account);
-                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-                if (wrapBool) {
-                    showBalance(round(web32.utils.fromWei(balance, "ether")));
-                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                } else {
-                    showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                    showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
-                }
+                document.getElementById("ConnectWallet").click();
+            } else {
+                $.alert("You are not connected!");
             }
         } catch (error) {
             // console.log(error);
@@ -247,24 +211,9 @@ selectedNetwork.onchange = async () => {
             let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
 
             try {
-                const isUnlocked = isWalletUnlocked();
+                const isUnlocked = isConnected();
                 if (await isUnlocked !== "false") {
-                    var contractName = "WNat"
-                    const wrappedTokenAddr = await GetContract(contractName);
-                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                    const accounts = await provider.request({method: 'eth_requestAccounts'});
-                    const account = accounts[0];
-                    showAccountAddress(account);
-                    const balance = await web32.eth.getBalance(account);
-                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-                    if (wrapBool) {
-                        showBalance(round(web32.utils.fromWei(balance, "ether")));
-                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                    } else {
-                        showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
-                    }
+                    document.getElementById("ConnectWallet").click();
                 } else {
                     $.alert("You are not connected!");
                 }

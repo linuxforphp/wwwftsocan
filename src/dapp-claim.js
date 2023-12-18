@@ -58,23 +58,6 @@ function showFdRewards(Rewards) {
     document.getElementById('ClaimFdButtonText').innerText = Rewards;
 }
 
-// Checking if Metamask wallet is unlocked.
-async function isWalletUnlocked() {
-    const Web3provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    let unlocked;
-
-    try {
-        const accounts = await Web3provider.listAccounts();
-
-        unlocked = accounts.length > 0;
-    } catch (e) {
-        unlocked = false;
-    }
-
-    return unlocked;
-}
-
 // If network value is 1 or 4, FLR or C2FLR, else SGB or CFLR.
 function isNetworkValue(networkValue) {
     if (networkValue === '1') {
@@ -150,16 +133,11 @@ selectedNetwork.onchange = async () => {
             let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
 
             try {
-                const isUnlocked = isWalletUnlocked();
+                const isUnlocked = isConnected();
                 if (await isUnlocked !== "false") {
-                    const wrappedTokenAddr = await GetContract("WNat");
-
-                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                    const accounts = await provider.request({method: 'eth_requestAccounts'});
-                    const account = accounts[0];
-                    showAccountAddress(account);
-                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                    document.getElementById("ConnectWallet").click();
+                } else {
+                    $.alert("You are not connected!");
                 }
             } catch (error) {
                 // console.log(error);
