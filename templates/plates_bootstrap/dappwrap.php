@@ -14,11 +14,7 @@
                                 <?php if (isset($view['results']['nodata'])): ?>
                                     <?=$view['results']['nodata'] ?>
                                 <?php else: ?>
-                                    <select name="SelectedNetwork" id="SelectedNetwork" class="selected-network">
-                                        <?php foreach($view['results'] as $key => $networks): ?>
-                                            <option value="<?=$networks['id'] ?>" data-chainidhex="<?='0x' . dechex($networks['chainid']) ?>"data-rpcurl="<?=$networks['rpcurl'] ?>" data-registrycontract="<?=$networks['registrycontract'] ?>"><?=$networks['chainidentifier'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <select name="SelectedNetwork" id="SelectedNetwork" class="selected-network"></select>
                                 <?php endif ?>
                             </div>
                         </div>

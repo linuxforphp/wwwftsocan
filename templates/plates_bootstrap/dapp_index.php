@@ -54,13 +54,16 @@
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
 
+<script>
+    var dappNetworks = <?= json_encode($view['results']); ?>;
+</script>
+
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso-reward-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
-<script type="module" src="<?=$view['urlbaseaddr'] ?>js/flareutils.bundle.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/dapp.js"></script>
 
 <?php if (isset($view['dappwrap'])): ?>
@@ -72,5 +75,7 @@
 <?php if (isset($view['dappclaim'])): ?>
     <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappclaim.bundle.js"></script>
 <?php endif ?>
+
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/flareutils.bundle.js"></script>
 </body>
 </html>

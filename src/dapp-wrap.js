@@ -1,4 +1,12 @@
 import { FlareAbis, Provider as provider, FlareLogos, GetContract, downloadMetamask, round, showAccountAddress, showBalance, showTokenBalance, isNumber } from "./flare-utils";
+
+var selectedNetwork = document.getElementById("SelectedNetwork");
+var flrAddr = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-registrycontract');
+var rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+var chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
+var networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
+var tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+
 // dapp_wrap.js
 var selectedNetwork = document.getElementById("SelectedNetwork");
 var flrAddr = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-registrycontract');

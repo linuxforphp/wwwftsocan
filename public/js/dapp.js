@@ -140,12 +140,6 @@ const MMSDK = new MetaMaskSDK.MetaMaskSDK({
 });
 
 var provider = window.ethereum;
-var selectedNetwork = document.getElementById("SelectedNetwork");
-var flrAddr = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-registrycontract');
-var rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-var chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
-var networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
-var tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
 var connectWalletBool = false;
 var downloadMetamaskFlag = false;
 var isWalletUnlocked = false;
@@ -174,13 +168,20 @@ window.onload = (event) => {
             var chainIdHexPromise = await getChainIdHex().then(async function(chainIdHex) {
                 var networkSelectBox = document.getElementById('SelectedNetwork');
 
-                for (var i = 0; i < networkSelectBox?.options.length; i++) {
-                    if (networkSelectBox?.options[i].getAttribute('data-chainidhex') === String(chainIdHex)) {
-                        networkSelectBox.options.selectedIndex = i;
-                        networkSelectBox.dispatchEvent(new Event('change'));
+                for (const property in dappNetworks) {
+                    var option = document.createElement("option");
+                    option.value = dappNetworks[property].id;
+                    option.text = dappNetworks[property].chainidentifier;
+                    option.setAttribute('data-chainidhex', '0x' + dappNetworks[property].chainid);
+                    option.setAttribute('data-rpcurl', dappNetworks[property].rpcurl);
+                    option.setAttribute('data-registrycontract', dappNetworks[property].registrycontract);
 
-                        break;
+                    if (dappNetworks[property].chainid === chainIdHex) {
+                        option.setAttribute('selected', 'selected');
+                        networkSelectBox.options.selectedIndex = dappNetworks[property].id;
                     }
+
+                    networkSelectBox.appendChild(option);
                 }
 
                 if (!provider && downloadMetamaskFlag === false) {
