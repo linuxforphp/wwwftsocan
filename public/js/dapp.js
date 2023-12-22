@@ -1,3 +1,5 @@
+import { option } from "grunt";
+
 async function showSpinner(doSomething) {
     $.confirm({
         escapeKey: true,
@@ -143,60 +145,55 @@ var provider = window.ethereum;
 var connectWalletBool = false;
 var downloadMetamaskFlag = false;
 var isWalletUnlocked = false;
-
-async function isConnected() {
-    const accounts = await provider.request({method: 'eth_accounts'});
-
-    if (accounts.length) {
-        // console.log(`You're connected to: ${accounts[0]}`);
-        return true;
-    } else {
-        // console.log("Metamask is not connected");
-        return false;
-    }
-}
+var metamaskInstalled;
 
 async function getChainIdHex() {
     return await provider.request({method: 'eth_chainId'});
 }
 
 window.onload = (event) => {
-    isConnected()
-        .then(async function () {
-            document.getElementById("ConnectWallet").click();
+    if (!provider) {
+        metamaskInstalled = false;
+        downloadMetamask();
+    } else {
+        metamaskInstalled = true;
+        isConnected()
+            .then(async function () {
+                document.getElementById("ConnectWallet").click();
 
-            var chainIdHexPromise = await getChainIdHex().then(async function(chainIdHex) {
-                var networkSelectBox = document.getElementById('SelectedNetwork');
+                var chainIdHexPromise = await getChainIdHex().then(async function(chainIdHex) {
+                    var networkSelectBox = document.getElementById('SelectedNetwork');
 
-                for (const property in dappNetworks) {
-                    var option = document.createElement("option");
-                    option.value = dappNetworks[property].id;
-                    option.text = dappNetworks[property].chainidentifier;
-                    option.setAttribute('data-chainidhex', '0x' + dappNetworks[property].chainid);
-                    option.setAttribute('data-rpcurl', dappNetworks[property].rpcurl);
-                    option.setAttribute('data-registrycontract', dappNetworks[property].registrycontract);
+                    for (const property in dappNetworks) {
+                        var option = document.createElement("option");
+                        option.value = dappNetworks[property].id;
+                        option.text = dappNetworks[property].chainidentifier;
+                        option.setAttribute('data-chainidhex', '0x' + dappNetworks[property].chainid);
+                        option.setAttribute('data-rpcurl', dappNetworks[property].rpcurl);
+                        option.setAttribute('data-registrycontract', dappNetworks[property].registrycontract);
 
-                    if (dappNetworks[property].chainid === chainIdHex) {
-                        option.setAttribute('selected', 'selected');
-                        networkSelectBox.options.selectedIndex = dappNetworks[property].id;
+                        if (dappNetworks[property].chainid === chainIdHex) {
+                            option.setAttribute('selected', 'selected');
+                            networkSelectBox.options.selectedIndex = dappNetworks[property].id;
+                        }
+
+                        networkSelectBox.appendChild(option);
                     }
 
-                    networkSelectBox.appendChild(option);
-                }
-
-                if (!provider && downloadMetamaskFlag === false) {
-                    downloadMetamaskFlag = true;
-                    downloadMetamask();
-                } else {
-                    try {
-                        await provider.request({
-                            method: 'wallet_switchEthereumChain',
-                            params: [{chainId: chainidhex}],
-                        })
-                    } catch (error) {
-                        // console.log(error);
+                    if (!provider && downloadMetamaskFlag === false) {
+                        downloadMetamaskFlag = true;
+                        downloadMetamask();
+                    } else {
+                        try {
+                            await provider.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{chainId: chainidhex}],
+                            })
+                        } catch (error) {
+                            // console.log(error);
+                        }
                     }
-                }
+                });
             });
-        });
+    }
 };
