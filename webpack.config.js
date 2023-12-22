@@ -17,4 +17,5 @@ module.exports = {
           chunks: 'all',
         },
     },
+    watch: true,
 }

@@ -30,7 +30,10 @@
                     "mysql -uroot fw < /srv/tempo/wwwftsocan/data/db_data.sql",
                     "/etc/init.d/mysql stop",
                     "sleep 5",
+                    "lfphp-get node.js-16",
+                    "npm install -g grunt",
                     "cd /srv/tempo/wwwftsocan",
+                    "npm install",
                     "grunt webpack >/dev/null 2>&1 &",
                     "lfphp --mysql --phpfpm --apache"
                 ],
