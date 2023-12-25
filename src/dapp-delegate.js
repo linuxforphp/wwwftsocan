@@ -1,43 +1,45 @@
-import { FlareAbis, Provider as provider, GetContract, round, showAccountAddress, showTokenBalance,} from "./flare-utils";
+import { FlareAbis, Provider as provider, GetContract, showAccountAddress, } from "./flare-utils";
 import * as DappCommon from './dapp-common.js';
 
 // dapp_delegate.js
-var selectedNetwork;
-var rpcUrl;
-var chainidhex;
-var networkValue;
 var ercAbi = FlareAbis.WNat;
 var voterWhitelisterAbiLocal = FlareAbis.VoterWhitelister;
 var isRealValue = false;
 var isAmount2Active = false;
+var metamaskInstalled;
 
-window.onload = (event) => {
+window.onload = async (event) => {
+    var selectedNetwork;
+    var rpcUrl;
+    var chainidhex;
+    var networkValue;
     var amount1 = document.getElementById("Amount1");
     var amount2 = document.getElementById("Amount2");
     var ftso1 = document.getElementById("ftso-1");
     var ftso2 = document.getElementById("ftso-2");
-    DappCommon.getSelectedNetwork(selectedNetwork, rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier);
 
-    populateFtsos(ftso1, ftso2);
+    DappCommon.populateFtsos(ftso1, ftso2);
 
     // When the Connect Wallet button is clicked, we connect the wallet, and if it
     // has already been clicked, we copy the public address to the clipboard.
     if (metamaskInstalled === true) {
-        document.getElementById("ConnectWallet").addEventListener("click", DappCommon.ConnectWalletClickDelegate);
+        document.getElementById("ConnectWallet").addEventListener("click", DappCommon.ConnectWalletClickDelegate(rpcUrl));
     }
+
+    await DappCommon.createSelectedNetwork(metamaskInstalled).then(DappCommon.getSelectedNetwork(selectedNetwork, rpcUrl, chainidhex, networkValue));
 
     ftso1.onchange = async () => {
         var img = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-img');
         var delegatedicon = document.getElementById("delegatedIcon1");
         delegatedicon.src = img;
-        isInput1();
+        DappCommon.isDelegateInput1(isRealValue, isAmount2Active);
     }
 
     ftso2.onchange = async () => {
         var img = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-img');
         var delegatedicon = document.getElementById("delegatedIcon2");
         delegatedicon.src = img;
-        isInput2();
+        DappCommon.isDelegateInput2(isRealValue, isAmount2Active);
     }
 
     amount1.addEventListener('input', function () {
@@ -86,10 +88,10 @@ window.onload = (event) => {
 
     rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
 
-    isInput1();
+    DappCommon.isDelegateInput2(isRealValue, isAmount2Active);
 
     if (isAmount2Active) {
-        isInput2();
+        DappCommon.isDelegateInput2(isRealValue, isAmount2Active);
     }
 
     selectedNetwork.onchange = async () => {
@@ -97,10 +99,10 @@ window.onload = (event) => {
         chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
         networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
 
-        DappCommon.isDelegateInput1();
+        DappCommon.isDelegateInput1(isRealValue, isAmount2Active);
 
         if (isAmount2Active) {
-            DappCommon.isDelegateInput2();
+            DappCommon.isDelegateInput2(isRealValue, isAmount2Active);
         }
 
         // Alert Metamask to switch.
@@ -160,8 +162,8 @@ window.onload = (event) => {
         }
     });
 
-    document.querySelector("#Amount1").addEventListener("input", DappCommon.isDelegateInput1);
-    document.querySelector("#Amount2").addEventListener("input", DappCommon.isDelegateInput2);
+    document.querySelector("#Amount1").addEventListener("input", DappCommon.isDelegateInput1(isRealValue, isAmount2Active));
+    document.querySelector("#Amount2").addEventListener("input", DappCommon.isDelegateInput2(isRealValue, isAmount2Active));
 
     if (metamaskInstalled === true) {
         document.getElementById("ClaimButton").addEventListener("click", async () => {
@@ -169,7 +171,6 @@ window.onload = (event) => {
                 $.alert("Please enter valid value");
             } else {
                 let web32 = new Web3(rpcUrl);
-                let flareContract = new web32.eth.Contract(flrAbi, flrAddr);
     
                 web32.setProvider(provider);
     
@@ -186,9 +187,7 @@ window.onload = (event) => {
                 var addr2 = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-addr');
     
                 try {
-                    const SmartContracts = await flareContract.methods.getAllContracts().call();
-                    const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-                    const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
+                    const wrappedTokenAddr = GetContract("WNat", rpcUrl);
                     let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
                     const accounts = await provider.request({method: 'eth_requestAccounts'});
                     const account = accounts[0];

@@ -1,1 +1,1 @@
-(()=>{"use strict";distributionAbi,voterWhitelisterAbi,ftsoRewardAbi,wnatAbi,flareAbi;var e=document.getElementById("SelectedNetwork");e?.options[e.selectedIndex].getAttribute("data-registrycontract"),e?.options[e.selectedIndex].getAttribute("data-rpcurl"),e?.options[e.selectedIndex].getAttribute("data-chainidhex"),e?.options[e.selectedIndex].value,e?.options[e.selectedIndex].innerHTML,window.ethereum})();
+(()=>{"use strict";distributionAbi,voterWhitelisterAbi,ftsoRewardAbi,wnatAbi,flareAbi,document.getElementById("SelectedNetwork"),window.ethereum})();

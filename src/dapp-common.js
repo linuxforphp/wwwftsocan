@@ -1,24 +1,145 @@
 // ALL MODULES.
 
-export function getSelectedNetwork(selectedNetwork, rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier) {
-    if (typeof tokenIdentifier === 'undefined' || typeof wrappedTokenIdentifier === 'undefined') {
-        selectedNetwork = document.getElementById("SelectedNetwork");
-        rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-        chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
-        networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
+import {GetContract, Provider as provider, showAccountAddress, showBalance, showTokenBalance } from "./flare-utils";
+
+
+async function isConnected() {
+    const accounts = await provider.request({method: 'eth_accounts'});
+
+    if (accounts.length) {
+        // console.log(`You're connected to: ${accounts[0]}`);
+        return true;
     } else {
-        selectedNetwork = document.getElementById("SelectedNetwork");
-        rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-        chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
-        networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
-        tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
-        wrappedTokenIdentifier = "W" + tokenIdentifier;
+        // console.log("Metamask is not connected");
+        return false;
     }
+}
+
+export async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            var selectedNetwork = document.getElementById("SelectedNetwork");
+            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
+            chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
+            networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
+
+            console.log(networkValue);
+            if (typeof tokenIdentifier !== 'undefined' || typeof wrappedTokenIdentifier !== 'undefined') {
+                tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                wrappedTokenIdentifier = "W" + tokenIdentifier;
+            }
+
+            var object = {}
+
+            object.selectedNetwork = selectedNetwork;
+            object.rpcUrl = rpcUrl;
+            object.chainIdHex = chainidhex;
+            object.networkValue = networkValue;
+            object.tokenIdentifier = tokenIdentifier;
+            object.wrappedTokenIdentifier = wrappedTokenIdentifier;
+
+            resolve(object);
+        }, 200);
+    })
+}
+
+
+export async function createSelectedNetwork(metamaskInstalled) {
+    return new Promise((resolve) => {
+        setTimeout(async () => {
+            var networkSelectBox = document.getElementById('SelectedNetwork');
+
+            for (const property in dappNetworks) {
+                var option = document.createElement("option");
+                option.value = dappNetworks[property].id;
+                option.text = dappNetworks[property].chainidentifier;
+                option.setAttribute('data-chainidhex', '0x' + dappNetworks[property].chainid.toString(16));
+                option.setAttribute('data-rpcurl', dappNetworks[property].rpcurl);
+                option.setAttribute('data-registrycontract', dappNetworks[property].registrycontract);
+
+                networkSelectBox.appendChild(option);
+            }
+
+            networkSelectBox.options[0].setAttribute('selected', 'selected');
+            networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[0].value) - 1;
+            
+            await provider.request({method: 'eth_requestAccounts'}).then(async function () {
+                if (!provider) {
+                    metamaskInstalled = false;
+                    downloadMetamask();
+                } else {
+                    metamaskInstalled = true;
+                    isConnected()
+                        .then(async function () {
+                            await provider.request({method: 'eth_accounts'}).then(async function () {
+                                var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                                    var realChainId;
+
+                                    realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
+
+                                    for (var i = 0; i < networkSelectBox.options.length; i++) {
+                                        if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
+                                            networkSelectBox.options[i].setAttribute('selected', 'selected');
+                                            networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[i].value) - 1;
+                                            realChainId = chainIdHex;
+                                        } else {
+                                            networkSelectBox.options[i].removeAttribute('selected');
+                                        }
+                                    }
+
+                                    console.log(chainIdHex);
+                
+                                    if (metamaskInstalled === true) {
+                                        try {
+                                            await window.ethereum.request({
+                                                method: "wallet_switchEthereumChain",
+                                                params: [
+                                                  {
+                                                    "chainId": realChainId
+                                                  }
+                                                ]
+                                              }).catch((error) => console.error(error));
+                                        } catch (error) {
+                                            console.log(error);
+                                            if (error.code === 4902) {
+                                                try {
+                                                    await ethereum.request({
+                                                        method: 'wallet_addEthereumChain',
+                                                        params: [
+                                                            {
+                                                                "chainId": realChainId,
+                                                                "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                                "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                                "iconUrls": [
+                                                                    `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                                ],
+                                                                "nativeCurrency": {
+                                                                    "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                    "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                    "decimals": 18
+                                                                }
+                                                            },
+                                                        ],
+                                                    });
+                                                } catch (error) {
+                                                    throw(error);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    resolve();
+                                });        
+                            })
+                        });
+                }
+            })
+        }, 200);
+    })
 }
 
 
 export async function isWalletConnected(ProviderObject) {
-    if (ProviderObject instanceof MetaMaskSDK) {
+    if (ProviderObject instanceof MetaMaskSDK.MetaMaskSDK) {
         const accounts = await ProviderObject.request({method: 'eth_accounts'});
 
         if (accounts.length) {
@@ -40,26 +161,22 @@ export function showTokenIdentifiers(token, wrappedToken) {
     document.getElementById("wrappedTokenIdentifier").innerText = wrappedToken;
 }
 
-// If network value is 1 or 4, FLR or C2FLR, else SGB or CFLR.
-export function updateNetworkValue(networkValue, tokenIdentifier, wrappedTokenIdentifier) {
-
-}
-
 // WRAP MODULE
 
-export async function ConnectWalletClickWrap() {
-    var selectedNetwork = document.getElementById("SelectedNetwork");
-    let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
+export async function ConnectWalletClickWrap(wrapBool, rpcUrl) {
+    let web32 = new Web3(rpcUrl);
 
     try {
         var contractName = "WNat"
-        const wrappedTokenAddr = await GetContract(contractName);
+        const wrappedTokenAddr = await GetContract(contractName, rpcUrl);
         let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
         const accounts = await provider.request({method: 'eth_requestAccounts'});
         const account = accounts[0];
         showAccountAddress(account);
         const balance = await web32.eth.getBalance(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+
+        console.log("TESTED");
 
         if (wrapBool) {
             showBalance(round(web32.utils.fromWei(balance, "ether")));
@@ -73,7 +190,7 @@ export async function ConnectWalletClickWrap() {
     }
 }
 
-export async function toggleWrapButton(currentValue) {
+export async function toggleWrapButton(currentValue, wrapBool, tokenIdentifier, wrappedTokenIdentifier) {
     // Switching wrap/unwrap.
     if (currentValue === "false") {
         wrapBool = false;
@@ -138,7 +255,7 @@ export async function toggleWrapButton(currentValue) {
 }
 
 // Is there a valid input?
-export function isWrapInput() {
+export function isWrapInput(isRealValue) {
     if (Number(document.getElementById("AmountFrom").value.replace(/[^0-9]/g, '')) < 1) {
         document.getElementById("WrapButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("WrapButton").style.cursor = "auto";
@@ -173,12 +290,12 @@ export function copyWrapInput() {
 
 // DELEGATE MODULE
 
-export async function ConnectWalletClickDelegate() {
+export async function ConnectWalletClickDelegate(rpcUrl) {
     var selectedNetwork = document.getElementById("SelectedNetwork");
     let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
 
     try {
-        const wrappedTokenAddr = await GetContract("WNat");
+        const wrappedTokenAddr = await GetContract("WNat", rpcUrl);
         let tokenContract = new web32.eth.Contract(wnatAbi, wrappedTokenAddr);
         const accounts = await provider.request({method: 'eth_requestAccounts'});
         const account = accounts[0];
@@ -191,19 +308,21 @@ export async function ConnectWalletClickDelegate() {
 };
 
 // Switch claim button to claimable.
-export function switchDelegateButtonColor() {
+export function switchDelegateButtonColor(claimBool) {
     document.getElementById('ClaimButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
     claimBool = true;
     document.getElementById('ClaimButton').style.cursor = "pointer";
 }
 
-export function switchDelegateButtonColorBack() {
+export function switchDelegateButtonColorBack(claimBool) {
     document.getElementById('ClaimButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
     claimBool = false;
     document.getElementById('ClaimButton').style.cursor = "auto";
 }
 
-export function isDelegateInput1() {
+export function isDelegateInput1(isRealValue, isAmount2Active) {
+    let amount1 = document.getElementById("Amount1");
+
     if (Number(amount1.value.replace(/[^0-9]/g, '')) < 1 || Number(Amount1.value.replace(/^0-9]/g, '')) > 100) {
         document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("ClaimButton").style.cursor = "auto";
@@ -215,7 +334,7 @@ export function isDelegateInput1() {
             document.getElementById("ClaimButton").style.cursor = "pointer";
             isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Delegate";
-            isDelegateInput3();
+            isDelegateInput3(isRealValue, isAmount2Active);
         } else {
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "auto";
@@ -225,7 +344,9 @@ export function isDelegateInput1() {
     }
 }
 
-export function isDelegateInput2() {
+export function isDelegateInput2(isRealValue, isAmount2Active) {
+    let amount2 = document.getElementById("Amount2");
+
     if (Number(amount2.value.replace(/[^0-9]/g, '')) < 1 || Number(Amount2.value.replace(/[^0-9]/g, '')) > 100) {
         document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("ClaimButton").style.cursor = "auto";
@@ -239,7 +360,7 @@ export function isDelegateInput2() {
             isRealValue = true;
             isAmount2Active = true;
             document.getElementById("ClaimButtonText").innerText = "Delegate";
-            isDelegateInput3();
+            isDelegateInput3(isRealValue, isAmount2Active);
         } else {
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "auto";
@@ -250,7 +371,10 @@ export function isDelegateInput2() {
     }
 }
 
-export function isDelegateInput3() {
+export function isDelegateInput3(isRealValue, isAmount2Active) {
+    let amount1 = document.getElementById("Amount1");
+    let amount2 = document.getElementById("Amount2");
+
     if (Number(amount1.value.replace(/[^0-9]/g, '')) + Number(amount2.value.replace(/[^0-9]/g, '')) > 100 || Number(ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-ftso')) === 0) {
         document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         document.getElementById("ClaimButton").style.cursor = "auto";
@@ -341,20 +465,15 @@ export async function populateFtsos(ftso1, ftso2) {
 
 // CLAIM MODULE
 
-export async function ConnectWalletClickClaim() {
+export async function ConnectWalletClickClaim(claimBool, rpcUrl) {
     var selectedNetwork = document.getElementById("SelectedNetwork");
     let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
 
     try {
-        const SmartContracts = await flareContract.methods.getAllContracts().call();
-        const wrappedTokenIndex = getKeyByValue(Object.values(SmartContracts)[0], "WNat");
-        const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
-        const DistributionDelegatorsIndex = getKeyByValue(Object.values(SmartContracts)[0], "DistributionToDelegators");
-        const DistributionDelegatorsAddr = SmartContracts[1][DistributionDelegatorsIndex];
-        const ftsoRewardIndex = getKeyByValue(Object.values(SmartContracts)[0], "FtsoRewardManager");
-        const ftsoRewardAddr = SmartContracts[1][ftsoRewardIndex];
-        const voterWhitelistIndex = getKeyByValue(Object.values(SmartContracts)[0], "VoterWhitelister");
-        const voterWhitelistAddr = SmartContracts[1][voterWhitelistIndex];
+        const wrappedTokenAddr = GetContract("WNat", rpcUrl);
+        const DistributionDelegatorsAddr = GetContract("DistributionToDelegators", rpcUrl);
+        const ftsoRewardAddr = GetContract("FtsoRewardManager", rpcUrl);
+        const voterWhitelistAddr = GetContract("VoterWhitelister", rpcUrl);
         let tokenContract = new web32.eth.Contract(wnatAbi, wrappedTokenAddr);
         let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
         let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
@@ -370,15 +489,15 @@ export async function ConnectWalletClickClaim() {
 
         // Changing the color of Claim button.
         if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
-            switchButtonColor();
+            switchClaimButtonColor(claimBool);
         } else {
-            switchButtonColorBack();
+            switchClaimButtonColorBack(claimBool);
         }
 
         if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
-            switchButtonColor();
+            switchClaimFdButtonColor(claimBool);
         } else {
-            switchButtonColorBack();
+            switchClaimFdButtonColorBack(claimBool);
         }
 
         remove(".wrapBoxFTSO");
@@ -449,20 +568,58 @@ export async function ConnectWalletClickClaim() {
         // Changing the color of Claim buttons.
         if (Number(round(convertedRewards)) >= 1 && Number(round(convertedRewards)) < bucketTotal) {
             showRewards(round(convertedRewards));
-            switchButtonColor();
+            switchClaimButtonColor(claimBool);
         } else {
-            switchButtonColorBack();
+            switchClaimButtonColorBack(claimBool);
         }
 
         var fdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr);
 
         if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1 && Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal) {
             showFdRewards(String(round(web32.utils.fromWei(claimableAmountFd, "ether"))));
-            switchFdButtonColor();
+            switchClaimFdButtonColor(claimBool);
         } else {
-            switchFdButtonColorBack();
+            switchClaimFdButtonColorBack(claimBool);
         }
     } catch (error) {
         // console.log(error);
     }
+}
+
+// Function to remove by id or class name.
+export const remove = (sel) => document.querySelectorAll(sel).forEach(el => el.remove());
+
+// Switch claim button to claimable.
+export function switchClaimButtonColor(claimBool) {
+    document.getElementById('ClaimButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+    claimBool = true;
+    document.getElementById('ClaimButton').style.cursor = "pointer";
+}
+
+export function switchClaimButtonColorBack(claimBool) {
+    document.getElementById('ClaimButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+    claimBool = false;
+    document.getElementById('ClaimButton').style.cursor = "auto";
+}
+
+export function switchClaimFdButtonColor(fdClaimBool) {
+    document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+    fdClaimBool = true;
+    document.getElementById('ClaimFdButton').style.cursor = "pointer";
+}
+
+export function switchClaimFdButtonColorBack(fdClaimBool) {
+    document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+    fdClaimBool = false;
+    document.getElementById('ClaimFdButton').style.cursor = "auto";
+}
+
+// Show current rewards.
+export function showClaimRewards(Rewards) {
+    document.getElementById('ClaimButtonText').innerText = Rewards;
+}
+
+// Show current rewards.
+export function showFdRewards(Rewards) {
+    document.getElementById('ClaimFdButtonText').innerText = Rewards;
 }

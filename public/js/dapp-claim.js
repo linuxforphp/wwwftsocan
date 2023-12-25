@@ -15,44 +15,6 @@
     var fdClaimBool = false;
     document.getElementById('layer3').innerHTML = flrLogo;
 
-    // Show the current token identifiers.
-    function showTokenIdentifiers(wrappedToken) {
-        document.getElementById('wrappedTokenIdentifier').innerText = wrappedToken;
-    }
-
-    // Function to remove by id or class name.
-    const remove = (sel) => document.querySelectorAll(sel).forEach(el => el.remove());
-
-    // Switch claim button to claimable.
-    function switchButtonColor() {
-        document.getElementById('ClaimButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-        claimBool = true;
-        document.getElementById('ClaimButton').style.cursor = "pointer";
-    }
-
-    function switchButtonColorBack() {
-        document.getElementById('ClaimButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-        claimBool = false;
-        document.getElementById('ClaimButton').style.cursor = "auto";
-    }
-
-    function switchFdButtonColor() {
-        document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-        fdClaimBool = true;
-        document.getElementById('ClaimFdButton').style.cursor = "pointer";
-    }
-
-    function switchFdButtonColorBack() {
-        document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-        fdClaimBool = false;
-        document.getElementById('ClaimFdButton').style.cursor = "auto";
-    }
-
-    // Show current rewards.
-    function showFdRewards(Rewards) {
-        document.getElementById('ClaimFdButtonText').innerText = Rewards;
-    }
-
     // Checking if Metamask wallet is unlocked.
     async function isWalletUnlocked() {
         const Web3provider = new ethers.providers.Web3Provider(window.ethereum);
