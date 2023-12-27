@@ -21,7 +21,7 @@ function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-export async function GetContract(ContractName, rpcurl) {
+export async function GetContract(ContractName, rpcurl, flrAddr) {
     let web3 = new Web3(rpcurl);
     let flareContract = new web3.eth.Contract(FlareAbis.FlareRegistry, flrAddr);
     const SmartContracts = await flareContract.methods.getAllContracts().call();

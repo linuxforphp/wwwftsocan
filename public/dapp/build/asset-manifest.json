@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/srv/tempo/wwwftsocan/static/css/main.02878b60.css",
+    "main.js": "/srv/tempo/wwwftsocan/static/js/main.be563fb1.js",
+    "static/js/787.5592bf64.chunk.js": "/srv/tempo/wwwftsocan/static/js/787.5592bf64.chunk.js",
+    "static/media/Flare-Network-Red.png": "/srv/tempo/wwwftsocan/static/media/Flare-Network-Red.4db45802af6bec0e1e76.png",
+    "static/media/fontawesome-webfont.woff": "/srv/tempo/wwwftsocan/static/media/fontawesome-webfont.6e8ec896aab286231d3c.woff",
+    "static/media/logo.svg": "/srv/tempo/wwwftsocan/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/srv/tempo/wwwftsocan/index.html",
+    "main.02878b60.css.map": "/srv/tempo/wwwftsocan/static/css/main.02878b60.css.map",
+    "main.be563fb1.js.map": "/srv/tempo/wwwftsocan/static/js/main.be563fb1.js.map",
+    "787.5592bf64.chunk.js.map": "/srv/tempo/wwwftsocan/static/js/787.5592bf64.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.02878b60.css",
+    "static/js/main.be563fb1.js"
+  ]
+}
