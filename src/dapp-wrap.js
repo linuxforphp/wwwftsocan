@@ -1,5 +1,7 @@
 import { FlareAbis, Provider as provider, FlareLogos, GetContract, round, showAccountAddress, showBalance, showTokenBalance, isNumber } from "./flare-utils";
 import * as DappCommon from './dapp-common.js';
+import { ethers } from './ethers.js';
+
 // dapp_wrap.js
 
 function __init__(object) {
@@ -25,40 +27,43 @@ function __init__(object) {
             let web32 = new Web3(object.rpcUrl);
 
             try {
-                var wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
-                var tokenContract = new web32.eth.Contract(DappCommon.DappObject.ercAbi, wrappedTokenAddr);
-                var accounts = await provider.request({method: 'eth_accounts'});
-                var account = accounts[0];
-                var balance = await web32.eth.getBalance(account);
-                var tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                var amountFromValue = Number(document.getElementById("AmountFrom").value.replace(/[^0-9]/g, ''));
-                var amountFromValueWei = String(Number(web32.utils.toWei(amountFromValue, "ether")));
-
-                console.log(amountFromValue);
-                console.log(amountFromValueWei);
+                const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+                let tokenContract = new web32.eth.Contract(DappCommon.DappObject.ercAbi, wrappedTokenAddr);
+                const accounts = await provider.request({method: 'eth_accounts'});
+                const account = accounts[0].trim();
+                let balance = await web32.eth.getBalance(account);
+                let tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                const amountFrom = document.getElementById('AmountFrom');
+                const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''));
+                const amountFromValueWei = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16);
+                const amountFromValueBN = ethers.BigNumber.from(amountFromValue);
 
                 if (DappCommon.DappObject.wrapBool === true && amountFromValue >= Number(web32.utils.fromWei(balance, "ether"))) {
                     $.alert("Insufficient Balance!");
                 } else if (DappCommon.DappObject.wrapBool === false && amountFromValue >= Number(web32.utils.fromWei(tokenBalance, "ether"))) {
                     $.alert("Insufficient Balance!");
                 } else {
-                    if (DappCommon.DappObject.wrapBool === true) {
-                        var transactionParameters = {
-                            to: wrappedTokenAddr,
-                            from: account,
-                            data: tokenContract.methods.deposit(amountFromValueWei).encodeABI(),
-                            value: amountFromValueWei
-                        };
-                    } else {
-                        var transactionParameters = {
-                            to: wrappedTokenAddr,
-                            from: account,
-                            data: tokenContract.methods.withdraw(amountFromValueWei).encodeABI(),
-                            value: amountFromValueWei
-                        };
-                    }
+                    var txPayload = '';
+                    var txValue = '';
 
                     showSpinner(async () => {
+                        if (DappCommon.DappObject.wrapBool === true) {
+                            console.log('wrapboolistrue');
+                            txPayload = tokenContract.methods.deposit(amountFromValueWei).encodeABI();
+                            txValue = amountFromValueWei;
+                        } else {
+                            console.log('wrapboolisfalse');
+                            txPayload = tokenContract.methods.withdraw(amountFromValueBN.toString()).encodeABI();
+                            txValue = amountFromValueBN.toString();
+                        }
+
+                        const transactionParameters = {
+                            to: wrappedTokenAddr,
+                            from: account,
+                            data: txPayload,
+                            value: txValue
+                        };
+
                         await provider.request({
                             method: 'eth_sendTransaction',
                             params: [transactionParameters],
