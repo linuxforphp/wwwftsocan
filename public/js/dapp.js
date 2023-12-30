@@ -33,7 +33,11 @@ async function showConfirm(txHash) {
         typeAnimated: true,
         draggable: false,
         buttons: {
-            ok: {},
+            ok: {
+                action: function () {
+                    location.reload();
+                },
+            }
         },
         onContentReady: async function () {
             this.setContentAppend(txHash);

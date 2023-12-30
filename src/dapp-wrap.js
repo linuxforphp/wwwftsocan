@@ -24,75 +24,50 @@ function __init__(object) {
         if (DappCommon.DappObject.isRealValue === false) {
             $.alert("Please enter valid value");
         } else {
-            let web32 = new Web3(object.rpcUrl);
+            var web32 = new Web3(object.rpcUrl);
 
             try {
                 const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
                 let tokenContract = new web32.eth.Contract(DappCommon.DappObject.ercAbi, wrappedTokenAddr);
                 const accounts = await provider.request({method: 'eth_accounts'});
-                const account = accounts[0].trim();
+                const account = accounts[0];
                 let balance = await web32.eth.getBalance(account);
                 let tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                const amountFrom = document.getElementById('AmountFrom');
+                var amountFrom = document.getElementById("AmountFrom");
                 const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''));
-                const amountFromValueWei = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16);
-                const amountFromValueBN = ethers.BigNumber.from(amountFromValue);
+                const amountFromValueWei = String(Number(web32.utils.toWei(amountFromValue, "ether")));
+                const amountFromValueWeiHex = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16);
+                let txPayload = {};
+                
+                if (DappCommon.DappObject.wrapBool === true) {
+                    txPayload = {
+                        from: account,
+                        to: wrappedTokenAddr,
+                        data: tokenContract.methods.deposit(amountFromValueWeiHex).encodeABI(),
+                        value: amountFromValueWeiHex
+                    };
+                } else {
+                    txPayload = {
+                        from: account,
+                        to: wrappedTokenAddr,
+                        data: tokenContract.methods.withdraw(amountFromValueWei).encodeABI()
+                    };
+                }
+
+                const transactionParameters = txPayload;
 
                 if (DappCommon.DappObject.wrapBool === true && amountFromValue >= Number(web32.utils.fromWei(balance, "ether"))) {
                     $.alert("Insufficient Balance!");
                 } else if (DappCommon.DappObject.wrapBool === false && amountFromValue >= Number(web32.utils.fromWei(tokenBalance, "ether"))) {
                     $.alert("Insufficient Balance!");
                 } else {
-                    var txPayload = '';
-                    var txValue = '';
-
                     showSpinner(async () => {
-                        if (DappCommon.DappObject.wrapBool === true) {
-                            console.log('wrapboolistrue');
-                            txPayload = tokenContract.methods.deposit(amountFromValueWei).encodeABI();
-                            txValue = amountFromValueWei;
-                        } else {
-                            console.log('wrapboolisfalse');
-                            txPayload = tokenContract.methods.withdraw(amountFromValueBN.toString()).encodeABI();
-                            txValue = amountFromValueBN.toString();
-                        }
-
-                        const transactionParameters = {
-                            to: wrappedTokenAddr,
-                            from: account,
-                            data: txPayload,
-                            value: txValue
-                        };
-
                         await provider.request({
                             method: 'eth_sendTransaction',
                             params: [transactionParameters],
                         })
-                        .then((txHash) => web32.eth.getTransactionReceipt(txHash)
-                        .then((receipt) => async (receipt) => {
-                            const accounts = await provider.request({method: 'eth_accounts'});
-    
-                            balance = await web32.eth.getBalance(accounts[0]);
-                            tokenBalance = await tokenContract.methods.balanceOf(accounts[0]).call();
-    
-                            if (DappCommon.DappObject.wrapBool) {
-                                showBalance(round(web32.utils.fromWei(balance, "ether")));
-                                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                            } else {
-                                showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                                showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
-                            }
-    
-                            let confirm = receipt.status ? true : false;
-    
-                            if (confirm === false) {
-                                throw new Error('Transaction was reverted.');
-                            } else {
-                                document.getElementById("ConnectWallet").click();
-                                showConfirm(receipt.transactionHash);
-                            }
-                        }))
-                        .catch((error) => showFail());
+                        .then((txHash) => showConfirm(txHash))
+                        .catch((error) => console.log(error));
                     });
                 }
             } catch (error) {

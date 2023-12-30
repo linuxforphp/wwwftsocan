@@ -16,6 +16,7 @@
     <main id="MainSection" class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main" data-urlbaseaddr="<?=$view['urlbaseaddr'] ?>">
         <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
             <div class="dapp-container">
+                <div id="Accounts" data-address=""></div>
                 <?php if (isset($view['dappwrap'])): ?>
                     <?=$this->section('dappwrap', $this->fetch('dappwrap', ['view' => $view]))?>
                 <?php endif ?>

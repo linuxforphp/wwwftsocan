@@ -15,6 +15,30 @@ export var DappObject = {
     metamaskInstalled: false,
 }
 
+export async function getAccount(operation) {
+    var accountAddr = document.getElementById("Accounts").getAttribute('data-address');
+
+    if (operation === 'GET') {
+        if (accountAddr.trim().length === 0 || accountAddr.trim() === null) {
+            const accounts = await provider.request({method: 'eth_accounts'});
+            const account = accounts[0].trim();
+
+            document.getElementById("Accounts").setAttribute('data-address', account);
+
+            return account;
+        } else {
+            return accountAddr;
+        }
+    } else if (operation === 'SET') {
+        const accounts = await provider.request({method: 'eth_accounts'});
+        const account = accounts[0].trim();
+
+        document.getElementById("Accounts").setAttribute('data-address', account);
+
+        return account;
+    }
+}
+
 async function isConnected() {
     const accounts = await provider.request({method: 'eth_accounts'});
 
@@ -34,9 +58,9 @@ function checkConnection() {
 }
 
 export function updateCall() {
-    setTimeout(function() {
+    setInterval(function() {
         checkConnection();
-    }, 30000);
+    }, 20000);
 }
 
 export async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -48,7 +72,6 @@ export async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, token
             networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
             flrAddr = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-registrycontract');
 
-            console.log(networkValue);
             if (typeof tokenIdentifier !== 'undefined' || typeof wrappedTokenIdentifier !== 'undefined') {
                 tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
                 wrappedTokenIdentifier = "W" + tokenIdentifier;
@@ -111,8 +134,6 @@ export async function createSelectedNetwork(DappObject) {
                                         networkSelectBox.options[i].removeAttribute('selected');
                                     }
                                 }
-
-                                console.log(chainIdHex);
             
                                 if (DappObject.metamaskInstalled === true) {
                                     try {
@@ -161,7 +182,6 @@ export async function createSelectedNetwork(DappObject) {
     })
 }
 
-
 export async function isWalletConnected(ProviderObject) {
     if (ProviderObject instanceof MetaMaskSDK.MetaMaskSDK) {
         const accounts = await ProviderObject.request({method: 'eth_accounts'});
@@ -193,13 +213,10 @@ export async function ConnectWalletClickWrap(rpcUrl, FlrAddr, DappObject) {
     try {
         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, FlrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        const accounts = await provider.request({method: 'eth_accounts'});
-        const account = accounts[0];
+        const account = await getAccount('GET');
         showAccountAddress(account);
         const balance = await web32.eth.getBalance(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-        console.log("TESTED");
 
         if (DappObject.wrapBool) {
             showBalance(round(web32.utils.fromWei(balance, "ether")));
@@ -282,8 +299,7 @@ export async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject) {
     try {
         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        const accounts = await provider.request({method: 'eth_accounts'});
-        const account = accounts[0];
+        const account = await getAccount('GET');
         showAccountAddress(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
@@ -462,8 +478,7 @@ export async function ConnectWalletClickClaim(claimBool, rpcUrl, flrAddr, DappOb
         let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
         let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
         let voterWhitelistContract = new web32.eth.Contract(voterWhitelisterAbi, voterWhitelistAddr);
-        const accounts = await provider.request({method: 'eth_accounts'});
-        const account = accounts[0];
+        const account = await getAccount('GET');
         showAccountAddress(account);
         const balance = await web32.eth.getBalance(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
