@@ -12,6 +12,7 @@ export var DappObject = {
     ftsoRewardAbiLocal: FlareAbis.FtsoRewardManager,
     wrapBool: true,
     isRealValue: false,
+    isAmount2Active: false,
     metamaskInstalled: false,
 }
 
@@ -321,22 +322,22 @@ export function switchDelegateButtonColorBack(claimBool) {
     document.getElementById('ClaimButton').style.cursor = "auto";
 }
 
-export function isDelegateInput1(DappObject, isAmount2Active) {
+export function isDelegateInput1(DappObject) {
     let amount1 = document.getElementById("Amount1");
     let claimButton = document.getElementById("ClaimButton");
 
-    if (Number(amount1.value.replace(/[^0-9]/g, '')) < 1 || Number(Amount1.value.replace(/^0-9]/g, '')) > 100) {
+    if (Number(amount1.value.replace(/[^0-9]/g, '')) < 1 || Number(amount1.value.replace(/^0-9]/g, '')) > 100) {
         claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         claimButton.style.cursor = "auto";
         document.getElementById("ClaimButtonText").innerText = "Enter Amount";
         DappObject.isRealValue = false;
     } else {
-        if (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 || Number(Amount1.value.replace(/[^0-9]/g, '')) === 100) {
+        if (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 || Number(amount1.value.replace(/[^0-9]/g, '')) === 100) {
             claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             claimButton.style.cursor = "pointer";
             DappObject.isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Delegate";
-            isDelegateInput3(DappObject, isAmount2Active);
+            isDelegateInput3(DappObject);
         } else {
             claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             claimButton.style.cursor = "auto";
@@ -346,35 +347,37 @@ export function isDelegateInput1(DappObject, isAmount2Active) {
     }
 }
 
-export function isDelegateInput2(DappObject, isAmount2Active) {
+export function isDelegateInput2(DappObject) {
     let amount2 = document.getElementById("Amount2");
     let claimButton = document.getElementById("ClaimButton");
 
-    if (Number(amount2.value.replace(/[^0-9]/g, '')) < 1 || Number(Amount2.value.replace(/[^0-9]/g, '')) > 100) {
+    if (Number(amount2.value.replace(/[^0-9]/g, '')) < 1 || Number(amount2.value.replace(/[^0-9]/g, '')) > 100) {
         claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         claimButton.style.cursor = "auto";
         document.getElementById("ClaimButtonText").innerText = "Enter Amount";
         DappObject.isRealValue = false;
-        isAmount2Active = false;
+        DappObject.isAmount2Active = false;
     } else {
-        if (Number(amount2.value.replace(/[^0-9]/g, '')) === 50 || Number(Amount2.value.replace(/[^0-9]/g, '')) === 100) {
+        if (Number(amount2.value.replace(/[^0-9]/g, '')) === 50 || Number(amount2.value.replace(/[^0-9]/g, '')) === 100) {
             claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             claimButton.style.cursor = "pointer";
             DappObject.isRealValue = true;
-            isAmount2Active = true;
+            DappObject.isAmount2Active = true;
             document.getElementById("ClaimButtonText").innerText = "Delegate";
-            isDelegateInput3(DappObject, isAmount2Active);
+            isDelegateInput3(DappObject);
         } else {
             claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             claimButton.style.cursor = "auto";
             document.getElementById("ClaimButtonText").innerText = "Enter Amount";
             DappObject.isRealValue = false;
-            isAmount2Active = false;
+            DappObject.isAmount2Active = false;
         }
     }
 }
 
-export function isDelegateInput3(DappObject, isAmount2Active) {
+export function isDelegateInput3(DappObject) {
+    let ftso1 = document.getElementById("ftso-1");
+    let ftso2 = document.getElementById("ftso-2");
     let amount1 = document.getElementById("Amount1");
     let amount2 = document.getElementById("Amount2");
     let claimButton = document.getElementById("ClaimButton");
@@ -384,7 +387,7 @@ export function isDelegateInput3(DappObject, isAmount2Active) {
         claimButton.style.cursor = "auto";
         document.getElementById("ClaimButtonText").innerText = "Enter Amount";
         DappObject.isRealValue = false;
-        isAmount2Active = false;
+        DappObject.isAmount2Active = false;
     } else {
         if (Number(amount2.value.replace(/[^0-9]/g, '')) !== 0 && amount2.value.replace(/[^0-9]/g, '') !== '') {
             if (ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-ftso') === "0") {
@@ -392,19 +395,19 @@ export function isDelegateInput3(DappObject, isAmount2Active) {
                 claimButton.style.cursor = "auto";
                 document.getElementById("ClaimButtonText").innerText = "Enter Amount";
                 DappObject.isRealValue = false;
-                isAmount2Active = false;
+                DappObject.isAmount2Active = false;
             } else {
                 claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                 claimButton.style.cursor = "pointer";
                 DappObject.isRealValue = true;
-                isAmount2Active = true;
+                DappObject.isAmount2Active = true;
                 document.getElementById("ClaimButtonText").innerText = "Delegate";
             }
         } else {
             claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             claimButton.style.cursor = "pointer";
             DappObject.isRealValue = true;
-            isAmount2Active = true;
+            DappObject.isAmount2Active = true;
             document.getElementById("ClaimButtonText").innerText = "Delegate";
         }
     }
@@ -412,55 +415,61 @@ export function isDelegateInput3(DappObject, isAmount2Active) {
 
 // Populate select elements.
 export async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
-    var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
-    var insert1 = '';
-    var insert2 = '';
-    let web32 = new Web3(rpcUrl);
+    return new Promise((resolve) => {
+        setTimeout(async () => {
+            var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
+            var insert1 = '';
+            var insert2 = '';
+            let web32 = new Web3(rpcUrl);
 
-    try {
-        const voterWhitelistAddr = GetContract("VoterWhitelister", rpcUrl, flrAddr);
-        let voterWhitelistContract = new web32.eth.Contract(voterWhitelisterAbi, voterWhitelistAddr);
+            try {
+                const voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
+                let voterWhitelistContract = new web32.eth.Contract(DappObject.voterWhitelisterAbi, voterWhitelistAddr);
 
-        const ftsoList = await voterWhitelistContract.methods.getFtsoWhitelistedPriceProviders(0).call();
+                const ftsoList = await voterWhitelistContract.methods.getFtsoWhitelistedPriceProviders("0").call();
 
-        const ftsoJsonList = JSON.stringify(ftsoList);
+                const ftsoJsonList = JSON.stringify(ftsoList);
 
-        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
-        fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
-            .then(res => res.json())
-            .then(FtsoInfo => {
-                FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
+                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
+                fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
+                    .then(res => res.json())
+                    .then(FtsoInfo => {
+                        FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                let indexNumber;
+                        let indexNumber;
 
-                for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                    for (var i = 0; i < ftsoList.length; i++) {
-                        if (FtsoInfo.providers[f].address === ftsoList[i]) {
-                            indexNumber = f;
-                            //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+                        for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                            for (var i = 0; i < ftsoList.length; i++) {
+                                if (FtsoInfo.providers[f].address === ftsoList[i]) {
+                                    indexNumber = f;
+                                    //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
 
-                            if (ftsoJsonList.includes(ftsoList[i])) {
-                                if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert1 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
-                                } else {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert2 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                    if (ftsoJsonList.includes(ftsoList[i])) {
+                                        if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                                            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                            insert1 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                        } else {
+                                            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                            insert2 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                        }
+
+                                        ftso1.innerHTML = insert + insert1 + insert2;
+                                        ftso2.innerHTML = insert + insert1 + insert2;
+                                    } else {
+                                        $.alert('The FTSO you are delegated to is invalid!');
+                                        break;
+                                    }
                                 }
-
-                                ftso1.innerHTML = insert + insert1 + insert2;
-                                ftso2.innerHTML = insert + insert1 + insert2;
-                            } else {
-                                alert('The FTSO you have delegated to is invalid!');
-                                break;
                             }
                         }
-                    }
-                }
-            });
-    } catch (error) {
-        // console.log(error)
-    }
+                    });
+            } catch (error) {
+                console.log(error)
+            }
+
+            resolve();
+        }, 200);
+    })
 }
 
 // CLAIM MODULE

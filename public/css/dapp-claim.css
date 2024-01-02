@@ -139,7 +139,7 @@
 
 .rewards {
     position: relative;
-    background-color: rgba(253, 0, 15, 0.7);
+    background-color: rgba(255, 255, 255, 0.6);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -157,7 +157,7 @@
 }
 
 .rewards-text {
-    color: #fff !important;
+    color: #383a3b !important;
     z-index: 3;
     position: relative;
 }
@@ -174,11 +174,6 @@
     transform: skewX(45deg) translateX(0); */
     transition: 0.5s;
     overflow: hidden;
-}
-
-
-.rewards:hover {
-    letter-spacing: 1.2px;
 }
 
 .rewards:hover::after {

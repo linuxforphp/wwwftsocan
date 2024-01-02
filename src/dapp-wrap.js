@@ -94,6 +94,8 @@ window.onload = async (event) => {
     await DappCommon.createSelectedNetwork(DappCommon.DappObject).then( async () => {
         DappCommon.getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
 
+            DappCommon.showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
+
             __init__(object);
 
             document.getElementById("ConnectWallet").click();
@@ -163,18 +165,16 @@ window.onload = async (event) => {
                 DappCommon.setWrapButton(DappCommon.DappObject);
             }
 
-            if (typeof accounts !== 'undefined' && accounts !== []) {
-                window.ethereum.on("accountsChanged", async (accounts) => {
-                    if (accounts.length !== 0) {
-                        document.getElementById("ConnectWallet").click();
-                    } else {
-                        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-                        showBalance(0.0);
-                        showTokenBalance(0.0);
-                        connectWalletBool = false;
-                    }
-                });
-            }
+            window.ethereum.on("accountsChanged", async (accounts) => {
+                if (accounts.length !== 0) {
+                    document.getElementById("ConnectWallet").click();
+                } else {
+                    document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+                    showBalance(0.0);
+                    showTokenBalance(0.0);
+                    connectWalletBool = false;
+                }
+            });
 
             window.ethereum.on("chainChanged", async (chosenChainId) => {
                 for (var i = 0; i < selectedNetwork?.options.length; i++) {

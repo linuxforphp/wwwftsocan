@@ -57,6 +57,12 @@
 }
 
 .delegate {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     position: relative;
     background-color: rgba(255, 255, 255, 0.6);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
@@ -152,10 +158,19 @@
 }
 
 .selected-ftso option {
+    background-color: #fd000f;
+    color: #fff;
+    font-size: 2rem;
+}
+
+.selected-ftso option:hover {
+    background-color: #fd000f;
+    color: #fff;
     font-size: 2rem;
 }
 
 .wrap-box-ftso {
+    margin: 5px;
     overflow: visible!important;
 }
 
