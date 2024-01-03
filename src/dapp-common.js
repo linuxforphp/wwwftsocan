@@ -11,6 +11,8 @@ export var DappObject = {
     distributionAbiLocal: FlareAbis.DistributionToDelegators,
     ftsoRewardAbiLocal: FlareAbis.FtsoRewardManager,
     wrapBool: true,
+    claimBool: false,
+    fdClaimBool: false,
     isRealValue: false,
     isAmount2Active: false,
     metamaskInstalled: false,
@@ -72,11 +74,8 @@ export async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, token
             chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
             networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
             flrAddr = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-registrycontract');
-
-            if (typeof tokenIdentifier !== 'undefined' || typeof wrappedTokenIdentifier !== 'undefined') {
-                tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
-                wrappedTokenIdentifier = "W" + tokenIdentifier;
-            }
+            tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+            wrappedTokenIdentifier = "W" + tokenIdentifier;
 
             var object = {}
 
@@ -199,7 +198,7 @@ export async function isWalletConnected(ProviderObject) {
 
 // Show the current token identifiers.
 export function showTokenIdentifiers(token, wrappedToken) {
-    if (typeof token !== 'undefined') {
+    if (typeof token !== 'undefined' && token !== null) {
         document.getElementById("tokenIdentifier").innerText = token;
     }
 
@@ -474,22 +473,21 @@ export async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
 
 // CLAIM MODULE
 
-export async function ConnectWalletClickClaim(claimBool, rpcUrl, flrAddr, DappObject) {
-    var selectedNetwork = document.getElementById("SelectedNetwork");
-    let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
+export async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
+    var delegatedFtsoElement = document.getElementById('after');
+    let web32 = new Web3(rpcUrl);
 
     try {
-        const wrappedTokenAddr = GetContract("WNat", rpcUrl, flrAddr);
-        const DistributionDelegatorsAddr = GetContract("DistributionToDelegators", rpcUrl, flrAddr);
-        const ftsoRewardAddr = GetContract("FtsoRewardManager", rpcUrl, flrAddr);
-        const voterWhitelistAddr = GetContract("VoterWhitelister", rpcUrl, flrAddr);
+        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
+        const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
+        const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
+        const voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
-        let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
-        let voterWhitelistContract = new web32.eth.Contract(voterWhitelisterAbi, voterWhitelistAddr);
+        let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
+        let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
+        let voterWhitelistContract = new web32.eth.Contract(DappObject.voterWhitelisterAbi, voterWhitelistAddr);
         const account = await getAccount('GET');
         showAccountAddress(account);
-        const balance = await web32.eth.getBalance(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
         showFdRewards(0.0);
@@ -497,15 +495,23 @@ export async function ConnectWalletClickClaim(claimBool, rpcUrl, flrAddr, DappOb
 
         // Changing the color of Claim button.
         if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
-            switchClaimButtonColor(claimBool);
+            switchClaimButtonColor();
+            
+            DappObject.claimBool = true;
         } else {
-            switchClaimButtonColorBack(claimBool);
+            switchClaimButtonColorBack();
+
+            DappObject.claimBool = false;
         }
 
         if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
-            switchClaimFdButtonColor(claimBool);
+            switchClaimFdButtonColor();
+            
+            DappObject.fdClaimBool = true;
         } else {
-            switchClaimFdButtonColorBack(claimBool);
+            switchClaimFdButtonColorBack();
+
+            DappObject.fdClaimBool = false;
         }
 
         remove(".wrapBoxFTSO");
@@ -537,10 +543,10 @@ export async function ConnectWalletClickClaim(claimBool, rpcUrl, flrAddr, DappOb
                             if (ftsoJsonList.includes(delegatedFtsos[i])) {
                                 if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
                                     // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert1 = `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                    insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                 } else {
                                     // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert2 += `<div class="wrapBoxFTSO" data-addr="${delegatedFtsos[i]}"><div class="wrapBoxContent"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegatedIcon" id="delegatedIcon"/><div class="ftsoIdentifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="Wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                    insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                                 }
 
                                 delegatedFtsoElement.innerHTML = insert1 + insert2;
@@ -576,18 +582,26 @@ export async function ConnectWalletClickClaim(claimBool, rpcUrl, flrAddr, DappOb
         // Changing the color of Claim buttons.
         if (Number(round(convertedRewards)) >= 1 && Number(round(convertedRewards)) < bucketTotal) {
             showRewards(round(convertedRewards));
-            switchClaimButtonColor(claimBool);
+            switchClaimButtonColor();
+
+            DappObject.claimBool = true;
         } else {
-            switchClaimButtonColorBack(claimBool);
+            switchClaimButtonColorBack();
+
+            DappObject.claimBool = false;
         }
 
         var fdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr);
 
         if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1 && Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal) {
             showFdRewards(String(round(web32.utils.fromWei(claimableAmountFd, "ether"))));
-            switchClaimFdButtonColor(claimBool);
+            switchClaimFdButtonColor();
+
+            DappObject.fdClaimBool = true;
         } else {
-            switchClaimFdButtonColorBack(claimBool);
+            switchClaimFdButtonColorBack();
+
+            DappObject.fdClaimBool = false;
         }
     } catch (error) {
         // console.log(error);
@@ -598,27 +612,23 @@ export async function ConnectWalletClickClaim(claimBool, rpcUrl, flrAddr, DappOb
 export const remove = (sel) => document.querySelectorAll(sel).forEach(el => el.remove());
 
 // Switch claim button to claimable.
-export function switchClaimButtonColor(claimBool) {
+export function switchClaimButtonColor() {
     document.getElementById('ClaimButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-    claimBool = true;
     document.getElementById('ClaimButton').style.cursor = "pointer";
 }
 
-export function switchClaimButtonColorBack(claimBool) {
+export function switchClaimButtonColorBack() {
     document.getElementById('ClaimButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-    claimBool = false;
     document.getElementById('ClaimButton').style.cursor = "auto";
 }
 
-export function switchClaimFdButtonColor(fdClaimBool) {
+export function switchClaimFdButtonColor() {
     document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-    fdClaimBool = true;
     document.getElementById('ClaimFdButton').style.cursor = "pointer";
 }
 
-export function switchClaimFdButtonColorBack(fdClaimBool) {
+export function switchClaimFdButtonColorBack() {
     document.getElementById('ClaimFdButton').style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-    fdClaimBool = false;
     document.getElementById('ClaimFdButton').style.cursor = "auto";
 }
 
@@ -630,4 +640,135 @@ export function showClaimRewards(Rewards) {
 // Show current rewards.
 export function showFdRewards(Rewards) {
     document.getElementById('ClaimFdButtonText').innerText = Rewards;
+}
+
+export async function delegate(object) {
+    if (DappObject.isRealValue === false) {
+        $.alert("Please enter valid value. (50% or 100%)");
+    } else {
+        let amount1 = document.getElementById("Amount1");
+        let amount2 = document.getElementById("Amount2");
+        let ftso1 = document.getElementById("ftso-1");
+        let ftso2 = document.getElementById("ftso-2");
+
+        let web32 = new Web3(object.rpcUrl);
+
+        web32.setProvider(provider);
+
+        const value1 = amount1.value;
+        const value2 = amount2.value;
+
+        const percent1 = value1.replace(/[^0-9]/g, '');
+        const percent2 = value2.replace(/[^0-9]/g, '');
+
+        const bips1 = Number(percent1) * 100;
+        const bips2 = Number(percent2) * 100;
+
+        var addr1 = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-addr');
+        var addr2 = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-addr');
+
+        try {
+            const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+            let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+            const accounts = await provider.request({method: 'eth_requestAccounts'});
+            const account = accounts[0];
+
+            const transactionParameters2 = {
+                from: account,
+                to: wrappedTokenAddr,
+                data: tokenContract.methods.delegate(addr1, bips1).encodeABI(),
+            };
+
+            showSpinner(async () => {
+                await provider.request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters2],
+                })
+                .then((txHash) => showConfirm(txHash))
+                .catch((error) => showFail());
+            });
+
+            if (DappObject.isAmount2Active) {
+                const transactionParameters3 = {
+                    from: account,
+                    to: wrappedTokenAddr,
+                    data: tokenContract.methods.delegate(addr2, bips2).encodeABI(),
+                };
+
+                showSpinner(async () => {
+                    await provider.request({
+                        method: 'eth_sendTransaction',
+                        params: [transactionParameters3],
+                    })
+                        .then((txHash) => showConfirm(txHash))
+                        .catch((error) => showFail());
+                });
+            }
+        } catch (error) {
+        }
+    }
+}
+
+async function undelegate(object) {
+    let web32 = new Web3(object.rpcUrl);
+
+    web32.setProvider(provider);
+
+    try {
+        const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+        let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+        const accounts = await provider.request({method: 'eth_requestAccounts'});
+        const account = accounts[0];
+
+        const transactionParameters = {
+            from: account,
+            to: wrappedTokenAddr,
+            data: tokenContract.methods.undelegateAll().encodeABI(),
+        };
+
+        showSpinner(async () => {
+            await provider.request({
+                method: 'eth_sendTransaction',
+                params: [transactionParameters],
+            })
+            .then((txHash) => showConfirm(txHash))
+            .catch((error) => showFail());
+        });
+    } catch(error) {
+
+    }
+}
+
+export async function showAlreadyDelegated(DelegatedFtsos, object) {    
+    $.confirm({
+        escapeKey: false,
+        backgroundDismiss: false,
+        icon: 'fa fa-solid fa-flag red',
+        title: 'Already delegated!',
+        content: 'You have already delegated to ',
+        type: 'red',
+        theme: 'material',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            undelegate: {
+                btnClass: 'btn-red',
+                action: function () {
+                    undelegate(object);
+                },
+            },
+            cancel: function () {
+            }
+        },
+        onContentReady: function () {
+            if (DelegatedFtsos.length > 1) {
+                this.setContentAppend(DelegatedFtsos[0] + " and " + DelegatedFtsos[1] + ". <br />");
+            } else {
+                this.setContentAppend(DelegatedFtsos[0] + ". <br />");
+            }
+            this.setContentAppend("Are you sure you want to undelegate? <br />");
+            this.showLoading(true);
+            this.hideLoading(true);
+        }
+    });
 }

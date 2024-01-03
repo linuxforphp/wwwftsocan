@@ -55,84 +55,47 @@ function __init__(object) {
     });
 
     document.getElementById("ClaimButton").addEventListener("click", async () => {
-        if (DappCommon.DappObject.isRealValue === false) {
-            $.alert("Please enter valid value");
-        } else {
-            let amount1 = document.getElementById("Amount1");
-            let amount2 = document.getElementById("Amount2");
-            let ftso1 = document.getElementById("ftso-1");
-            let ftso2 = document.getElementById("ftso-2");
+        let web32 = new Web3(object.rpcUrl);
 
-            let web32 = new Web3(object.rpcUrl);
+        try {
+            const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+            let tokenContract = new web32.eth.Contract(DappCommon.DappObject.ercAbi, wrappedTokenAddr);
+            const account = await DappCommon.getAccount('GET');
 
-            web32.setProvider(provider);
+            const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
+            const delegatedFtsos = delegatesOfUser[0];
 
-            const value1 = amount1.value;
-            const value2 = amount2.value;
+            let ftsoNames = [];
 
-            const percent1 = value1.replace(/[^0-9]/g, '');
-            const percent2 = value2.replace(/[^0-9]/g, '');
+            fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
+            .then(res => res.json())
+            .then(FtsoInfo => {
+                FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
-            const bips1 = Number(percent1) * 100;
-            const bips2 = Number(percent2) * 100;
+                var indexNumber;
 
-            var addr1 = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-addr');
-            var addr2 = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-addr');
+                for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                    indexNumber = f;
 
-            try {
-                const wrappedTokenAddr = GetContract("WNat", object.rpcUrl, object.flrAddr);
-                let tokenContract = new web32.eth.Contract(DappCommon.DappObject.ercAbi, wrappedTokenAddr);
-                const accounts = await provider.request({method: 'eth_requestAccounts'});
-                const account = accounts[0];
-
-                const transactionParameters = {
-                    from: account,
-                    to: wrappedTokenAddr,
-                    data: tokenContract.methods.undelegateAll().encodeABI(),
-                };
-
-                const transactionParameters2 = {
-                    from: account,
-                    to: wrappedTokenAddr,
-                    data: tokenContract.methods.delegate(addr1, bips1).encodeABI(),
-                };
-
-                showSpinner(async () => {
-                    await provider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters],
-                    })
-                    .then((txHash) => showConfirm(txHash))
-                    .catch((error) => showFail());
-                });
-
-                showSpinner(async () => {
-                    await provider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters2],
-                    })
-                    .then((txHash) => showConfirm(txHash))
-                    .catch((error) => showFail());
-                });
-
-                if (DappCommon.DappObject.isAmount2Active) {
-                    const transactionParameters3 = {
-                        from: account,
-                        to: wrappedTokenAddr,
-                        data: tokenContract.methods.delegate(addr2, bips2).encodeABI(),
-                    };
-
-                    showSpinner(async () => {
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters3],
-                        })
-                            .then((txHash) => showConfirm(txHash))
-                            .catch((error) => showFail());
-                    });
+                    for (var i = 0; i < delegatedFtsos.length; i++) {
+                        if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
+                            if (typeof ftsoNames[0] !== "undefined" && ftsoNames[0] !== null) {
+                                ftsoNames[1] = FtsoInfo.providers[indexNumber].name;
+                            } else {
+                                ftsoNames[0] = FtsoInfo.providers[indexNumber].name;
+                            }
+                        }
+                    }
                 }
-            } catch (error) {
-            }
+
+                if (delegatedFtsos.length !== 0) {
+                    DappCommon.showAlreadyDelegated(ftsoNames, object);
+                } else {
+                    DappCommon.delegate(object);
+                }
+            });
+        } catch(error) {
+            //console.log(error);
         }
     });  
 }
@@ -198,33 +161,32 @@ window.onload = async (event) => {
                 }
             };
 
-            if (typeof accounts !== 'undefined' && accounts !== []) {
-                window.ethereum.on("accountsChanged", async (accounts) => {
-                    if (accounts.length !== 0) {
-                        const account = accounts[0];
-                        showAccountAddress(account);
-                    } else {
-                        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-                        connectWalletBool = false;
-                    }
-                });
-            }
+            window.ethereum.on("accountsChanged", async (accounts) => {
+                if (accounts.length !== 0) {
+                    document.getElementById("ConnectWallet").click();
+                } else {
+                    document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+                    showBalance(0.0);
+                    showTokenBalance(0.0);
+                    connectWalletBool = false;
+                }
+            });
 
             window.ethereum.on("chainChanged", async (chosenChainId) => {
                 for (var i = 0; i < selectedNetwork?.options.length; i++) {
                     if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
                         selectedNetwork.options.selectedIndex = i;
                         selectedNetwork.dispatchEvent(new Event('change'));
-            
+
                         break;
                     }
                 }
-            
-                if (metamaskInstalled === true) {
+
+                if (DappCommon.DappObject.metamaskInstalled === true) {
                     try {
                         await provider.request({
                             method: 'wallet_switchEthereumChain',
-                            params: [{chainId: chainidhex}],
+                            params: [{chainId: object.chainIdHex}],
                         })
                     } catch (error) {
                         // console.log(error);

@@ -1,182 +1,90 @@
 import { FlareAbis, Provider as provider, FlareLogos, GetContract, round, showAccountAddress, showTokenBalance} from "./flare-utils";
 import * as DappCommon from './dapp-common.js';
 // dapp_claim.js
-var costonLogo = FlareLogos.costonLogo;
-var flrLogo = FlareLogos.flrLogo;
-var sgbLogo = FlareLogos.sgbLogo;
-var ercAbi = FlareAbis.WNat;
-var distributionAbiLocal = FlareAbis.DistributionToDelegators;
-var voterWhitelisterAbiLocal = FlareAbis.VoterWhitelister;
-var ftsoRewardAbiLocal = FlareAbis.FtsoRewardManager;
-var claimBool = false;
-var fdClaimBool = false;
-var metamaskInstalled;
 
-window.onload = async (event) => {
-    var selectedNetwork;
-    var chainidhex;
-    var rpcUrl;
-    var networkValue;
-    var tokenIdentifier;
-    var wrappedTokenIdentifier;
-    var delegatedFtsoElement = document.getElementById('after');
-    var checkBox = document.getElementById("RewardsCheck");
-    document.getElementById('layer3').innerHTML = flrLogo;
+function __init__(object) {
+    document.getElementById("ConnectWallet").addEventListener("click", async () => {
+        DappCommon.ConnectWalletClickClaim(object.rpcUrl, object.flrAddr, DappCommon.DappObject);
+    });
 
-    // When the Connect Wallet button is clicked, we connect the wallet, and if it
-    // has already been clicked, we copy the public address to the clipboard.
-    if (metamaskInstalled === true) {
-        document.getElementById("ConnectWallet").addEventListener("click", DappCommon.ConnectWalletClickClaim(claimBool, rpcUrl));
-    }
-
-    await DappCommon.createSelectedNetwork(metamaskInstalled).then( DappCommon.getSelectedNetwork(selectedNetwork, rpcUrl, chainidhex, networkValue));
-
-    if (networkValue === '1') {
-        document.getElementById('layer3').innerHTML = flrLogo;
-    } else if (networkValue === '2') {
-
-        document.getElementById('layer3').innerHTML = sgbLogo;
-    } else {
-        document.getElementById('layer3').innerHTML = costonLogo;
-    }
-    rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-    tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
-    wrappedTokenIdentifier = 'W' + tokenIdentifier;
-    DappCommon.showTokenIdentifiers(wrappedTokenIdentifier);
-
-    selectedNetwork.onchange = async () => {
-        rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-        chainidhex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
-        networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
-
-        if (networkValue === '1') {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-            tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
-            wrappedTokenIdentifier = 'W' + tokenIdentifier;
-            document.getElementById('layer3').innerHTML = flrLogo;
-            DappCommon.showTokenIdentifiers(wrappedTokenIdentifier);
-        } else if (networkValue === '2') {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-            tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
-            wrappedTokenIdentifier = 'W' + tokenIdentifier;
-            document.getElementById('layer3').innerHTML = sgbLogo;
-            DappCommon.showTokenIdentifiers(wrappedTokenIdentifier);
-        } else {
-            rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-            tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
-            wrappedTokenIdentifier = 'W' + tokenIdentifier;
-            document.getElementById('layer3').innerHTML = costonLogo;
-            DappCommon.showTokenIdentifiers(wrappedTokenIdentifier);
-        }
-    }
-
-    // Alert Metamask to switch.
-    if (metamaskInstalled === true) {
-        try {
-            await provider.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{chainId: chainidhex}],
-            })
-        } catch (error) {
-            // console.log(error);
-        }
-    }
-
-    // If we have already logged in the account, show new results, else do nothing.
-    if (connectWalletBool === false) {
-        if (metamaskInstalled === true) {
-            let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
+    document.getElementById("ClaimButton").addEventListener("click", async () => {
+        console.log(DappCommon.DappObject.claimBool);
+        if (DappCommon.DappObject.claimBool === true) {
+            let web32 = new Web3(object.rpcUrl);
+            var checkBox = document.getElementById("RewardsCheck");
 
             try {
-                const isUnlocked = isConnected();
-                if (await isUnlocked !== false) {
-                    document.getElementById("ConnectWallet").click();
+                const accounts = await provider.request({method: 'eth_requestAccounts'});
+                const account = accounts[0];
+                const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+                let tokenContract = new web32.eth.Contract(DappCommon.DappObject.ercAbi, wrappedTokenAddr);
+                const ftsoRewardAddr = await GetContract("FtsoRewardManager", object.rpcUrl, object.flrAddr);
+                let ftsoRewardContract = new web32.eth.Contract(DappCommon.DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
+                const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
+                var transactionParameters;
+
+                if (checkBox.checked) {
+                    transactionParameters = {
+                        from: account,
+                        to: ftsoRewardAddr,
+                        data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true).encodeABI(),
+                    };
                 } else {
-                    $.alert("You are not connected!");
+                    transactionParameters = {
+                        from: account,
+                        to: ftsoRewardAddr,
+                        data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false).encodeABI(),
+                    };
                 }
-            } catch (error) {
-                // console.log(error);
-            }
-        }
-    }
 
+                showSpinner(async () => {
+                    await provider.request({
+                        method: 'eth_sendTransaction',
+                        params: [transactionParameters],
+                    })
+                        .then((txHash) => showConfirm(txHash))
+                        .catch((error) => showFail());
+                });
 
-    if (typeof accounts !== 'undefined' && accounts !== []) {
-        window.ethereum.on("accountsChanged", async (accounts) => {
-            if (accounts.length !== 0) {
-                let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
-
-                try {
-                    const wrappedTokenAddr = await GetContract("WNat", rpcUrl);
-                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                    const account = accounts[0];
-                    showAccountAddress(account);
-                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                } catch (error) {
-                    // console.log(error);
-                }
-            } else {
-                document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-                showTokenBalance(0.0);
+                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                 DappCommon.showClaimRewards(0.0);
-                DappCommon.showFdRewards(0.0);
-                DappCommon.switchClaimButtonColorBack(claimBool);
-                DappCommon.switchClaimFdButtonColorBack(claimBool);
-                connectWalletBool = false;
-            }
-        });
-    }
-
-    window.ethereum.on("chainChanged", async (chosenChainId) => {
-        for (var i = 0; i < selectedNetwork?.options.length; i++) {
-            if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
-                selectedNetwork.options.selectedIndex = i;
-                selectedNetwork.dispatchEvent(new Event('change'));
-
-                break;
-            }
-        }
-
-        if (metamaskInstalled === true) {
-            try {
-                await provider.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{chainId: chainidhex}],
-                })
+                DappCommon.switchClaimButtonColorBack(DappCommon.DappObject.claimBool);
+                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
             } catch (error) {
-                // console.log(error);
+                showFail();
             }
         }
     });
 
-    if (metamaskInstalled === true) {
-        document.getElementById("ClaimButton").addEventListener("click", async () => {
-            if (claimBool === true) {
-                let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
+    document.getElementById("ClaimFdButton").addEventListener("click", async () => {
+        if (DappCommon.DappObject.fdClaimBool === true) {
+            let web32 = new Web3(object.rpcUrl);
+            var checkBox = document.getElementById("RewardsCheck");
 
-                try {
-                    const accounts = await provider.request({method: 'eth_requestAccounts'});
-                    const account = accounts[0];
-                    const wrappedTokenAddr = await GetContract("WNat", rpcUrl);
-                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                    const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl);
-                    let ftsoRewardContract = new web32.eth.Contract(ftsoRewardAbiLocal, ftsoRewardAddr);
-                    const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-                    var transactionParameters;
+            try {
+                const accounts = await provider.request({method: 'eth_requestAccounts'});
+                const account = accounts[0];
+                const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+                let tokenContract = new web32.eth.Contract(DappCommon.DappObject.ercAbi, wrappedTokenAddr);
+                const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", object.rpcUrl, object.flrAddr);
+                let DistributionDelegatorsContract = new web32.eth.Contract(DappCommon.DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
+                const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-                    for (var p = 0; p < epochsUnclaimed.length; p++) {
+                var transactionParameters;
+
+                for (const property in claimableMonths) {
+                    if (!property.includes("_")) {
                         if (checkBox.checked) {
                             transactionParameters = {
                                 from: account,
-                                to: ftsoRewardAddr,
-                                data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), true).encodeABI(),
+                                to: DistributionDelegatorsAddr,
+                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], true).encodeABI(),
                             };
                         } else {
                             transactionParameters = {
                                 from: account,
-                                to: ftsoRewardAddr,
-                                data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[p]), false).encodeABI(),
+                                to: DistributionDelegatorsAddr,
+                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], false).encodeABI(),
                             };
                         }
 
@@ -188,70 +96,90 @@ window.onload = async (event) => {
                                 .then((txHash) => showConfirm(txHash))
                                 .catch((error) => showFail());
                         });
-                    }
 
-                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                    DappCommon.showClaimRewards(0.0);
-                    DappCommon.switchClaimButtonColorBack(claimBool);
-                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                } catch (error) {
-                    showFail();
+                        DappCommon.showFdRewards(0.0);
+                        DappCommon.switchClaimFdButtonColorBack(DappCommon.DappObject.fdClaimBool);
+                        const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                    }
                 }
+            } catch (error) {
+                // console.log(error);
             }
-        })
-    }
+        }
+    });
+}
 
-    if (metamaskInstalled === true) {
-        document.getElementById("ClaimFdButton").addEventListener("click", async () => {
-            if (fdClaimBool === true) {
-                let web32 = new Web3(selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl'));
+window.onload = async (event) => {
+    let selectedNetwork = document.getElementById("SelectedNetwork");
+    let chainidhex;
+    let rpcUrl;
+    let networkValue;
+    let tokenIdentifier;
+    let wrappedTokenIdentifier;
+    document.getElementById('layer3').innerHTML = DappCommon.DappObject.flrLogo;
 
+    await DappCommon.createSelectedNetwork(DappCommon.DappObject).then( async () => {
+        DappCommon.getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
+
+            DappCommon.showTokenIdentifiers(null, object.wrappedTokenIdentifier);
+
+            __init__(object);
+
+            console.log("token identifier: " + object.wrappedTokenIdentifier);
+
+            document.getElementById("ConnectWallet").click();
+
+            selectedNetwork.onchange = async () => {
+                object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
+                object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
+                object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
+
+                // Alert Metamask to switch.
                 try {
-                    const accounts = await provider.request({method: 'eth_requestAccounts'});
-                    const account = accounts[0];
-                    const wrappedTokenAddr = await GetContract("WNat", rpcUrl);
-                    let tokenContract = new web32.eth.Contract(ercAbi, wrappedTokenAddr);
-                    const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl);
-                    let DistributionDelegatorsContract = new web32.eth.Contract(distributionAbiLocal, DistributionDelegatorsAddr);
-                    const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
-
-                    var transactionParameters;
-
-                    for (const property in claimableMonths) {
-                        if (!property.includes("_")) {
-                            if (checkBox.checked) {
-                                transactionParameters = {
-                                    from: account,
-                                    to: DistributionDelegatorsAddr,
-                                    data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], true).encodeABI(),
-                                };
-                            } else {
-                                transactionParameters = {
-                                    from: account,
-                                    to: DistributionDelegatorsAddr,
-                                    data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], false).encodeABI(),
-                                };
-                            }
-
-                            showSpinner(async () => {
-                                await provider.request({
-                                    method: 'eth_sendTransaction',
-                                    params: [transactionParameters],
-                                })
-                                    .then((txHash) => showConfirm(txHash))
-                                    .catch((error) => showFail());
-                            });
-
-                            DappCommon.showFdRewards(0.0);
-                            DappCommon.switchClaimFdButtonColorBack();
-                            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        }
-                    }
+                    await provider.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{chainId: chainidhex}],
+                    });
+                    
+                    document.getElementById("ConnectWallet").click();
                 } catch (error) {
                     // console.log(error);
                 }
-            }
-        })
-    }
+            };
+
+            window.ethereum.on("accountsChanged", async (accounts) => {
+                if (accounts.length !== 0) {
+                    document.getElementById("ConnectWallet").click();
+                } else {
+                    document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+                    showBalance(0.0);
+                    showTokenBalance(0.0);
+                    connectWalletBool = false;
+                }
+            });
+
+            window.ethereum.on("chainChanged", async (chosenChainId) => {
+                for (var i = 0; i < selectedNetwork?.options.length; i++) {
+                    if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
+                        selectedNetwork.options.selectedIndex = i;
+                        selectedNetwork.dispatchEvent(new Event('change'));
+
+                        break;
+                    }
+                }
+
+                if (DappCommon.DappObject.metamaskInstalled === true) {
+                    try {
+                        await provider.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{chainId: object.chainIdHex}],
+                        })
+                    } catch (error) {
+                        // console.log(error);
+                    }
+                }
+            });
+        });
+    });
 }

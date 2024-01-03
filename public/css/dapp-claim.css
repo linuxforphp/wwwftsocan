@@ -7,6 +7,12 @@
     margin-top: 30px!important;
 }
 
+#TokenBalance {
+    display: inline-block;
+    width: 266px;
+    text-align: center;
+}
+
 .connect-wallet {
     margin-bottom: 0;
     margin-left: 25%;
@@ -246,23 +252,26 @@
     margin: 15px 35px;
     margin-right: 45px;
     float: left;
-    width: 6.5% !important;
-    height: 6.5% !important;
+    width: 45px !important;
+    height: 45px !important;
     text-align: left;
     justify-content: left;
     align-items: left;
 }
 
+.wrap-box-ftso {
+    margin: 5px;
+}
+
 @media only screen and (min-width: 0px) and (max-width: 480px) {
     .logo {
         margin: 20px;
-        width: 8% !important;
-        height: 8% !important;
+        width: 45px !important;
+        height: 45px !important;
     }
 
     .wrap-box-ftso {
-        height: 9rem;
-        margin: 10px 0 0;
+        margin: 5px;
     }
 
     .delegated-icon {
@@ -276,7 +285,11 @@
     }
 
     .wrapper {
-        width: 45%;
+        width: 42%;
+    }
+
+    #TokenBalance {
+        width: 172px;
     }
 
     .token-identifier {
@@ -338,13 +351,12 @@
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
     .logo {
-        width: 8% !important;
-        height: 8% !important;
+        width: 45px !important;
+        height: 45px !important;
     }
 
     .wrap-box-ftso {
-        height: 9rem;
-        margin: 10px 0 0;
+        margin: 5px;
     }
 
     .delegated-icon {
@@ -412,8 +424,7 @@
 
 @media (min-width: 768px) and (max-width: 979px) {
     .wrap-box-ftso {
-        height: 9rem;
-        margin: 10px 0 0;
+        margin: 5px;
     }
 
     .delegated-icon {
