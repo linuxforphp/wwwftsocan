@@ -15,7 +15,7 @@ h2 {
     align-self: center;
     border-top: 1px solid rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(236, 236, 236, 0.6);
+    background: #e8d6d6;
     margin: 0 25%;
     padding: 25px 44px;
     border-radius: 25px;
@@ -41,13 +41,6 @@ h2::after {
     transition: 0.5s;
 }
 
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    h2 {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-}
-
 .faq {
     border: solid 1px rgba(0, 0, 0, 0.3);
     border-radius: 30px;
@@ -61,17 +54,18 @@ h2::after {
 
 
 .active, button.faq-accordion:hover {
-    background: rgba(236, 236, 236, 0.7);
+    background: #e8d6d6;
     color: #EF0000;
 }
 
 button.faq-accordion {
+    text-transform: capitalize;
     position: relative;
     overflow: hidden;
     border-radius: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(236, 236, 236, 0.7);
+    background: #e8d6d6;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     color: #000;
     cursor: pointer;
@@ -110,13 +104,6 @@ button.faq-accordion strong {
     z-index: 100;
 }
 
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    button.faq-accordion {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-}
-
 button.faq-accordion:hover {
     color: rgb(253, 0, 15) !important;
 }
@@ -148,16 +135,8 @@ button.faq-accordion.active + .faq-panel {
     max-height: fit-content;
     padding: 0 5rem 3rem 3rem;
     overflow: hidden;
-    background: rgba(236, 236, 236, 1);
     transition: opacity 0.5s linear, max-height 0.5s linear;
     will-change: display, opacity, max-height;
-}
-
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    button.faq-accordion.active + .faq-panel {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
 }
 
 .faq .faq-panel {
@@ -205,7 +184,7 @@ button.faq-accordion.active + .faq-panel {
 
 .shinyButton {
     position: relative;
-    background-color: rgba(253, 0, 15, 1);
+    background-color: rgb(255, 0, 15);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
@@ -254,13 +233,6 @@ a.link {
 
 .shinyButton:hover > .shinyButtonText::before {
     transform: skewX(45deg) translateX(200%);
-}
-
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .shinyButton {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
