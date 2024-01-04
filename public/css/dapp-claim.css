@@ -7,13 +7,13 @@
     margin-top: 30px!important;
 }
 
-#TokenBalance {
+.token-balance-claim {
     display: inline-block;
     width: 266px;
     text-align: center;
 }
 
-.connect-wallet {
+.connect-wallet-claim {
     margin-bottom: 0;
     margin-left: 25%;
     height: auto;

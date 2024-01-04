@@ -84,6 +84,22 @@
             window.open(url, '_blank').focus();
         }
     }
+
+    function getDappPage(option, delegationurl = null) {
+        if (option === 1) {
+            $.get( "wrap", function( data ) {
+                $( "#dapp-root" ).html( data );
+            });
+        } else if (option === 2) {
+            $.get( "delegate", function( data ) {
+                $( "#dapp-root" ).html( data );
+            });
+        } else if (option === 3) {
+            $.get( "claim", function( data ) {
+                $( "#dapp-root" ).html( data );
+            });
+        }
+    }
 </script>
 
 <?php foreach($view['jsscripts'] as $key => $value): ?>

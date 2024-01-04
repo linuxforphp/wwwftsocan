@@ -1,3 +1,8 @@
+// Getting the key of a function by its name.
+export function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
 export const FlareAbis = {
     DistributionToDelegators: distributionAbi,
     VoterWhitelister: voterWhitelisterAbi,

@@ -42,7 +42,7 @@
                         <span id="wrappedTokenIdentifier"></span>
                     </div>
                     <div class="wrapper">
-                            <span id="TokenBalance">0.0</span>
+                            <span id="TokenBalance" class="token-balance-claim">0.0</span>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ConnectWallet" class="connect-wallet connect-wallet-claim"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
             </div>
         </div>
         <div class="row">
@@ -70,3 +70,5 @@
                 </div>
             </div>
         </div>
+
+        <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappclaim.bundle.js"></script>

@@ -40,7 +40,7 @@ Fixed Navigation
                     <div class="dd-menu">
                         <div class="dropdown-menu-dapp" style="left: 0px;">
                             <ul>
-                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">Dapp<sup><strong> NEW!</strong></sup></a></li>
+                                <li><a href="#" class="navbar-list-item" onclick="getDappPage(1)">Dapp<sup><strong> NEW!</strong></sup></a></li>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>delegate/index')">Flare Portal</a></li>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>stake/index')">FlareStake Tool</a></li>
                             </ul>
@@ -58,9 +58,9 @@ Fixed Navigation
         <div class="container">
             <div class="collapse navbar-collapse static-top navbar-right" role="navigation" style="border: none; box-shadow: none; -webkit-box-shadow: none;">
                 <ul class="nav navbar-nav navbar-nav-dapp nav-item">
-                    <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">Wrap</a></li>
-                    <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappdelegate/index')">Delegate</a></li>
-                    <li><a href="#" class="nav-link" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappclaim/index')">Rewards</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(1)">Wrap</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(2)">Delegate</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(3)">Rewards</a></li>
                 </ul>
             </div>
         </div>

@@ -41,7 +41,7 @@
                         <span id="tokenIdentifier"></span>
                     </div>
                     <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                    <div class="wrapper">
+                    <div class="wrapper-wrap">
                         <span>Balance:</span>
                         <span id="Balance">0.0</span>
                     </div>
@@ -67,7 +67,7 @@
                             <span id="wrappedTokenIdentifier"></span>
                     </div>
                     <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
-                    <div class="wrapper">
+                    <div class="wrapper-wrap">
                         <span>Balance:</span>
                         <span id="TokenBalance">0.0</span>
                     </div>
@@ -89,3 +89,5 @@
                 </div>
             </div>
         </div>
+
+        <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappwrap.bundle.js"></script>

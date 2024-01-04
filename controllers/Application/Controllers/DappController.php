@@ -12,13 +12,13 @@ use Ascmvc\EventSourcing\EventDispatcher;
 use Ascmvc\EventSourcing\Event\AggregateEvent;
 use Ascmvc\Mvc\AscmvcEvent;
 
-class DappClaimController extends AggregateRootController implements AggregateEventListenerInterface
+class DappController extends AggregateRootController implements AggregateEventListenerInterface
 {
     const READ_REQUESTED = 'networks_read_received';
 
     // Define the Aggregate's invokable listeners.
     protected $aggregateListenerNames = [
-        DappClaimController::READ_REQUESTED => NetworksReadModel::class,
+        DappController::READ_REQUESTED => NetworksReadModel::class,
     ];
 
     // This controller MUST implement the Ascmvc\AscmvcControllerFactoryInterface interface
@@ -104,11 +104,24 @@ class DappClaimController extends AggregateRootController implements AggregateEv
 
         $baseConfig = $app->getBaseConfig();
 
+        $this->view['path'] = explode('/', $app->getRequest()->getServerParams()['REQUEST_URI']);
+
         $this->view['dappName'] = $baseConfig['dappName'];
         $this->view['env'] = $baseConfig['env'];
         $this->view['dappActive'] = $baseConfig['dappActive'];
 
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-main.css';
+
+        // if (is_null($this->view['path'][2]) || empty($this->view['path'][2]) || $this->view['path'][2] === 'index' || $this->view['path'][2] === 'wrap') {
+        //     $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-wrap.css';
+        // } elseif ($this->view['path'][2] === 'delegate'){
+        //     $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-delegate.css';
+        // } elseif ($this->view['path'][2] === 'claim') {
+        //     $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-claim.css';
+        // }
+
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-wrap.css';
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-delegate.css';
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-claim.css';
 
         $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/glob.min.js';
@@ -152,7 +165,7 @@ class DappClaimController extends AggregateRootController implements AggregateEv
         $event = new AggregateEvent(
             $aggregateValueObject,
             $this->aggregateRootName,
-            DappClaimController::READ_REQUESTED
+            DappController::READ_REQUESTED
         );
 
         $this->eventDispatcher->dispatch($event);
@@ -187,9 +200,174 @@ class DappClaimController extends AggregateRootController implements AggregateEv
 
         $this->view['bodyjs'] = 1;
 
-        $this->view['dappclaim'] = 1;
+        $this->view['dappwrap'] = 1;
 
         $this->view['templatefile'] = 'dapp_index';
+
+        return $this->view;
+    }
+
+    public function preWrapAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function wrapAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappwrap'] = 1;
+
+        $this->view['templatefile'] = 'dapp_wrap';
+
+        return $this->view;
+    }
+
+    public function preDelegateAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function delegateAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappdelegate'] = 1;
+
+        $this->view['templatefile'] = 'dapp_delegate';
+
+        return $this->view;
+    }
+
+    public function preClaimAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function claimAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappclaim'] = 1;
+
+        $this->view['templatefile'] = 'dapp_claim';
 
         return $this->view;
     }
