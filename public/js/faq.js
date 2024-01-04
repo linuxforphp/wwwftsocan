@@ -122,3 +122,11 @@ for (var i = 0; i < acc.length ; i++) {
         this.parentElement.classList.toggle("active");
     })
 }
+
+window.onload = () => {
+    if (window.location.hash !== '' || typeof window.location.hash !== 'undefined') {
+        let button = document.querySelector(window.location.hash + 'Button')
+        button.classList.toggle("active");
+        button.parentElement.classList.toggle("active");
+    }
+}

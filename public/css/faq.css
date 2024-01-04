@@ -9,6 +9,12 @@
     align-items: center;
 }
 
+.faq-anchor {
+    display: block;
+    padding-top: 75px;
+    margin-top: -75px;
+}
+
 /* #383a3b */
 h2 {
     overflow: hidden;
