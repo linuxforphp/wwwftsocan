@@ -89,14 +89,17 @@
         if (option === 1) {
             $.get( "wrap", function( data ) {
                 $( "#dapp-root" ).html( data );
+                window.dappInit(1);
             });
         } else if (option === 2) {
             $.get( "delegate", function( data ) {
                 $( "#dapp-root" ).html( data );
+                window.dappInit(2);
             });
         } else if (option === 3) {
             $.get( "claim", function( data ) {
                 $( "#dapp-root" ).html( data );
+                window.dappInit(3);
             });
         }
     }

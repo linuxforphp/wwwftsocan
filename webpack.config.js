@@ -3,9 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
-        dappwrap: './src/dapp-wrap.js',
-        dappdelegate: './src/dapp-delegate.js',
-        dappclaim: './src/dapp-claim.js',
+        dappcommon: './src/dapp-common.js',
         flareutils: './src/flare-utils.js'
     },
     output: {

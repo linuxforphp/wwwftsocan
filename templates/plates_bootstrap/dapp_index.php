@@ -63,27 +63,27 @@
 <script>
     var uriPath = <?= json_encode($view['path']); ?>;
 
-    window.onload = (event) => {
+    window.onload = () => {
         if ((typeof uriPath[2] === 'undefined') || uriPath[2] === '' || uriPath[2] === 'index' || uriPath[2] === 'wrap') {
             $.get("wrap", function(data) {
                 $("#dapp-root").html(data);
-                $("#DappScript").attr("src", "<?=$view['urlbaseaddr'] ?>js/dappwrap.bundle.js");
+                window.dappInit(1);
             });
         } else if (uriPath[2] === 'delegate') {
             $.get("delegate", function(data) {
                 $("#dapp-root").html(data);
-                $("#DappScript").attr("src", "<?=$view['urlbaseaddr'] ?>js/dappdelegate.bundle.js");
+                window.dappInit(2);
             });
         } else if (uriPath[2] === 'claim') {
             $.get("claim", function(data) {
                 $("#dapp-root").html(data);
-                $("#DappScript").attr("src", "<?=$view['urlbaseaddr'] ?>js/dappclaim.bundle.js");
+                window.dappInit(3);
             });
         }
     }
 </script>
 
-<script id="DappScript" type="module" src=""></script>
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappcommon.bundle.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/flareutils.bundle.js"></script>
 </body>
 </html>
