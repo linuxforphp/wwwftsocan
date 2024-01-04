@@ -229,8 +229,10 @@ async function createSelectedNetwork(DappObject) {
                 networkSelectBox.appendChild(option);
             }
 
+            console.log(Number(networkSelectBox.options[0].value) - 1);
+
             networkSelectBox.options[0].setAttribute('selected', 'selected');
-            networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[0].value) - 1;
+            networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[0]);
             
             await provider.request({method: 'eth_requestAccounts'}).then(async function () {
                 if (!provider) {
@@ -248,7 +250,7 @@ async function createSelectedNetwork(DappObject) {
                                 for (var i = 0; i < networkSelectBox.options.length; i++) {
                                     if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
                                         networkSelectBox.options[i].setAttribute('selected', 'selected');
-                                        networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[i].value) - 1;
+                                        networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[i]);
                                         realChainId = chainIdHex;
                                     } else {
                                         networkSelectBox.options[i].removeAttribute('selected');
