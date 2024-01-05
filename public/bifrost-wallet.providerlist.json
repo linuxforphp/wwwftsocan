@@ -1,9 +1,9 @@
 {
   "name": "Bifrost Wallet",
-  "timestamp": "2023-11-14T00:00:00+00:00",
+  "timestamp": "2023-12-08T00:00:00+00:00",
   "version": {
     "major": 3,
-    "minor": 29,
+    "minor": 30,
     "patch": 0
   },
   "providers": [
@@ -583,8 +583,8 @@
       "name": "Comfy Nodes",
       "description": "Only the comfiest rates.",
       "url": "https://www.comfynodes.com",
-      "address": "0x821BDE578955B35F9F2C9022268E5BC748994f71",
-      "logoURI": "https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/0x821BDE578955B35F9F2C9022268E5BC748994f71.png"
+      "address": "0x9C44c70180642cF4Cfd06d77b84Bb8F864ea5697",
+      "logoURI": "https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/0x9C44c70180642cF4Cfd06d77b84Bb8F864ea5697.png"
     },
     {
       "chainId": 19,
@@ -1782,6 +1782,22 @@
       "address": "0xCaA49C97318b6Bb62b7F9241891D70F87FC05D35",
       "logoURI": "https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/0xCaA49C97318b6Bb62b7F9241891D70F87FC05D35.png",
       "listed": true
+    },
+    {
+      "chainId": 14,
+      "name": "Luganodes",
+      "description": "Swiss-Operated Institutional Grade Staking Provider",
+      "url": "https://luganodes.com",
+      "address": "0xB53F6CFaB63CAbFc255c702ebeB273510DB541d7",
+      "logoURI": "https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/0xB53F6CFaB63CAbFc255c702ebeB273510DB541d7.png"
+    },
+    {
+      "chainId": 14,
+      "name": "InfStones",
+      "description": "Infinite ease, speed, power. The ultimate WEB3 infrastructure platform",
+      "url": "https://infstones.com",
+      "address": "0xB1Aa0F2691Db6bBb2969EfC7BE70787F58DD2461",
+      "logoURI": "https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/0xB1Aa0F2691Db6bBb2969EfC7BE70787F58DD2461.png"
     }
   ]
 }
