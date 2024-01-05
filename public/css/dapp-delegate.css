@@ -22,7 +22,7 @@
 }
 
 .amount {
-    width: 10%!important;
+    width: 12% !important;
 }
 
 .claim-button-text {
@@ -134,9 +134,11 @@
     position: absolute;
     z-index: 100;
     width: auto;
+    height: calc(100% + 2px);
     outline: none;
     font-size: 2.4rem !important;
-    padding: 30px 20px;
+    padding: 20px;
+    padding-right: 40px;
     cursor: pointer;
     border-radius: .3em;
     margin-right: 10em;
@@ -152,7 +154,6 @@
     background-position: right 20px top 50%;
     background-repeat: no-repeat;
     background-size: 12px;
-    padding-right: 40px;
     transition: 0.5s;
     letter-spacing: normal;
 }
@@ -171,11 +172,11 @@
 
 .wrap-box-ftso {
     margin: 5px;
-    overflow: visible!important;
+    overflow: visible !important;
 }
 
 .wrap-box-content {
-    overflow: visible!important;
+    overflow: visible !important;
 }
 
 .row {
@@ -188,7 +189,7 @@
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
     .amount {
-        width: 15%!important;
+        width: 15% !important;
     }
 
     .claim-button {
@@ -223,7 +224,7 @@
 
 @media only screen and (min-width: 481px) and (max-width: 767px) {
     .amount {
-        width: 15%!important;
+        width: 15% !important;
     }
 
     .wrap-box-ftso {
@@ -268,7 +269,7 @@
     }
 
     .amount {
-        width: 15%!important;
+        width: 15% !important;
     }
 
     .claim-button {
