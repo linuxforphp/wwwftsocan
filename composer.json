@@ -1,0 +1,62 @@
+{
+    "name": "lightmvc/lightmvcskel",
+    "description": "The LightMVC Framework Skeleton Application that can run on Swoole.",
+    "license": "Apache-2.0",
+    "keywords": [
+        "lightmvc",
+        "ascmvc",
+        "framework",
+        "application",
+        "mvc",
+        "middleware",
+        "swoole"
+    ],
+    "homepage": "https://github.com/lightmvc/lightmvcskel",
+    "authors": [
+        {
+            "name": "Foreach Code Factory",
+            "email": "info@lightmvcframework.net"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "lightmvc/ascmvc": "4.0.0"
+    },
+    "require-dev": {
+        "linuxforphp/linuxforcomposer": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Application\\Models\\": "models/Application/Models",
+            "Application\\Log\\": "models/Application/Log",
+            "Application\\Middleware\\": "middleware/Application/Middleware",
+            "Application\\Commands\\": "controllers/Application/Commands",
+            "Application\\Controllers\\": "controllers/Application/Controllers",
+            "Application\\Events\\": "controllers/Application/Events",
+            "Application\\Policies\\": "controllers/Application/Policies",
+            "Application\\ReadModels\\": "controllers/Application/ReadModels",
+            "Specialmodule\\Controllers\\": "controllers/Specialmodule/Controllers"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LightMvcTest\\": "test/"
+        }
+    },
+    "scripts": {
+        "run-swoole": "@php public/swoole.php 127.0.0.1 9501",
+        "check": [
+            "@cs",
+            "@test"
+        ],
+        "cs": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit",
+        "pre-update-cmd": [
+            "php -r \"if (file_exists('vendor/composer/linuxforcomposer.pid')) {copy('vendor/composer/linuxforcomposer.pid', 'linuxforcomposer.pid');}\""
+        ],
+        "post-update-cmd": [
+            "php -r \"if (file_exists('linuxforcomposer.pid')) {rename('linuxforcomposer.pid', 'vendor/composer/linuxforcomposer.pid');}\""
+        ]
+    }
+}

@@ -1,0 +1,50 @@
+# xrp-ledger.toml file.
+# Note: all fields and all sections are optional.
+
+[METADATA]
+modified = 2022-08-16T00:00:00.000Z
+expires = 2023-12-01T00:00:00.000Z
+
+[[VALIDATORS]]
+public_key = "nHUDCZ6Tx8uk2Um5QwjsiDUQzpPZLnZ5cd3kfuAXjwLAJujVL5ER"
+attestation = "C155DB4898B1DB0FA4EECCD897D2CB1AC3E6AAAB730A50EE563729553E6592964E6FAE0C87770B821E24F257BA40B5B63A1ABD1C9D9D6EFFCB71C302BA430803"
+network = "main"
+owner_country = "ca"
+server_country = "gb"
+unl = "https://ftsocan.com"
+
+[[ACCOUNTS]]
+address = "rhc4KWimzyK4e6Sqcg1c9RmGxg8egkoqeV"
+desc = "FTSOCAN-owned address"
+
+[[PRINCIPALS]]
+name = "FTSOCAN" # Primary spec author
+email = "info@ftsocan.com"
+
+#[[SERVERS]]
+#json_rpc = "https://s1.ripple.com:51234/"
+#ws = "wss://s1.ripple.com/"
+#peer = "https://s1.ripple.com:51235/"
+#desc = "General purpose server cluster"
+
+#[[SERVERS]]
+#json_rpc = "https://s2.ripple.com:51234/"
+#ws = "wss://s2.ripple.com/"
+#peer = "https://s2.ripple.com:51235/"
+#desc = "Full-history server cluster"
+
+#[[SERVERS]]
+#json_rpc = "https://s.testnet.rippletest.net:51234/"
+#ws = "wss://s.testnet.rippletest.net:51233/"
+#peer = "https://s.testnet.rippletest.net:51235/"
+#network = "testnet"
+#desc = "Test Net public server cluster"
+
+#[[CURRENCIES]]
+#code = "LOL"
+#issuer = "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"
+#network = "testnet"
+#display_decimals = 2
+#symbol = "" # In practical situations, it may be unwise to use emoji
+
+# End of file
