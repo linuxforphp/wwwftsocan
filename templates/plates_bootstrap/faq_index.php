@@ -99,7 +99,7 @@
                 <div class="faq-panel">
                     <p>Assuming you already have an Ethereum account assigned to your <strong>Ledger</strong> device, you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p> 
                     <a href="#" class="shinyButton" onclick="getDocsPageNewTab(5)><i class="shinyButtonText">Download Metamask</i></a><br>
-                    <p>Then, once the set up is completed, click on your account, and head down to "Add Account or Hardware Wallet". Click on "Hardware Wallet", on Ledger, and make sure your <strong>Ledger</strong> device is connected to your computer. Then, select the account that you want to connect amongst the ones on your <strong>Ledger</strong> device. Accept the request on your <strong>Ledger</strong> device, and you should now be connected. </p>
+                    <p>Then, once the set up is completed, click on your account, and head down to "Add Account or Hardware Wallet". <br> Click on "Hardware Wallet", select Ledger from the given options, and make sure your <strong>Ledger</strong> device is connected to your computer. <br> Then, select the account that you want to connect amongst the ones on your <strong>Ledger</strong> device. Accept the request on your <strong>Ledger</strong> device, and you should now be connected. </p>
                 </div>
             </div>
 
