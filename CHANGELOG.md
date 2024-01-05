@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 5.0.1 (2023-01-16)
+
+- Fixes an issue with the error handler in production mode.
+- Updates the project's dependencies.
+
+## 5.0.0 (2023-01-10)
+
+- Makes the \Doctrine\Common library a core ASCMVC library (\Ascmvc\Session\Common).
+- Updates the project's dependencies.
+
 ## 4.0.0 (2020-05-26)
 
 - Migrates to Laminas and updates the project's dependencies.

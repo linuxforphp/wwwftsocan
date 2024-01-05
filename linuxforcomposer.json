@@ -5,7 +5,7 @@
         "image": {
             "linuxforcomposer": {
                 "php-versions": [
-                    "custom-Dapp-v5"
+                    "8.2"
                 ],
                 "script": [
                     "cd /srv",

@@ -50,13 +50,14 @@ try {
 $app->setSessionManager($sessionManager);
 
 if($baseConfig['env'] === 'production') {
-    set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
+    set_error_handler(function($errno, $errstr, $errfile, $errline) {
         // error was suppressed with the @-operator
         if (0 === error_reporting()) {
             return false;
         }
 
-        throw new \Exception($errstr);
+        # For debugging purposes only!
+        //throw new \Exception($errstr);
     });
 
     try {
