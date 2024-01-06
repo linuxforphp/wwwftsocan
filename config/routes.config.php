@@ -13,23 +13,8 @@ $baseConfig['routes'] = [
     ],
     [
         'GET',
-        '/faq[/{action}]',
-        'faq',
-    ],
-    [
-        'GET',
-        '/stake[/{action}]',
-        'stake',
-    ],
-    [
-        'GET',
-        '/flrexplorer[/{action}]',
-        'flrexplorer',
-    ],
-    [
-        'GET',
-        '/sgbexplorer[/{action}]',
-        'sgbexplorer',
+        '/dapp[/{action}]',
+        'dapp',
     ],
     [
         'GET',
