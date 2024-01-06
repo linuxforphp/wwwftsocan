@@ -16,7 +16,7 @@ export const FlareLogos = {
 
 const MMSDK = new MetaMaskSDK.MetaMaskSDK({
     dappMetadata: {
-        name: "FTSO Canada Dapp",
+        name: "FTSO Canada DApp",
         url: "https://ftsocan.com",
         base64Icon: "iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAApPXpUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHjarZxpkh63ckX/YxVeAhIzloMxwjvw8n0uqkVJfPKLsMNkSGx2fzUhM++QyKI7",
     },

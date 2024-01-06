@@ -230,7 +230,7 @@ async function createSelectedNetwork(DappObject) {
             }
 
             networkSelectBox.options[0].setAttribute('selected', 'selected');
-            networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[0]);
+            networkSelectBox.options.selectedIndex = 0;
             
             await provider.request({method: 'eth_requestAccounts'}).then(async function () {
                 if (!provider) {
@@ -248,7 +248,7 @@ async function createSelectedNetwork(DappObject) {
                                 for (var i = 0; i < networkSelectBox.options.length; i++) {
                                     if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
                                         networkSelectBox.options[i].setAttribute('selected', 'selected');
-                                        networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[i]);
+                                        networkSelectBox.options.selectedIndex = i;
                                         realChainId = chainIdHex;
                                     } else {
                                         networkSelectBox.options[i].removeAttribute('selected');
@@ -640,7 +640,7 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
             DappObject.fdClaimBool = false;
         }
 
-        remove(".wrapBoxFTSO");
+        remove(".wrap-box-ftso");
 
         // Getting which FTSO(s) the user has delegated to, the percentage of wnat he has
         // delegated,and the logo of said FTSO(s).
@@ -1240,11 +1240,15 @@ window.dappInit = async (option) => {
 
                     // Alert Metamask to switch.
                     try {
-                        await provider.request({
-                            method: 'wallet_switchEthereumChain',
-                            params: [{chainId: chainidhex}],
-                        });
-                        
+                        await window.ethereum.request({
+                            method: "wallet_switchEthereumChain",
+                            params: [
+                                {
+                                "chainId": object.chainIdHex
+                                }
+                            ]
+                            }).catch((error) => console.error(error));
+
                         document.getElementById("ConnectWallet").click();
                     } catch (error) {
                         // console.log(error);
@@ -1413,11 +1417,15 @@ window.dappInit = async (option) => {
 
                     // Alert Metamask to switch.
                     try {
-                        await provider.request({
-                            method: 'wallet_switchEthereumChain',
-                            params: [{chainId: chainidhex}],
-                        });
-                        
+                        await window.ethereum.request({
+                            method: "wallet_switchEthereumChain",
+                            params: [
+                                {
+                                "chainId": object.chainIdHex
+                                }
+                            ]
+                            }).catch((error) => console.error(error));
+
                         document.getElementById("ConnectWallet").click();
                     } catch (error) {
                         // console.log(error);
