@@ -328,6 +328,8 @@ function showTokenIdentifiers(token, wrappedToken) {
 // WRAP MODULE
 
 async function ConnectWalletClickWrap(rpcUrl, FlrAddr, DappObject) {
+    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+    
     let web32 = new Web3(rpcUrl);
 
     try {
@@ -414,6 +416,8 @@ function copyWrapInput() {
 // DELEGATE MODULE
 
 async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject) {
+    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
     let web32 = new Web3(rpcUrl);
 
     try {
@@ -594,6 +598,8 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
 // CLAIM MODULE
 
 async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
+    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
     var delegatedFtsoElement = document.getElementById('after');
     let web32 = new Web3(rpcUrl);
 
