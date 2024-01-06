@@ -10,7 +10,7 @@
 Fixed Navigation
 ==================================== -->
 <header id="navigation" class="navbar-inverse navbar-fixed-top animated-header">
-<div class="container" style="margin-bottom: 1em;">
+<div class="container">
         <div class="navbar-header">
             <!-- responsive nav button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
