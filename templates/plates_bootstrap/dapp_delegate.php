@@ -55,5 +55,4 @@
                 </div>
             </div>
         </div>
-
-        <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappdelegate.bundle.js"></script>
+        

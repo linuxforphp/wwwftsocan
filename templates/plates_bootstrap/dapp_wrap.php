@@ -89,5 +89,4 @@
                 </div>
             </div>
         </div>
-
-        <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappwrap.bundle.js"></script>
+        
