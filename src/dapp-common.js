@@ -601,6 +601,8 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
     var delegatedFtsoElement = document.getElementById('after');
+    var networkSelectBox = document.getElementById('SelectedNetwork');
+
     let web32 = new Web3(rpcUrl);
 
     try {
@@ -655,34 +657,34 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
 
         // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
         fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
-            .then(res => res.json())
-            .then(FtsoInfo => {
-                FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
+        .then(res => res.json())
+        .then(FtsoInfo => {
+            FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                var indexNumber;
+            var indexNumber;
 
-                for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                    indexNumber = f;
+            for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                indexNumber = f;
 
-                    for (var i = 0; i < delegatedFtsos.length; i++) {
-                        if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
-                            if (ftsoJsonList.includes(delegatedFtsos[i])) {
-                                if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
-                                } else {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
-                                }
-
-                                delegatedFtsoElement.innerHTML = insert1 + insert2;
+                for (var i = 0; i < delegatedFtsos.length; i++) {
+                    if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
+                        if (ftsoJsonList.includes(delegatedFtsos[i])) {
+                            if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                             } else {
-                                $.alert('The FTSO you have delegated to is invalid!');
+                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
                             }
+
+                            delegatedFtsoElement.innerHTML = insert1 + insert2;
+                        } else {
+                            $.alert('The FTSO you have delegated to is invalid!');
                         }
                     }
                 }
-            });
+            }
+        });
 
         // Getting the unclaimed Rewards and affecting the Claim button.
         const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
@@ -696,41 +698,45 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
 
         const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether");
 
-        let claimableAmountFd;
-        const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
+        if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
+            let claimableAmountFd;
+            const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-        for (var m = 0; m < claimableMonths.length; m++) {
-            claimableAmountFd += await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, Number(claimableMonths[m])).call();
+            for (var m = 0; m < claimableMonths.length; m++) {
+                claimableAmountFd += await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, Number(claimableMonths[m])).call();
+            }
+
+            // Changing the color of FlareDrop Claim button.
+
+            showFdRewards(String(round(web32.utils.fromWei(claimableAmountFd, "ether"))));
+
+            if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
+                switchClaimFdButtonColor();
+
+                DappObject.fdClaimBool = true;
+            } else {
+                switchClaimFdButtonColorBack();
+
+                DappObject.fdClaimBool = false;
+            }
         }
 
-        var bucketTotal = await web32.eth.getBalance(ftsoRewardAddr);
+        // Changing the color of Claim button.
 
-        // Changing the color of Claim buttons.
-        if (Number(round(convertedRewards)) >= 1 && Number(round(convertedRewards)) < bucketTotal) {
-            showClaimRewards(round(convertedRewards));
+        showClaimRewards(round(convertedRewards));
+
+        if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
             switchClaimButtonColor();
 
             DappObject.claimBool = true;
         } else {
+            showClaimRewards(0.0);
             switchClaimButtonColorBack();
 
             DappObject.claimBool = false;
         }
-
-        var fdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr);
-
-        if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1 && Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal) {
-            showFdRewards(String(round(web32.utils.fromWei(claimableAmountFd, "ether"))));
-            switchClaimFdButtonColor();
-
-            DappObject.fdClaimBool = true;
-        } else {
-            switchClaimFdButtonColorBack();
-
-            DappObject.fdClaimBool = false;
-        }
     } catch (error) {
-        // console.log(error);
+        console.error(error);
     }
 }
 
@@ -1321,36 +1327,42 @@ window.dappInit = async (option) => {
                             let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
                             const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
                             var transactionParameters;
-            
-                            if (checkBox.checked) {
-                                transactionParameters = {
-                                    from: account,
-                                    to: ftsoRewardAddr,
-                                    data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true).encodeABI(),
-                                };
+
+                            var bucketTotal = await web32.eth.getBalance(ftsoRewardAddr);
+
+                            if ((Number(document.getElementById('ClaimButtonText').innerText) >= 1) && (Number(document.getElementById('ClaimButtonText').innerText) < bucketTotal)) {
+                                if (checkBox.checked) {
+                                    transactionParameters = {
+                                        from: account,
+                                        to: ftsoRewardAddr,
+                                        data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true).encodeABI(),
+                                    };
+                                } else {
+                                    transactionParameters = {
+                                        from: account,
+                                        to: ftsoRewardAddr,
+                                        data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false).encodeABI(),
+                                    };
+                                }
+                
+                                showSpinner(async () => {
+                                    await provider.request({
+                                        method: 'eth_sendTransaction',
+                                        params: [transactionParameters],
+                                    })
+                                        .then((txHash) => showConfirm(txHash))
+                                        .catch((error) => showFail());
+                                });
+
+                                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                                showClaimRewards(0.0);
+                                switchClaimButtonColorBack(DappObject.claimBool);
+                                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                             } else {
-                                transactionParameters = {
-                                    from: account,
-                                    to: ftsoRewardAddr,
-                                    data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false).encodeABI(),
-                                };
+                                $.alert("The Rewards Bucket is empty! Please try again later.")
                             }
-            
-                            showSpinner(async () => {
-                                await provider.request({
-                                    method: 'eth_sendTransaction',
-                                    params: [transactionParameters],
-                                })
-                                    .then((txHash) => showConfirm(txHash))
-                                    .catch((error) => showFail());
-                            });
-            
-                            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                            showClaimRewards(0.0);
-                            switchClaimButtonColorBack(DappObject.claimBool);
-                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                         } catch (error) {
-                            showFail();
+                            console.log(error);
                         }
                     }
                 });
@@ -1370,37 +1382,43 @@ window.dappInit = async (option) => {
                             const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
             
                             var transactionParameters;
-            
-                            for (const property in claimableMonths) {
-                                if (!property.includes("_")) {
-                                    if (checkBox.checked) {
-                                        transactionParameters = {
-                                            from: account,
-                                            to: DistributionDelegatorsAddr,
-                                            data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], true).encodeABI(),
-                                        };
-                                    } else {
-                                        transactionParameters = {
-                                            from: account,
-                                            to: DistributionDelegatorsAddr,
-                                            data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], false).encodeABI(),
-                                        };
+
+                            var fdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr);
+
+                            if (Number(document.getElementById('ClaimFdButtonText').innerText >= 1) && (Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal)) { 
+                                for (const property in claimableMonths) {
+                                    if (!property.includes("_")) {
+                                        if (checkBox.checked) {
+                                            transactionParameters = {
+                                                from: account,
+                                                to: DistributionDelegatorsAddr,
+                                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], true).encodeABI(),
+                                            };
+                                        } else {
+                                            transactionParameters = {
+                                                from: account,
+                                                to: DistributionDelegatorsAddr,
+                                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], false).encodeABI(),
+                                            };
+                                        }
+                
+                                        showSpinner(async () => {
+                                            await provider.request({
+                                                method: 'eth_sendTransaction',
+                                                params: [transactionParameters],
+                                            })
+                                                .then((txHash) => showConfirm(txHash))
+                                                .catch((error) => showFail());
+                                        });
                                     }
-            
-                                    showSpinner(async () => {
-                                        await provider.request({
-                                            method: 'eth_sendTransaction',
-                                            params: [transactionParameters],
-                                        })
-                                            .then((txHash) => showConfirm(txHash))
-                                            .catch((error) => showFail());
-                                    });
-            
-                                    showFdRewards(0.0);
-                                    switchClaimFdButtonColorBack(DappObject.fdClaimBool);
-                                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                                 }
+
+                                showFdRewards(0.0);
+                                switchClaimFdButtonColorBack(DappObject.fdClaimBool);
+                                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                            } else {
+                                $.alert("The FlareDrop Bucket is empty! Please try again later.")
                             }
                         } catch (error) {
                             // console.log(error);
@@ -1410,10 +1428,26 @@ window.dappInit = async (option) => {
 
                 document.getElementById("ConnectWallet").click();
 
+                if (object.networkValue === '1') {
+                    document.getElementById("layer3").innerHTML = DappObject.flrLogo;
+                } else if (object.networkValue === '2') {
+                    document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
+                } else {
+                    document.getElementById("layer3").innerHTML = DappObject.costonLogo;
+                }
+
                 selectedNetwork.onchange = async () => {
                     object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
                     object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
                     object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
+
+                    if (object.networkValue === '1') {
+                        document.getElementById("layer3").innerHTML = DappObject.flrLogo;
+                    } else if (object.networkValue === '2') {
+                        document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
+                    } else {
+                        document.getElementById("layer3").innerHTML = DappObject.costonLogo;
+                    }
 
                     // Alert Metamask to switch.
                     try {
