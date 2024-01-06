@@ -229,8 +229,6 @@ async function createSelectedNetwork(DappObject) {
                 networkSelectBox.appendChild(option);
             }
 
-            console.log(Number(networkSelectBox.options[0].value) - 1);
-
             networkSelectBox.options[0].setAttribute('selected', 'selected');
             networkSelectBox.options.selectedIndex = Number(networkSelectBox.options[0]);
             
@@ -1300,7 +1298,6 @@ window.dappInit = async (option) => {
                 });
             
                 document.getElementById("ClaimButton").addEventListener("click", async () => {
-                    console.log(DappObject.claimBool);
                     if (DappObject.claimBool === true) {
                         let web32 = new Web3(object.rpcUrl);
                         var checkBox = document.getElementById("RewardsCheck");
@@ -1400,8 +1397,6 @@ window.dappInit = async (option) => {
                         }
                     }
                 });
-
-                console.log("token identifier: " + object.wrappedTokenIdentifier);
 
                 document.getElementById("ConnectWallet").click();
 
