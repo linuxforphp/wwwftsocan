@@ -73,7 +73,7 @@ h1, h2 {
     margin-top: 0px;
     padding: 30px 44px 25px;
     border-radius: 25px;
-    width: auto;
+    width: 50%;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 

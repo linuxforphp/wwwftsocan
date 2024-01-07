@@ -1,4 +1,4 @@
-.claim-button {
+.delegate-button {
     float: right;
     margin: 20px;
     border-radius: 30px;
@@ -25,11 +25,11 @@
     width: 12% !important;
 }
 
-.claim-button-text {
+.delegate-button-text {
     font-style: normal;
 }
 
-.claim-button-text::before {
+.delegate-button-text::before {
     content: '';
     position: absolute;
     top: 0;
@@ -41,18 +41,18 @@
     transition: 0.5s;
 }
 
-.claim-button:hover > .claim-button-text::before {
+.delegate-button:hover > .delegate-button-text::before {
     /* transform: skewX(45deg) translateX(200%); */
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .claim-button {
+    .delegate-button {
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
     }
 }
 
-.claim-button:hover {
+.delegate-button:hover {
     letter-spacing: 1.5px;
 }
 
@@ -192,7 +192,7 @@
         width: 15% !important;
     }
 
-    .claim-button {
+    .delegate-button {
         float: none;
         height: auto;
         width: auto;
@@ -232,7 +232,7 @@
         margin: 10px 0 0;
     }
 
-    .claim-button {
+    .delegate-button {
         float: none;
         height: auto;
         width: auto;
@@ -272,7 +272,7 @@
         width: 15% !important;
     }
 
-    .claim-button {
+    .delegate-button {
         float: right;
         padding: 10px;
         margin: 10px;

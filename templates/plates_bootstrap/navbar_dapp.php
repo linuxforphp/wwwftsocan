@@ -40,7 +40,7 @@ Fixed Navigation
                     <div class="dd-menu">
                         <div class="dropdown-menu-dapp" style="left: 0px;">
                             <ul>
-                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')">Dapp<sup><strong> NEW!</strong></sup></a></li>
+                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')">DApp<sup><strong> NEW!</strong></sup></a></li>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>delegate/index')">Flare Portal</a></li>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>stake/index')">FlareStake Tool</a></li>
                             </ul>

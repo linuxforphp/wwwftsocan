@@ -45,7 +45,7 @@
                 <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
             </div>
             <div class="col-sm-6">
-                <button id="ClaimButton" class="claim-button"><i class="claim-button-text" id="ClaimButtonText">Enter Amount</i></button>
+                <button id="ClaimButton" class="delegate-button"><i class="delegate-button-text" id="ClaimButtonText">Enter Amount</i></button>
             </div>
         </div>
         <div class="row">
