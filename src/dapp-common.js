@@ -118,6 +118,47 @@ function hideSpinner() {
     $.LoadingOverlay("hide");
 }
 
+async function handleAccountsChanged(accounts) {
+    if (accounts.length !== 0) {
+        document.getElementById("ConnectWallet").click();
+    } else {
+        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+        showBalance(0.0);
+        showTokenBalance(0.0);
+
+        await window.ethereum.request({
+            "method": "wallet_revokePermissions",
+            "params": [
+              {
+                "eth_accounts": {}
+              }
+            ]
+          });
+    }
+}
+
+async function handleChainChanged(selectedNetwork, DappObject, object) {
+    for (var i = 0; i < selectedNetwork?.options.length; i++) {
+        if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
+            selectedNetwork.options.selectedIndex = i;
+            selectedNetwork.dispatchEvent(new Event('change'));
+
+            break;
+        }
+    }
+
+    if (DappObject.metamaskInstalled === true) {
+        try {
+            await provider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{chainId: object.chainIdHex}],
+            })
+        } catch (error) {
+            // console.log(error);
+        }
+    }
+}
+
 function downloadMetamask() {
     $.confirm({
         escapeKey: true,
@@ -1080,45 +1121,11 @@ window.dappInit = async (option) => {
                 }
 
                 window.ethereum.on("accountsChanged", async (accounts) => {
-                    if (accounts.length !== 0) {
-                        document.getElementById("ConnectWallet").click();
-                    } else {
-                        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-                        showBalance(0.0);
-                        showTokenBalance(0.0);
-                        connectWalletBool = false;
-
-                        await window.ethereum.request({
-                            "method": "wallet_revokePermissions",
-                            "params": [
-                              {
-                                "eth_accounts": {}
-                              }
-                            ]
-                          });
-                    }
+                    handleAccountsChanged(accounts);
                 });
 
                 window.ethereum.on("chainChanged", async (chosenChainId) => {
-                    for (var i = 0; i < selectedNetwork?.options.length; i++) {
-                        if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
-                            selectedNetwork.options.selectedIndex = i;
-                            selectedNetwork.dispatchEvent(new Event('change'));
-
-                            break;
-                        }
-                    }
-
-                    if (DappObject.metamaskInstalled === true) {
-                        try {
-                            await provider.request({
-                                method: 'wallet_switchEthereumChain',
-                                params: [{chainId: object.chainIdHex}],
-                            })
-                        } catch (error) {
-                            // console.log(error);
-                        }
-                    }
+                    handleChainChanged(selectedNetwork, DappObject, object);
                 });
             });
         });
@@ -1285,36 +1292,11 @@ window.dappInit = async (option) => {
                 };
 
                 window.ethereum.on("accountsChanged", async (accounts) => {
-                    if (accounts.length !== 0) {
-                        document.getElementById("ConnectWallet").click();
-                    } else {
-                        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-                        showBalance(0.0);
-                        showTokenBalance(0.0);
-                        connectWalletBool = false;
-                    }
+                    handleAccountsChanged(accounts);
                 });
 
                 window.ethereum.on("chainChanged", async (chosenChainId) => {
-                    for (var i = 0; i < selectedNetwork?.options.length; i++) {
-                        if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
-                            selectedNetwork.options.selectedIndex = i;
-                            selectedNetwork.dispatchEvent(new Event('change'));
-
-                            break;
-                        }
-                    }
-
-                    if (DappObject.metamaskInstalled === true) {
-                        try {
-                            await provider.request({
-                                method: 'wallet_switchEthereumChain',
-                                params: [{chainId: object.chainIdHex}],
-                            })
-                        } catch (error) {
-                            // console.log(error);
-                        }
-                    }
+                    handleChainChanged(selectedNetwork, DappObject, object);
                 });
             });
         });
@@ -1500,36 +1482,11 @@ window.dappInit = async (option) => {
                 };
 
                 window.ethereum.on("accountsChanged", async (accounts) => {
-                    if (accounts.length !== 0) {
-                        document.getElementById("ConnectWallet").click();
-                    } else {
-                        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-                        showBalance(0.0);
-                        showTokenBalance(0.0);
-                        connectWalletBool = false;
-                    }
+                    handleAccountsChanged(accounts);
                 });
 
                 window.ethereum.on("chainChanged", async (chosenChainId) => {
-                    for (var i = 0; i < selectedNetwork?.options.length; i++) {
-                        if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
-                            selectedNetwork.options.selectedIndex = i;
-                            selectedNetwork.dispatchEvent(new Event('change'));
-
-                            break;
-                        }
-                    }
-
-                    if (DappObject.metamaskInstalled === true) {
-                        try {
-                            await provider.request({
-                                method: 'wallet_switchEthereumChain',
-                                params: [{chainId: object.chainIdHex}],
-                            })
-                        } catch (error) {
-                            // console.log(error);
-                        }
-                    }
+                    handleChainChanged(selectedNetwork, DappObject, object);
                 });
             });
         });
