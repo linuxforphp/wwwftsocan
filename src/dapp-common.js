@@ -335,7 +335,8 @@ async function ConnectWalletClickWrap(rpcUrl, FlrAddr, DappObject) {
     try {
         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, FlrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        const account = await getAccount('GET');
+        const accounts = await provider.request({method: 'eth_requestAccounts'});
+        const account = accounts[0];
         showAccountAddress(account);
         const balance = await web32.eth.getBalance(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
@@ -423,7 +424,8 @@ async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject) {
     try {
         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        const account = await getAccount('GET');
+        const accounts = await provider.request({method: 'eth_requestAccounts'});
+        const account = accounts[0];
         showAccountAddress(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
@@ -614,7 +616,8 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
         let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
         let voterWhitelistContract = new web32.eth.Contract(DappObject.voterWhitelisterAbi, voterWhitelistAddr);
-        const account = await getAccount('GET');
+        const accounts = await provider.request({method: 'eth_requestAccounts'});
+        const account = accounts[0];
         showAccountAddress(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
@@ -1073,6 +1076,15 @@ window.dappInit = async (option) => {
                         showBalance(0.0);
                         showTokenBalance(0.0);
                         connectWalletBool = false;
+
+                        await window.ethereum.request({
+                            "method": "wallet_revokePermissions",
+                            "params": [
+                              {
+                                "eth_accounts": {}
+                              }
+                            ]
+                          });
                     }
                 });
 
