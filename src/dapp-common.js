@@ -1,5 +1,7 @@
 import {GetContract, Provider as provider, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 
+import { ethers } from './ethers.js';
+
 // ALL MODULES.
 
 var DappObject = {
@@ -703,11 +705,20 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
 
         if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
             let claimableAmountFd;
+            let claimableAmountFdBNTotal = ethers.BigNumber.from(0);
+            let month;
             const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-            for (var m = 0; m < claimableMonths.length; m++) {
-                claimableAmountFd += await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, Number(claimableMonths[m])).call();
+            for (const property in claimableMonths) {
+                month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
+
+                if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
+                    let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
+                    claimableAmountFdBNTotal.add(claimableAmountMonth);
+                }
             }
+
+            claimableAmountFd = claimableAmountFdBNTotal.toNumber();
 
             // Changing the color of FlareDrop Claim button.
 
@@ -1385,6 +1396,9 @@ window.dappInit = async (option) => {
                         var checkBox = document.getElementById("RewardsCheck");
             
                         try {
+                            let claimableAmountFd;
+                            let claimableAmountFdBNTotal = ethers.BigNumber.from(0);
+                            let month;
                             const accounts = await provider.request({method: 'eth_requestAccounts'});
                             const account = accounts[0];
                             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
@@ -1397,33 +1411,40 @@ window.dappInit = async (option) => {
 
                             var fdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr);
 
-                            if (Number(document.getElementById('ClaimFdButtonText').innerText >= 1) && (Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal)) { 
+                            if (Number(document.getElementById('ClaimFdButtonText').innerText >= 1) && (Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal)) {
                                 for (const property in claimableMonths) {
-                                    if (!property.includes("_")) {
-                                        if (checkBox.checked) {
-                                            transactionParameters = {
-                                                from: account,
-                                                to: DistributionDelegatorsAddr,
-                                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], true).encodeABI(),
-                                            };
-                                        } else {
-                                            transactionParameters = {
-                                                from: account,
-                                                to: DistributionDelegatorsAddr,
-                                                data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonths[property], false).encodeABI(),
-                                            };
-                                        }
-                
-                                        showSpinner(async () => {
-                                            await provider.request({
-                                                method: 'eth_sendTransaction',
-                                                params: [transactionParameters],
-                                            })
-                                                .then((txHash) => showConfirm(txHash))
-                                                .catch((error) => showFail());
-                                        });
+                                    month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
+
+                                    if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
+                                        let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
+                                        claimableAmountFdBNTotal.add(claimableAmountMonth);
                                     }
                                 }
+
+                                claimableAmountFd = claimableAmountFdBNTotal.toNumber();
+
+                                if (checkBox.checked) {
+                                    transactionParameters = {
+                                        from: account,
+                                        to: DistributionDelegatorsAddr,
+                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableAmountFd, true).encodeABI(),
+                                    };
+                                } else {
+                                    transactionParameters = {
+                                        from: account,
+                                        to: DistributionDelegatorsAddr,
+                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableAmountFd, false).encodeABI(),
+                                    };
+                                }
+        
+                                showSpinner(async () => {
+                                    await provider.request({
+                                        method: 'eth_sendTransaction',
+                                        params: [transactionParameters],
+                                    })
+                                        .then((txHash) => showConfirm(txHash))
+                                        .catch((error) => showFail());
+                                });
 
                                 showFdRewards(0.0);
                                 switchClaimFdButtonColorBack(DappObject.fdClaimBool);
