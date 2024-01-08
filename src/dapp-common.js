@@ -137,25 +137,38 @@ async function handleAccountsChanged(accounts) {
     }
 }
 
-async function handleChainChanged(selectedNetwork, DappObject, object) {
-    for (var i = 0; i < selectedNetwork?.options.length; i++) {
-        if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chosenChainId)) {
-            selectedNetwork.options.selectedIndex = i;
-            selectedNetwork.dispatchEvent(new Event('change'));
+async function handleChainChanged() {
+    try {
+        var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+            var realChainId;
 
-            break;
-        }
-    }
+            var selectedNetwork = document.getElementById("SelectedNetwork");
 
-    if (DappObject.metamaskInstalled === true) {
-        try {
-            await provider.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{chainId: object.chainIdHex}],
-            })
-        } catch (error) {
-            // console.log(error);
-        }
+            realChainId = selectedNetwork.options[0].getAttribute('data-chainidhex');
+
+            for (var i = 0; i < selectedNetwork?.options.length; i++) {
+                if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chainIdHex)) {
+                    selectedNetwork.options[i].setAttribute('selected', 'selected');
+                    selectedNetwork.options.selectedIndex = i;
+                    realChainId = chainIdHex;
+                } else {
+                    selectedNetwork.options[i].removeAttribute('selected');
+                }
+            }
+
+            await window.ethereum.request({
+                method: "wallet_switchEthereumChain",
+                params: [
+                    {
+                    "chainId": realChainId
+                    }
+                ]
+                }).catch((error) => console.error(error));
+        });
+
+        document.getElementById("ConnectWallet").click();
+    } catch (error) {
+        // console.log(error);
     }
 }
 
@@ -1124,8 +1137,8 @@ window.dappInit = async (option) => {
                     handleAccountsChanged(accounts);
                 });
 
-                window.ethereum.on("chainChanged", async (chosenChainId) => {
-                    handleChainChanged(selectedNetwork, DappObject, object);
+                window.ethereum.on("chainChanged", async () => {
+                    handleChainChanged();
                 });
             });
         });
@@ -1295,8 +1308,8 @@ window.dappInit = async (option) => {
                     handleAccountsChanged(accounts);
                 });
 
-                window.ethereum.on("chainChanged", async (chosenChainId) => {
-                    handleChainChanged(selectedNetwork, DappObject, object);
+                window.ethereum.on("chainChanged", async () => {
+                    handleChainChanged();
                 });
             });
         });
@@ -1485,8 +1498,8 @@ window.dappInit = async (option) => {
                     handleAccountsChanged(accounts);
                 });
 
-                window.ethereum.on("chainChanged", async (chosenChainId) => {
-                    handleChainChanged(selectedNetwork, DappObject, object);
+                window.ethereum.on("chainChanged", async () => {
+                    handleChainChanged();
                 });
             });
         });
