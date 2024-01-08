@@ -1,6 +1,7 @@
 import {GetContract, Provider as provider, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 
 import { ethers } from './ethers.js';
+import { web } from "webpack";
 
 // ALL MODULES.
 
@@ -46,7 +47,7 @@ async function getAccount(operation) {
 
 async function showSpinner(doSomething) {
     $.confirm({
-        escapeKey: true,
+        escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
@@ -62,6 +63,29 @@ async function showSpinner(doSomething) {
         },
         onContentReady: async function () {
             await doSomething();
+            this.close();
+        }
+    });
+}
+
+async function showConfirmationSpinner(txHash, web32) {
+    $.confirm({
+        escapeKey: false,
+        backgroundDismiss: false,
+        icon: 'fa fa-spinner fa-spin',
+        title: 'Waiting for confirmation...',
+        content: 'Transaction is being propagated on the network. <br />Please wait...',
+        theme: 'material',
+        type: 'orange',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            ok: {
+                isHidden: true, // hide the button
+            },
+        },
+        onContentReady: async function () {
+            await checkTx(txHash, web32);
             this.close();
         }
     });
@@ -240,6 +264,30 @@ function updateCall() {
     setInterval(function() {
         checkConnection();
     }, 20000);
+}
+
+async function checkTx(hash, web32) {
+
+    // Set interval to regularly check if we can get a receipt
+    let interval = setInterval(() => {
+
+        web32.eth.getTransactionReceipt(hash).then((receipt) => {
+
+            // If we've got a receipt, check status and log / change text accordingly
+            if (receipt) {
+                
+                console.log("Got receipt")
+                if (receipt.status === true) {
+                    console.log(receipt)
+                } else if (receipt.status === false) {
+                    console.log("Tx failed")
+                }
+
+                // Clear interval
+                clearInterval(interval)
+            }
+        })
+    }, 5000)
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -884,7 +932,7 @@ async function delegate(object) {
                     method: 'eth_sendTransaction',
                     params: [transactionParameters2],
                 })
-                .then((txHash) => showConfirm(txHash))
+                .then(txHash => showConfirmationSpinner(txHash, web32))
                 .catch((error) => showFail());
             });
 
@@ -900,8 +948,8 @@ async function delegate(object) {
                         method: 'eth_sendTransaction',
                         params: [transactionParameters3],
                     })
-                        .then((txHash) => showConfirm(txHash))
-                        .catch((error) => showFail());
+                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                    .catch((error) => showFail());
                 });
             }
         } catch (error) {
@@ -931,7 +979,7 @@ async function undelegate(object) {
                 method: 'eth_sendTransaction',
                 params: [transactionParameters],
             })
-            .then((txHash) => showConfirm(txHash))
+            .then(txHash => showConfirmationSpinner(txHash, web32))
             .catch((error) => showFail());
         });
     } catch(error) {
@@ -1055,7 +1103,7 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                    .then((txHash) => showConfirm(txHash))
+                                    .then(txHash => showConfirmationSpinner(txHash, web32))
                                     .catch((error) => console.log(error));
                                 });
                             }
@@ -1368,8 +1416,8 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                        .then((txHash) => showConfirm(txHash))
-                                        .catch((error) => showFail());
+                                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                                    .catch((error) => showFail());
                                 });
 
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
@@ -1437,8 +1485,8 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                        .then((txHash) => showConfirm(txHash))
-                                        .catch((error) => showFail());
+                                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                                    .catch((error) => showFail());
                                 });
 
                                 showFdRewards(0.0);
