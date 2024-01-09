@@ -9,21 +9,28 @@ const config = {
         dappcommon: './src/dapp-common.js',
         flareutils: './src/flare-utils.js'
     },
-    externalsPresets: { node: true },
-    externals: [nodeExternals()],
+    externals: [nodeExternals({
+        allowlist: ['assert', 'fs']
+    })],
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'public/js'),
     },
-    plugins: [
-      // Instead of fallback.
-      new NodePolyfillPlugin(),
-    ],
     resolve: {
+        extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
         fallback: {
-            fs: false
+          fs: false,
+          tls: false,
+          net: false,
+          path: false,
+          zlib: false,
+          http: false,
+          https: false,
+          stream: false,
+          crypto: false,
+          assert: false,
         },
-    }
+    }  
 };
 
 module.exports = config;

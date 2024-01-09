@@ -1,7 +1,6 @@
 import {GetContract, Provider as provider, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 
 import { ethers } from './ethers.js';
-import { web } from "webpack";
 
 // ALL MODULES.
 
@@ -932,7 +931,7 @@ async function delegate(object) {
                     method: 'eth_sendTransaction',
                     params: [transactionParameters2],
                 })
-                .then(txHash => showConfirmationSpinner(txHash, web32))
+                .then(txHash => showConfirm(txHash))
                 .catch((error) => showFail());
             });
 
@@ -948,7 +947,7 @@ async function delegate(object) {
                         method: 'eth_sendTransaction',
                         params: [transactionParameters3],
                     })
-                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                    .then(txHash => showConfirm(txHash))
                     .catch((error) => showFail());
                 });
             }
@@ -979,7 +978,7 @@ async function undelegate(object) {
                 method: 'eth_sendTransaction',
                 params: [transactionParameters],
             })
-            .then(txHash => showConfirmationSpinner(txHash, web32))
+            .then(txHash => showConfirm(txHash))
             .catch((error) => showFail());
         });
     } catch(error) {
@@ -1103,7 +1102,7 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                                    .then(txHash => showConfirm(txHash))
                                     .catch((error) => console.log(error));
                                 });
                             }
@@ -1416,7 +1415,7 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                                    .then(txHash => showConfirm(txHash))
                                     .catch((error) => showFail());
                                 });
 
@@ -1485,7 +1484,7 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                                    .then(txHash => showConfirm(txHash))
                                     .catch((error) => showFail());
                                 });
 
