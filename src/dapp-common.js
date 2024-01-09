@@ -68,6 +68,7 @@ async function showSpinner(doSomething) {
 }
 
 async function showConfirmationSpinner(txHash, web32) {
+    var spinner =
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
@@ -84,10 +85,11 @@ async function showConfirmationSpinner(txHash, web32) {
             },
         },
         onContentReady: async function () {
-            await checkTx(txHash, web32);
-            this.close();
+            await checkTx(txHash, web32, this);
         }
     });
+
+
 }
 
 async function showConfirm(txHash) {
@@ -135,10 +137,6 @@ function showFail() {
             this.hideLoading(true);
         }
     });
-}
-
-function hideSpinner() {
-    $.LoadingOverlay("hide");
 }
 
 async function handleAccountsChanged(accounts) {
@@ -265,7 +263,7 @@ function updateCall() {
     }, 20000);
 }
 
-async function checkTx(hash, web32) {
+async function checkTx(hash, web32, spinner) {
 
     // Set interval to regularly check if we can get a receipt
     let interval = setInterval(() => {
@@ -274,12 +272,14 @@ async function checkTx(hash, web32) {
 
             // If we've got a receipt, check status and log / change text accordingly
             if (receipt) {
-                
-                console.log("Got receipt")
-                if (receipt.status === true) {
-                    console.log(receipt)
-                } else if (receipt.status === false) {
-                    console.log("Tx failed")
+
+                spinner.close();
+                if (Number(receipt.status) === 1) {
+                    showConfirm(receipt.transactionHash);
+                    document.getElementById("ConnectWallet").click();
+                } else if (Number(receipt.status) === 0) {
+                    showFail();
+                    document.getElementById("ConnectWallet").click();
                 }
 
                 // Clear interval
@@ -931,7 +931,7 @@ async function delegate(object) {
                     method: 'eth_sendTransaction',
                     params: [transactionParameters2],
                 })
-                .then(txHash => showConfirm(txHash))
+                .then(txHash => showConfirmationSpinner(txHash, web32))
                 .catch((error) => showFail());
             });
 
@@ -947,7 +947,7 @@ async function delegate(object) {
                         method: 'eth_sendTransaction',
                         params: [transactionParameters3],
                     })
-                    .then(txHash => showConfirm(txHash))
+                    .then(txHash => showConfirmationSpinner(txHash, web32))
                     .catch((error) => showFail());
                 });
             }
@@ -978,7 +978,7 @@ async function undelegate(object) {
                 method: 'eth_sendTransaction',
                 params: [transactionParameters],
             })
-            .then(txHash => showConfirm(txHash))
+            .then(txHash => showConfirmationSpinner(txHash, web32))
             .catch((error) => showFail());
         });
     } catch(error) {
@@ -1102,7 +1102,7 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                    .then(txHash => showConfirm(txHash))
+                                    .then(txHash => showConfirmationSpinner(txHash, web32))
                                     .catch((error) => console.log(error));
                                 });
                             }
@@ -1415,7 +1415,7 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                    .then(txHash => showConfirm(txHash))
+                                    .then(txHash => showConfirmationSpinner(txHash, web32))
                                     .catch((error) => showFail());
                                 });
 
@@ -1484,7 +1484,7 @@ window.dappInit = async (option) => {
                                         method: 'eth_sendTransaction',
                                         params: [transactionParameters],
                                     })
-                                    .then(txHash => showConfirm(txHash))
+                                    .then(txHash => showConfirmationSpinner(txHash, web32))
                                     .catch((error) => showFail());
                                 });
 
