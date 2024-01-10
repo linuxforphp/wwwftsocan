@@ -649,6 +649,8 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
             var insert1 = '';
             var insert2 = '';
             let web32 = new Web3(rpcUrl);
+            let selectedNetwork = document.getElementById('SelectedNetwork');
+            let chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex')
 
             try {
                 const voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
@@ -667,25 +669,27 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
                         let indexNumber;
 
                         for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                            for (var i = 0; i < ftsoList.length; i++) {
-                                if (FtsoInfo.providers[f].address === ftsoList[i]) {
-                                    indexNumber = f;
-                                    //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
-
-                                    if (ftsoJsonList.includes(ftsoList[i])) {
-                                        if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
-                                            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                            insert1 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                            if ((FtsoInfo.providers[f].chainId === parseInt(chainIdHex, 16)) && (FtsoInfo.providers[f].listed === true)) {
+                                for (var i = 0; i < ftsoList.length; i++) {
+                                    if (FtsoInfo.providers[f].address === ftsoList[i]) {
+                                        indexNumber = f;
+                                        //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+    
+                                        if (ftsoJsonList.includes(ftsoList[i])) {
+                                            if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                                insert1 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                            } else {
+                                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                                insert2 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                            }
+    
+                                            ftso1.innerHTML = insert + insert1 + insert2;
+                                            ftso2.innerHTML = insert + insert1 + insert2;
                                         } else {
-                                            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                            insert2 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                            $.alert('The FTSO you are delegated to is invalid!');
+                                            break;
                                         }
-
-                                        ftso1.innerHTML = insert + insert1 + insert2;
-                                        ftso2.innerHTML = insert + insert1 + insert2;
-                                    } else {
-                                        $.alert('The FTSO you are delegated to is invalid!');
-                                        break;
                                     }
                                 }
                             }
