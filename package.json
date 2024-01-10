@@ -19,6 +19,7 @@
   "dependencies": {
     "crypto-browserify": "^3.12.0",
     "grunt": "^1.6.1",
+    "grunt-contrib-watch": "^1.1.0",
     "grunt-webpack": "^6.0.0",
     "node-polyfill-webpack-plugin": "^3.0.0",
     "webpack": "^5.89.0",

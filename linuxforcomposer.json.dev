@@ -34,7 +34,7 @@
                     "npm install -g grunt",
                     "cd /srv/tempo/wwwftsocan",
                     "npm install",
-                    "grunt webpack >/dev/null 2>&1 &",
+                    "grunt watch >/dev/null 2>&1 &",
                     "lfphp --mysql --phpfpm --apache"
                 ],
                 "thread-safe": "false"
