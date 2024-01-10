@@ -73,7 +73,7 @@ async function showConfirmationSpinner(txHash, web32) {
         escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
-        title: 'Waiting for confirmation...',
+        title: 'Loading...',
         content: 'Transaction is being propagated on the network. <br />Please wait...',
         theme: 'material',
         type: 'orange',
