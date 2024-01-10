@@ -1442,44 +1442,28 @@ window.dappInit = async (option) => {
                         var checkBox = document.getElementById("RewardsCheck");
             
                         try {
-                            let claimableAmountFd;
-                            let claimableAmountFdBNTotal = ethers.BigNumber.from(0);
-                            let month;
                             const accounts = await provider.request({method: 'eth_requestAccounts'});
                             const account = accounts[0];
                             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
                             let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                             const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", object.rpcUrl, object.flrAddr);
                             let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
-                            const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
-            
-                            var transactionParameters;
+                            const claimableMonth = await DistributionDelegatorsContract.methods.nextClaimableMonth(account).call();
 
                             var fdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr);
 
                             if (Number(document.getElementById('ClaimFdButtonText').innerText >= 1) && (Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal)) {
-                                for (const property in claimableMonths) {
-                                    month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
-
-                                    if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
-                                        let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
-                                        claimableAmountFdBNTotal.add(claimableAmountMonth);
-                                    }
-                                }
-
-                                claimableAmountFd = claimableAmountFdBNTotal.toNumber();
-
                                 if (checkBox.checked) {
                                     transactionParameters = {
                                         from: account,
                                         to: DistributionDelegatorsAddr,
-                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableAmountFd, true).encodeABI(),
+                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonth, true).encodeABI(),
                                     };
                                 } else {
                                     transactionParameters = {
                                         from: account,
                                         to: DistributionDelegatorsAddr,
-                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableAmountFd, false).encodeABI(),
+                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonth, false).encodeABI(),
                                     };
                                 }
         
