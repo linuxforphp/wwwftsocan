@@ -1089,7 +1089,7 @@ window.dappInit = async (option) => {
                 // If the input is valid, we wrap on click of "WrapButton".
                 document.getElementById("WrapButton").addEventListener("click", async () => {
                     if (DappObject.isRealValue === false) {
-                        $.alert("Please enter valid value");
+                        $.alert("Please enter a valid value");
                     } else {
                         var web32 = new Web3(object.rpcUrl);
             
@@ -1102,10 +1102,11 @@ window.dappInit = async (option) => {
                             let tokenBalance = await tokenContract.methods.balanceOf(account).call();
                             var amountFrom = document.getElementById("AmountFrom");
                             var amountTo = document.getElementById("AmountTo");
-                            const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''));
+                            const amountFromValue = amountFrom.value.replace(/[^0-9]/g, '');
                             const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
-                            const amountFromValueWeiHex = Number(amountFromValueWei).toString(16);
+                            
                             const amountFromValueWeiBN = BigInt(amountFromValueWei);
+                            const amountFromValueWeiHex = amountFromValueWeiBN.toString(16);
                             let txPayload = {};
                             
                             if (DappObject.wrapBool === true) {
