@@ -1522,8 +1522,6 @@ window.dappInit = async (option) => {
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                                 
                                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                            } else {
-                                $.alert("The FlareDrop Bucket is empty! Please try again later.")
                             }
                         } catch (error) {
                             // console.log(error);
