@@ -263,7 +263,6 @@ function updateCall() {
 }
 
 async function checkTx(hash, web32, spinner) {
-
     // Set interval to regularly check if we can get a receipt
     let interval = setInterval(() => {
 
@@ -271,8 +270,8 @@ async function checkTx(hash, web32, spinner) {
 
             // If we've got a receipt, check status and log / change text accordingly
             if (receipt) {
-
                 spinner.close();
+                
                 if (Number(receipt.status) === 1) {
                     showConfirm(receipt.transactionHash);
                     document.getElementById("ConnectWallet").click();
@@ -1088,6 +1087,7 @@ window.dappInit = async (option) => {
                             let balance = await web32.eth.getBalance(account);
                             let tokenBalance = await tokenContract.methods.balanceOf(account).call();
                             var amountFrom = document.getElementById("AmountFrom");
+                            var amountTo = document.getElementById("AmountTo");
                             const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''));
                             const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
                             const amountFromValueWeiHex = Number(amountFromValueWei).toString(16);
@@ -1116,6 +1116,11 @@ window.dappInit = async (option) => {
                             } else if (DappObject.wrapBool === false && amountFromValue >= Number(web32.utils.fromWei(tokenBalance, "ether"))) {
                                 $.alert("Insufficient Balance!");
                             } else {
+                                if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
+                                    amountFrom.value = "";
+                                    amountTo.value = "";
+                                }
+                                
                                 showSpinner(async () => {
                                     await provider.request({
                                         method: 'eth_sendTransaction',
