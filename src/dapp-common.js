@@ -1415,24 +1415,26 @@ window.dappInit = async (option) => {
                             const ftsoRewardAddr = await GetContract("FtsoRewardManager", object.rpcUrl, object.flrAddr);
                             let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
                             const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-                            var transactionParameters;
+                            let txPayload = {};
 
                             var bucketTotal = await web32.eth.getBalance(ftsoRewardAddr);
 
-                            if ((Number(document.getElementById('ClaimButtonText').innerText) >= 1) && (Number(document.getElementById('ClaimButtonText').innerText) < bucketTotal)) {
+                            if ((Number(document.getElementById('ClaimButtonText').innerText) > 0) && (Number(document.getElementById('ClaimButtonText').innerText) < bucketTotal)) {
                                 if (checkBox.checked) {
-                                    transactionParameters = {
+                                    txPayload = {
                                         from: account,
                                         to: ftsoRewardAddr,
                                         data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true).encodeABI(),
                                     };
                                 } else {
-                                    transactionParameters = {
+                                    txPayload = {
                                         from: account,
                                         to: ftsoRewardAddr,
                                         data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false).encodeABI(),
                                     };
                                 }
+                                
+                                const transactionParameters = txPayload;
                 
                                 showSpinner(async () => {
                                     await provider.request({
@@ -1469,23 +1471,24 @@ window.dappInit = async (option) => {
                             const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", object.rpcUrl, object.flrAddr);
                             let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
                             const claimableMonth = await DistributionDelegatorsContract.methods.nextClaimableMonth(account).call();
-
-                            var fdBucketTotal = await web32.eth.getBalance(DistributionDelegatorsAddr);
-
-                            if (Number(document.getElementById('ClaimFdButtonText').innerText >= 1) && (Number(document.getElementById('ClaimFdButtonText').innerText) < fdBucketTotal)) {
+                            let txPayload = {};
+                            
+                            if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
                                 if (checkBox.checked) {
-                                    transactionParameters = {
+                                    txPayload = {
                                         from: account,
                                         to: DistributionDelegatorsAddr,
                                         data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonth, true).encodeABI(),
                                     };
                                 } else {
-                                    transactionParameters = {
+                                    txPayload = {
                                         from: account,
                                         to: DistributionDelegatorsAddr,
                                         data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonth, false).encodeABI(),
                                     };
                                 }
+                                
+                                const transactionParameters = txPayload;
         
                                 showSpinner(async () => {
                                     await provider.request({
@@ -1498,7 +1501,9 @@ window.dappInit = async (option) => {
 
                                 showFdRewards(0.0);
                                 switchClaimFdButtonColorBack(DappObject.fdClaimBool);
+                                
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                                
                                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                             } else {
                                 $.alert("The FlareDrop Bucket is empty! Please try again later.")
