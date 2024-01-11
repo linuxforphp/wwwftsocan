@@ -143,8 +143,8 @@ async function handleAccountsChanged(accounts) {
         document.getElementById("ConnectWallet").click();
     } else {
         document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-        showBalance(0.0);
-        showTokenBalance(0.0);
+        showBalance(0);
+        showTokenBalance(0);
 
         await window.ethereum.request({
             "method": "wallet_revokePermissions",
@@ -263,11 +263,13 @@ function updateCall() {
 }
 
 async function checkTx(hash, web32, spinner) {
+    var i = 0;
+    
     // Set interval to regularly check if we can get a receipt
     let interval = setInterval(() => {
-
+        i += 1;
+        
         web32.eth.getTransactionReceipt(hash).then((receipt) => {
-
             // If we've got a receipt, check status and log / change text accordingly
             if (receipt) {
                 spinner.close();
@@ -281,9 +283,17 @@ async function checkTx(hash, web32, spinner) {
                 }
 
                 // Clear interval
-                clearInterval(interval)
+                clearInterval(interval);
             }
-        })
+        });
+        
+        if (i === 10) {
+            showFail();
+            document.getElementById("ConnectWallet").click();
+            
+            // Clear interval
+            clearInterval(interval);
+        }
     }, 5000)
 }
 
@@ -727,8 +737,8 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
         
         showAccountAddress(account);
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-        showFdRewards(0.0);
-        showClaimRewards(0.0);
+        showFdRewards(0);
+        showClaimRewards(0);
 
         // Changing the color of Claim button.
         if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
@@ -741,7 +751,7 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
             DappObject.claimBool = false;
         }
 
-        if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
+        if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
             switchClaimFdButtonColor();
             
             DappObject.fdClaimBool = true;
@@ -833,7 +843,7 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
                 if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
                     let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
                     
-                    if (typeof l[1][0] === "bigint") {
+                    if (typeof claimableAmountMonth === "bigint") {
                         claimableAmountFd += claimableAmountMonth;
                     } else {
                         claimableAmountFd += BigInt(claimableAmountMonth);
@@ -846,7 +856,7 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
             // Changing the color of FlareDrop Claim button.
             showFdRewards(convertedRewardsFd);
 
-            if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
+            if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
                 switchClaimFdButtonColor();
 
                 DappObject.fdClaimBool = true;
@@ -857,12 +867,12 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
             }
         }
 
-        if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+        if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
             switchClaimButtonColor();
 
             DappObject.claimBool = true;
         } else {
-            showClaimRewards(0.0);
+            showClaimRewards(0);
             switchClaimButtonColorBack();
 
             DappObject.claimBool = false;
@@ -897,13 +907,13 @@ function switchClaimFdButtonColorBack() {
 }
 
 // Show current rewards.
-function showClaimRewards(Rewards) {
-    document.getElementById('ClaimButtonText').innerText = Rewards;
+function showClaimRewards(rewards) {
+    document.getElementById('ClaimButtonText').innerText = rewards == 0 ? '0' : rewards;
 }
 
 // Show current rewards.
- function showFdRewards(Rewards) {
-    document.getElementById('ClaimFdButtonText').innerText = Rewards;
+ function showFdRewards(rewards) {
+    document.getElementById('ClaimFdButtonText').innerText = rewards == 0 ? '0' : rewards;
 }
 
 async function delegate(object, DappObject) {
@@ -1452,7 +1462,7 @@ window.dappInit = async (option) => {
                                 });
 
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                                showClaimRewards(0.0);
+                                showClaimRewards(0);
                                 switchClaimButtonColorBack(DappObject.claimBool);
                                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                             } else {
@@ -1505,7 +1515,8 @@ window.dappInit = async (option) => {
                                     .catch((error) => showFail());
                                 });
 
-                                showFdRewards(0.0);
+                                showFdRewards(0);
+                                
                                 switchClaimFdButtonColorBack(DappObject.fdClaimBool);
                                 
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();

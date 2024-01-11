@@ -40,10 +40,10 @@
                     <div class="token-identifier">
                         <span id="tokenIdentifier"></span>
                     </div>
-                    <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                    <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
                     <div class="wrapper-wrap">
                         <span>Balance:</span>
-                        <span id="Balance">0.0</span>
+                        <span id="Balance">0</span>
                     </div>
                 </span>
             </div>
@@ -66,10 +66,10 @@
                     <div class="token-identifier">
                             <span id="wrappedTokenIdentifier"></span>
                     </div>
-                    <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0.0">
+                    <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
                     <div class="wrapper-wrap">
                         <span>Balance:</span>
-                        <span id="TokenBalance">0.0</span>
+                        <span id="TokenBalance">0</span>
                     </div>
                 </span>
             </div>

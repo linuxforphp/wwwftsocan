@@ -57,10 +57,10 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <button id="ClaimButton" class="claim-button" name="ClaimButton"><label for="ClaimButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim Rewards</label><br /><i class="claim-button-text" id="ClaimButtonText">0.0</i></button>
+                <button id="ClaimButton" class="claim-button" name="ClaimButton"><label for="ClaimButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim Rewards</label><br /><i class="claim-button-text" id="ClaimButtonText">0</i></button>
             </div>
             <div class="col-sm-6">
-                <button id="ClaimFdButton" class="claim-fd-button" name="ClaimFdButton"><label for="ClaimFdButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim FlareDrop</label><br /><i class="claim-fd-button-text" id="ClaimFdButtonText">0.0</i></button>
+                <button id="ClaimFdButton" class="claim-fd-button" name="ClaimFdButton"><label for="ClaimFdButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim FlareDrop</label><br /><i class="claim-fd-button-text" id="ClaimFdButtonText">0</i></button>
             </div>
         </div>
         <div class="row">
