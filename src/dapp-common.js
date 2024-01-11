@@ -724,8 +724,9 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
         let voterWhitelistContract = new web32.eth.Contract(DappObject.voterWhitelisterAbi, voterWhitelistAddr);
         const accounts = await provider.request({method: 'eth_requestAccounts'});
         const account = accounts[0];
-        showAccountAddress(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+        
+        showAccountAddress(account);
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
         showFdRewards(0.0);
         showClaimRewards(0.0);
@@ -1088,8 +1089,9 @@ window.dappInit = async (option) => {
                             let tokenBalance = await tokenContract.methods.balanceOf(account).call();
                             var amountFrom = document.getElementById("AmountFrom");
                             const amountFromValue = Number(amountFrom.value.replace(/[^0-9]/g, ''));
-                            const amountFromValueWei = String(Number(web32.utils.toWei(amountFromValue, "ether")));
-                            const amountFromValueWeiHex = Number(web32.utils.toWei(amountFromValue, "ether")).toString(16);
+                            const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
+                            const amountFromValueWeiHex = Number(amountFromValueWei).toString(16);
+                            const amountFromValueWeiBN = BigInt(amountFromValueWei);
                             let txPayload = {};
                             
                             if (DappObject.wrapBool === true) {
@@ -1103,7 +1105,7 @@ window.dappInit = async (option) => {
                                 txPayload = {
                                     from: account,
                                     to: wrappedTokenAddr,
-                                    data: tokenContract.methods.withdraw(amountFromValueWei).encodeABI()
+                                    data: tokenContract.methods.withdraw(amountFromValueWeiBN).encodeABI()
                                 };
                             }
             
