@@ -1,5 +1,4 @@
 import {GetContract, Provider as provider, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
-
 import { ethers } from './ethers.js';
 
 // ALL MODULES.
@@ -23,7 +22,7 @@ var DappObject = {
 async function getAccount(operation) {
     var accountAddr = document.getElementById("Accounts").getAttribute('data-address');
 
-    if (operation === 'GET') {
+    if (operation === 'GET' || operation === 'POST') {
         if (accountAddr.trim().length === 0 || accountAddr.trim() === null) {
             const accounts = await provider.request({method: 'eth_accounts'});
             const account = accounts[0].trim();
@@ -761,7 +760,14 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
         const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
         const delegatedFtsos = delegatesOfUser[0];
         const BipsJson = delegatesOfUser[1];
-        const Bips = BipsJson[0] / 100n;
+        let Bips = [];
+        
+        if (typeof BipsJson[0] !== 'undefined' && BipsJson[0] != 0) {
+            Bips = BipsJson[0] / 100n;
+        } else {
+            Bips = 0;
+        }
+        
         let insert1 = '';
         let insert2 = '';
 
@@ -798,19 +804,26 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
 
         // Getting the unclaimed Rewards and affecting the Claim button.
         const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-        let unclaimedAmount = 0;
+        let unclaimedAmount = BigInt(0);
         let l;
 
         for (var k = 0; k < epochsUnclaimed.length; k++) {
             l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
-            unclaimedAmount += Number(l[1]);
+            
+            if (typeof l[1][0] === "bigint") {
+                unclaimedAmount += l[1][0];
+            } else {
+                unclaimedAmount += BigInt(l[1][0]);
+            }
         }
-
-        const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether");
+        
+        const convertedRewards = String(Number.parseFloat(web32.utils.fromWei(unclaimedAmount, "ether")).toFixed(2));
+        
+        // Changing the color of Claim button.
+        showClaimRewards(convertedRewards);
 
         if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
-            let claimableAmountFd;
-            let claimableAmountFdBNTotal = ethers.BigNumber.from(0);
+            let claimableAmountFd = BigInt(0);
             let month;
             const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
@@ -819,15 +832,19 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
 
                 if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
                     let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
-                    claimableAmountFdBNTotal.add(claimableAmountMonth);
+                    
+                    if (typeof l[1][0] === "bigint") {
+                        claimableAmountFd += claimableAmountMonth;
+                    } else {
+                        claimableAmountFd += BigInt(claimableAmountMonth);
+                    }
                 }
             }
-
-            claimableAmountFd = claimableAmountFdBNTotal.toNumber();
+            
+            const convertedRewardsFd = String(Number.parseFloat(web32.utils.fromWei(claimableAmountFd, "ether")).toFixed(2));
 
             // Changing the color of FlareDrop Claim button.
-
-            showFdRewards(String(round(web32.utils.fromWei(claimableAmountFd, "ether"))));
+            showFdRewards(convertedRewardsFd);
 
             if (Number(document.getElementById('ClaimFdButtonText').innerText) >= 1) {
                 switchClaimFdButtonColor();
@@ -839,10 +856,6 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
                 DappObject.fdClaimBool = false;
             }
         }
-
-        // Changing the color of Claim button.
-
-        showClaimRewards(round(convertedRewards));
 
         if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
             switchClaimButtonColor();
