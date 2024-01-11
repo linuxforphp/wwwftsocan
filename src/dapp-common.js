@@ -694,7 +694,7 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
                         }
                     });
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
 
             resolve();
@@ -906,7 +906,7 @@ function showClaimRewards(Rewards) {
     document.getElementById('ClaimFdButtonText').innerText = Rewards;
 }
 
-async function delegate(object) {
+async function delegate(object, DappObject) {
     if (DappObject.isRealValue === false) {
         $.alert("Please enter valid value. (50% or 100%)");
     } else {
@@ -952,6 +952,8 @@ async function delegate(object) {
                 .catch((error) => showFail());
             });
 
+            isDelegateInput1(DappObject);
+
             if (DappObject.isAmount2Active) {
                 const transactionParameters3 = {
                     from: account,
@@ -967,6 +969,8 @@ async function delegate(object) {
                     .then(txHash => showConfirmationSpinner(txHash, web32))
                     .catch((error) => showFail());
                 });
+
+                isDelegateInput2(DappObject);
             }
         } catch (error) {
         }
@@ -1127,12 +1131,14 @@ window.dappInit = async (option) => {
                                         params: [transactionParameters],
                                     })
                                     .then(txHash => showConfirmationSpinner(txHash, web32))
-                                    .catch((error) => console.log(error));
+                                    .catch((error) => showFail());
                                 });
+
+                                setWrapButton(DappObject);
                             }
                         } catch (error) {
-                            console.log(error);
-                            showFail();
+                            // console.log(error);
+                            // showFail();
                         }
                     }
                 });
@@ -1315,7 +1321,7 @@ window.dappInit = async (option) => {
                             if (delegatedFtsos.length !== 0) {
                                 showAlreadyDelegated(ftsoNames, object);
                             } else {
-                                delegate(object);
+                                delegate(object, DappObject);
                             }
                         });
                     } catch(error) {
@@ -1453,7 +1459,7 @@ window.dappInit = async (option) => {
                                 $.alert("The Rewards Bucket is empty! Please try again later.")
                             }
                         } catch (error) {
-                            console.log(error);
+                            // console.log(error);
                         }
                     }
                 });
