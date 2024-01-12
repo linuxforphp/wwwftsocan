@@ -25,7 +25,7 @@
                     <select class="selected-ftso" id="ftso-1" required>
                         <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
                     </select>
-                    <input id="Amount1" class="amount"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
+                    <input id="Amount1" class="amount-delegate"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                     <select class="selected-ftso" id="ftso-2" required>
                         <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
                     </select>
-                    <input id="Amount2" class="amount" type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
+                    <input id="Amount2" class="amount-delegate" type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
                 </div>
             </div>
         </div>

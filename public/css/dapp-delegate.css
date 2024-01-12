@@ -21,8 +21,13 @@
     white-space: nowrap;
 }
 
-.amount {
+.amount-delegate {
+    border: none;
     width: 12% !important;
+    margin-top: 20px;
+    font-size: 2.4rem;
+    padding-bottom: 10px;
+    background: none !important;
 }
 
 .delegate-button-text {
