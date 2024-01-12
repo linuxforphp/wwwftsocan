@@ -1104,9 +1104,9 @@ window.dappInit = async (option) => {
                             var amountTo = document.getElementById("AmountTo");
                             const amountFromValue = amountFrom.value.replace(/[^0-9]/g, '');
                             const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
-                            
                             const amountFromValueWeiBN = BigInt(amountFromValueWei);
-                            const amountFromValueWeiHex = amountFromValueWeiBN.toString(16);
+                            const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
+                            
                             let txPayload = {};
                             
                             if (DappObject.wrapBool === true) {
@@ -1463,6 +1463,7 @@ window.dappInit = async (option) => {
                                 });
 
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                                
                                 showClaimRewards(0);
                                 switchClaimButtonColorBack(DappObject.claimBool);
                                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
@@ -1515,13 +1516,11 @@ window.dappInit = async (option) => {
                                     .then(txHash => showConfirmationSpinner(txHash, web32))
                                     .catch((error) => showFail());
                                 });
-
-                                showFdRewards(0);
-                                
-                                switchClaimFdButtonColorBack(DappObject.fdClaimBool);
                                 
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                                 
+                                showFdRewards(0);
+                                switchClaimFdButtonColorBack(DappObject.fdClaimBool);
                                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                             }
                         } catch (error) {
