@@ -138,22 +138,41 @@ function showFail() {
     });
 }
 
-async function handleAccountsChanged(accounts) {
-    if (accounts.length !== 0) {
-        document.getElementById("ConnectWallet").click();
-    } else {
-        document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
-        showBalance(0);
-        showTokenBalance(0);
-
-        await window.ethereum.request({
-            "method": "wallet_revokePermissions",
-            "params": [
-              {
-                "eth_accounts": {}
-              }
-            ]
-          });
+async function handleAccountsChanged(accounts, pageIndex = 1) {
+    if (pageIndex === 1 || pageIndex === '1') {
+        if (accounts.length !== 0) {
+            document.getElementById("ConnectWallet").click();
+        } else {
+            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            showBalance(0);
+            showTokenBalance(0);
+    
+            await window.ethereum.request({
+                "method": "wallet_revokePermissions",
+                "params": [
+                  {
+                    "eth_accounts": {}
+                  }
+                ]
+              });
+        }
+    } else if (pageIndex === 3 || pageIndex === '3') {
+        if (accounts.length !== 0) {
+            document.getElementById("ConnectWallet").click();
+        } else {
+            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            showTokenBalance(0);
+            showConnectedAccountAddress('0x0');
+    
+            await window.ethereum.request({
+                "method": "wallet_revokePermissions",
+                "params": [
+                  {
+                    "eth_accounts": {}
+                  }
+                ]
+              });
+        }
     }
 }
 
@@ -1624,7 +1643,8 @@ window.dappInit = async (option) => {
                 };
 
                 window.ethereum.on("accountsChanged", async (accounts) => {
-                    handleAccountsChanged(accounts);
+                    remove(".wrap-box-ftso");
+                    handleAccountsChanged(accounts, 3);
                 });
 
                 window.ethereum.on("chainChanged", async () => {
