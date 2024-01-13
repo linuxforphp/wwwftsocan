@@ -1488,7 +1488,8 @@ window.dappInit = async (option) => {
                             let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                             const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", object.rpcUrl, object.flrAddr);
                             let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
-                            const claimableMonth = await DistributionDelegatorsContract.methods.nextClaimableMonth(account).call();
+                            const currentMonth = await DistributionDelegatorsContract.methods.getCurrentMonth().call();
+                            const claimableMonth = currentMonth - BigInt(1);
                             let txPayload = {};
                             
                             if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
