@@ -231,7 +231,6 @@ h1, h2 {
 
 .ftso-identifier {
     font-size: 2.4rem;
-    padding-left: 1.7em;
     margin-top: 27px;
     float: left;
     text-align: left;
@@ -312,8 +311,9 @@ h1, h2 {
 
 .amount {
     border: none;
-    width: 60%;
+    width: 50%;
     margin-top: 20px;
+    margin-right: 20px;
     font-size: 2.4rem;
     padding-bottom: 10px;
     background: none !important;
@@ -349,7 +349,7 @@ h1, h2 {
 
     .dapp-container {
         padding: 30px 24px 25px !important;
-        width: auto;
+        width: 100%;
     }
 
     /*.dapp-buttons {*/
@@ -360,6 +360,10 @@ h1, h2 {
     /*    place-items: center;*/
     /*    text-align: center;*/
     /*}*/
+
+    .amount {
+        width: 35%;
+    }
 
     .connect-wallet {
         float: none;

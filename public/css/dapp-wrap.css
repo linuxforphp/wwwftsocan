@@ -61,29 +61,29 @@
     text-align: left;
     font-size: 13px;
     color: #8f8f8f;
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 .logo-from {
     color: #fd000f;
-    margin-top: 15px;
+    margin: 15px 35px 5px 45px;
     float: left;
-    width: 25%;
-    height: 50%;
+    width: 45px !important;
+    height: 45px !important;
     text-align: left;
     justify-content: left;
-    align-items: center;
+    align-items: left;
 }
 
 .logo-to {
     color: #000;
-    margin-top: 15px;
+    margin: 15px 35px 5px 45px;
     float: left;
-    width: 25%;
-    height: 50%;
+    width: 45px !important;
+    height: 45px !important;
     text-align: left;
     justify-content: left;
-    align-items: center;
+    align-items: left;
 }
 
 .wrap-button {
@@ -145,6 +145,14 @@ a:hover, a:active, a:focus {
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
+    .logo-from {
+        margin: 15px 20px 0px 30px;
+    }
+
+    .logo-to {
+        margin: 15px 20px 0px 30px;
+    }
+
     .wrap-button {
         float: none;
         height: auto;
@@ -153,6 +161,10 @@ a:hover, a:active, a:focus {
         max-width: 179px;
         margin: auto;
         padding: 15px 20px;
+    }
+
+    .wrapper-claim {
+        margin-left: 35px;
     }
 
     .addr-wrap {

@@ -734,11 +734,12 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
         const account = accounts[0];
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-        
+
         showAccountAddress(account);
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
         showFdRewards(0);
         showClaimRewards(0);
+        showConnectedAccountAddress(account);
 
         // Changing the color of Claim button.
         if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
@@ -797,10 +798,46 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
                         if (ftsoJsonList.includes(delegatedFtsos[i])) {
                             if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
+                                                <div class="row">
+                                                    <div class="wrap-box-content">
+                                                        <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
+                                                        <div class="ftso-identifier">
+                                                            <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
+                                                        </div>
+                                                        <div class="wrapper-ftso">
+                                                            <span>${Bips}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="wrapper-claim">
+                                                        <span>Provider:</span>
+                                                        <span class="address-claim">${delegatedFtsos[i]}</span>
+                                                    </div>
+                                                </div>
+                                            </div>`;
                             } else {
                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}"><div class="wrap-box-content"><img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/><div class="ftso-identifier"><span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span></div><div class="wrapper"><span id="TokenBalance">${Bips}%</span></div></div></div>`;
+                                insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
+                                                <div class="row">
+                                                    <div class="wrap-box-content">
+                                                        <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
+                                                        <div class="ftso-identifier">
+                                                            <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
+                                                        </div>
+                                                        <div class="wrapper-ftso">
+                                                            <span>${Bips}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="wrapper-claim">
+                                                        <span>Provider:</span>
+                                                        <span class="address-claim">${delegatedFtsos[i]}</span>
+                                                    </div>
+                                                </div>
+                                            </div>`;
                             }
 
                             delegatedFtsoElement.innerHTML = insert1 + insert2;
@@ -880,6 +917,10 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
     } catch (error) {
         console.error(error);
     }
+}
+
+function showConnectedAccountAddress(address) {
+    document.getElementById('AccountAddress').innerText = address;
 }
 
 // Function to remove by id or class name.

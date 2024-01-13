@@ -236,12 +236,21 @@
     margin-top: 30px;
 }
 
+.wrapper-ftso {
+    float: right;
+    width: 10%;
+    text-align: right;
+    font-size: 2.4rem;
+    color: #383a3b;
+    margin-right: 20px;
+    margin-top: 30px;
+}
+
 .delegated-icon {
-    margin-top: 20px;
-    margin-left: 30px;
+    margin: 15px 35px 5px 45px;
     float: left;
-    width: 40px !important;
-    height: 40px !important;
+    width: 45px !important;
+    height: 45px !important;
     text-align: left;
     justify-content: left;
     align-items: left;
@@ -249,8 +258,7 @@
 
 .logo {
     color: #000;
-    margin: 15px 35px;
-    margin-right: 45px;
+    margin: 15px 35px 5px 45px;
     float: left;
     width: 45px !important;
     height: 45px !important;
@@ -263,9 +271,20 @@
     margin: 5px;
 }
 
+.wrapper-claim {
+    text-align: left;
+    font-size: 13px;
+    color: #8f8f8f;
+    margin-left: 40px;
+}
+
+.address-claim {
+    font-size: 13px;
+}
+
 @media only screen and (min-width: 0px) and (max-width: 480px) {
     .logo {
-        margin: 20px;
+        margin: 15px 20px 0px 30px;
         width: 45px !important;
         height: 45px !important;
     }
@@ -275,17 +294,27 @@
     }
 
     .delegated-icon {
-        margin-top: 15px;
-        margin-left: 15px;
+        margin: 15px 20px 0px 30px;
     }
 
     .ftso-identifier {
         font-size: 2rem;
-        padding-left: 0.7em;
     }
 
     .wrapper {
         width: 42%;
+    }
+
+    .wrapper-ftso {
+        width: 10%;
+    }
+
+    .wrapper-claim {
+        margin-left: 35px;
+    }
+
+    .address-claim {
+        font-size: 8px;
     }
 
     #TokenBalance {
@@ -359,11 +388,6 @@
         margin: 5px;
     }
 
-    .delegated-icon {
-        margin-top: 15px;
-        margin-left: 15px;
-    }
-
     .connect-wallet {
         float: none;
         height: auto;
@@ -400,7 +424,6 @@
 
     .ftso-identifier {
         font-size: 2rem;
-        padding-left: 0.7em;
     }
 
     .rewards {
@@ -427,14 +450,8 @@
         margin: 5px;
     }
 
-    .delegated-icon {
-        margin-top: 15px;
-        margin-left: 15px;
-    }
-
     .ftso-identifier {
         font-size: 2rem;
-        padding-left: 0.7em;
     }
 
     .connect-wallet {
