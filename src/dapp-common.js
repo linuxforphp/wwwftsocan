@@ -1529,8 +1529,20 @@ window.dappInit = async (option) => {
                             let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                             const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", object.rpcUrl, object.flrAddr);
                             let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
-                            const currentMonth = await DistributionDelegatorsContract.methods.getCurrentMonth().call();
-                            const claimableMonth = currentMonth - BigInt(1);
+                            let month;
+                            let currentMonth = 0;
+                            const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
+
+                            for (const property in claimableMonths) {
+                                month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
+
+                                if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
+                                    if (month > currentMonth) {
+                                        currentMonth = month;
+                                    }
+                                }
+                            }
+                            
                             let txPayload = {};
                             
                             if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
@@ -1538,13 +1550,13 @@ window.dappInit = async (option) => {
                                     txPayload = {
                                         from: account,
                                         to: DistributionDelegatorsAddr,
-                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonth, true).encodeABI(),
+                                        data: DistributionDelegatorsContract.methods.claim(account, account, currentMonth, true).encodeABI(),
                                     };
                                 } else {
                                     txPayload = {
                                         from: account,
                                         to: DistributionDelegatorsAddr,
-                                        data: DistributionDelegatorsContract.methods.claim(account, account, claimableMonth, false).encodeABI(),
+                                        data: DistributionDelegatorsContract.methods.claim(account, account, currentMonth, false).encodeABI(),
                                     };
                                 }
                                 
