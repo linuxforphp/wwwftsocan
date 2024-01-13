@@ -19,25 +19,29 @@
             </div>
         </div>
         <div class="row">
-            <div class="wrap-box-ftso" id="wrapbox-1">
-                <div class="wrap-box-content">
-                    <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="delegated-icon" id="delegatedIcon1">
-                    <select class="selected-ftso" id="ftso-1" required>
-                        <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
-                    </select>
-                    <input id="Amount1" class="amount-delegate"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
-                </div>
+            <div class="wrap-box" id="wrapbox-1">
+                <span class="wrap-box-content">
+                    <div class="row">
+                        <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
+                        <select class="selected-ftso" id="ftso-1" required>
+                            <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
+                        </select>
+                        <input id="Amount1" class="amount-delegate"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
+                    </div>
+                </span>
             </div>
         </div>
         <div class="row">
-            <div class="wrap-box-ftso" id="wrapbox-2">
-                <div class="wrap-box-content">
-                    <img src='<?=$view['urlbaseaddr'] ?>img/FLR.svg' class="delegated-icon" id="delegatedIcon2">
-                    <select class="selected-ftso" id="ftso-2" required>
-                        <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
-                    </select>
-                    <input id="Amount2" class="amount-delegate" type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
-                </div>
+            <div class="wrap-box" id="wrapbox-2">
+                <span class="wrap-box-content">
+                    <div class="row">
+                        <img src='<?=$view['urlbaseaddr'] ?>img/FLR.svg' class="provider-icon" id="delegatedIcon2">
+                        <select class="selected-ftso" id="ftso-2" required>
+                            <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
+                        </select>
+                        <input id="Amount2" class="amount-delegate" type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
+                    </div>
+                </span>
             </div>
         </div>
         <div class="row">
