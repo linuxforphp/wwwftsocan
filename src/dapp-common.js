@@ -408,7 +408,8 @@ async function createSelectedNetwork(DappObject) {
                                             ]
                                             }).catch((error) => console.error(error));
                                     } catch (error) {
-                                        console.log(error);
+                                        // console.log(error);
+
                                         if (error.code === 4902) {
                                             try {
                                                 await ethereum.request({
@@ -558,8 +559,10 @@ function copyWrapInput() {
 
 // DELEGATE MODULE
 
-async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject) {
+async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1, ftso2) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+    await populateFtsos(ftso1, ftso2, rpcUrl, flrAddr);
 
     let web32 = new Web3(rpcUrl);
 
@@ -1320,7 +1323,7 @@ window.dappInit = async (option) => {
                 getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
 
                     document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClickDelegate(object.rpcUrl, object.flrAddr, DappObject);
+                        ConnectWalletClickDelegate(object.rpcUrl, object.flrAddr, DappObject, ftso1, ftso2);
                     });
                 
                     document.getElementById("Amount1").addEventListener('input', function () {
@@ -1417,8 +1420,6 @@ window.dappInit = async (option) => {
                     });
 
                     document.getElementById("ConnectWallet").click();
-
-                    await populateFtsos(ftso1, ftso2, object.rpcUrl, object.flrAddr);
 
                     isDelegateInput1(DappObject);
 
