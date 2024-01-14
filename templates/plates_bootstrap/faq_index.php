@@ -53,7 +53,7 @@
                 <div class="faq-panel">
                     <p><strong>FTSO Canada</strong> is one of the <strong>Flare</strong> Network's many FTSOs (Flare Time Series Oracle). <br> 
                     It provides applications on the <strong>Flare</strong> Network with highly accurate and decentralized data, such as cryptocurrency prices, and transaction validation. To learn more about FTSOs, you can visit 
-                    <a class="link" href="#" onclick="getDocsPageNewTab(2)">Flare's official post about FTSOs</a></p>
+                    <a class="link" href="#" onclick="getDocsPageNewTab(2)">Flare's official post about FTSOs.</a></p>
                 </div>
             </div>
 
@@ -65,7 +65,7 @@
                 </button>
                 <div class="faq-panel">
                     <p>To be able to interact with Ethereum chains such as <strong>Flare</strong> , <strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</strong> , you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p>
-                    <a href="#" class="shinyButton" onclick="getDocsPageNewTab(5)><i class="shinyButtonText">Download Metamask</i></a><br>
+                    <a href="#" class="shinyButton" onclick="getDocsPageNewTab(5)"><i class="shinyButtonText">Download Metamask</i></a><br>
                     <p>Then, once your account has been created, to make sure that you can see your tokens and wrapped tokens, you need to add the <strong>Flare</strong> ETH chain, and "WFLR" token.<i class="footnote asterisk">*</i><br></p>
                     <div class="row">
                         <div class="col-sm-6">
@@ -98,7 +98,7 @@
                 </button>
                 <div class="faq-panel">
                     <p>Assuming you already have an Ethereum account assigned to your <strong>Ledger</strong> device, you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p> 
-                    <a href="#" class="shinyButton" onclick="getDocsPageNewTab(5)><i class="shinyButtonText">Download Metamask</i></a><br>
+                    <a href="#" class="shinyButton" onclick="getDocsPageNewTab(5)"><i class="shinyButtonText">Download Metamask</i></a><br>
                     <p>Then, once the set up is completed, click on your account, and head down to "Add Account or Hardware Wallet". <br> Click on "Hardware Wallet", select Ledger from the given options, and make sure your <strong>Ledger</strong> device is connected to your computer. <br> Then, select the account that you want to connect amongst the ones on your <strong>Ledger</strong> device. Accept the request on your <strong>Ledger</strong> device, and you should now be connected. </p>
                 </div>
             </div>
@@ -111,8 +111,8 @@
                 </button>
                 <div class="faq-panel">
                     <p>There are multiple options for wrapping, delegating, or even claiming your <strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use our official <br> 
-                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
-                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted DApp made by the Flare community.</p>
+                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')">FTSO Canada DApp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
+                    Flare Portal</a> , which is Flare Networks's official DApp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted DApp made by the Flare community.</p>
                 </div>
             </div>
 
@@ -124,8 +124,8 @@
                 </button>
                 <div class="faq-panel">
                     <p>There are multiple options for wrapping, delegating, or even claiming your <strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use our official <br> 
-                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">FTSO Canada Dapp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
-                    Flare Portal</a> , which is Flare Networks's official Dapp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted DApp made by the Flare community.</p>
+                    <a class="link" href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dappwrap/index')">FTSO Canada DApp</a> , the <a class="link" href="#" onclick="getDocsPageNewTab(3)">
+                    Flare Portal</a> , which is Flare Networks's official DApp, the <a class="link" href="#" onclick="getDocsPageNewTab(4)">Flare Explorer</a> , Flare's official Block Explorer, or any other trusted DApp made by the Flare community.</p>
                 </div>
             </div>
         </div>    
