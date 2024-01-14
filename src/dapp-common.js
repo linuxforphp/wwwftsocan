@@ -110,7 +110,7 @@ async function showConfirm(txHash) {
         buttons: {
             ok: {
                 action: function () {
-                    window.dappInit();
+                    document.getElementById("ConnectWallet").click();
                 },
             }
         },
@@ -134,7 +134,11 @@ function showFail() {
         typeAnimated: true,
         draggable: false,
         buttons: {
-            ok: {},
+            ok: {
+                action: function () {
+                    document.getElementById("ConnectWallet").click();
+                },
+            },
         },
         onContentReady: function () {
             this.showLoading(true);
