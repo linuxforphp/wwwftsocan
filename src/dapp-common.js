@@ -408,7 +408,8 @@ async function createSelectedNetwork(DappObject) {
                                             ]
                                             }).catch((error) => console.error(error));
                                     } catch (error) {
-                                        console.log(error);
+                                        // console.log(error);
+
                                         if (error.code === 4902) {
                                             try {
                                                 await ethereum.request({
@@ -561,6 +562,8 @@ function copyWrapInput() {
 async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1, ftso2) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
+    await populateFtsos(ftso1, ftso2, rpcUrl, flrAddr);
+
     let web32 = new Web3(rpcUrl);
 
     try {
@@ -571,8 +574,6 @@ async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1, ft
         showAccountAddress(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-
-        await populateFtsos(ftso1, ftso2, rpcUrl, flrAddr);
     } catch (error) {
         // console.log(error);
     }
