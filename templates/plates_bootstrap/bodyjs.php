@@ -70,6 +70,46 @@
             url = 'https://flare.xyz/ftso-a-breakdown/';
 
             window.open(url, '_blank').focus();
+        } else if (option === 3) {
+            url = 'https://portal.flare.network/';
+
+            window.open(url, '_blank').focus();
+        } else if (option === 4) {
+            url = 'https://flare-explorer.flare.network/';
+
+            window.open(url, '_blank').focus();
+        } else if (option === 5) {
+            url = 'https://metamask.io/download/';
+
+            window.open(url, '_blank').focus();
+        }
+    }
+
+    function getDappPage(option, reconnect = true) {
+        if (option === 1) {
+            $.get( "wrap", function( data ) {
+                $( "#dapp-root" ).html( data );
+                
+                if (reconnect === true) {
+                    window.dappInit(1);
+                }
+            });
+        } else if (option === 2) {
+            $.get( "delegate", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(2);
+                }
+            });
+        } else if (option === 3) {
+            $.get( "claim", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(3);
+                }
+            });
         }
     }
 </script>
@@ -77,6 +117,9 @@
 <?php foreach($view['jsscripts'] as $key => $value): ?>
     <?php echo $value ?>
 <?php endforeach; ?>
+
+<!-- Custom alert box -->
+<script src="<?=$view['urlbaseaddr'] ?>js/jquery-confirm.min.js"></script>
 
 <!-- Modernizer Script for old Browsers -->
 <script src="<?=$view['urlbaseaddr'] ?>js/modernizr-2.6.2.min.js"></script>

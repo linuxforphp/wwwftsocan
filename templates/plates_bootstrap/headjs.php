@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/font-awesome.min.css">
     <!-- bootstrap.min -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery.fancybox.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-confirm.min.css">
     <!-- bootstrap.min -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/bootstrap.min.css">
     <!-- owl.carousel.min -->
@@ -45,6 +46,10 @@
     <?php foreach($view['jshead'] as $key => $value): ?>
         <script src="<?php echo $value ?>"></script>
     <?php endforeach; ?>
+
+    <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
+
+    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
 
     <?php foreach($view['jsscriptshead'] as $key => $value): ?>
         <?php echo $value ?>

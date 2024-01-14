@@ -19,6 +19,7 @@ $baseConfig['eventlog'] = [
     'log_event_type' => [
         'whitelist' => [
             \Ascmvc\EventSourcing\Event\WriteAggregateCompletedEvent::class,
+            \Ascmvc\EventSourcing\Event\ReadAggregateCompletedEvent::class,
         ],
         'blacklist' => [
             //\Ascmvc\EventSourcing\Event\AggregateEvent::class,

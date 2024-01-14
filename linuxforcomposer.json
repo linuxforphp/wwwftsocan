@@ -5,7 +5,7 @@
         "image": {
             "linuxforcomposer": {
                 "php-versions": [
-                    "7.4"
+                    "8.2"
                 ],
                 "script": [
                     "cd /srv",
@@ -33,6 +33,10 @@
                     "echo $BACKEND_PASS > /srv/backuppass",
                     "/etc/init.d/mysql stop",
                     "sleep 5",
+                    "lfphp-get fcron",
+                    "echo '1 0 * * * /bin/bash /srv/tempo/wwwftsocan/scripts/crons-dapp.bash >/dev/null 2>&1' >> /etc/fcrontab",
+                    "fcrontab /etc/fcrontab >/dev/null 2>&1",
+                    "lfphp-get jq",
                     "lfphp --mysql --phpfpm --apache"
                 ],
                 "thread-safe": "false"

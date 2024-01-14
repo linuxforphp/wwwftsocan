@@ -16,53 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `customers`
+-- Table structure for table `networks`
 --
 
-DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `networks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customers` (
+CREATE TABLE `networks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firstname` varchar(32) NOT NULL,
-  `lastname` varchar(32) NOT NULL,
+  `chainidentifier` varchar(4) NOT NULL,
+  `rpcurl` varchar(100) NOT NULL,
+  `chainid` int(11) NOT NULL,
+  `registrycontract` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `orders`
+-- Table structure for table `sgbcontracts`
 --
 
-DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `sgbcontracts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `orders` (
+CREATE TABLE `sgbcontracts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_date` varchar(32) NOT NULL,
-  `order_status` varchar(16) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `customer_id` int(11) NOT NULL,
+  `contractname` varchar(32) NOT NULL,
+  `contractabi` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `products`
---
-
-DROP TABLE IF EXISTS `products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `image` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,4 +73,4 @@ CREATE TABLE `eventlog` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-14 12:48:40
+-- Dump completed on 2018-04-14 12:47:51

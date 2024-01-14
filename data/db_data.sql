@@ -16,83 +16,54 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `customers`
+-- Table structure for table `networks`
 --
 
-DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `networks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customers` (
+CREATE TABLE `networks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firstname` varchar(32) NOT NULL,
-  `lastname` varchar(32) NOT NULL,
+  `chainidentifier` varchar(10) NOT NULL,
+  `rpcurl` varchar(100) NOT NULL,
+  `chainid` int(11) NOT NULL,
+  `registrycontract` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `customers`
+-- Dumping data for table `networks`
 --
 
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,'Paul','George'),(2,'Jill','Lewis'),(3,'Jack','Brown'),(4,'Bill','Wright'),(5,'John','Bernstein');
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+LOCK TABLES `networks` WRITE;
+/*!40000 ALTER TABLE `networks` DISABLE KEYS */;
+INSERT INTO `networks` VALUES (1,'FLR','https://sbi.flr.ftsocan.com/ext/C/rpc',14,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(2,'SGB','https://sbi.sgb.ftsocan.com/ext/C/rpc',19,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(3,'CFLR','https://coston-api.flare.network/ext/bc/C/rpc',16,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(4,'C2FLR','https://sbi1.costwo.ftsocan.com/ext/C/rpc',114,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019');
+/*!40000 ALTER TABLE `networks` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `orders`
+-- Table structure for table `smartcontracts`
 --
 
-DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `smartcontracts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `orders` (
+CREATE TABLE `smartcontracts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_date` varchar(32) NOT NULL,
-  `order_status` varchar(16) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `customer_id` int(11) NOT NULL,
+  `contractname` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `smartcontracts`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,'1520308800','open',560,'Coffee Table Books',4),(2,'1520222400','open',9800,'JavaScript Books',3),(3,'1520136000','complete',300,'Web Development Books',2),(4,'1520136000','invoiced',500,'PHP Books',5),(5,'1520308800','open',50,'Newspapers',3),(6,'1520308800','held',300,'Candy',3),(7,'1520222400','invoiced',1200,'Smart Phones',5);
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `products`
---
-
-DROP TABLE IF EXISTS `products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `image` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `products`
---
-
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Computer',100.99,'Laptop','computer_laptop.png'),(2,'Diskettes',1.99,'3.5 Diskettes','computer_3.5_diskettes.png'),(3,'LCD Monitor',150.99,'Monitor','computer_lcd_monitor.png'),(4,'HP Computer',1200.99,'HP Computer','computer_hp.png'),(5,'Computer relic',20000.00,'Old Compaq Computer','computer_original_compaq.png');
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+LOCK TABLES `smartcontracts` WRITE;
+/*!40000 ALTER TABLE `smartcontracts` DISABLE KEYS */;
+INSERT INTO `smartcontracts` VALUES (1,'WNat'),(2,'ClaimSetupManager'),(3,'FtsoRewardManager'),(4,'VoterWhitelister');
+/*!40000 ALTER TABLE `smartcontracts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

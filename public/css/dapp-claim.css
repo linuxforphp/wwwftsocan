@@ -1,0 +1,502 @@
+.col-sm-4 {
+    align-items: center;
+    padding: 0 30px 0 0;
+}
+
+.token-identifier {
+    margin-top: 30px!important;
+}
+
+.token-balance-claim {
+    display: inline-block;
+    width: 266px;
+    text-align: center;
+}
+
+.connect-wallet-claim {
+    margin-bottom: 0;
+    margin-left: 25%;
+    height: auto;
+    width: 45%;
+    padding: 20px;
+}
+
+.claim-button {
+    float: right;
+    margin: 15px;
+    border-radius: 30px;
+    background-color: rgba(143, 143, 143, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 7px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: auto;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+    letter-spacing: normal;
+    transition: 0.5s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.claim-button-text {
+    font-style: normal;
+}
+
+.claim-button-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(45deg) translateX(0); */
+    transition: 0.5s;
+}
+
+.claim-button:hover > .claim-button-text::before {
+    /* transform: skewX(45deg) translateX(200%); */
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .claim-button {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+}
+
+.claim-button:hover {
+    letter-spacing: 1.5px;
+}
+
+.claim-fd-button {
+    float: right;
+    margin: 15px 0 0 20px;
+    border-radius: 30px;
+    background-color: rgba(143, 143, 143, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 7px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: auto;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+    letter-spacing: normal;
+    transition: 0.5s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.claim-fd-button-text {
+    font-style: normal;
+}
+
+.claim-fd-button-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(45deg) translateX(0); */
+    transition: 0.5s;
+}
+
+.claim-fd-button:hover > .claim-fd-button-text::before {
+    /* transform: skewX(45deg) translateX(200%); */
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .claim-fd-button {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+}
+
+.claim-fd-button:hover {
+    letter-spacing: 1.5px;
+}
+
+/*.dapp-buttons {*/
+/*    margin-top: 15px;*/
+/*    box-sizing: border-box;*/
+/*    display: grid;*/
+/*    grid: none;*/
+/*    grid-auto-flow: column !important;*/
+/*    grid-column: 1;*/
+/*    grid-gap: 0px;*/
+/*    height: fit-content;*/
+/*    width: auto;*/
+/*    place-items: left;*/
+/*    text-align: center;*/
+/*}*/
+
+.rewards {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 20px;
+    padding: 12px 10px 12px 20px;
+    border-radius: 30px;
+    width: 177px;
+    float: left;
+    cursor: default;
+    border-left: none;
+    border-right: none;
+    overflow: hidden !important;
+    transition: 0.5s;
+}
+
+.rewards-text {
+    color: #383a3b !important;
+    z-index: 3;
+    position: relative;
+}
+
+.rewards::after {
+    z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.3), transparent);
+    transform: skewX(45deg) translateX(0); */
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.rewards:hover::after {
+    /* transform: skewX(45deg) translateX(200%); */
+}
+
+.rewards-text > input {
+    accent-color: #fd000f;
+    margin: 3px 0 0 !important;
+    float: left;
+    height: 20px;
+    width: 20px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    outline: none;
+    transition-duration: 0.3s;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+
+.rewards-text > input:focus, .rewards-text > input:hover {
+    border: none;
+    outline: none;
+}
+
+.rewards-text > input:checked {
+    border: 1px solid #fff;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.rewards-text > input:checked + .CheckMark::before {
+    cursor: pointer;
+    font-family: FontAwesome !important;
+    content: '\f00c';
+    color: #fff;
+    position: absolute;
+    left: 0.25rem;
+    top: 0.1rem;
+}
+
+.rewards-check-label {
+    font-weight: normal !important;
+    z-index: 3;
+    position: relative;
+}
+
+.wrapper {
+    float: right;
+    width: 35%;
+    text-align: right;
+    font-size: 2.4rem;
+    color: #383a3b;
+    margin-right: 20px;
+    margin-top: 30px;
+}
+
+.wrapper-ftso {
+    float: right;
+    width: 10%;
+    text-align: right;
+    font-size: 2.4rem;
+    color: #383a3b;
+    margin-right: 20px;
+    margin-top: 30px;
+}
+
+.delegated-icon {
+    margin: 15px 35px 5px 45px;
+    float: left;
+    width: 45px !important;
+    height: 45px !important;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+.logo {
+    color: #000;
+    margin: 15px 35px 5px 45px;
+    float: left;
+    width: 45px !important;
+    height: 45px !important;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+.wrap-box-ftso {
+    margin: 5px;
+}
+
+.wrapper-claim {
+    text-align: left;
+    font-size: 13px;
+    color: #8f8f8f;
+    margin-left: 40px;
+}
+
+.address-claim {
+    font-size: 13px;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+    .logo {
+        margin: 15px 20px 0px 30px;
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .wrap-box-ftso {
+        margin: 5px;
+    }
+
+    .delegated-icon {
+        margin: 15px 20px 0px 30px;
+    }
+
+    .ftso-identifier {
+        font-size: 2rem;
+    }
+
+    .wrapper {
+        width: 42%;
+    }
+
+    .wrapper-ftso {
+        width: 10%;
+    }
+
+    .wrapper-claim {
+        margin-left: 35px;
+    }
+
+    .address-claim {
+        font-size: 8px;
+    }
+
+    #TokenBalance {
+        width: 172px;
+    }
+
+    .token-identifier {
+        margin-top: 30px!important;
+    }
+
+    .connect-wallet {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
+    }
+
+    .claim-button {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-bottom: 10px;
+        padding: 5px 20px;
+    }
+
+    .claim-fd-button {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-bottom: 10px;
+        padding: 5px 20px;
+    }
+
+    .rewards {
+        width: 177px;
+        padding: 10px 0;
+    }
+
+    .rewards-text > input {
+        float: none;
+    }
+
+    .dapp-box {
+        height: 46px;
+        padding: 0;
+    }
+
+    .select-container {
+        height: fit-content;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .logo {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .wrap-box-ftso {
+        margin: 5px;
+    }
+
+    .connect-wallet {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
+    }
+
+    .claim-button {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-bottom: 10px;
+        padding: 5px 20px;
+    }
+
+    .claim-fd-button {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-bottom: 10px;
+        padding: 5px 20px;
+    }
+
+    .ftso-identifier {
+        font-size: 2rem;
+    }
+
+    .rewards {
+        width: 177px;
+        padding: 10px 0;
+    }
+
+    .rewards-text > input {
+        float: none;
+    }
+
+    .dapp-box {
+        height: 46px;
+        padding: 0;
+    }
+
+    .select-container {
+        height: fit-content;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    .wrap-box-ftso {
+        margin: 5px;
+    }
+
+    .ftso-identifier {
+        font-size: 2rem;
+    }
+
+    .connect-wallet {
+        margin-left: 30%;
+        height: 45px;
+        width: 40%;
+        padding: 10px 20px;
+    }
+
+    .claim-button {
+        float: left;
+        margin-top: 0;
+        margin-bottom: 20px !important;
+        margin-left: 30px !important;
+        height: 45px !important;
+        width: 70% !important;
+        padding: 3px 20px !important;
+    }
+
+
+    .claim-fd-button {
+        float: left;
+        margin-top: 0;
+        margin-left: 30px !important;
+        margin-bottom: 20px !important;
+        height: 45px !important;
+        width: 70% !important;
+        padding: 3px 20px !important;
+    }
+
+    .rewards {
+        width: 177px;
+        padding: 10px 0;
+    }
+
+    .rewards-text > input {
+        float: none;
+    }
+
+    .dapp-box {
+        height: 46px;
+        padding: 0;
+    }
+
+    .select-container {
+        height: fit-content;
+    }
+}

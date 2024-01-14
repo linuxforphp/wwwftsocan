@@ -13,6 +13,16 @@ $baseConfig['routes'] = [
     ],
     [
         'GET',
+        '/dapp[/{action}]',
+        'dapp',
+    ],
+    [
+        'GET',
+        '/faq[/{action}]',
+        'faq',
+    ],
+    [
+        'GET',
         '/delegate[/{action}]',
         'delegate',
     ],

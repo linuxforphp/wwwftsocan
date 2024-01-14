@@ -1,0 +1,534 @@
+@font-face {
+    font-family: FontAwesome;
+    src: url(../fonts/fontawesome-webfont.woff);
+}
+
+body {
+    padding-top: 12.7em;
+    font-family: 'Poppins', sans-serif;
+    background-image: url("../img/Flare-Network-Red.png") !important;
+    background-position-x: 0;
+    background-position-y: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.site-content {
+    background: none;
+}
+
+h1, h2 {
+    font-weight: bold !important;
+}
+
+.main-section-padding {
+    padding: 0 0 70px 0;
+}
+
+/* change the background color */
+.navbar-dapp-actions {
+    background-color: rgba(253, 0, 15, 0.8);
+}
+
+/* change the brand and text color */
+.navbar-dapp-actions .navbar-brand,
+.navbar-dapp-actions .navbar-text {
+    color: rgba(255,255,255,.8);
+}
+
+/* change the color of active or hovered links */
+.navbar-dapp-actions .nav-item.active .nav-link,
+.navbar-dapp-actions .nav-item:focus .nav-link,
+.navbar-dapp-actions .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+/* change the link color */
+.navbar-dapp-actions .navbar-nav .nav-link {
+    color: #fff;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+.navbar-dapp-actions .navbar-nav .nav-link:hover, .navbar-dapp-actions .navbar-nav .nav-link:focus {
+    color: rgba(0, 0, 0, 0.78);
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+.h {
+    font-size: 28px;
+    color: #383a3b;
+    margin-top: 40px
+}
+
+.dapp-container {
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(236, 236, 236, 0.7);
+    display: inline-block;
+    margin-top: 0px;
+    padding: 30px 44px 25px;
+    border-radius: 25px;
+    width: 50%;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.whoops {
+    padding: 30px 20% 25px;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .dapp-container {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+}
+
+.connect-wallet {
+    /* display: inline-block; */
+    background-color: rgba(253, 0, 15, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-left: none;
+    border-right: none;
+    width: 90%;
+    max-width: 234px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    float: left;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 30px;
+    letter-spacing: normal;
+    transition: 0.5s;
+}
+
+.connect-wallet:hover {
+    letter-spacing: 1.5px;
+}
+
+.connect-wallet-text {
+    font-style: normal;
+}
+
+.connect-wallet-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent); */
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+}
+
+.connect-wallet:hover > .connect-wallet-text::after {
+    transform: skewX(45deg) translateX(200%);
+}
+
+.connect-wallet:hover {
+    letter-spacing: 1.5px;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .connect-wallet {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+}
+
+.dummytext {
+    margin-top: 20px;
+}
+
+.addr-wrap {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-align: center;
+    font-size: 13px;
+}
+
+.network-label {
+    padding-right: 10px;
+}
+
+.wrap-box {
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 9.5rem;
+    justify-content: right;
+    align-items: center;
+    text-align: right;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.6);
+    padding-right: 1.2em;
+    padding-top: .2em;
+    margin: 5px;
+    border-radius: 25px;
+}
+
+.wrap-box-content {
+    width: auto;
+    height: auto;
+}
+
+.wrap-box-content::before {
+    content: '';
+    position: absolute;
+    width: auto;
+    height: 100%;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent); */
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+}
+
+.wrap-box-ftso {
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 9.5rem;
+    justify-content: right;
+    align-items: right;
+    text-align: right;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.6);
+    padding-right: 1.2em;
+    padding-top: .2em;
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    border-radius: 25px;
+}
+
+.token-identifier {
+    font-size: 2.4rem;
+    left: -1em;
+    margin-top: 27px;
+    float: left;
+    text-align: left;
+}
+
+.ftso-identifier {
+    font-size: 2.4rem;
+    margin-top: 27px;
+    float: left;
+    text-align: left;
+}
+
+.selected-network {
+    outline: none;
+    font-size: 20px !important;
+    padding: .7em 20px;
+    cursor: pointer;
+    border-radius: .3em;
+    margin-right: 0em;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-left: none;
+    border-right: none;
+    color: #383a3b !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%2367696a;" /></svg>');
+    background-position: right 20px top 50%;
+    background-repeat: no-repeat;
+    background-size: 12px;
+    padding-right: 40px;
+    transition: 0.5s;
+    letter-spacing: normal;
+}
+
+.select-box {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.select-box::after {
+    position: absolute;
+    display: inline-block;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent);
+    transform: skewX(45deg) translateX(12px);
+    transition: 0.5s;
+}
+
+.select-box:hover::after {
+    transform: skewX(45deg) translateX(250%);
+}
+
+.select-container {
+    text-align: right;
+    position: relative;
+}
+
+.dapp-box {
+    position: relative;
+    height: 54px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.select-box:focus,
+.select-box:hover > .selected-network {
+    outline: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><polygon points="0,0 100,0 50,50" style="fill:%23fd000f;" /></svg>');
+    color: #fd000f !important;
+    letter-spacing: 0.5px;
+}
+
+.selected-network option {
+    background-color: #fff;
+    color: #fd000f;
+}
+
+.amount {
+    border: none;
+    width: 50%;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: 2.4rem;
+    padding-bottom: 10px;
+    background: none !important;
+}
+
+.amount:focus {
+    outline: none !important;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+    body {
+        padding: 9.5em 0 0 0 !important;
+        background-repeat: no-repeat;
+        background-position-x: left 50%;
+        background-position-y: bottom 100%;
+        background-size: 350%;
+    }
+
+    .wrap-box {
+        height: 9rem;
+        margin: 10px;
+    }
+
+    .wrap-box-ftso {
+        height: 9rem;
+        margin: 10px;
+    }
+
+    .container {
+        padding: 10px !important;
+        height: fit-content;
+    }
+
+    .dapp-container {
+        padding: 30px 24px 25px !important;
+        width: 100%;
+    }
+
+    /*.dapp-buttons {*/
+    /*    margin: 15px;*/
+    /*    box-sizing: border-box;*/
+    /*    display: grid;*/
+    /*    width: auto;*/
+    /*    place-items: center;*/
+    /*    text-align: center;*/
+    /*}*/
+
+    .amount {
+        width: 35%;
+    }
+
+    .connect-wallet {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
+    }
+
+    .dummytext {
+        margin: 0;
+    }
+
+    .dapp-box {
+        height: 46px;
+        padding: 0;
+    }
+
+    .selected-network {
+        padding: 10px 30px 10px 30px;
+        width: auto;
+    }
+
+    .select-container {
+        height: fit-content;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    body {
+        padding: 9.5em 0 0 0 !important;
+        background-repeat: no-repeat;
+        background-position-x: left 50%;
+        background-position-y: bottom 100%;
+        background-size: 300%;
+    }
+
+    .wrap-box {
+        height: 9rem;
+        margin: 10px
+    }
+
+    .wrap-box-ftso {
+        height: 9rem;
+        margin: 10px;
+    }
+
+    .container {
+        padding: 10px !important;
+        height: fit-content;
+    }
+
+    .dapp-container {
+        padding: 30px 24px 25px !important;
+        width: auto;
+    }
+
+    /*.dapp-buttons {*/
+    /*    margin: 15px;*/
+    /*    box-sizing: border-box;*/
+    /*    width: auto;*/
+    /*    place-items: center;*/
+    /*    text-align: center;*/
+    /*}*/
+
+    .connect-wallet {
+        float: none;
+        height: auto;
+        width: auto;
+        min-width: 178px;
+        max-width: 179px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
+    }
+
+    .dummytext {
+        margin: 0;
+    }
+
+    .addr-wrap {
+        text-align: center;
+        font-size: 13px;
+        margin: 20px;
+    }
+
+    .dapp-box {
+        height: 46px;
+        padding: 0;
+    }
+
+    .selected-network {
+        padding: 10px 20px;
+    }
+
+    .select-container {
+        height: fit-content;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    body {
+        padding: 9.5em 0 0 0 !important;
+        background-repeat: no-repeat;
+        background-position-x: left 50%;
+        background-position-y: bottom 100%;
+        background-size: 170%;
+    }
+
+    .wrap-box {
+        height: 9rem;
+        margin: 10px;
+    }
+
+    .container {
+        padding: 10px !important;
+        height: fit-content;
+    }
+
+    .dapp-container {
+        padding: 30px 24px 25px;
+        width: auto;
+    }
+
+    /*.dapp-buttons {*/
+    /*    margin: 15px;*/
+    /*    box-sizing: border-box;*/
+    /*    display: grid;*/
+    /*    width: auto;*/
+    /*    place-items: center;*/
+    /*    text-align: center;*/
+    /*}*/
+
+    .connect-wallet {
+        padding: 10px;
+        height: 45px;
+        width: auto;
+        margin: 10px;
+    }
+
+    .dummytext {
+        margin: 0;
+    }
+
+    .addr-wrap {
+        text-align: center;
+        font-size: 13px;
+        margin: 20px;
+    }
+
+    .dapp-box {
+        height: 46px;
+        padding: 0;
+    }
+
+    .selected-network {
+        padding: 10px 20px;
+    }
+
+    .select-container {
+        height: fit-content;
+    }
+}

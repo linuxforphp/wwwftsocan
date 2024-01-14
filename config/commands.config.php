@@ -9,6 +9,6 @@ $baseConfig['async_process_bin'] = $baseConfig['BASEDIR']
 
 // List of commands to run asynchronously.
 $baseConfig['async_commands'] = [
-    \Application\Commands\ReadProductsCommand::class,
-    \Application\Commands\WriteProductsCommand::class,
+    \Application\Commands\ReadNetworksCommand::class,
+    \Application\Commands\ReadSmartContractsCommand::class,
 ];

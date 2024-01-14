@@ -1,0 +1,300 @@
+.site-content {
+    background-image: url("../img/Component-1.png") !important;
+    background-size: auto;
+    background-repeat: repeat-y;
+    transition: 0.5s;
+}
+
+.container {
+    align-items: center;
+}
+
+.faq-anchor {
+    display: block;
+    padding-top: 75px;
+    margin-top: -75px;
+}
+
+/* #383a3b */
+h2 {
+    overflow: hidden;
+    align-self: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: #e8d6d6;
+    margin: 0 25%;
+    padding: 25px 44px;
+    border-radius: 25px;
+    width: calc(50% + 1em);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+h2 strong {
+    color: #000;
+    z-index: 100;
+}
+
+h2::after {
+    position: absolute;
+    display: inline-block;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent);
+    transform: skewX(45deg) translateX(12px);
+    transition: 0.5s;
+}
+
+.faq {
+    border: solid 1px rgba(0, 0, 0, 0.3);
+    border-radius: 30px;
+    margin: 20px 0;
+}
+
+.faq.active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+
+.active, button.faq-accordion:hover {
+    color: #EF0000;
+}
+
+button.faq-accordion {
+    text-transform: capitalize;
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: #e8d6d6;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: #000;
+    cursor: pointer;
+    font-size: 2rem;
+    width: 100%;
+    padding: 3rem 3.5rem;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    transition: background-color 1s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+button.faq-accordion::after {
+    position: absolute;
+    display: inline-block;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent);
+    transform: skewX(45deg) translateX(12px);
+    transition: 0.7s;
+}
+
+button.faq-accordion:hover::after {
+    transform: skewX(45deg) translateX(200%);
+}
+
+button.faq-accordion strong {
+    transition: 1s;
+    z-index: 100;
+}
+
+button.faq-accordion:hover {
+    color: rgb(253, 0, 15) !important;
+}
+
+button.faq-accordion.active {
+    overflow: hidden;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    color: rgb(253, 0, 15) !important;
+    border-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+button.faq-accordion.active::after {
+    transform: skewX(45deg) translateX(200%);
+}
+
+button.faq-accordion i {
+    font-size: 1.6rem;
+}
+
+button.faq-accordion.active + .faq-panel {
+    background-color: #e8d6d6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 1;
+    max-height: fit-content;
+    padding: 0 5rem 3rem 3rem;
+    overflow: hidden;
+    transition: opacity 0.5s linear, max-height 0.5s linear;
+    will-change: display, opacity, max-height;
+}
+
+.faq .faq-panel {
+    display: none;
+    max-height: 0;
+    opacity: 0;
+    transition: opacity 0s linear, max-height 0.5s linear;
+    will-change: display, opacity, max-height;
+}
+
+.faq .faq-panel p {
+    width: 100%;
+    text-align: left;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    line-height: 2.7rem !important;
+}
+
+.footnote {
+    font-style: normal;
+    width: 100%;
+    text-align: left;
+    color: rgba(253, 0, 15, 1);
+    font-size: 12px;
+    line-height: 2.7rem !important;
+}
+
+.footnote.asterisk {
+    font-style: normal;
+    width: 100%;
+    text-align: left;
+    color: rgba(253, 0, 15, 1);
+    font-size: 16px !important;
+    line-height: 2.7rem !important;
+}
+
+.faq .faq-panel .faq-div {
+    box-sizing: border-box;
+    padding: 0 5rem 3rem 3rem;
+    display: grid;
+    grid: auto / 1fr 1fr;
+    grid-gap: 10%;
+    align-items: center;
+}
+
+.shinyButton {
+    position: relative;
+    background-color: rgb(253, 0, 15);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    cursor: pointer;
+    border-left: none;
+    border-right: none;
+    min-width: 217px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    float: left;
+    margin: 40px;
+    padding: 12px 50px;
+    border-radius: 30px;
+    letter-spacing: normal;
+    transition: 0.5s;
+}
+
+a.link {
+    color: #EF0000 !important;
+}
+
+/*
+.shinyButton:hover {
+    letter-spacing: 1.5px;
+} */
+
+.shinyButtonText {
+    font-style: normal;
+}
+
+.shinyButtonText::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+}
+
+.shinyButton:hover > .shinyButtonText::before {
+    transform: skewX(45deg) translateX(200%);
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+    h2 {
+        padding: 25px 20px;
+        margin: 0 10%;
+        width: 80%;
+    }
+
+    .faq .faq-panel .faq-div {
+        padding: 0;
+        display: grid;
+        grid: none;
+        grid-auto-flow: row !important;
+        grid-row: 2;
+        grid-gap: 0;
+        width: 100%;
+    }
+
+    .shinyButton {
+        max-width: fit-content;
+        padding: 12px 40px !important;
+        margin: 30px 0 !important;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+    h2 {
+        padding: 25px 20px;
+        margin: 0 10%;
+        width: 80%;
+    }
+
+    .faq .faq-panel .faq-div {
+        padding: 0;
+        display: grid;
+        grid: none;
+        grid-auto-flow: row !important;
+        grid-row: 2;
+        grid-gap: 0;
+        width: 100%;
+    }
+
+    .shinyButton {
+        max-width: 50%;
+        padding: 12px 40px !important;
+        margin: 30px 0 !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    .faq .faq-panel .faq-div {
+        grid-gap: 10%;
+    }
+
+    .shinyButton {
+        max-width: fit-content;
+    }
+}

@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="sec-title text-center wow animated fadeInDown">You can stake to the <strong>FTSOCAN Validator Node</strong>,<br />by using the Flare Staking Tool!</h2>
+                    <h2 class="sec-title text-center wow animated fadeInDown">You can stake to the <strong>FTSOCAN Validator Node</strong>,<br />by using the FlareStake Tool!</h2>
                     <hr />
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="sec-title text-center">
                     <img src="<?=$view['urlbaseaddr']?>/img/flare-black.svg" style="max-height: 300px;" />
-                    <a href="https://staking.flare.network" target="_blank" type="button" class="btn btn-red" >Launch Flare Staking</a>
+                    <a href="https://staking.flare.network" target="_blank" type="button" class="btn btn-red" >Launch FlareStake</a>
                     <hr />
                 </div>
             </div>

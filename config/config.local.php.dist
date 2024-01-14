@@ -2,7 +2,11 @@
 
 $baseConfig['env'] = 'development';
 
-$baseConfig['appName'] = 'The FTSOCAN Homepage';
+$baseConfig['appName'] = 'The FTSO Canada DApp';
+
+$baseConfig['dappName'] = 'FTSOCAN DApp, version 0.9.0.';
+
+$baseConfig['dappActive'] = true;
 
 /*$baseConfig['doctrine']['DBAL']['dcm1'] = [
     'driver'   => 'pdo_mysql',
