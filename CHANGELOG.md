@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.4 (2024-01-14)
+
+- Fixes a bug in the DApp's delegate page.
+
 ## 0.9.3 (2024-01-14)
 
 - Fixes a visual issue in the DApp's claim page.
