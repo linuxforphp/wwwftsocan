@@ -1,3 +1,6 @@
+// Copyright 2024 Andrew Caya <andrewscaya@yahoo.ca>
+// Copyright 2024 Jean-Thomas Caya
+
 import {GetContract, Provider as provider, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { ethers } from './ethers.js';
 
