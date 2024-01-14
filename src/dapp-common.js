@@ -1116,7 +1116,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
             } else {
                 this.setContentAppend(DelegatedFtsos[0] + ". <br />");
             }
-            this.setContentAppend("Are you sure you want to undelegate? <br />");
+            this.setContentAppend("You MUST undelegate before you can delegate to another provider. <br />");
             this.showLoading(true);
             this.hideLoading(true);
         }

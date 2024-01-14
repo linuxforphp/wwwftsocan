@@ -30,6 +30,10 @@
     background: none !important;
 }
 
+.amount-delegate:focus {
+    outline: none !important;
+}
+
 .delegate-button-text {
     font-style: normal;
 }
