@@ -1,48 +1,39 @@
-# [![LightMVC Banner](https://github.com/lightmvc/lightmvcskel/raw/master/public/img/lightmvc_logo.png)](https://lightmvcframework.net/)
-# LightMVC Framework Skeleton Application
+# [![FTSOCAN Banner](https://github.com/linuxforphp/wwwftsocan/raw/master/public/tile.png)](https://ftsocan.com/)
+# FTSOCAN DAPP
 
-https://lightmvcframework.net
+https://ftsocan.com/
 
-Easily create PHP applications by using any PHP library within this very modular, event-driven and Swoole-enabled framework!
+FTSO Canada (**FTSOCAN**) is your partner to help you build your passive income on the Flare Network, by providing the 
+Flare Network with a fast and efficient price provider.
 
-## HOWTO
+## GUIDES
 
-You can use the **LightMVC Skeleton Application** by issuing these commands:
+### ADD METAMASK TO YOUR BROWSER AND / OR ADD FLARE AND SONGBIRD TO YOUR METAMASK
 
-    $ git clone https://github.com/lightmvc/lightmvcskel
-    $ cd lightmvcskel
-    $ composer install
+You can use **FTSOCAN**'s one-click installation buttons on the following page:
 
-> The LightMVC Skeleton Application can also be downloaded as an archive file from the https://lightmvcframework.net/download.
+> https://ftsocan.com/faq/index#AddNetworks
 
-Once the previous step is done:
+### WRAP / UNWRAP, DELEGATE AND CLAIM YOUR REWARDS
 
-* Add a virtual host definition in the Apache configuration file.
-* Add your database configuration to config/config.local.php,
-* Load the included test database data/db_schema.sql and data/db_data.sql,
-* Load the application in your favorite browser.
+**FTSOCAN**'s DApp allows you to easily manage your **FLR** and **SGB** tokens:
 
-> Please make sure that the server can write to the cache/, logs/ and templates_c/ folders!
+> https://ftsocan.com/dapp/index
 
-The **LightMVC Framework Skeleton Application** can also run on Swoole in order to make it lightning fast. In order
-to do so, you must make sure to install Swoole. From the CLI, as the root user, type the following:
+### OTHER TOOLS
 
-    $ pecl install swoole
+**FTSOCAN**'s website has references to many other tools on the Flare Network:
 
-After answering a few questions, Swoole will be compiled and installed. Then, run the following command (on Linux/Unix/Mac):
+#### FLARE PORTAL
 
-    $ echo "extension=swoole.so" >> /etc/php.ini
+> https://ftsocan.com/delegate/index
 
-> If running **Swoole** on **Windows**, please add the extension manually in **PHP**'s ``php.ini`` file. The ``php.ini`` file might be located elsewhere on your system. For example, on **Ubuntu** 18.04, when running **PHP** 7.2, you will find this file in ``/etc/php/7.2/apache2``. You can discover the location of this file by entering the command ``php --ini`` on the command line. It must also be mentioned that some systems have multiple INI files (CLI vs Web). Please modify all those that apply.
+#### FLARESTAKE
 
-Then, from within the root directory of the project, you can run the following command:
+> https://ftsocan.com/stake/index
 
-    $ COMPOSER_PROCESS_TIMEOUT=0 composer run-swoole
+#### FLARE / SONGBIRD EXPLORER
 
-> By default, Swoole will listen on the ``localhost`` loopback, on port 9501. If you wish to change this, please modify the ``run-swoole`` command inside the ``composer.json`` file according to your needs.
-
-## Upgrading from 4.0.0 to 5.0.0
-
-When upgrading from version 4.0.0 to 5.0.0, please make sure to replace the namespace \Doctrine\Common with \Ascmvc\Session\Common in your config/session.config.php file.
-
-### Have a lot of fun! :)
+> https://ftsocan.com/flrexplorer/index
+>
+> https://ftsocan.com/sgbexplorer/index
