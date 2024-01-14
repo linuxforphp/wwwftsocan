@@ -190,6 +190,8 @@ async function handleChainChanged() {
         var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
             var realChainId;
 
+            var changeEvent = new Event("change");
+
             var selectedNetwork = document.getElementById("SelectedNetwork");
 
             realChainId = selectedNetwork.options[0].getAttribute('data-chainidhex');
@@ -199,6 +201,7 @@ async function handleChainChanged() {
                     selectedNetwork.options[i].setAttribute('selected', 'selected');
                     selectedNetwork.options.selectedIndex = i;
                     realChainId = chainIdHex;
+                    selectedNetwork.dispatchEvent(changeEvent);
                 } else {
                     selectedNetwork.options[i].removeAttribute('selected');
                 }
@@ -1113,7 +1116,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
             } else {
                 this.setContentAppend(DelegatedFtsos[0] + ". <br />");
             }
-            this.setContentAppend("Are you sure you want to undelegate? <br />");
+            this.setContentAppend("You MUST undelegate before you can delegate to another provider. <br />");
             this.showLoading(true);
             this.hideLoading(true);
         }
