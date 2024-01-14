@@ -1640,6 +1640,10 @@ window.dappInit = async (option) => {
                         } else {
                             document.getElementById("layer3").innerHTML = DappObject.costonLogo;
                         }
+                        
+                        object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                        object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
+                        showTokenIdentifiers(null, object.wrappedTokenIdentifier);
 
                         // Alert Metamask to switch.
                         try {

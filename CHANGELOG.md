@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.3 (2024-01-14)
+
+- Fixes a visual issue in the DApp's claim page.
+
 ## 0.9.2 (2024-01-14)
 
 - Fixes a bug related to chain ID detection.
