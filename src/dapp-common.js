@@ -562,6 +562,14 @@ function copyWrapInput() {
 async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1, ftso2) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
+    let delegatedIcon1 = document.getElementById("delegatedIcon1");
+    delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+    isDelegateInput1(DappObject);
+
+    let delegatedIcon2 = document.getElementById("delegatedIcon2");
+    delegatedIcon2.src = dappUrlBaseAddr + 'img/FLR.svg';
+    isDelegateInput2(DappObject);
+
     await populateFtsos(ftso1, ftso2, rpcUrl, flrAddr);
 
     let web32 = new Web3(rpcUrl);
@@ -692,7 +700,7 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
             var insert2 = '';
             let web32 = new Web3(rpcUrl);
             let selectedNetwork = document.getElementById('SelectedNetwork');
-            let chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex')
+            let chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
 
             try {
                 const voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
@@ -715,8 +723,8 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
                                 for (var i = 0; i < ftsoList.length; i++) {
                                     if (FtsoInfo.providers[f].address === ftsoList[i]) {
                                         indexNumber = f;
+
                                         //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
-    
                                         if (ftsoJsonList.includes(ftsoList[i])) {
                                             if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
                                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
