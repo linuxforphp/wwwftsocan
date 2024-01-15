@@ -147,7 +147,6 @@ button.faq-accordion.active + .faq-panel {
 
 .faq .faq-panel {
     display: none;
-    max-height: 0;
     opacity: 0;
     transition: opacity 0s linear, max-height 0.5s linear;
     will-change: display, opacity, max-height;
