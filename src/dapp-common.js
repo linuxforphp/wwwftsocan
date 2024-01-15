@@ -1,5 +1,5 @@
-// Copyright 2024 Andrew Caya <andrewscaya@yahoo.ca>
-// Copyright 2024 Jean-Thomas Caya
+// Copyright 2024, Andrew Caya <andrewscaya@yahoo.ca>
+// Copyright 2024, Jean-Thomas Caya
 
 import {GetContract, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { ethers } from './ethers.js';
@@ -562,6 +562,14 @@ function copyWrapInput() {
 async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1, ftso2) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
+    let delegatedIcon1 = document.getElementById("delegatedIcon1");
+    delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+    isDelegateInput1(DappObject);
+
+    let delegatedIcon2 = document.getElementById("delegatedIcon2");
+    delegatedIcon2.src = dappUrlBaseAddr + 'img/FLR.svg';
+    isDelegateInput2(DappObject);
+
     await populateFtsos(ftso1, ftso2, rpcUrl, flrAddr);
 
     let web32 = new Web3(rpcUrl);
@@ -692,7 +700,7 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
             var insert2 = '';
             let web32 = new Web3(rpcUrl);
             let selectedNetwork = document.getElementById('SelectedNetwork');
-            let chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex')
+            let chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
 
             try {
                 const voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
@@ -715,8 +723,8 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
                                 for (var i = 0; i < ftsoList.length; i++) {
                                     if (FtsoInfo.providers[f].address === ftsoList[i]) {
                                         indexNumber = f;
+
                                         //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
-    
                                         if (ftsoJsonList.includes(ftsoList[i])) {
                                             if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
                                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
@@ -1181,50 +1189,55 @@ window.dappInit = async (option) => {
                                 let tokenBalance = await tokenContract.methods.balanceOf(account).call();
                                 var amountFrom = document.getElementById("AmountFrom");
                                 var amountTo = document.getElementById("AmountTo");
-                                const amountFromValue = amountFrom.value.replace(/[^0-9]/g, '');
-                                const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
-                                const amountFromValueWeiBN = BigInt(amountFromValueWei);
-                                const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
-                                
-                                let txPayload = {};
-                                
-                                if (DappObject.wrapBool === true) {
-                                    txPayload = {
-                                        from: account,
-                                        to: wrappedTokenAddr,
-                                        data: tokenContract.methods.deposit(amountFromValueWeiHex).encodeABI(),
-                                        value: amountFromValueWeiHex
-                                    };
-                                } else {
-                                    txPayload = {
-                                        from: account,
-                                        to: wrappedTokenAddr,
-                                        data: tokenContract.methods.withdraw(amountFromValueWeiBN).encodeABI()
-                                    };
-                                }
-                
-                                const transactionParameters = txPayload;
-                
-                                if (DappObject.wrapBool === true && amountFromValue >= Number(web32.utils.fromWei(balance, "ether"))) {
-                                    $.alert("Insufficient Balance!");
-                                } else if (DappObject.wrapBool === false && amountFromValue >= Number(web32.utils.fromWei(tokenBalance, "ether"))) {
-                                    $.alert("Insufficient Balance!");
-                                } else {
-                                    if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
-                                        amountFrom.value = "";
-                                        amountTo.value = "";
-                                    }
-                                    
-                                    showSpinner(async () => {
-                                        await provider.request({
-                                            method: 'eth_sendTransaction',
-                                            params: [transactionParameters],
-                                        })
-                                        .then(txHash => showConfirmationSpinner(txHash, web32))
-                                        .catch((error) => showFail());
-                                    });
+                                const amountFromValue = parseFloat(amountFrom.value);
 
-                                    setWrapButton(DappObject);
+                                if (Number.isNaN(amountFromValue)) {
+                                    $.alert("Invalid number of tokens!");
+                                } else {
+                                    const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
+                                    const amountFromValueWeiBN = BigInt(amountFromValueWei);
+                                    const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
+
+                                    let txPayload = {};
+
+                                    if (DappObject.wrapBool === true) {
+                                        txPayload = {
+                                            from: account,
+                                            to: wrappedTokenAddr,
+                                            data: tokenContract.methods.deposit(amountFromValueWeiHex).encodeABI(),
+                                            value: amountFromValueWeiHex
+                                        };
+                                    } else {
+                                        txPayload = {
+                                            from: account,
+                                            to: wrappedTokenAddr,
+                                            data: tokenContract.methods.withdraw(amountFromValueWeiBN).encodeABI()
+                                        };
+                                    }
+
+                                    const transactionParameters = txPayload;
+
+                                    if (DappObject.wrapBool === true && amountFromValueWeiBN > balance) {
+                                        $.alert("Insufficient balance!");
+                                    } else if (DappObject.wrapBool === false && amountFromValueWeiBN > tokenBalance) {
+                                        $.alert("Insufficient balance!");
+                                    } else {
+                                        if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
+                                            amountFrom.value = "";
+                                            amountTo.value = "";
+                                        }
+
+                                        showSpinner(async () => {
+                                            await provider.request({
+                                                method: 'eth_sendTransaction',
+                                                params: [transactionParameters],
+                                            })
+                                                .then(txHash => showConfirmationSpinner(txHash, web32))
+                                                .catch((error) => showFail());
+                                        });
+
+                                        setWrapButton(DappObject);
+                                    }
                                 }
                             } catch (error) {
                                 // console.log(error);
