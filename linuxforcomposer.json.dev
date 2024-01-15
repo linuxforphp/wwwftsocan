@@ -31,6 +31,7 @@
                     "/etc/init.d/mysql stop",
                     "sleep 5",
                     "lfphp-get node.js-16",
+                    "lfphp-get jq",
                     "npm install -g grunt",
                     "cd /srv/tempo/wwwftsocan",
                     "npm install",
