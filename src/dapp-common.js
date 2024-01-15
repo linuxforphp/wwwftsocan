@@ -1,5 +1,5 @@
-// Copyright 2024 Andrew Caya <andrewscaya@yahoo.ca>
-// Copyright 2024 Jean-Thomas Caya
+// Copyright 2024, Andrew Caya <andrewscaya@yahoo.ca>
+// Copyright 2024, Jean-Thomas Caya
 
 import {GetContract, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { ethers } from './ethers.js';
@@ -1181,50 +1181,55 @@ window.dappInit = async (option) => {
                                 let tokenBalance = await tokenContract.methods.balanceOf(account).call();
                                 var amountFrom = document.getElementById("AmountFrom");
                                 var amountTo = document.getElementById("AmountTo");
-                                const amountFromValue = amountFrom.value.replace(/[^0-9]/g, '');
-                                const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
-                                const amountFromValueWeiBN = BigInt(amountFromValueWei);
-                                const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
-                                
-                                let txPayload = {};
-                                
-                                if (DappObject.wrapBool === true) {
-                                    txPayload = {
-                                        from: account,
-                                        to: wrappedTokenAddr,
-                                        data: tokenContract.methods.deposit(amountFromValueWeiHex).encodeABI(),
-                                        value: amountFromValueWeiHex
-                                    };
-                                } else {
-                                    txPayload = {
-                                        from: account,
-                                        to: wrappedTokenAddr,
-                                        data: tokenContract.methods.withdraw(amountFromValueWeiBN).encodeABI()
-                                    };
-                                }
-                
-                                const transactionParameters = txPayload;
-                
-                                if (DappObject.wrapBool === true && amountFromValue >= Number(web32.utils.fromWei(balance, "ether"))) {
-                                    $.alert("Insufficient Balance!");
-                                } else if (DappObject.wrapBool === false && amountFromValue >= Number(web32.utils.fromWei(tokenBalance, "ether"))) {
-                                    $.alert("Insufficient Balance!");
-                                } else {
-                                    if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
-                                        amountFrom.value = "";
-                                        amountTo.value = "";
-                                    }
-                                    
-                                    showSpinner(async () => {
-                                        await provider.request({
-                                            method: 'eth_sendTransaction',
-                                            params: [transactionParameters],
-                                        })
-                                        .then(txHash => showConfirmationSpinner(txHash, web32))
-                                        .catch((error) => showFail());
-                                    });
+                                const amountFromValue = parseFloat(amountFrom.value);
 
-                                    setWrapButton(DappObject);
+                                if (Number.isNaN(amountFromValue)) {
+                                    $.alert("Invalid number of tokens!");
+                                } else {
+                                    const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
+                                    const amountFromValueWeiBN = BigInt(amountFromValueWei);
+                                    const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
+
+                                    let txPayload = {};
+
+                                    if (DappObject.wrapBool === true) {
+                                        txPayload = {
+                                            from: account,
+                                            to: wrappedTokenAddr,
+                                            data: tokenContract.methods.deposit(amountFromValueWeiHex).encodeABI(),
+                                            value: amountFromValueWeiHex
+                                        };
+                                    } else {
+                                        txPayload = {
+                                            from: account,
+                                            to: wrappedTokenAddr,
+                                            data: tokenContract.methods.withdraw(amountFromValueWeiBN).encodeABI()
+                                        };
+                                    }
+
+                                    const transactionParameters = txPayload;
+
+                                    if (DappObject.wrapBool === true && amountFromValueWeiBN > balance) {
+                                        $.alert("Insufficient balance!");
+                                    } else if (DappObject.wrapBool === false && amountFromValueWeiBN > tokenBalance) {
+                                        $.alert("Insufficient balance!");
+                                    } else {
+                                        if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
+                                            amountFrom.value = "";
+                                            amountTo.value = "";
+                                        }
+
+                                        showSpinner(async () => {
+                                            await provider.request({
+                                                method: 'eth_sendTransaction',
+                                                params: [transactionParameters],
+                                            })
+                                                .then(txHash => showConfirmationSpinner(txHash, web32))
+                                                .catch((error) => showFail());
+                                        });
+
+                                        setWrapButton(DappObject);
+                                    }
                                 }
                             } catch (error) {
                                 // console.log(error);
