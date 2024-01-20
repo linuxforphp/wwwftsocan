@@ -79,11 +79,17 @@
                 $("#dapp-root").html(data);
                 window.dappInit(3);
             });
+        } else if (uriPath[2] === 'stake') {
+            $.get("stake", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(4);
+            });
         }
     }
 </script>
 
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappcommon.bundle.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/flareutils.bundle.js"></script>
+
 </body>
 </html>

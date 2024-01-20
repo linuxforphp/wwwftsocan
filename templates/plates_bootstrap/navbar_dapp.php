@@ -61,6 +61,7 @@ Fixed Navigation
                     <li><a href="#" class="nav-link" onclick="getDappPage(1)">Wrap</a></li>
                     <li><a href="#" class="nav-link" onclick="getDappPage(2)">Delegate</a></li>
                     <li><a href="#" class="nav-link" onclick="getDappPage(3)">Rewards</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(4)">Stake</a></li>
                 </ul>
             </div>
         </div>

@@ -47,6 +47,12 @@
         <script src="<?php echo $value ?>"></script>
     <?php endforeach; ?>
 
+    <?php if ($view['headjsdefer'] === 1): ?>
+        <?php foreach($view['jsdefer'] as $key => $value): ?>
+            <script defer="defer" src="<?php echo $value ?>"></script>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
     <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
 
     <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>

@@ -2,7 +2,7 @@
 // Copyright 2024, Jean-Thomas Caya
 
 import {GetContract, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
-import { ethers } from './ethers.js';
+import { ethers } from "./ethers.js";
 
 // ALL MODULES.
 
@@ -1096,6 +1096,54 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
     });
 }
 
+// STAKE MODULE
+
+async function ConnectWalletClickStake() {
+    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+    let web32 = new Web3("https://sbi.flr.ftsocan.com/ext/C/rpc");
+
+    let message = "You are enabling the FTSOCAN DApp to access your accounts PUBLIC key to derive your P-Chain address. Additionally, you are acknowledging the risks involved with staking on Flare and the usage of the MetaMask 'eth_sign' functionality. \n\nWE ARE NOT RESPONSIBLE FOR ANY LOSSES OF FUNDS AFTER STAKING. CONTINUE AT YOUR OWN RISK!";
+
+    try {
+        const accounts = await provider.request({method: 'eth_requestAccounts'});
+        const account = accounts[0];
+
+        const signature = await provider.request({
+            "method": "personal_sign",
+            "params": [
+              message,
+              account
+            ]
+        });
+
+        const flrPublicKey = AlertGetAddr(account, message, signature);
+
+        console.log(flrPublicKey);
+
+        showAccountAddress(flrPublicKey);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function AlertGetAddr(address, message, signature) {
+    const messageHash = ethers.utils.hashMessage(message);
+    const recoveredPublicKey = ethers.utils.recoverPublicKey(
+      messageHash,
+      signature
+    );
+  
+    // To confirm the signer's address, you can compute the Ethereum address from the recovered public key
+    const recoveredAddress = ethers.utils.computeAddress(recoveredPublicKey);
+  
+    if (recoveredAddress.toLowerCase() === address.toLowerCase()) {
+      return recoveredPublicKey;
+    } else {
+      throw new Error("Failed to verify signer.");
+    }
+  }
+
 // INIT
 
 window.dappInit = async (option) => {
@@ -1605,6 +1653,58 @@ window.dappInit = async (option) => {
                     });
                 });
             });
+        } else if (option === 4 || option === '4') {
+            // switch to Flare
+            try {
+                await window.ethereum.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [
+                        {
+                        "chainId": "0xe"
+                        }
+                    ]
+                    }).catch((error) => console.error(error));
+            } catch (error) {
+                // console.log(error);
+
+                if (error.code === 4902) {
+                    try {
+                        await ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    "chainId": "0xe",
+                                    "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
+                                    "chainName": `Flare Mainnet`,
+                                    "iconUrls": [
+                                        `https://portal.flare.network/token-logos/FLR.svg`
+                                    ],
+                                    "nativeCurrency": {
+                                        "name": `FLR`,
+                                        "symbol": `FLR`,
+                                        "decimals": 18
+                                    }
+                                },
+                            ],
+                        });
+                    } catch (error) {
+                        throw(error);
+                    }
+                }
+            }
+
+            document.getElementById("ConnectWallet").addEventListener("click", async () => {
+                ConnectWalletClickStake();
+            });
+
+            document.getElementById("ConnectWallet").click();
+
+            const flare = new AvalancheCore("sbi.flr.ftsocan.com/ext/C/rpc", undefined, "https");
+
+            console.log(flare);
+
+            // const cChain = flare.CChain();
+            // const pChain = flare.PChain();
         }
     }
 };

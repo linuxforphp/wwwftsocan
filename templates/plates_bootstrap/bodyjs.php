@@ -110,6 +110,14 @@
                     window.dappInit(3);
                 }
             });
+        } else if (option === 4) {
+            $.get( "stake", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(4);
+                }
+            });
         }
     }
 </script>

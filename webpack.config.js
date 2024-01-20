@@ -4,7 +4,7 @@ const nodeExternals = require("webpack-node-externals");
 const path = require('path');
 
 const config = {
-  mode: 'production',
+    mode: 'production',
     entry: {
         dappcommon: './src/dapp-common.js',
         flareutils: './src/flare-utils.js'
