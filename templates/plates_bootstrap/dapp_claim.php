@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="row">
-            <div id="after"></div>
+            <div id="delegate-wrapbox"></div>
         </div>
         <div class="row">
             <div class="col-sm-12">
