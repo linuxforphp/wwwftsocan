@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.9.6 (2024-01-22)
+
+- Fixes an issue when delegating to more than one provider.
+- Fixes a minor issue with the wrap/unwrap button.
+- Updates the project's dependencies.
+
 ## 0.9.5 (2024-01-15)
 
 - Fixes an issue with float values on the DApp's wrap page.
@@ -8,7 +14,6 @@
 - Updates the TSO price provider assets.
 - Updates the project's dependencies.
 - Add jq to the dev environment.
-
 
 ## 0.9.4 (2024-01-14)
 
