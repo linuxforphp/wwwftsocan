@@ -354,7 +354,6 @@ async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentif
     })
 }
 
-
 async function createSelectedNetwork(DappObject) {
     return new Promise((resolve) => {
         setTimeout(async () => {
@@ -468,15 +467,118 @@ function showTokenIdentifiers(token, wrappedToken) {
     document.getElementById("wrappedTokenIdentifier").innerText = wrappedToken;
 }
 
+async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject) {
+    var delegatedFtsoElement = document.getElementById('delegate-wrapbox');
+
+    const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
+    let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+    let voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
+    let voterWhitelistContract = new web32.eth.Contract(DappObject.voterWhitelisterAbi, voterWhitelistAddr);
+
+    // Getting which FTSO(s) the user has delegated to, the percentage of WNat he has
+    // delegated,and the logo of said FTSO(s).
+    const ftsoList = await voterWhitelistContract.methods.getFtsoWhitelistedPriceProviders(0).call();
+    const ftsoJsonList = JSON.stringify(ftsoList);
+    const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
+    const delegatedFtsos = delegatesOfUser[0];
+    const BipsJson = delegatesOfUser[1];
+    let Bips = [];
+
+    if (typeof BipsJson[0] !== 'undefined' && BipsJson[0] != 0) {
+        Bips = BipsJson[0] / 100n;
+    } else {
+        Bips = 0;
+    }
+
+    let insert1 = '';
+    let insert2 = '';
+
+    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
+    fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
+        .then(res => res.json())
+        .then(FtsoInfo => {
+                FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
+
+                var indexNumber;
+
+                for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                    indexNumber = f;
+
+                    for (var i = 0; i < delegatedFtsos.length; i++) {
+                        if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
+                            if (ftsoJsonList.includes(delegatedFtsos[i])) {
+                                if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                    insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
+                                                    <div class="row">
+                                                        <div class="wrap-box-content">
+                                                            <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
+                                                            <div class="ftso-identifier">
+                                                                <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
+                                                            </div>
+                                                            <div class="wrapper-ftso">
+                                                                <span id="delegatedBips1">${Bips}%</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="wrapper-claim">
+                                                            <span>Provider:</span>
+                                                            <span class="address-claim">${delegatedFtsos[i]}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
+                                } else {
+                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                    insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
+                                                    <div class="row">
+                                                        <div class="wrap-box-content">
+                                                            <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
+                                                            <div class="ftso-identifier">
+                                                                <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
+                                                            </div>
+                                                            <div class="wrapper-ftso">
+                                                                <span id="delegatedBips2">${Bips}%</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="wrapper-claim">
+                                                            <span>Provider:</span>
+                                                            <span class="address-claim">${delegatedFtsos[i]}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
+                                }
+                            } else {
+                                $.alert('The FTSO you have delegated to is invalid!');
+                            }
+                        }
+                    }
+                }
+
+                let delegatedFtsoElementChildren = delegatedFtsoElement.getElementsByClassName('wrap-box-ftso');
+
+                while (delegatedFtsoElementChildren[0]) {
+                    delegatedFtsoElementChildren[0].parentNode.removeChild(delegatedFtsoElementChildren[0]);
+                }
+
+                delegatedFtsoElement.insertAdjacentHTML('afterbegin', insert1 + insert2);
+
+                isDelegateInput1(DappObject);
+            }
+        );
+}
+
 // WRAP MODULE
 
-async function ConnectWalletClickWrap(rpcUrl, FlrAddr, DappObject) {
+async function ConnectWalletClickWrap(rpcUrl, flrAddr, DappObject) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     
     let web32 = new Web3(rpcUrl);
 
     try {
-        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, FlrAddr);
+        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
         const accounts = await provider.request({method: 'eth_requestAccounts'});
         const account = accounts[0];
@@ -484,7 +586,9 @@ async function ConnectWalletClickWrap(rpcUrl, FlrAddr, DappObject) {
         const balance = await web32.eth.getBalance(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-        if (DappObject.wrapBool) {
+        DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
+
+        if (DappObject.wrapBool === true) {
             showBalance(round(web32.utils.fromWei(balance, "ether")));
             showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
         } else {
@@ -500,7 +604,7 @@ async function toggleWrapButton(DappObject, tokenIdentifier, wrappedTokenIdentif
     // Switching wrap/unwrap.
     if (DappObject.wrapBool === true) {
         DappObject.wrapBool = false;
-        document.getElementById("wrapUnwrap").value = "true";
+        document.getElementById("wrapUnwrap").value = "false";
         document.getElementById("FromIcon").style.color = "#000";
         document.getElementById("ToIcon").style.color = "#fd000f";
         document.getElementById("Wrap").style.color = "#383a3b";
@@ -509,7 +613,7 @@ async function toggleWrapButton(DappObject, tokenIdentifier, wrappedTokenIdentif
         setWrapButton(DappObject);
     } else {
         DappObject.wrapBool = true;
-        document.getElementById("wrapUnwrap").value = "false";
+        document.getElementById("wrapUnwrap").value = "true";
         document.getElementById("FromIcon").style.color = "#fd000f";
         document.getElementById("ToIcon").style.color = "#000";
         document.getElementById("Wrap").style.color = "#fd000f";
@@ -559,29 +663,23 @@ function copyWrapInput() {
 
 // DELEGATE MODULE
 
-async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1, ftso2) {
+async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
     let delegatedIcon1 = document.getElementById("delegatedIcon1");
     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+
     isDelegateInput1(DappObject);
 
-    let delegatedIcon2 = document.getElementById("delegatedIcon2");
-    delegatedIcon2.src = dappUrlBaseAddr + 'img/FLR.svg';
-    isDelegateInput2(DappObject);
-
-    await populateFtsos(ftso1, ftso2, rpcUrl, flrAddr);
+    await populateFtsos(ftso1, rpcUrl, flrAddr);
 
     let web32 = new Web3(rpcUrl);
 
     try {
-        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
-        let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
         const accounts = await provider.request({method: 'eth_requestAccounts'});
         const account = accounts[0];
         showAccountAddress(account);
-        const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
     } catch (error) {
         // console.log(error);
     }
@@ -601,98 +699,64 @@ function switchDelegateButtonColorBack(claimBool) {
 }
 
 function isDelegateInput1(DappObject) {
-    let amount1 = document.getElementById("Amount1");
+    let delegatedBips = 0;
+    let delegatedBips1 = document.getElementById('delegatedBips1');
+    let delegatedBips2 = document.getElementById('delegatedBips2');
+    let delegatedBips1Value = 0;
+    let delegatedBips2Value = 0;
+
+    if (typeof delegatedBips1 !== 'undefined' && delegatedBips1 !== null) {
+        delegatedBips1Value = Number(delegatedBips1?.innerText.replace(/[^0-9]/g, ''));
+
+        delegatedBips = delegatedBips1Value;
+    }
+
+    if (typeof delegatedBips2 !== 'undefined' && delegatedBips2 !== null) {
+        delegatedBips2Value = Number(delegatedBips2?.innerText.replace(/[^0-9]/g, ''));
+
+        delegatedBips += delegatedBips2Value;
+    }
+
     let claimButton = document.getElementById("ClaimButton");
 
-    if (Number(amount1.value.replace(/[^0-9]/g, '')) < 1 || Number(amount1.value.replace(/^0-9]/g, '')) > 100) {
-        claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-        claimButton.style.cursor = "auto";
-        document.getElementById("ClaimButtonText").innerText = "Enter Amount";
-        DappObject.isRealValue = false;
+    let wrapbox1 = document.getElementById('wrapbox-1');
+
+    if (delegatedBips === 100) {
+        if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
+            wrapbox1.style.display = "none";
+            claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+            claimButton.style.cursor = "pointer";
+            DappObject.isRealValue = true;
+            document.getElementById("ClaimButtonText").innerText = "Undelegate all";
+        }
     } else {
-        if (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 || Number(amount1.value.replace(/[^0-9]/g, '')) === 100) {
+        if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
+            wrapbox1.removeAttribute('style');
+        }
+
+        let amount1 = document.getElementById("Amount1");
+
+        if (delegatedBips === 0 && (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 || Number(amount1.value.replace(/[^0-9]/g, '')) === 100)) {
             claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             claimButton.style.cursor = "pointer";
             DappObject.isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Delegate";
-            isDelegateInput3(DappObject);
+        } else if (delegatedBips === 50 && Number(amount1.value.replace(/[^0-9]/g, '')) === 50) {
+            claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+            claimButton.style.cursor = "pointer";
+            DappObject.isRealValue = true;
+            document.getElementById("ClaimButtonText").innerText = "Delegate";
         } else {
             claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             claimButton.style.cursor = "auto";
             document.getElementById("ClaimButtonText").innerText = "Enter Amount";
             DappObject.isRealValue = false;
-        }
-    }
-}
-
-function isDelegateInput2(DappObject) {
-    let amount2 = document.getElementById("Amount2");
-    let claimButton = document.getElementById("ClaimButton");
-
-    if (Number(amount2.value.replace(/[^0-9]/g, '')) < 1 || Number(amount2.value.replace(/[^0-9]/g, '')) > 100) {
-        claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-        claimButton.style.cursor = "auto";
-        document.getElementById("ClaimButtonText").innerText = "Enter Amount";
-        DappObject.isRealValue = false;
-        DappObject.isAmount2Active = false;
-    } else {
-        if (Number(amount2.value.replace(/[^0-9]/g, '')) === 50 || Number(amount2.value.replace(/[^0-9]/g, '')) === 100) {
-            claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-            claimButton.style.cursor = "pointer";
-            DappObject.isRealValue = true;
-            DappObject.isAmount2Active = true;
-            document.getElementById("ClaimButtonText").innerText = "Delegate";
-            isDelegateInput3(DappObject);
-        } else {
-            claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-            claimButton.style.cursor = "auto";
-            document.getElementById("ClaimButtonText").innerText = "Enter Amount";
-            DappObject.isRealValue = false;
-            DappObject.isAmount2Active = false;
-        }
-    }
-}
-
-function isDelegateInput3(DappObject) {
-    let ftso1 = document.getElementById("ftso-1");
-    let ftso2 = document.getElementById("ftso-2");
-    let amount1 = document.getElementById("Amount1");
-    let amount2 = document.getElementById("Amount2");
-    let claimButton = document.getElementById("ClaimButton");
-
-    if (Number(amount1.value.replace(/[^0-9]/g, '')) + Number(amount2.value.replace(/[^0-9]/g, '')) > 100 || Number(ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-ftso')) === 0) {
-        claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-        claimButton.style.cursor = "auto";
-        document.getElementById("ClaimButtonText").innerText = "Enter Amount";
-        DappObject.isRealValue = false;
-        DappObject.isAmount2Active = false;
-    } else {
-        if (Number(amount2.value.replace(/[^0-9]/g, '')) !== 0 && amount2.value.replace(/[^0-9]/g, '') !== '') {
-            if (ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-ftso') === "0") {
-                claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
-                claimButton.style.cursor = "auto";
-                document.getElementById("ClaimButtonText").innerText = "Enter Amount";
-                DappObject.isRealValue = false;
-                DappObject.isAmount2Active = false;
-            } else {
-                claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-                claimButton.style.cursor = "pointer";
-                DappObject.isRealValue = true;
-                DappObject.isAmount2Active = true;
-                document.getElementById("ClaimButtonText").innerText = "Delegate";
-            }
-        } else {
-            claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-            claimButton.style.cursor = "pointer";
-            DappObject.isRealValue = true;
-            DappObject.isAmount2Active = true;
-            document.getElementById("ClaimButtonText").innerText = "Delegate";
         }
     }
 }
 
 // Populate select elements.
-async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
+async function populateFtsos(ftso1, rpcUrl, flrAddr) {
     return new Promise((resolve) => {
         setTimeout(async () => {
             var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
@@ -735,7 +799,6 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
                                             }
     
                                             ftso1.innerHTML = insert + insert1 + insert2;
-                                            ftso2.innerHTML = insert + insert1 + insert2;
                                         } else {
                                             $.alert('The FTSO you are delegated to is invalid!');
                                             break;
@@ -759,7 +822,6 @@ async function populateFtsos(ftso1, ftso2, rpcUrl, flrAddr) {
 async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
-    var delegatedFtsoElement = document.getElementById('after');
     var networkSelectBox = document.getElementById('SelectedNetwork');
 
     let web32 = new Web3(rpcUrl);
@@ -768,11 +830,9 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
         const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
         const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
-        const voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
         let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
-        let voterWhitelistContract = new web32.eth.Contract(DappObject.voterWhitelisterAbi, voterWhitelistAddr);
         const accounts = await provider.request({method: 'eth_requestAccounts'});
         const account = accounts[0];
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
@@ -806,90 +866,7 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
 
         remove(".wrap-box-ftso");
 
-        // Getting which FTSO(s) the user has delegated to, the percentage of wnat he has
-        // delegated,and the logo of said FTSO(s).
-        const ftsoList = await voterWhitelistContract.methods.getFtsoWhitelistedPriceProviders(0).call();
-        const ftsoJsonList = JSON.stringify(ftsoList);
-        const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
-        const delegatedFtsos = delegatesOfUser[0];
-        const BipsJson = delegatesOfUser[1];
-        let Bips = [];
-        
-        if (typeof BipsJson[0] !== 'undefined' && BipsJson[0] != 0) {
-            Bips = BipsJson[0] / 100n;
-        } else {
-            Bips = 0;
-        }
-        
-        let insert1 = '';
-        let insert2 = '';
-
-        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
-        fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
-        .then(res => res.json())
-        .then(FtsoInfo => {
-            FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
-
-            var indexNumber;
-
-            for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                indexNumber = f;
-
-                for (var i = 0; i < delegatedFtsos.length; i++) {
-                    if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
-                        if (ftsoJsonList.includes(delegatedFtsos[i])) {
-                            if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
-                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
-                                                <div class="row">
-                                                    <div class="wrap-box-content">
-                                                        <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
-                                                        <div class="ftso-identifier">
-                                                            <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
-                                                        </div>
-                                                        <div class="wrapper-ftso">
-                                                            <span>${Bips}%</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="wrapper-claim">
-                                                        <span>Provider:</span>
-                                                        <span class="address-claim">${delegatedFtsos[i]}</span>
-                                                    </div>
-                                                </div>
-                                            </div>`;
-                            } else {
-                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
-                                                <div class="row">
-                                                    <div class="wrap-box-content">
-                                                        <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
-                                                        <div class="ftso-identifier">
-                                                            <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
-                                                        </div>
-                                                        <div class="wrapper-ftso">
-                                                            <span>${Bips}%</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="wrapper-claim">
-                                                        <span>Provider:</span>
-                                                        <span class="address-claim">${delegatedFtsos[i]}</span>
-                                                    </div>
-                                                </div>
-                                            </div>`;
-                            }
-
-                            delegatedFtsoElement.innerHTML = insert1 + insert2;
-                        } else {
-                            $.alert('The FTSO you have delegated to is invalid!');
-                        }
-                    }
-                }
-            }
-        });
+        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
 
         // Getting the unclaimed Rewards and affecting the Claim button.
         const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
@@ -1004,25 +981,19 @@ async function delegate(object, DappObject) {
         $.alert("Please enter valid value. (50% or 100%)");
     } else {
         let amount1 = document.getElementById("Amount1");
-        let amount2 = document.getElementById("Amount2");
         let ftso1 = document.getElementById("ftso-1");
-        let ftso2 = document.getElementById("ftso-2");
 
         let web32 = new Web3(object.rpcUrl);
 
         web32.setProvider(provider);
 
         const value1 = amount1.value;
-        const value2 = amount2.value;
 
         const percent1 = value1.replace(/[^0-9]/g, '');
-        const percent2 = value2.replace(/[^0-9]/g, '');
 
         const bips1 = Number(percent1) * 100;
-        const bips2 = Number(percent2) * 100;
 
         var addr1 = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-addr');
-        var addr2 = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-addr');
 
         try {
             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
@@ -1046,26 +1017,8 @@ async function delegate(object, DappObject) {
             });
 
             isDelegateInput1(DappObject);
-
-            if (DappObject.isAmount2Active) {
-                const transactionParameters3 = {
-                    from: account,
-                    to: wrappedTokenAddr,
-                    data: tokenContract.methods.delegate(addr2, bips2).encodeABI(),
-                };
-
-                showSpinner(async () => {
-                    await provider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters3],
-                    })
-                    .then(txHash => showConfirmationSpinner(txHash, web32))
-                    .catch((error) => showFail());
-                });
-
-                isDelegateInput2(DappObject);
-            }
         } catch (error) {
+            console.log(error);
         }
     }
 }
@@ -1287,12 +1240,13 @@ window.dappInit = async (option) => {
                         object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
                         object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                         showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
+                        DappObject.wrapBool = false;
                         wrapUnwrapButton.value = "false";
                         fromIcon.style.color = "#fd000f";
                         toIcon.style.color = "#000";
                         document.getElementById("Wrap").style.color = "#fd000f";
                         document.getElementById("Unwrap").style.color = "#383a3b";
-                        DappObject.wrapBool = true;
+                        document.getElementById("wrapUnwrap").click();
 
                         // Alert Metamask to switch.
                         try {
@@ -1330,41 +1284,16 @@ window.dappInit = async (option) => {
             let chainidhex;
             let networkValue;
             let ftso1 = document.getElementById("ftso-1");
-            let ftso2 = document.getElementById("ftso-2");
 
             await createSelectedNetwork(DappObject).then( async () => {
                 getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
 
                     document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClickDelegate(object.rpcUrl, object.flrAddr, DappObject, ftso1, ftso2);
+                        ConnectWalletClickDelegate(object.rpcUrl, object.flrAddr, DappObject, ftso1);
                     });
                 
                     document.getElementById("Amount1").addEventListener('input', function () {
                         isDelegateInput1(DappObject);
-                
-                        var str = this.value;
-                        var suffix = "%";
-                
-                        if (str.search(suffix) === -1) {
-                            str += suffix;
-                        }
-                
-                        var actualLength = str.length - suffix.length;
-                
-                        if (actualLength === 0) {
-                            this.value = str.substring(0, actualLength);
-                
-                            this.setSelectionRange(actualLength, actualLength);
-                        } else {
-                            this.value = str.substring(0, actualLength) + suffix;
-                
-                            // Set cursor position.
-                            this.setSelectionRange(actualLength, actualLength);
-                        }
-                    });
-                
-                    document.getElementById("Amount2").addEventListener('input', function () {
-                        isDelegateInput2(DappObject);
                 
                         var str = this.value;
                         var suffix = "%";
@@ -1421,7 +1350,7 @@ window.dappInit = async (option) => {
                                     }
                                 }
                 
-                                if (delegatedFtsos.length !== 0) {
+                                if (delegatedFtsos.length === 2) {
                                     showAlreadyDelegated(ftsoNames, object);
                                 } else {
                                     delegate(object, DappObject);
@@ -1436,10 +1365,6 @@ window.dappInit = async (option) => {
 
                     isDelegateInput1(DappObject);
 
-                    if (DappObject.isAmount2Active) {
-                        isDelegateInput2(DappObject);
-                    }
-
                     ftso1.onchange = async () => {
                         let img = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-img');
                         let delegatedicon = document.getElementById("delegatedIcon1");
@@ -1447,23 +1372,10 @@ window.dappInit = async (option) => {
                         isDelegateInput1(DappObject);
                     }
 
-                    ftso2.onchange = async () => {
-                        let img = ftso2?.options[ftso2.selectedIndex]?.getAttribute('data-img');
-                        let delegatedicon = document.getElementById("delegatedIcon2");
-                        delegatedicon.src = img;
-                        isDelegateInput2(DappObject);
-                    }
-
                     selectedNetwork.onchange = async () => {
                         object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
                         object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
                         object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
-
-                        isDelegateInput1(DappObject);
-
-                        if (DappObject.isAmount2Active) {
-                            isDelegateInput2(DappObject);
-                        }
 
                         // Alert Metamask to switch.
                         try {
@@ -1474,9 +1386,7 @@ window.dappInit = async (option) => {
                                     "chainId": object.chainIdHex
                                     }
                                 ]
-                                }).catch((error) => console.error(error));
-
-                            document.getElementById("ConnectWallet").click();
+                            }).catch((error) => console.error(error));
                         } catch (error) {
                             // console.log(error);
                         }
@@ -1668,9 +1578,7 @@ window.dappInit = async (option) => {
                                     "chainId": object.chainIdHex
                                     }
                                 ]
-                                }).catch((error) => console.error(error));
-
-                            document.getElementById("ConnectWallet").click();
+                            }).catch((error) => console.error(error));
                         } catch (error) {
                             // console.log(error);
                         }

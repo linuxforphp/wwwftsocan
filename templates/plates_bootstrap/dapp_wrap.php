@@ -1,7 +1,7 @@
         <div class="top">
             <div class="row">
                 <div class="col-sm-6">
-                    <button class="wrap-unwrap float-left" type="button" id="wrapUnwrap" value="false">
+                    <button class="wrap-unwrap float-left" type="button" id="wrapUnwrap" value="true">
                         <a class="wrap-unwrap-text">
                             <span id="Wrap" class="wrap">Wrap</span> / <span id="Unwrap" class="unwrap">Unwrap</span>
                         </a>
