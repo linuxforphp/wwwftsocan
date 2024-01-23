@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.7 (2024-01-23)
+
+- Fixes an issue when undelegating with a single provider.
+
 ## 0.9.6 (2024-01-22)
 
 - Fixes an issue when delegating to more than one provider.
