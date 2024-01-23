@@ -586,7 +586,9 @@ async function ConnectWalletClickWrap(rpcUrl, flrAddr, DappObject) {
         const balance = await web32.eth.getBalance(account);
         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-        if (DappObject.wrapBool) {
+        DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
+
+        if (DappObject.wrapBool === true) {
             showBalance(round(web32.utils.fromWei(balance, "ether")));
             showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
         } else {
@@ -602,7 +604,7 @@ async function toggleWrapButton(DappObject, tokenIdentifier, wrappedTokenIdentif
     // Switching wrap/unwrap.
     if (DappObject.wrapBool === true) {
         DappObject.wrapBool = false;
-        document.getElementById("wrapUnwrap").value = "true";
+        document.getElementById("wrapUnwrap").value = "false";
         document.getElementById("FromIcon").style.color = "#000";
         document.getElementById("ToIcon").style.color = "#fd000f";
         document.getElementById("Wrap").style.color = "#383a3b";
@@ -611,7 +613,7 @@ async function toggleWrapButton(DappObject, tokenIdentifier, wrappedTokenIdentif
         setWrapButton(DappObject);
     } else {
         DappObject.wrapBool = true;
-        document.getElementById("wrapUnwrap").value = "false";
+        document.getElementById("wrapUnwrap").value = "true";
         document.getElementById("FromIcon").style.color = "#fd000f";
         document.getElementById("ToIcon").style.color = "#000";
         document.getElementById("Wrap").style.color = "#fd000f";
@@ -1238,12 +1240,13 @@ window.dappInit = async (option) => {
                         object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
                         object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                         showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
+                        DappObject.wrapBool = false;
                         wrapUnwrapButton.value = "false";
                         fromIcon.style.color = "#fd000f";
                         toIcon.style.color = "#000";
                         document.getElementById("Wrap").style.color = "#fd000f";
                         document.getElementById("Unwrap").style.color = "#383a3b";
-                        DappObject.wrapBool = true;
+                        document.getElementById("wrapUnwrap").click();
 
                         // Alert Metamask to switch.
                         try {
