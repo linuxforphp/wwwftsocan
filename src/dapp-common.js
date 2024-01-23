@@ -698,7 +698,7 @@ function switchDelegateButtonColorBack(claimBool) {
     document.getElementById('ClaimButton').style.cursor = "auto";
 }
 
-function isDelegateInput1(DappObject) {
+function getDelegatedBips() {
     let delegatedBips = 0;
     let delegatedBips1 = document.getElementById('delegatedBips1');
     let delegatedBips2 = document.getElementById('delegatedBips2');
@@ -716,6 +716,12 @@ function isDelegateInput1(DappObject) {
 
         delegatedBips += delegatedBips2Value;
     }
+
+    return delegatedBips;
+}
+
+function isDelegateInput1(DappObject) {
+    let delegatedBips = getDelegatedBips();
 
     let claimButton = document.getElementById("ClaimButton");
 
@@ -1349,8 +1355,10 @@ window.dappInit = async (option) => {
                                         }
                                     }
                                 }
+
+                                let delegatedBips = getDelegatedBips();
                 
-                                if (delegatedFtsos.length === 2) {
+                                if (delegatedFtsos.length === 2 || delegatedBips === 100) {
                                     showAlreadyDelegated(ftsoNames, object);
                                 } else {
                                     delegate(object, DappObject);
