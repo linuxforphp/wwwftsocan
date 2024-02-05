@@ -47,11 +47,10 @@
         <script src="<?php echo $value ?>"></script>
     <?php endforeach; ?>
 
-    <?php if ($view['headjsdefer'] === 1): ?>
-        <?php foreach($view['jsdefer'] as $key => $value): ?>
-            <script defer="defer" src="<?php echo $value ?>"></script>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    <script>
+        // Required by some npm packages
+        window.process = { browser: true, env: { ENVIRONMENT: 'BROWSER' } };
+    </script>
 
     <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
 

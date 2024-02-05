@@ -59,6 +59,7 @@
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso-reward-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/address-binder-abi.js"></script>
 
 <script>
     var uriPath = <?= json_encode($view['path']); ?>;
@@ -88,6 +89,7 @@
     }
 </script>
 
+<script type="module" src="<?=$view['urlbaseaddr'] ?>js/main.bundle.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappcommon.bundle.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/flareutils.bundle.js"></script>
 

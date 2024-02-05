@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ConnectPChain" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
             </div>
         </div>
         <div class="row">

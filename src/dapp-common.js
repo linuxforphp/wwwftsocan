@@ -14,6 +14,7 @@ var DappObject = {
     voterWhitelisterAbi: FlareAbis.VoterWhitelister,
     distributionAbiLocal: FlareAbis.DistributionToDelegators,
     ftsoRewardAbiLocal: FlareAbis.FtsoRewardManager,
+    addressBinderAbiLocal: FlareAbis.AddressBinder,
     wrapBool: true,
     claimBool: false,
     fdClaimBool: false,
@@ -1098,10 +1099,14 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 // STAKE MODULE
 
-async function ConnectWalletClickStake() {
+async function ConnectPChainClickStake() {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
-    let web32 = new Web3("https://sbi.flr.ftsocan.com/ext/C/rpc");
+    let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
+
+    let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
+
+    let web32 = new Web3(rpcUrl);
 
     let message = "You are enabling the FTSOCAN DApp to access your accounts PUBLIC key to derive your P-Chain address. Additionally, you are acknowledging the risks involved with staking on Flare and the usage of the MetaMask 'eth_sign' functionality. \n\nWE ARE NOT RESPONSIBLE FOR ANY LOSSES OF FUNDS AFTER STAKING. CONTINUE AT YOUR OWN RISK!";
 
@@ -1117,32 +1122,53 @@ async function ConnectWalletClickStake() {
             ]
         });
 
-        const flrPublicKey = AlertGetAddr(account, message, signature);
+        const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
 
-        console.log(flrPublicKey);
+        const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
 
-        showAccountAddress(flrPublicKey);
+        const flrPublicKey = await GetPublicKey(account, message, signature);
+
+        console.log(AddressBinderContract);
+
+        // const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(account).call();
+
+        const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
+
+        const CchainAddr = ethers.utils.getAddress(ethAddressString);
+
+        const PchainAddr = publicKeyToBech32AddressString(flrPublicKey, "flare");
+            
+        const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
+
+        if (addressPchain !== "0x0000000000000000000000000000000000000000") {         
+            console.log(addressPchain);
+
+            console.log(flrPublicKey);
+
+            showAccountAddress(addressPchain);
+
+            // Switch UI to Staking page
+        } else {
+            // ERROR
+        }
     } catch (error) {
         console.error(error);
     }
 }
 
-function AlertGetAddr(address, message, signature) {
+async function GetPublicKey(address, message, signature) {
     const messageHash = ethers.utils.hashMessage(message);
-    const recoveredPublicKey = ethers.utils.recoverPublicKey(
-      messageHash,
-      signature
-    );
-  
+    const recoveredPublicKey = ethers.utils.recoverPublicKey(messageHash, signature);
+
     // To confirm the signer's address, you can compute the Ethereum address from the recovered public key
     const recoveredAddress = ethers.utils.computeAddress(recoveredPublicKey);
   
     if (recoveredAddress.toLowerCase() === address.toLowerCase()) {
-      return recoveredPublicKey;
+        return recoveredPublicKey;
     } else {
-      throw new Error("Failed to verify signer.");
+        throw new Error("Failed to verify signer.");
     }
-  }
+}
 
 // INIT
 
@@ -1693,15 +1719,9 @@ window.dappInit = async (option) => {
                 }
             }
 
-            document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                ConnectWalletClickStake();
+            document.getElementById("ConnectPChain").addEventListener("click", async () => {
+                ConnectPChainClickStake();
             });
-
-            document.getElementById("ConnectWallet").click();
-
-            const flare = new AvalancheCore("sbi.flr.ftsocan.com/ext/C/rpc", undefined, "https");
-
-            console.log(flare);
 
             // const cChain = flare.CChain();
             // const pChain = flare.PChain();

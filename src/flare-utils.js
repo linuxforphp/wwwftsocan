@@ -7,6 +7,7 @@ export const FlareAbis = {
     FtsoRewardManager: ftsoRewardAbi,
     WNat: wnatAbi,
     FlareRegistry: flareAbi,
+    AddressBinder: addressBinderAbi,
 };
 
 export var selectedNetwork = document.getElementById("SelectedNetwork");
