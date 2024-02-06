@@ -118,6 +118,30 @@
                     window.dappInit(4);
                 }
             });
+        } else if (option === 5) {
+            $.get( "stakeTransfer", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(4, 1);
+                }
+            });
+        }  else if (option === 6) {
+            $.get( "stakeStake", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(4, 2);
+                }
+            });
+        }   else if (option === 7) {
+            $.get( "stakeRewards", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(4, 3);
+                }
+            });
         }
     }
 </script>

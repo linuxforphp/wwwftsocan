@@ -1,0 +1,21 @@
+.text-from {
+    color: #fd000f;
+    margin: 30px 35px 5px 45px;
+    float: left;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+.text-to {
+    color: #000000;
+    margin: 30px 35px 5px 45px;
+    float: left;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}

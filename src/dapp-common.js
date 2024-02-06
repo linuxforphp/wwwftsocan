@@ -1099,7 +1099,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 // STAKE MODULE
 
-async function ConnectPChainClickStake() {
+async function ConnectPChainClickStake(stakingOption) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
@@ -1136,20 +1136,26 @@ async function ConnectPChainClickStake() {
 
         const CchainAddr = ethers.utils.getAddress(ethAddressString);
 
-        const PchainAddr = publicKeyToBech32AddressString(flrPublicKey, "flare");
+        const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+
+        const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
             
         const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
 
         if (addressPchain !== "0x0000000000000000000000000000000000000000") {         
-            console.log(addressPchain);
+            getDappPage(5);
+
+            console.log(stakingOption);
+        } else {
+            $.alert("Your P-Chain Address is invalid!");
+        }
+
+        if ( stakingOption === 1 || typeof stakingOption === 'undefined' ) {
+            console.log(PchainAddrEncoded);
 
             console.log(flrPublicKey);
 
-            showAccountAddress(addressPchain);
-
-            // Switch UI to Staking page
-        } else {
-            // ERROR
+            showAccountAddress("P-" + PchainAddr)
         }
     } catch (error) {
         console.error(error);
@@ -1172,7 +1178,7 @@ async function GetPublicKey(address, message, signature) {
 
 // INIT
 
-window.dappInit = async (option) => {
+window.dappInit = async (option, stakingOption) => {
     if (!provider) {
         downloadMetamask();
     } else {
@@ -1720,7 +1726,7 @@ window.dappInit = async (option) => {
             }
 
             document.getElementById("ConnectPChain").addEventListener("click", async () => {
-                ConnectPChainClickStake();
+                ConnectPChainClickStake(stakingOption);
             });
 
             // const cChain = flare.CChain();

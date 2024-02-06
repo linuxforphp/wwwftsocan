@@ -1,0 +1,83 @@
+.transfer, .stake, .stakeRewards {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: #383a3b;
+    font-size: 20px;
+    padding: 12px;
+    width: 100%;
+    float: left;
+    cursor: pointer;
+    border-left: none;
+    border-right: none;
+    overflow: hidden !important;
+    letter-spacing: normal;
+    transition: 0.5s;
+}
+
+.selected-stake {
+    background-color: rgba(253, 0, 15, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.stake-text {
+    font-style: normal;
+}
+
+.stake-text:hover {
+    color: white;
+}
+
+.transfer {
+    border-radius: 30px 0 0 30px;
+}
+
+.stake {
+    border-radius: 0;
+}
+
+.stakeRewards {
+    border-radius: 0 30px 30px 0;
+}
+
+.wrap-unwrap-text {
+    color: #383a3b !important;
+    z-index: 3;
+    position: relative;
+}
+
+.wrap-unwrap-text::before {
+    z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.5), transparent); */
+    transform: skewX(45deg) translateX(0);
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.transfer:hover::after, .stake:hover::after, .stakeRewards:hover::after {
+    transform: skewX(45deg) translateX(200%);
+}
+
+.transfer:hover, .stake:hover, .stakeRewards:hover {
+    letter-spacing: 1px;
+    float: left;
+    cursor: pointer;
+    outline: none;
+}
+
+.delegate-text {
+    color: #383a3b !important;
+    z-index: 3;
+    position: relative;
+}

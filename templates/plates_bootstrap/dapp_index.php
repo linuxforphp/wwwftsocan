@@ -85,6 +85,11 @@
                 $("#dapp-root").html(data);
                 window.dappInit(4);
             });
+        } else if (uriPath[2] === 'stakeTransfer') {
+            $.get("stakeTransfer", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(4, 1);
+            });
         }
     }
 </script>
