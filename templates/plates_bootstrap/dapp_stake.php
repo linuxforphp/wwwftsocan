@@ -25,7 +25,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <button id="ConnectPChain" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Connect to P-Chain</i></button>
+        <button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Continue Anyway</i></button>
     </div>
 </div>
 <div class="row">
