@@ -1247,7 +1247,7 @@ async function toggleTransferButton(DappObject) {
     if (DappObject.transferBool === true) {
         DappObject.transferBool = false;
         transferIcon.style.transform = "rotate(180deg)";
-        setTransferButton(DappObject);
+        setTransferButton2(DappObject);
     } else {
         DappObject.transferBool = true;
         transferIcon.style.transform = "rotate(0deg)";
@@ -1263,6 +1263,24 @@ function setTransferButton(DappObject) {
     var wrapButtonText = document.getElementById("WrapButtonText");
 
     if (Number(document.getElementById("AmountFrom").value.replace(/[^0-9]/g, '')) < 1) {
+        wrapButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+        wrapButton.style.cursor = "auto";
+        wrapButtonText.innerText = "Enter Amount";
+        DappObject.isRealValue = false;
+    } else {
+        wrapButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+        wrapButton.style.cursor = "pointer";
+        DappObject.isRealValue = true;
+
+        wrapButtonText.innerText = "Transfer Funds";
+    }
+}
+
+function setTransferButton2(DappObject) {
+    var wrapButton = document.getElementById("WrapButton");
+    var wrapButtonText = document.getElementById("WrapButtonText");
+
+    if (Number(document.getElementById("AmountTo").value.replace(/[^0-9]/g, '')) < 1) {
         wrapButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         wrapButton.style.cursor = "auto";
         wrapButtonText.innerText = "Enter Amount";
@@ -1860,7 +1878,7 @@ window.dappInit = async (option, stakingOption) => {
                 });
 
                 document.querySelector("#AmountTo").addEventListener("input", function () {
-                    setTransferButton(DappObject);
+                    setTransferButton2(DappObject);
                     copyTransferInput();
                 });
 
