@@ -81,3 +81,10 @@
     z-index: 3;
     position: relative;
 }
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+    .transfer, .stake, .stakeRewards {
+        border-radius: 30px !important;
+        margin-bottom: 5px;
+    }
+}

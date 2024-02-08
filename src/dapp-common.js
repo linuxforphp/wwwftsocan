@@ -20,6 +20,7 @@ var DappObject = {
     fdClaimBool: false,
     isRealValue: false,
     isAmount2Active: false,
+    transferBool: true,
     metamaskInstalled: false,
     signatureStaking: "",
 }
@@ -94,8 +95,6 @@ async function showConfirmationSpinner(txHash, web32) {
             await checkTx(txHash, web32, this);
         }
     });
-
-
 }
 
 async function showConfirm(txHash) {
@@ -1135,15 +1134,41 @@ async function ConnectPChainClickStake(stakingOption) {
 
         if (stakingOption === 1) {
             if (DappObject.signatureStaking === "") {
+
+                let signSpinner = $.confirm({
+                    escapeKey: false,
+                    backgroundDismiss: false,
+                    icon: 'fa fa-spinner fa-spin',
+                    title: 'Loading...',
+                    content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
+                    theme: 'material',
+                    type: 'dark',
+                    typeAnimated: true,
+                    draggable: false,
+                    buttons: {
+                        ok: {
+                            isHidden: true, // hide the button
+                        },
+                    },
+                    onContentReady: async function () {
+                    }
+                });
+
                 const signature = await provider.request({
                     "method": "personal_sign",
                     "params": [
                     message,
                     account
                     ]
+                }).catch((error) => async function() {
+                    signSpinner.close();
+
+                    throw error;
                 });
 
                 DappObject.signatureStaking = signature;
+
+                signSpinner.close();
             }
 
             const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
@@ -1189,7 +1214,11 @@ async function ConnectPChainClickStake(stakingOption) {
             }
         }
     } catch (error) {
-        console.error(error);
+        console.log(error);
+
+        document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
+
+        DappObject.signatureStaking = "";
     }
 }
 
@@ -1209,6 +1238,55 @@ async function GetPublicKey(address, message, signature) {
 
 async function showPchainBalance(Pchainbalance) {
     document.getElementById("TokenBalance").innerText = Pchainbalance;
+}
+
+async function toggleTransferButton(DappObject) {
+    var transferIcon = document.getElementById("TransferIcon");
+
+    // Switching wrap/unwrap.
+    if (DappObject.transferBool === true) {
+        DappObject.transferBool = false;
+        transferIcon.style.transform = "rotate(180deg)";
+        setTransferButton(DappObject);
+    } else {
+        DappObject.transferBool = true;
+        transferIcon.style.transform = "rotate(0deg)";
+        setTransferButton(DappObject);
+    }
+
+    document.getElementById("ConnectPChain").click();
+}
+
+// Is there a valid input?
+function setTransferButton(DappObject) {
+    var wrapButton = document.getElementById("WrapButton");
+    var wrapButtonText = document.getElementById("WrapButtonText");
+
+    if (Number(document.getElementById("AmountFrom").value.replace(/[^0-9]/g, '')) < 1) {
+        wrapButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+        wrapButton.style.cursor = "auto";
+        wrapButtonText.innerText = "Enter Amount";
+        DappObject.isRealValue = false;
+    } else {
+        wrapButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+        wrapButton.style.cursor = "pointer";
+        DappObject.isRealValue = true;
+
+        wrapButtonText.innerText = "Transfer Funds";
+    }
+}
+
+// Copy the input.
+function copyTransferInput() {
+    let amountFrom = document.getElementById("AmountFrom");
+    let amountTo = document.getElementById("AmountTo");
+    let newValue = ''
+    
+    if (isNumber(amountTo.value)) {
+        newValue = amountTo.value;
+    }
+
+    amountFrom.value = newValue;
 }
 
 // INIT
@@ -1768,12 +1846,31 @@ window.dappInit = async (option, stakingOption) => {
                 } else {
                     getDappPage(5);
                 }
-            } else if (stakingOption === 1 || stakingOption === 2 || stakingOption === 3) {
+            } else if (stakingOption === 1) {
                 document.getElementById("ConnectPChain").addEventListener("click", async () => {
                     ConnectPChainClickStake(stakingOption);
                 });
 
                 document.getElementById("ConnectPChain").click();
+
+                // We check if the input is valid, then copy it to the wrapped tokens section.
+                document.querySelector("#AmountFrom").addEventListener("input", function () {
+                    setTransferButton(DappObject);
+                    copyWrapInput();
+                });
+
+                document.querySelector("#AmountTo").addEventListener("input", function () {
+                    setTransferButton(DappObject);
+                    copyTransferInput();
+                });
+
+                document.getElementById("TransferIcon").addEventListener("click", async () => {
+                    toggleTransferButton(DappObject);
+                });
+
+                document.getElementById("WrapButton").addEventListener("click", async () => {
+                    alert("Transfered funds! (Functionality not yet complete)");
+                });
             }
 
             window.ethereum.on("accountsChanged", async (accounts) => {

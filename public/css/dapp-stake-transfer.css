@@ -19,3 +19,21 @@
     justify-content: left;
     align-items: left;
 }
+
+.arrow-box {
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+    width: 50px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    background-color: rgba(253, 0, 15, 0.8);
+    color: white;
+    padding: 10px;
+    margin: -25px auto;
+    transform-origin: center;
+    transform: rotate(0deg);
+    transition: 0.5s;
+}

@@ -40,11 +40,16 @@
     </div>
 </div>
 <div class="row">
+    <div class="arrow-box" id="TransferIcon">
+        <i class="fa fa-solid fa-arrow-down-long" style="font-size: 17px; margin-top: 5px;"></i>
+    </div>
+</div>
+<div class="row">
     <div class="wrap-box">
         <span class="wrap-box-content">
             <div class="row">
                 <span id="ToText" class="text-to">P</span>
-                <input readonly id="AmountTo" class="amount"  dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
+                <input id="AmountTo" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
             </div>
             <div class="row">
                 <div class="wrapper-wrap">
