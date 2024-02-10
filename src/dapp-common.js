@@ -1363,7 +1363,7 @@ async function transferTokens(DappObject) {
                 const amountFromValueWeiBN = BigInt(amountFromValueWei);
                 const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
 
-                if (DappObject.wrapBool === true) {
+                if (DappObject.transferBool === true) {
                     // C-chain to P-chain
 
                     // getting C-Chain Keychain
@@ -1372,15 +1372,22 @@ async function transferTokens(DappObject) {
 
                     const BaseFee = await baseFee();
 
+                    const nonce = await web32.eth.getTransactionCount(account);
+
+                    console.log(cKeychain);
+
+                    console.log(BaseFee);
+
                     // export tokens
 
                     try {
-                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, rpcUrl, amountFromValueWeiBN.toString(), BaseFee);
+                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueWeiBN.toString(), BaseFee);
 
                         showSpinner(async () => {
                             await waitCchainAtomicTxStatus(cChainTxId);
                         });
                     } catch (error) {
+                        console.log("ERROR C-chain to P-chain export");
                         throw error;
                     }
                     
@@ -1393,6 +1400,7 @@ async function transferTokens(DappObject) {
                             await waitPchainAtomicTxStatus(pChainTxId);
                         });
                     } catch (error) {
+                        console.log("ERROR C-chain to P-chain import");
                         throw error;
                     }
 
@@ -1413,6 +1421,7 @@ async function transferTokens(DappObject) {
                             await waitPchainAtomicTxStatus(pChainTxId);
                         });
                     } catch (error) {
+                        console.log("ERROR P-chain to C-chain export");
                         throw error;
                     }
                     
@@ -1425,6 +1434,7 @@ async function transferTokens(DappObject) {
                             await waitCchainAtomicTxStatus(cChainTxId);
                         });
                     } catch (error) {
+                        console.log("ERROR P-chain to C-chain import");
                         throw error;
                     }
 
