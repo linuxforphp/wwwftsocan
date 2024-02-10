@@ -23,6 +23,7 @@ var DappObject = {
     transferBool: true,
     metamaskInstalled: false,
     signatureStaking: "",
+    unPrefixedAddr: "",
 }
 
 const provider = window.ethereum;
@@ -117,6 +118,31 @@ async function showConfirm(txHash) {
         },
         onContentReady: async function () {
             this.setContentAppend(txHash);
+            this.showLoading(true);
+            this.hideLoading(true);
+        }
+    });
+}
+
+async function showConfirmStake() {
+    $.confirm({
+        escapeKey: true,
+        backgroundDismiss: true,
+        icon: 'fa fa-solid fa-check green',
+        title: 'Transaction confirmed!',
+        content: '',
+        type: 'green',
+        theme: 'material',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            ok: {
+                action: function () {
+                    document.getElementById("ConnectPChain").click();
+                },
+            }
+        },
+        onContentReady: async function () {
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -1185,6 +1211,8 @@ async function ConnectPChainClickStake(stakingOption) {
 
             const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
 
+            DappObject.unPrefixedAddr = PchainAddr;
+
             const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
                 
             const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
@@ -1305,6 +1333,116 @@ function copyTransferInput() {
     }
 
     amountFrom.value = newValue;
+}
+
+// Transfer button
+
+async function transferTokens(DappObject) {
+    if (DappObject.isRealValue === false) {
+        $.alert("Please enter a valid value");
+    } else {
+        let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
+
+        let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
+
+        var web32 = new Web3(rpcUrl);
+
+        try {
+            const accounts = await provider.request({method: 'eth_accounts'});
+            const account = accounts[0];
+            let balance = await web32.eth.getBalance(account);
+            let tokenBalance = BigInt(document.getElementById("TokenBalance").innerText);
+            var amountFrom = document.getElementById("AmountFrom");
+            var amountTo = document.getElementById("AmountTo");
+            const amountFromValue = parseFloat(amountFrom.value);
+
+            if (Number.isNaN(amountFromValue)) {
+                $.alert("Invalid number of tokens!");
+            } else {
+                const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
+                const amountFromValueWeiBN = BigInt(amountFromValueWei);
+                const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
+
+                if (DappObject.wrapBool === true) {
+                    // C-chain to P-chain
+
+                    // getting C-Chain Keychain
+
+                    const cKeychain = await keychainc();
+
+                    const BaseFee = await baseFee();
+
+                    // export tokens
+
+                    try {
+                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, rpcUrl, amountFromValueWeiBN.toString(), BaseFee);
+
+                        showSpinner(async () => {
+                            await waitCchainAtomicTxStatus(cChainTxId);
+                        });
+                    } catch (error) {
+                        throw error;
+                    }
+                    
+                    // import tokens
+
+                    try {
+                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, cKeychain, 1);
+
+                        showSpinner(async () => {
+                            await waitPchainAtomicTxStatus(pChainTxId);
+                        });
+                    } catch (error) {
+                        throw error;
+                    }
+
+                    showConfirmStake();
+                } else {
+                    // P-chain to C-chain
+
+                    // getting C-Chain Keychain
+
+                    const cKeychain = await keychainc();
+
+                    // export tokens
+
+                    try {
+                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, cKeychain, amountFromValueWeiBN.toString());
+
+                        showSpinner(async () => {
+                            await waitPchainAtomicTxStatus(pChainTxId);
+                        });
+                    } catch (error) {
+                        throw error;
+                    }
+                    
+                    // import tokens
+
+                    try {
+                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined);
+
+                        showSpinner(async () => {
+                            await waitCchainAtomicTxStatus(cChainTxId);
+                        });
+                    } catch (error) {
+                        throw error;
+                    }
+
+                    showConfirmStake();
+                }
+
+                if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
+                    amountFrom.value = "";
+                    amountTo.value = "";
+                }
+
+                setTransferButton(DappObject);
+            }
+        } catch (error) {
+            console.log(error);
+            showFail();
+        }
+    }
 }
 
 // INIT
@@ -1887,7 +2025,7 @@ window.dappInit = async (option, stakingOption) => {
                 });
 
                 document.getElementById("WrapButton").addEventListener("click", async () => {
-                    alert("Transfered funds! (Functionality not yet complete)");
+                    transferTokens(DappObject);
                 });
             }
 
