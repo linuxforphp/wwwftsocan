@@ -56,6 +56,17 @@ async function getAccount(operation) {
     }
 }
 
+function decimalToInteger(dec, offset) {
+    let ret = dec;
+    if (ret.includes(".")) {
+      const split = ret.split(".");
+      ret = split[0] + split[1].slice(0, offset).padEnd(offset, "0");
+    } else {
+      ret = ret + "0".repeat(offset);
+    }
+    return ret;
+}
+
 async function showSpinner(doSomething) {
     $.confirm({
         escapeKey: false,
@@ -172,6 +183,36 @@ function showFail() {
             },
         },
         onContentReady: function () {
+            this.showLoading(true);
+            this.hideLoading(true);
+        }
+    });
+}
+
+async function showBindPAddress(contract, address, publicKey, addressPchainEncoded) {
+    $.confirm({
+        escapeKey: false,
+        backgroundDismiss: false,
+        icon: 'fa fa-warning',
+        title: 'P-Address Invalid!',
+        content: 'Your P-Chain address is not bound to your C-Chain address! <br /> If you do not bind them, you will not be able to stake. <br /> Do you wish to bind them?',
+        type: 'orange',
+        theme: 'material',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            yes: {
+                action: function () {
+                    contract.registerAddresses(publicKey, addressPchainEncoded, address);
+                },
+            },
+            no: {
+                action: function () {
+                    this.close();
+                },
+            }
+        },
+        onContentReady: async function () {
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -1221,15 +1262,16 @@ async function ConnectPChainClickStake(stakingOption, DappObject) {
                 
             const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
 
-            const prefixedPchainAddress = "P-" + PchainAddr;
-
-            const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
-
-            const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
-
-            console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
-
             if (addressPchain !== "0x0000000000000000000000000000000000000000") {
+
+                const prefixedPchainAddress = "P-" + PchainAddr;
+
+                const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+
+                const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+
+                console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+
                 console.log(stakingOption);
 
                 console.log(PchainAddrEncoded);
@@ -1248,7 +1290,9 @@ async function ConnectPChainClickStake(stakingOption, DappObject) {
                     showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
                 }
             } else {
-                $.alert("Your P-Chain Address is invalid!");
+                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
+
+                document.getElementById("ConnectPChain").click();
             }
         }
     } catch (error) {
@@ -1389,14 +1433,12 @@ async function transferTokens(DappObject) {
             let tokenBalance = BigInt(document.getElementById("TokenBalance").innerText);
             var amountFrom = document.getElementById("AmountFrom");
             var amountTo = document.getElementById("AmountTo");
-            const amountFromValue = parseFloat(amountFrom.value);
+            const amountFromValue = amountFrom.value;
 
             if (Number.isNaN(amountFromValue)) {
                 $.alert("Invalid number of tokens!");
             } else {
-                const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
-                const amountFromValueWeiBN = BigInt(amountFromValueWei);
-                const amountFromValueWeiHex = web32.utils.toHex(amountFromValueWeiBN);
+                const amountFromValueInt = decimalToInteger(amountFromValue.toString(), 9);
 
                 if (DappObject.transferBool === true) {
                     // C-chain to P-chain
@@ -1416,7 +1458,7 @@ async function transferTokens(DappObject) {
                     // export tokens
 
                     try {
-                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueWeiBN.toString(), BaseFee);
+                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, BaseFee);
 
                         showSpinner(async () => {
                             await waitCchainAtomicTxStatus(cChainTxId);
