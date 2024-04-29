@@ -28,6 +28,10 @@ var DappObject = {
 
 const provider = window.ethereum;
 
+function unPrefix0x (input) {
+    return input.startsWith("0x") ? input.slice(2) : input;
+}
+
 async function getAccount(operation) {
     var accountAddr = document.getElementById("Accounts").getAttribute('data-address');
 
@@ -1140,7 +1144,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 // STAKE MODULE
 
-async function ConnectPChainClickStake(stakingOption) {
+async function ConnectPChainClickStake(stakingOption, DappObject) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
@@ -1203,7 +1207,7 @@ async function ConnectPChainClickStake(stakingOption) {
 
             const flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
 
-            // const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(account).call();
+            connectChainsAndKeys(flrPublicKey);
 
             const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
 
@@ -1234,9 +1238,15 @@ async function ConnectPChainClickStake(stakingOption) {
 
                 showAccountAddress(prefixedPchainAddress);
 
-                showBalance(round(web32.utils.fromWei(balance, "ether")));
+                if (DappObject.transferBool === true) {
+                    showBalance(round(web32.utils.fromWei(balance, "ether")));
 
-                showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+                    showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+                } else {
+                    showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+
+                    showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
+                }
             } else {
                 $.alert("Your P-Chain Address is invalid!");
             }
@@ -1248,6 +1258,18 @@ async function ConnectPChainClickStake(stakingOption) {
 
         DappObject.signatureStaking = "";
     }
+}
+
+async function connectChainsAndKeys(publicKey) {
+    const cKeychain = await keychainc();
+    const pKeychain = await keychainp();
+
+    cKeychain.importKey(
+      `PublicKey-${unPrefix0x(publicKey)}`
+    );
+    pKeychain.importKey(
+      `PublicKey-${unPrefix0x(publicKey)}`
+    );
 }
 
 async function GetPublicKey(address, message, signature) {
@@ -1271,15 +1293,28 @@ async function showPchainBalance(Pchainbalance) {
 async function toggleTransferButton(DappObject) {
     var transferIcon = document.getElementById("TransferIcon");
 
+    var fromText = document.getElementById("FromText");
+    var toText = document.getElementById("ToText");
+
     // Switching wrap/unwrap.
     if (DappObject.transferBool === true) {
         DappObject.transferBool = false;
         transferIcon.style.transform = "rotate(180deg)";
         setTransferButton2(DappObject);
+
+        fromText.style.color = "#000";
+        toText.style.color = "#fd000f";
+        fromText.innerText = "P";
+        toText.innerText = "C";
     } else {
         DappObject.transferBool = true;
         transferIcon.style.transform = "rotate(0deg)";
         setTransferButton(DappObject);
+
+        fromText.style.color = "#fd000f";
+        toText.style.color = "#000";
+        fromText.innerText = "C";
+        toText.innerText = "P";
     }
 
     document.getElementById("ConnectPChain").click();
@@ -2014,7 +2049,7 @@ window.dappInit = async (option, stakingOption) => {
                 }
             } else if (stakingOption === 1) {
                 document.getElementById("ConnectPChain").addEventListener("click", async () => {
-                    ConnectPChainClickStake(stakingOption);
+                    ConnectPChainClickStake(stakingOption, DappObject);
                 });
 
                 document.getElementById("ConnectPChain").click();
