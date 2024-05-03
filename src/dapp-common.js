@@ -1438,7 +1438,9 @@ async function transferTokens(DappObject) {
             if (Number.isNaN(amountFromValue)) {
                 $.alert("Invalid number of tokens!");
             } else {
-                const amountFromValueInt = decimalToInteger(amountFromValue.toString(), 9);
+                const amountFromValueInt = web32.utils.toWei(amountFromValue, "gwei");
+
+                console.log(amountFromValueInt);
 
                 if (DappObject.transferBool === true) {
                     // C-chain to P-chain
@@ -1446,6 +1448,8 @@ async function transferTokens(DappObject) {
                     // getting C-Chain Keychain
 
                     const cKeychain = await keychainc();
+
+                    const pKeychain = await keychainp()
 
                     const BaseFee = await baseFee();
 
@@ -1461,7 +1465,7 @@ async function transferTokens(DappObject) {
                         const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, BaseFee);
 
                         showSpinner(async () => {
-                            await waitCchainAtomicTxStatus(cChainTxId);
+                            await waitCchainAtomicTxStatus(cChainTxId[0]);
                         });
                     } catch (error) {
                         console.log("ERROR C-chain to P-chain export");
@@ -1471,10 +1475,10 @@ async function transferTokens(DappObject) {
                     // import tokens
 
                     try {
-                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, cKeychain, 1);
+                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1);
 
                         showSpinner(async () => {
-                            await waitPchainAtomicTxStatus(pChainTxId);
+                            await waitPchainAtomicTxStatus(pChainTxId[0]);
                         });
                     } catch (error) {
                         console.log("ERROR C-chain to P-chain import");
@@ -1489,10 +1493,12 @@ async function transferTokens(DappObject) {
 
                     const cKeychain = await keychainc();
 
+                    const pKeychain = await keychainp();
+
                     // export tokens
 
                     try {
-                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, cKeychain, amountFromValueWeiBN.toString());
+                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueWeiBN.toString());
 
                         showSpinner(async () => {
                             await waitPchainAtomicTxStatus(pChainTxId);
