@@ -28,6 +28,9 @@
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery.fancybox.css">
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-confirm.min.css">
     <!-- bootstrap.min -->
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/selectize.default.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/selectize.bootstrap4.css">
+    <!-- bootstrap.min -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/bootstrap.min.css">
     <!-- owl.carousel.min -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/owl.carousel.min.css">

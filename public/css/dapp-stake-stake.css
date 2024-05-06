@@ -1,0 +1,46 @@
+.selectize-input {
+    position: absolute;
+    z-index: 100;
+    width: auto;
+    outline: none;
+    font-size: 2.4rem !important;
+    padding: 20px;
+    padding-right: 40px;
+    cursor: pointer;
+    border-radius: .3em;
+    margin: 0.2em 10em 0 0 !important;
+    left: 3.5em;
+    background-color: rgba(255, 255, 255, 0.0) !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #67696a !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: 0.5s;
+    letter-spacing: normal;
+}
+
+.selectize-dropdown-content {
+    text-align: left !important;
+}
+
+.selectize-dropdown-content div {
+    padding: 5px 20px;
+}
+
+.selectize-control.single .selectize-input:not(.no-arrow)::after {
+    border-width: 6px 6px 0 6px !important;
+}
+
+.ftso-name {
+    font-size: 2rem !important;
+    color: #383a3b !important;
+}
+
+.ftso-address {
+    display: block;
+    font-size: 1.3rem !important;
+    color: #67696a !important;
+}

@@ -153,5 +153,9 @@
 <!-- Custom alert box -->
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-confirm.min.js"></script>
 
+<!-- Custom select box -->
+<script src="<?=$view['urlbaseaddr'] ?>js/selectize.js"></script>
+<script src="<?=$view['urlbaseaddr'] ?>js/selectize.min.js"></script>
+
 <!-- Modernizer Script for old Browsers -->
 <script src="<?=$view['urlbaseaddr'] ?>js/modernizr-2.6.2.min.js"></script>

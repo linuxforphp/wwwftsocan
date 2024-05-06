@@ -753,7 +753,7 @@ function copyWrapInput() {
 
 // DELEGATE MODULE
 
-async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1) {
+async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
     let delegatedIcon1 = document.getElementById("delegatedIcon1");
@@ -761,7 +761,7 @@ async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject, ftso1) {
 
     isDelegateInput1(DappObject);
 
-    await populateFtsos(ftso1, rpcUrl, flrAddr);
+    await populateFtsos(rpcUrl, flrAddr);
 
     let web32 = new Web3(rpcUrl);
 
@@ -852,12 +852,10 @@ function isDelegateInput1(DappObject) {
 }
 
 // Populate select elements.
-async function populateFtsos(ftso1, rpcUrl, flrAddr) {
+async function populateFtsos(rpcUrl, flrAddr) {
     return new Promise((resolve) => {
         setTimeout(async () => {
-            var insert = '<option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>';
-            var insert1 = '';
-            var insert2 = '';
+            var insert = [];
             let web32 = new Web3(rpcUrl);
             let selectedNetwork = document.getElementById('SelectedNetwork');
             let chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
@@ -870,6 +868,14 @@ async function populateFtsos(ftso1, rpcUrl, flrAddr) {
 
                 const ftsoJsonList = JSON.stringify(ftsoList);
 
+                var onInputChange = async () => {
+                    let ftso1 = document.querySelector(".selectize-input");
+                    let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
+                    let delegatedicon = document.getElementById("delegatedIcon1");
+                    delegatedicon.src = img;
+                    isDelegateInput1(DappObject);
+                }
+
                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
                 fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
                     .then(res => res.json())
@@ -877,6 +883,8 @@ async function populateFtsos(ftso1, rpcUrl, flrAddr) {
                         FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
                         let indexNumber;
+
+                        let g = 1;
 
                         for (var f = 0; f < FtsoInfo.providers.length; f++) {
                             if ((FtsoInfo.providers[f].chainId === parseInt(chainIdHex, 16)) && (FtsoInfo.providers[f].listed === true)) {
@@ -888,13 +896,23 @@ async function populateFtsos(ftso1, rpcUrl, flrAddr) {
                                         if (ftsoJsonList.includes(ftsoList[i])) {
                                             if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
                                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                                insert1 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                                insert[0] = {
+                                                    id: 0,
+                                                    title: FtsoInfo.providers[indexNumber].name,
+                                                    nodeid: ftsoList[i],
+                                                    img: dappUrlBaseAddr + "assets/" + ftsoList[i] + ".png"
+                                                }; 
                                             } else {
                                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                                insert2 += `<option value="${i}" data-img="${dappUrlBaseAddr}assets/${ftsoList[i]}.png" data-addr="${ftsoList[i]}" data-ftso="1">${FtsoInfo.providers[indexNumber].name}</option>`;
+                                                insert[g] = {
+                                                    id: g,
+                                                    title: FtsoInfo.providers[indexNumber].name,
+                                                    nodeid: ftsoList[i],
+                                                    img: dappUrlBaseAddr + "assets/" + ftsoList[i] + ".png"
+                                                }; 
+
+                                                g += 1;
                                             }
-    
-                                            ftso1.innerHTML = insert + insert1 + insert2;
                                         } else {
                                             $.alert('The FTSO you are delegated to is invalid!');
                                             break;
@@ -903,6 +921,44 @@ async function populateFtsos(ftso1, rpcUrl, flrAddr) {
                                 }
                             }
                         }
+
+                        console.log(insert);
+
+                        $('#select-ftso').selectize({
+                            maxItems: 1,
+                            valueField: 'id',
+                            labelField: 'title',
+                            searchField: ["title", "nodeid"],
+                            options: insert,
+                            render: {
+                                item: function (item, escape) {
+                                    return (
+                                    "<div>" +
+                                    (item.title
+                                        ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
+                                        : "") +
+                                    "</div>"
+                                    );
+                                },
+                                option: function (item, escape) {
+                                    var label = item.title || item.nodeid;
+                                    var caption = item.title ? item.nodeid : null;
+                                    return (
+                                    "<div>" +
+                                    '<span class="ftso-name">' +
+                                    escape(label) +
+                                    "</span>" +
+                                    (caption
+                                        ? '<span class="ftso-address">' + escape(caption) + "</span>"
+                                        : "") +
+                                    "</div>"
+                                    );
+                                },
+                            },
+                            onChange: onInputChange(),
+                            create: false,
+                            dropdownParent: "body",
+                        });
                     });
             } catch (error) {
                 // console.log(error)
@@ -1077,7 +1133,7 @@ async function delegate(object, DappObject) {
         $.alert("Please enter valid value. (50% or 100%)");
     } else {
         let amount1 = document.getElementById("Amount1");
-        let ftso1 = document.getElementById("ftso-1");
+        let ftso1 = document.querySelector(".selectize-input");
 
         let web32 = new Web3(object.rpcUrl);
 
@@ -1089,7 +1145,7 @@ async function delegate(object, DappObject) {
 
         const bips1 = Number(percent1) * 100;
 
-        var addr1 = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-addr');
+        var addr1 = ftso1.childNodes[0].childNodes[0].getAttribute('data-addr');
 
         try {
             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
@@ -1203,83 +1259,83 @@ async function ConnectPChainClickStake(stakingOption, DappObject) {
 
         const balance = await web32.eth.getBalance(account);
 
-        if (stakingOption === 1) {
-            if (DappObject.signatureStaking === "") {
+        if (DappObject.signatureStaking === "") {
 
-                let signSpinner = $.confirm({
-                    escapeKey: false,
-                    backgroundDismiss: false,
-                    icon: 'fa fa-spinner fa-spin',
-                    title: 'Loading...',
-                    content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
-                    theme: 'material',
-                    type: 'dark',
-                    typeAnimated: true,
-                    draggable: false,
-                    buttons: {
-                        ok: {
-                            isHidden: true, // hide the button
-                        },
+            let signSpinner = $.confirm({
+                escapeKey: false,
+                backgroundDismiss: false,
+                icon: 'fa fa-spinner fa-spin',
+                title: 'Loading...',
+                content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
+                theme: 'material',
+                type: 'dark',
+                typeAnimated: true,
+                draggable: false,
+                buttons: {
+                    ok: {
+                        isHidden: true, // hide the button
                     },
-                    onContentReady: async function () {
-                    }
-                });
+                },
+                onContentReady: async function () {
+                }
+            });
 
-                const signature = await provider.request({
-                    "method": "personal_sign",
-                    "params": [
-                    message,
-                    account
-                    ]
-                }).catch((error) => async function() {
-                    signSpinner.close();
-
-                    throw error;
-                });
-
-                DappObject.signatureStaking = signature;
-
+            const signature = await provider.request({
+                "method": "personal_sign",
+                "params": [
+                message,
+                account
+                ]
+            }).catch((error) => async function() {
                 signSpinner.close();
-            }
 
-            const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
+                throw error;
+            });
 
-            const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
+            DappObject.signatureStaking = signature;
 
-            const flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
+            signSpinner.close();
+        }
 
-            connectChainsAndKeys(flrPublicKey);
+        const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
 
-            const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
+        const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
 
-            const CchainAddr = ethers.utils.getAddress(ethAddressString);
+        const flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
 
-            const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+        connectChainsAndKeys(flrPublicKey);
 
-            DappObject.unPrefixedAddr = PchainAddr;
+        const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
 
-            const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
-                
-            const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
+        const CchainAddr = ethers.utils.getAddress(ethAddressString);
 
-            if (addressPchain !== "0x0000000000000000000000000000000000000000") {
+        const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
 
-                const prefixedPchainAddress = "P-" + PchainAddr;
+        DappObject.unPrefixedAddr = PchainAddr;
 
-                const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+        const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
+            
+        const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
 
-                const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+        if (addressPchain !== "0x0000000000000000000000000000000000000000") {
 
-                console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+            const prefixedPchainAddress = "P-" + PchainAddr;
 
-                console.log(stakingOption);
+            const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
 
-                console.log(PchainAddrEncoded);
+            const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
 
-                console.log(flrPublicKey);
+            console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
 
-                showAccountAddress(prefixedPchainAddress);
+            console.log(stakingOption);
 
+            console.log(PchainAddrEncoded);
+
+            console.log(flrPublicKey);
+
+            showAccountAddress(prefixedPchainAddress);
+
+            if (stakingOption === 1) {
                 if (DappObject.transferBool === true) {
                     showBalance(round(web32.utils.fromWei(balance, "ether")));
 
@@ -1289,11 +1345,11 @@ async function ConnectPChainClickStake(stakingOption, DappObject) {
 
                     showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
                 }
-            } else {
-                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
-
-                document.getElementById("ConnectPChain").click();
             }
+        } else {
+            await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
+
+            document.getElementById("ConnectPChain").click();
         }
     } catch (error) {
         console.log(error);
@@ -1429,8 +1485,6 @@ async function transferTokens(DappObject) {
         try {
             const accounts = await provider.request({method: 'eth_accounts'});
             const account = accounts[0];
-            let balance = await web32.eth.getBalance(account);
-            let tokenBalance = BigInt(document.getElementById("TokenBalance").innerText);
             var amountFrom = document.getElementById("AmountFrom");
             var amountTo = document.getElementById("AmountTo");
             const amountFromValue = amountFrom.value;
@@ -1449,20 +1503,16 @@ async function transferTokens(DappObject) {
 
                     const cKeychain = await keychainc();
 
-                    const pKeychain = await keychainp()
-
-                    const BaseFee = await baseFee();
+                    const pKeychain = await keychainp();
 
                     const nonce = await web32.eth.getTransactionCount(account);
 
                     console.log(cKeychain);
 
-                    console.log(BaseFee);
-
                     // export tokens
 
                     try {
-                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, BaseFee);
+                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt);
 
                         showSpinner(async () => {
                             await waitCchainAtomicTxStatus(cChainTxId[0]);
@@ -1734,13 +1784,12 @@ window.dappInit = async (option, stakingOption) => {
             let rpcUrl;
             let chainidhex;
             let networkValue;
-            let ftso1 = document.getElementById("ftso-1");
 
             await createSelectedNetwork(DappObject).then( async () => {
                 getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
 
                     document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClickDelegate(object.rpcUrl, object.flrAddr, DappObject, ftso1);
+                        ConnectWalletClickDelegate(object.rpcUrl, object.flrAddr, DappObject);
                     });
                 
                     document.getElementById("Amount1").addEventListener('input', function () {
@@ -1817,13 +1866,6 @@ window.dappInit = async (option, stakingOption) => {
                     document.getElementById("ConnectWallet").click();
 
                     isDelegateInput1(DappObject);
-
-                    ftso1.onchange = async () => {
-                        let img = ftso1?.options[ftso1.selectedIndex]?.getAttribute('data-img');
-                        let delegatedicon = document.getElementById("delegatedIcon1");
-                        delegatedicon.src = img;
-                        isDelegateInput1(DappObject);
-                    }
 
                     selectedNetwork.onchange = async () => {
                         object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
@@ -2119,6 +2161,54 @@ window.dappInit = async (option, stakingOption) => {
 
                 document.getElementById("WrapButton").addEventListener("click", async () => {
                     transferTokens(DappObject);
+                });
+            } else if (stakingOption === 2) {
+                document.getElementById("ConnectPChain").addEventListener("click", async () => {
+                    ConnectPChainClickStake(stakingOption, DappObject);
+                });
+
+                document.getElementById("ConnectPChain").click();
+
+                $('#select-validator').selectize({
+                    maxItems: 1,
+                    valueField: 'id',
+                    labelField: 'title',
+                    searchField: ["title", "nodeid"],
+                    options: [
+                        {id: 1, title: 'Spectrometer', nodeid: 'nodeid'},
+                        {id: 2, title: 'Star Chart', nodeid: 'http://en.wikipedia.org/wiki/Star_chart'},
+                        {id: 3, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
+                        {id: 4, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
+                        {id: 5, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
+                        {id: 6, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
+                    ],
+                    render: {
+                        item: function (item, escape) {
+                            return (
+                            "<div>" +
+                            (item.title
+                                ? `<span class="title" data-img=${item.img}>` + escape(item.title) + "</span>"
+                                : "") +
+                            "</div>"
+                            );
+                        },
+                        option: function (item, escape) {
+                            var label = item.title || item.nodeid;
+                            var caption = item.title ? item.nodeid : null;
+                            return (
+                            "<div>" +
+                            '<span class="ftso-name">' +
+                            escape(label) +
+                            "</span>" +
+                            (caption
+                                ? '<span class="ftso-address">' + escape(caption) + "</span>"
+                                : "") +
+                            "</div>"
+                            );
+                        },
+                    },
+                    create: false,
+                    dropdownParent: "body",
                 });
             }
 
