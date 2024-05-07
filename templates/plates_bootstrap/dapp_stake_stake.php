@@ -35,22 +35,6 @@
     </div>
 </div>
 <div class="row">
-    <div class="wrap-box">
-        <span class="wrap-box-content">
-            <div class="row">
-                <span id="ToText" class="text-to">P</span>
-                <input id="AmountTo" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
-            </div>
-            <div class="row">
-                <div class="wrapper-wrap">
-                    <span>Balance:</span>
-                    <span id="TokenBalance">0</span>
-                </div>
-            </div>
-        </span>
-    </div>
-</div>
-<div class="row">
     <div class="col-sm-6">
         <button id="ConnectPChain" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Connect to P-Chain</i></button>
     </div>

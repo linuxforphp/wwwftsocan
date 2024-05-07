@@ -1345,6 +1345,21 @@ async function ConnectPChainClickStake(stakingOption, DappObject) {
 
                     showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
                 }
+            } else if (stakingOption === 2) {
+                let delegatedIcon1 = document.getElementById("delegatedIcon1");
+                delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+            
+                // isDelegateInput1(DappObject);
+            
+                await populateValidators();
+            
+                let web32 = new Web3(rpcUrl);
+            
+                try {
+                    // await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+                } catch (error) {
+                    // console.log(error);
+                }
             }
         } else {
             await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
@@ -1586,6 +1601,130 @@ async function transferTokens(DappObject) {
             showFail();
         }
     }
+}
+
+// Populate select elements.
+async function populateValidators() {
+    return new Promise((resolve) => {
+        setTimeout(async () => {
+            var insert = [];
+
+            try {
+
+                const ftsoList = await getValidators();
+
+                const ftsoJsonList = JSON.stringify(ftsoList);
+
+                console.log(ftsoList);
+
+                var onInputChange = async () => {
+                    let ftso1 = document.querySelector(".selectize-input");
+                    let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
+                    let delegatedicon = document.getElementById("delegatedIcon1");
+                    delegatedicon.src = img;
+                    isDelegateInput1(DappObject);
+                }
+
+                for ( var i = 0; i < ftsoList.length; i++) {
+                    insert[i] = {
+                        id: i,
+                        title: ftsoList[i].rewardOwner.addresses[0],
+                        nodeid: ftsoList[i].nodeID,
+                        img: dappUrlBaseAddr + "assets/" + ftsoList[i].nodeID + ".png"
+                    }; 
+                }
+
+                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
+                // fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
+                //     .then(res => res.json())
+                //     .then(FtsoInfo => {
+                //         FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
+
+                //         let indexNumber;
+
+                //         let g = 1;
+
+                //         for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                //             if ((FtsoInfo.providers[f].chainId === parseInt(chainIdHex, 16)) && (FtsoInfo.providers[f].listed === true)) {
+                //                 for (var i = 0; i < ftsoList.length; i++) {
+                //                     if (FtsoInfo.providers[f].address === ftsoList[i]) {
+                //                         indexNumber = f;
+
+                //                         //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+                //                         if (ftsoJsonList.includes(ftsoList[i])) {
+                //                             if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
+                //                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                //                                 insert[0] = {
+                //                                     id: 0,
+                //                                     title: FtsoInfo.providers[indexNumber].name,
+                //                                     nodeid: ftsoList[i],
+                //                                     img: dappUrlBaseAddr + "assets/" + ftsoList[i] + ".png"
+                //                                 }; 
+                //                             } else {
+                //                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                //                                 insert[g] = {
+                //                                     id: g,
+                //                                     title: FtsoInfo.providers[indexNumber].name,
+                //                                     nodeid: ftsoList[i],
+                //                                     img: dappUrlBaseAddr + "assets/" + ftsoList[i] + ".png"
+                //                                 }; 
+
+                //                                 g += 1;
+                //                             }
+                //                         } else {
+                //                             $.alert('The FTSO you are delegated to is invalid!');
+                //                             break;
+                //                         }
+                //                     }
+                //                 }
+                //             }
+                //         }
+
+                    console.log(insert);
+
+                    $('#select-validator').selectize({
+                        maxItems: 1,
+                        valueField: 'id',
+                        labelField: 'title',
+                        searchField: ["title", "nodeid"],
+                        options: insert,
+                        render: {
+                            item: function (item, escape) {
+                                return (
+                                "<div>" +
+                                (item.title
+                                    ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
+                                    : "") +
+                                "</div>"
+                                );
+                            },
+                            option: function (item, escape) {
+                                var label = item.title || item.nodeid;
+                                var caption = item.title ? item.nodeid : null;
+                                return (
+                                "<div>" +
+                                '<span class="ftso-name">' +
+                                escape(label) +
+                                "</span>" +
+                                (caption
+                                    ? '<span class="ftso-address">' + escape(caption) + "</span>"
+                                    : "") +
+                                "</div>"
+                                );
+                            },
+                        },
+                        onChange: onInputChange(),
+                        create: false,
+                        dropdownParent: "body",
+                    });
+                // });
+            } catch (error) {
+                // console.log(error)
+            }
+
+            resolve();
+        }, 200);
+    })
 }
 
 // INIT
@@ -2168,48 +2307,6 @@ window.dappInit = async (option, stakingOption) => {
                 });
 
                 document.getElementById("ConnectPChain").click();
-
-                $('#select-validator').selectize({
-                    maxItems: 1,
-                    valueField: 'id',
-                    labelField: 'title',
-                    searchField: ["title", "nodeid"],
-                    options: [
-                        {id: 1, title: 'Spectrometer', nodeid: 'nodeid'},
-                        {id: 2, title: 'Star Chart', nodeid: 'http://en.wikipedia.org/wiki/Star_chart'},
-                        {id: 3, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
-                        {id: 4, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
-                        {id: 5, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
-                        {id: 6, title: 'Electrical Tape', nodeid: 'http://en.wikipedia.org/wiki/Electrical_tape'},
-                    ],
-                    render: {
-                        item: function (item, escape) {
-                            return (
-                            "<div>" +
-                            (item.title
-                                ? `<span class="title" data-img=${item.img}>` + escape(item.title) + "</span>"
-                                : "") +
-                            "</div>"
-                            );
-                        },
-                        option: function (item, escape) {
-                            var label = item.title || item.nodeid;
-                            var caption = item.title ? item.nodeid : null;
-                            return (
-                            "<div>" +
-                            '<span class="ftso-name">' +
-                            escape(label) +
-                            "</span>" +
-                            (caption
-                                ? '<span class="ftso-address">' + escape(caption) + "</span>"
-                                : "") +
-                            "</div>"
-                            );
-                        },
-                    },
-                    create: false,
-                    dropdownParent: "body",
-                });
             }
 
             window.ethereum.on("accountsChanged", async (accounts) => {
