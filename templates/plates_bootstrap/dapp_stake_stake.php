@@ -28,7 +28,7 @@
         <span class="wrap-box-content">
             <div class="row">
                 <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
-                <select id="select-validator" placeholder="Pick a tool..."></select>
+                <select id="select-validator" placeholder="Select Validator"></select>
                 <input id="Amount1" class="amount-delegate"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
             </div>
         </span>

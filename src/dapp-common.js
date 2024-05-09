@@ -868,7 +868,7 @@ async function populateFtsos(rpcUrl, flrAddr) {
 
                 const ftsoJsonList = JSON.stringify(ftsoList);
 
-                var onInputChange = async () => {
+                var onInputChange = async (value) => {
                     let ftso1 = document.querySelector(".selectize-input");
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");
@@ -922,44 +922,46 @@ async function populateFtsos(rpcUrl, flrAddr) {
                             }
                         }
 
-                        console.log(insert);
+                    console.log(insert);
 
-                        $('#select-ftso').selectize({
-                            maxItems: 1,
-                            valueField: 'id',
-                            labelField: 'title',
-                            searchField: ["title", "nodeid"],
-                            options: insert,
-                            render: {
-                                item: function (item, escape) {
-                                    return (
-                                    "<div>" +
-                                    (item.title
-                                        ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
-                                        : "") +
-                                    "</div>"
-                                    );
-                                },
-                                option: function (item, escape) {
-                                    var label = item.title || item.nodeid;
-                                    var caption = item.title ? item.nodeid : null;
-                                    return (
-                                    "<div>" +
-                                    '<span class="ftso-name">' +
-                                    escape(label) +
-                                    "</span>" +
-                                    (caption
-                                        ? '<span class="ftso-address">' + escape(caption) + "</span>"
-                                        : "") +
-                                    "</div>"
-                                    );
-                                },
+                    $('#select-ftso').selectize({
+                        maxItems: 1,
+                        valueField: 'id',
+                        labelField: 'title',
+                        searchField: ["title", "nodeid"],
+                        options: insert,
+                        render: {
+                            item: function (item, escape) {
+                                return (
+                                "<div>" +
+                                (item.title
+                                    ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
+                                    : "") +
+                                "</div>"
+                                );
                             },
-                            onChange: onInputChange(),
-                            create: false,
-                            dropdownParent: "body",
-                        });
+                            option: function (item, escape) {
+                                var label = item.title || item.nodeid;
+                                var caption = item.title ? item.nodeid : null;
+                                return (
+                                "<div>" +
+                                '<span class="ftso-name">' +
+                                escape(label) +
+                                "</span>" +
+                                (caption
+                                    ? '<span class="ftso-address">' + escape(caption) + "</span>"
+                                    : "") +
+                                "</div>"
+                                );
+                            },
+                        },
+                        onChange: function(value) {
+                            onInputChange(value);
+                        },
+                        create: false,
+                        dropdownParent: "body",
                     });
+                });
             } catch (error) {
                 // console.log(error)
             }
@@ -1613,72 +1615,54 @@ async function populateValidators() {
 
                 const ftsoList = await getValidators();
 
-                const ftsoJsonList = JSON.stringify(ftsoList);
-
                 console.log(ftsoList);
 
-                var onInputChange = async () => {
+                var onInputChange = async (value) => {
                     let ftso1 = document.querySelector(".selectize-input");
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");
                     delegatedicon.src = img;
-                    isDelegateInput1(DappObject);
+                    // isDelegateInput1(DappObject);
                 }
 
-                for ( var i = 0; i < ftsoList.length; i++) {
-                    insert[i] = {
-                        id: i,
-                        title: ftsoList[i].rewardOwner.addresses[0],
-                        nodeid: ftsoList[i].nodeID,
-                        img: dappUrlBaseAddr + "assets/" + ftsoList[i].nodeID + ".png"
-                    }; 
-                }
+                // Origin: https://raw.githubusercontent.com/jtcaya/validator_list_json/master/validatorlist.json
+                fetch(dappUrlBaseAddr + 'validatorlist.json')
+                    .then(res => res.json())
+                    .then(FtsoInfo => {
+                        FtsoInfo.validators.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
-                // fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
-                //     .then(res => res.json())
-                //     .then(FtsoInfo => {
-                //         FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
+                        let indexNumber;
 
-                //         let indexNumber;
+                        let g = 1;
 
-                //         let g = 1;
+                        for (var f = 0; f < FtsoInfo.validators.length; f++) {
+                            for (var i = 0; i < ftsoList.length; i++) {
+                                if (FtsoInfo.validators[f].nodeId === ftsoList[i].nodeID) {
+                                    indexNumber = f;
 
-                //         for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                //             if ((FtsoInfo.providers[f].chainId === parseInt(chainIdHex, 16)) && (FtsoInfo.providers[f].listed === true)) {
-                //                 for (var i = 0; i < ftsoList.length; i++) {
-                //                     if (FtsoInfo.providers[f].address === ftsoList[i]) {
-                //                         indexNumber = f;
+                                    //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+                                    if (FtsoInfo.validators[indexNumber].name === "FTSOCAN") {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert[0] = {
+                                            id: 0,
+                                            title: FtsoInfo.validators[indexNumber].name,
+                                            nodeid: ftsoList[i].nodeID,
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png"
+                                        }; 
+                                    } else {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert[g] = {
+                                            id: g,
+                                            title: FtsoInfo.validators[indexNumber].name,
+                                            nodeid: ftsoList[i].nodeID,
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png"
+                                        }; 
 
-                //                         //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
-                //                         if (ftsoJsonList.includes(ftsoList[i])) {
-                //                             if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
-                //                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                //                                 insert[0] = {
-                //                                     id: 0,
-                //                                     title: FtsoInfo.providers[indexNumber].name,
-                //                                     nodeid: ftsoList[i],
-                //                                     img: dappUrlBaseAddr + "assets/" + ftsoList[i] + ".png"
-                //                                 }; 
-                //                             } else {
-                //                                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                //                                 insert[g] = {
-                //                                     id: g,
-                //                                     title: FtsoInfo.providers[indexNumber].name,
-                //                                     nodeid: ftsoList[i],
-                //                                     img: dappUrlBaseAddr + "assets/" + ftsoList[i] + ".png"
-                //                                 }; 
-
-                //                                 g += 1;
-                //                             }
-                //                         } else {
-                //                             $.alert('The FTSO you are delegated to is invalid!');
-                //                             break;
-                //                         }
-                //                     }
-                //                 }
-                //             }
-                //         }
+                                        g += 1;
+                                    }
+                                }
+                            }
+                        }
 
                     console.log(insert);
 
@@ -1713,11 +1697,13 @@ async function populateValidators() {
                                 );
                             },
                         },
-                        onChange: onInputChange(),
+                        onChange: function(value) {
+                            onInputChange(value);
+                        },
                         create: false,
                         dropdownParent: "body",
                     });
-                // });
+                });
             } catch (error) {
                 // console.log(error)
             }
