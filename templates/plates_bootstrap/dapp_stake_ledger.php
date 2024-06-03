@@ -25,17 +25,12 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <button id="ContinueMetamask" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Metamask</i></button>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <button id="ContinueLedger" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Ledger</i></button>
+        <button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Continue</i></button>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <span> How would you like to access your Wallet?</span>
+        <span>Before using the staking functionality of the <strong>FTSOCAN DApp</strong>, You must open the <strong>Avalanche App</strong> on your Ledger device.</span>
     </div>
 </div>
 <div class="row">

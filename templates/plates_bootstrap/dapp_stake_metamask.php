@@ -25,17 +25,14 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <button id="ContinueMetamask" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Metamask</i></button>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <button id="ContinueLedger" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Ledger</i></button>
+        <button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Continue Anyway</i></button>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <span> How would you like to access your Wallet?</span>
+        <span><strong>WARNING:</strong></span>
+        <span> To use the staking functionality of the <strong>FTSOCAN DApp</strong>, You must enable <strong>"eth_sign"</strong> on your Metamask. <br> We <strong>highly</strong> recommend you turn it off IMMEDIATELY after you have finished using the staking features of the FTSOCAN DApp.<br></span>
+        <span><strong>CONTINUE AT YOUR OWN RISK!</strong></span>
     </div>
 </div>
 <div class="row">

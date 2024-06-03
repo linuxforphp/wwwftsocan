@@ -91,9 +91,19 @@
                 window.dappInit(4, 1);
             });
         } else if (uriPath[2] === 'stakeStake') {
-            $.get("stakeTransfer", function(data) {
+            $.get("stakeStake", function(data) {
                 $("#dapp-root").html(data);
                 window.dappInit(4, 2);
+            });
+        } else if (uriPath[2] === 'stakeMetamask') {
+            $.get("stakeMetamask", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(4, 4);
+            });
+        } else if (uriPath[2] === 'stakeLedger') {
+            $.get("stakeLedger", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(4, 5);
             });
         }
     }

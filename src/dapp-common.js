@@ -22,6 +22,7 @@ var DappObject = {
     isAmount2Active: false,
     transferBool: true,
     metamaskInstalled: false,
+    ledgerStake: false,
     signatureStaking: "",
     unPrefixedAddr: "",
 }
@@ -219,7 +220,7 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
     });
 }
 
-async function handleAccountsChanged(accounts, pageIndex = 1) {
+async function handleAccountsChanged(accounts, DappObject, pageIndex = 1) {
     DappObject.signatureStaking = "";
 
     if (pageIndex === 1 || pageIndex === '1') {
@@ -1243,7 +1244,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 // STAKE MODULE
 
-async function ConnectPChainClickStake(stakingOption, DappObject) {
+async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
     document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
 
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
@@ -1255,118 +1256,189 @@ async function ConnectPChainClickStake(stakingOption, DappObject) {
     let message = "You are enabling the FTSOCAN DApp to access your accounts PUBLIC key to derive your P-Chain address. Additionally, you are acknowledging the risks involved with staking on Flare and the usage of the MetaMask 'eth_sign' functionality. \n\nWE ARE NOT RESPONSIBLE FOR ANY LOSSES OF FUNDS AFTER STAKING. CONTINUE AT YOUR OWN RISK!";
 
     try {
-        const accounts = await provider.request({method: 'eth_requestAccounts'});
-        
-        const account = accounts[0];
+        let flrPublicKey;
 
-        const balance = await web32.eth.getBalance(account);
+        if (DappObject.ledgerStake === true) {
+            let addresses = await getLedgerAddresses("flare");
 
-        if (DappObject.signatureStaking === "") {
+            let insert = [];
 
-            let signSpinner = $.confirm({
-                escapeKey: false,
-                backgroundDismiss: false,
-                icon: 'fa fa-spinner fa-spin',
-                title: 'Loading...',
-                content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
-                theme: 'material',
-                type: 'dark',
-                typeAnimated: true,
-                draggable: false,
-                buttons: {
-                    ok: {
-                        isHidden: true, // hide the button
+            for (let i = 0; i < addresses.length; i++) {
+                insert[i] = {
+                    id: i,
+                    title: addresses[i].ethAddress,
+                    pubkey: addresses[i].publicKey,
+                };
+            }
+
+            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" placeholder="Select Account"></select>'
+
+            var onInputChange = async (value) => {
+                let addressBox = document.querySelector(".selectize-input");
+                let pubKey = addressBox.childNodes[0].childNodes[0].getAttribute('data-pubkey');
+                
+                flrPublicKey = pubKey;
+
+                document.getElementById("ConnectPChain").click();
+            }
+
+            $('#select-account').selectize({
+                maxItems: 1,
+                valueField: 'id',
+                labelField: 'title',
+                searchField: ["title"],
+                options: insert,
+                render: {
+                    item: function (item, escape) {
+                        return (
+                        "<div>" +
+                        (item.title
+                            ? `<span class="connect-wallet-text" data-pubkey=${item.pubkey}>` + escape(item.title) + "</span>"
+                            : "") +
+                        "</div>"
+                        );
+                    },
+                    option: function (item, escape) {
+                        var label = item.title;
+                        return (
+                        "<div>" +
+                        '<span class="connect-wallet-text">' +
+                        escape(label) +
+                        "</span>" +
+                        "</div>"
+                        );
                     },
                 },
-                onContentReady: async function () {
-                }
+                onChange: function(value) {
+                    onInputChange(value);
+                },
+                create: false,
+                dropdownParent: "body",
             });
 
-            const signature = await provider.request({
-                "method": "personal_sign",
-                "params": [
-                message,
-                account
-                ]
-            }).catch((error) => async function() {
+            let addressDropdown = document.querySelector(".selectize-input");
+            let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                
+            flrPublicKey = publicKey;
+        } else {
+            const accounts = await provider.request({method: 'eth_requestAccounts'});
+            
+            const account = accounts[0];
+
+            const balance = await web32.eth.getBalance(account);
+
+            if (DappObject.signatureStaking === "") {
+
+                let signSpinner = $.confirm({
+                    escapeKey: false,
+                    backgroundDismiss: false,
+                    icon: 'fa fa-spinner fa-spin',
+                    title: 'Loading...',
+                    content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
+                    theme: 'material',
+                    type: 'dark',
+                    typeAnimated: true,
+                    draggable: false,
+                    buttons: {
+                        ok: {
+                            isHidden: true, // hide the button
+                        },
+                    },
+                    onContentReady: async function () {
+                    }
+                });
+
+                const signature = await provider.request({
+                    "method": "personal_sign",
+                    "params": [
+                    message,
+                    account
+                    ]
+                }).catch((error) => async function() {
+                    signSpinner.close();
+
+                    throw error;
+                });
+
+                DappObject.signatureStaking = signature;
+
                 signSpinner.close();
+            }
 
-                throw error;
-            });
+            const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
 
-            DappObject.signatureStaking = signature;
+            const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
 
-            signSpinner.close();
+            flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
         }
 
-        const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
+        console.log(flrPublicKey);
 
-        const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
+        if (typeof flrPublicKey !== 'undefined') {
 
-        const flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
+            connectChainsAndKeys(flrPublicKey);
 
-        connectChainsAndKeys(flrPublicKey);
+            const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
 
-        const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
+            const CchainAddr = ethers.utils.getAddress(ethAddressString);
 
-        const CchainAddr = ethers.utils.getAddress(ethAddressString);
+            const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
 
-        const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+            DappObject.unPrefixedAddr = PchainAddr;
 
-        DappObject.unPrefixedAddr = PchainAddr;
+            const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
+                
+            const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
 
-        const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
-            
-        const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
+            if (addressPchain !== "0x0000000000000000000000000000000000000000") {
 
-        if (addressPchain !== "0x0000000000000000000000000000000000000000") {
+                const prefixedPchainAddress = "P-" + PchainAddr;
 
-            const prefixedPchainAddress = "P-" + PchainAddr;
+                const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
 
-            const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+                const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
 
-            const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+                console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
 
-            console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+                console.log(stakingOption);
 
-            console.log(stakingOption);
+                console.log(PchainAddrEncoded);
 
-            console.log(PchainAddrEncoded);
+                console.log(flrPublicKey);
 
-            console.log(flrPublicKey);
+                showAccountAddress(prefixedPchainAddress);
 
-            showAccountAddress(prefixedPchainAddress);
+                if (stakingOption === 1) {
+                    if (DappObject.transferBool === true) {
+                        showBalance(round(web32.utils.fromWei(balance, "ether")));
 
-            if (stakingOption === 1) {
-                if (DappObject.transferBool === true) {
-                    showBalance(round(web32.utils.fromWei(balance, "ether")));
+                        showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+                    } else {
+                        showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
 
-                    showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
-                } else {
-                    showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
-
-                    showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
+                        showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
+                    }
+                } else if (stakingOption === 2) {
+                    let delegatedIcon1 = document.getElementById("delegatedIcon1");
+                    delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+                
+                    // isDelegateInput1(DappObject);
+                
+                    await populateValidators();
+                
+                    try {
+                        // await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+                    } catch (error) {
+                        // console.log(error);
+                    }
                 }
-            } else if (stakingOption === 2) {
-                let delegatedIcon1 = document.getElementById("delegatedIcon1");
-                delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
-            
-                // isDelegateInput1(DappObject);
-            
-                await populateValidators();
-            
-                let web32 = new Web3(rpcUrl);
-            
-                try {
-                    // await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-                } catch (error) {
-                    // console.log(error);
-                }
+            } else {
+                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
+
+                document.getElementById("ConnectPChain").click();
             }
         } else {
-            await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
-
-            document.getElementById("ConnectPChain").click();
+            document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
         }
     } catch (error) {
         console.log(error);
@@ -1374,6 +1446,12 @@ async function ConnectPChainClickStake(stakingOption, DappObject) {
         document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
 
         DappObject.signatureStaking = "";
+
+        var ClickHandler;
+
+        document.getElementById("ConnectPChain").addEventListener("click", ClickHandler = async () => {
+            ConnectPChainClickStake(stakingOption, DappObject, ClickHandler);
+        });
     }
 }
 
@@ -1894,7 +1972,7 @@ window.dappInit = async (option, stakingOption) => {
                     }
 
                     window.ethereum.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts);
+                        handleAccountsChanged(accounts, DappObject);
                     });
 
                     window.ethereum.on("chainChanged", async () => {
@@ -2013,7 +2091,7 @@ window.dappInit = async (option, stakingOption) => {
                     };
 
                     window.ethereum.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts);
+                        handleAccountsChanged(accounts, DappObject);
                     });
 
                     window.ethereum.on("chainChanged", async () => {
@@ -2206,7 +2284,7 @@ window.dappInit = async (option, stakingOption) => {
 
                     window.ethereum.on("accountsChanged", async (accounts) => {
                         remove(".wrap-box-ftso");
-                        handleAccountsChanged(accounts, 3);
+                        handleAccountsChanged(accounts, DappObject, 3);
                     });
 
                     window.ethereum.on("chainChanged", async () => {
@@ -2254,22 +2332,34 @@ window.dappInit = async (option, stakingOption) => {
                 }
             }
 
+            var handleClick;
+
             if (typeof stakingOption === 'undefined') {
-                if (DappObject.signatureStaking === "") {
-                    document.getElementById("ContinueAnyway").addEventListener("click", async () => {
-                        getDappPage(5);
-                    });
-                } else {
+                document.getElementById("ContinueMetamask").addEventListener("click", async () => {
+                    getDappPage(8);
+                });
+                document.getElementById("ContinueLedger").addEventListener("click", async () => {
+                    getDappPage(9);
+                });
+            } else if (stakingOption === 4) {
+                //Metamask
+                document.getElementById("ContinueAnyway").addEventListener("click", async () => {
+                    DappObject.ledgerStake = false;
                     getDappPage(5);
-                }
+                });
+            } else if (stakingOption === 5) {
+                document.getElementById("ContinueAnyway").addEventListener("click", async () => {
+                    DappObject.ledgerStake = true;
+                    getDappPage(5);
+                });
             } else if (stakingOption === 1) {
-                document.getElementById("ConnectPChain").addEventListener("click", async () => {
-                    // let addresses = await getLedgerAddresses("flare");
-                    // console.log(addresses);
-                    ConnectPChainClickStake(stakingOption, DappObject);
+                document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
+                    ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                document.getElementById("ConnectPChain").click();
+                if (DappObject.ledgerStake === false) {
+                    document.getElementById("ConnectPChain").click();
+                }
 
                 // We check if the input is valid, then copy it to the wrapped tokens section.
                 document.querySelector("#AmountFrom").addEventListener("input", function () {
@@ -2290,15 +2380,17 @@ window.dappInit = async (option, stakingOption) => {
                     transferTokens(DappObject);
                 });
             } else if (stakingOption === 2) {
-                document.getElementById("ConnectPChain").addEventListener("click", async () => {
-                    ConnectPChainClickStake(stakingOption, DappObject);
+                document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
+                    ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                document.getElementById("ConnectPChain").click();
+                if (DappObject.ledgerStake === false) {
+                    document.getElementById("ConnectPChain").click();
+                }
             }
 
             window.ethereum.on("accountsChanged", async (accounts) => {
-                handleAccountsChanged(accounts, 4);
+                handleAccountsChanged(accounts, DappObject, 4);
             });
 
             window.ethereum.on("chainChanged", async () => {

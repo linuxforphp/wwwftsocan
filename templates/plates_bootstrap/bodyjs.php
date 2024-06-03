@@ -142,6 +142,22 @@
                     window.dappInit(4, 3);
                 }
             });
+        } else if (option === 8) {
+            $.get( "stakeMetamask", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(4, 4);
+                }
+            });
+        } else if (option === 9) {
+            $.get( "stakeLedger", function( data ) {
+                $( "#dapp-root" ).html( data );
+
+                if (reconnect === true) {
+                    window.dappInit(4, 5);
+                }
+            });
         }
     }
 </script>
