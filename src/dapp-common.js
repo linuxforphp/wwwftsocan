@@ -2264,6 +2264,8 @@ window.dappInit = async (option, stakingOption) => {
                 }
             } else if (stakingOption === 1) {
                 document.getElementById("ConnectPChain").addEventListener("click", async () => {
+                    // let addresses = await getLedgerAddresses("flare");
+                    // console.log(addresses);
                     ConnectPChainClickStake(stakingOption, DappObject);
                 });
 

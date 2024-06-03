@@ -98,7 +98,10 @@
         }
     }
 </script>
-
+<script src="<?=$view['urlbaseaddr'] ?>js/buffer.min.js"></script>
+<script>
+    window.Buffer = buffer.Buffer;
+</script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/main.bundle.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappcommon.bundle.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/flareutils.bundle.js"></script>
