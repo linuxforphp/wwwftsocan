@@ -1244,8 +1244,10 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 // STAKE MODULE
 
-async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
-    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, PassedPublicKey, PassedEthAddr) {
+    if (typeof PassedPublicKey === "undefined") {
+        document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+    }
 
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
 
@@ -1258,7 +1260,9 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
     try {
         let flrPublicKey;
 
-        if (DappObject.ledgerStake === true) {
+        let account;
+
+        if (DappObject.ledgerStake === true && typeof PassedPublicKey === "undefined") {
             let addresses = await getLedgerAddresses("flare");
 
             let insert = [];
@@ -1271,15 +1275,20 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
                 };
             }
 
-            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" placeholder="Select Account"></select>'
+            console.log(insert);
+
+            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
 
             var onInputChange = async (value) => {
                 let addressBox = document.querySelector(".selectize-input");
+                let ethaddr = addressBox.childNodes[0].childNodes[0].getAttribute('data-ethkey');
                 let pubKey = addressBox.childNodes[0].childNodes[0].getAttribute('data-pubkey');
                 
                 flrPublicKey = pubKey;
 
-                document.getElementById("ConnectPChain").click();
+                account = ethaddr
+
+                ConnectPChainClickStake(stakingOption, DappObject, HandleClick, flrPublicKey, ethaddr);
             }
 
             $('#select-account').selectize({
@@ -1293,7 +1302,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
                         return (
                         "<div>" +
                         (item.title
-                            ? `<span class="connect-wallet-text" data-pubkey=${item.pubkey}>` + escape(item.title) + "</span>"
+                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
                             : "") +
                         "</div>"
                         );
@@ -1320,12 +1329,10 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
             let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
                 
             flrPublicKey = publicKey;
-        } else {
+        } else if (DappObject.ledgerStake === false && typeof PassedPublicKey === "undefined") {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             
-            const account = accounts[0];
-
-            const balance = await web32.eth.getBalance(account);
+            account = accounts[0];
 
             if (DappObject.signatureStaking === "") {
 
@@ -1365,16 +1372,19 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
                 signSpinner.close();
             }
 
-            const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
-
-            const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
-
             flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
+        } else if (typeof PassedPublicKey !== "undefined") {
+            account = PassedEthAddr;
+            flrPublicKey = PassedPublicKey;
         }
 
         console.log(flrPublicKey);
 
         if (typeof flrPublicKey !== 'undefined') {
+
+            const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
+
+            const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
 
             connectChainsAndKeys(flrPublicKey);
 
@@ -1398,6 +1408,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
 
                 const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
 
+                const balance = await web32.eth.getBalance(account);
+
                 console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
 
                 console.log(stakingOption);
@@ -1406,7 +1418,13 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick) {
 
                 console.log(flrPublicKey);
 
-                showAccountAddress(prefixedPchainAddress);
+                let addressBox = document.querySelector(".selectize-input");
+
+                if (DappObject.ledgerStake === true) {          
+                    addressBox.childNodes[0].childNodes[0].innerText = prefixedPchainAddress;
+                } else {
+                    showAccountAddress(prefixedPchainAddress);
+                }
 
                 if (stakingOption === 1) {
                     if (DappObject.transferBool === true) {

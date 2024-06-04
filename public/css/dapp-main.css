@@ -121,17 +121,17 @@ h1, h2 {
     font-style: normal;
 }
 
-.connect-wallet-text::before {
+/* .connect-wallet-text::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 50%;
     height: 100%;
-    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent); */
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
-}
+} */
 
 .connect-wallet:hover > .connect-wallet-text::after {
     transform: skewX(45deg) translateX(200%);

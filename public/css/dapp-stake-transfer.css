@@ -1,3 +1,47 @@
+.connect-wallet-text .selectize-input {
+    position: relative;
+    z-index: 100;
+    width: auto;
+    outline: none;
+    font-size: 18px !important;
+    padding: 0px !important;
+    cursor: pointer;
+    border-radius: .3em;
+    margin: -10px !important;
+    left: 0 !important;
+    background-color: rgba(255, 255, 255, 0.0) !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #fff !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: 0.5s;
+    letter-spacing: normal;
+}
+
+.title.connect-wallet-text {
+    display: block;
+    width: 45%;
+    text-overflow: ellipsis;
+    overflow-x: clip;
+}
+
+.connect-wallet-text .selectize-input input {
+    color: #fff !important;
+}
+
+input#select-account-selectized::-webkit-input-placeholder {
+    color: #fff;
+}
+
+.connect-wallet-text.selectize-control.single .selectize-input:not(.no-arrow)::after {
+    border-color: #fff transparent transparent transparent !important;
+    top: 45% !important;
+    right: -10px !important;
+}
+
 .text-from {
     color: #fd000f;
     margin: 30px 35px 5px 45px;
