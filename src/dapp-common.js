@@ -25,6 +25,8 @@ var DappObject = {
     ledgerStake: false,
     signatureStaking: "",
     unPrefixedAddr: "",
+    ledgerAddrArray: [],
+    ledgerSelectedAddress: "",
 }
 
 const provider = window.ethereum;
@@ -1244,7 +1246,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 // STAKE MODULE
 
-async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, PassedPublicKey, PassedEthAddr) {
+async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
     if (typeof PassedPublicKey === "undefined") {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     }
@@ -1262,20 +1264,30 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
         let account;
 
+        let selectize;
+
+        if (typeof addressIndex !== "undefined") {
+            DappObject.ledgerSelectedAddress = addressIndex;
+        }
+
         if (DappObject.ledgerStake === true && typeof PassedPublicKey === "undefined") {
-            let addresses = await getLedgerAddresses("flare");
+            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                let addresses = await getLedgerAddresses("flare");
 
-            let insert = [];
+                let insert = [];
 
-            for (let i = 0; i < addresses.length; i++) {
-                insert[i] = {
-                    id: i,
-                    title: addresses[i].ethAddress,
-                    pubkey: addresses[i].publicKey,
-                };
+                for (let i = 0; i < addresses.length; i++) {
+                    insert[i] = {
+                        id: i,
+                        title: addresses[i].ethAddress,
+                        pubkey: addresses[i].publicKey,
+                    };
+                }
+
+                DappObject.ledgerAddrArray = insert;
             }
 
-            console.log(insert);
+            console.log(DappObject.ledgerAddrArray);
 
             document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
 
@@ -1288,15 +1300,19 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                 account = ethaddr
 
-                ConnectPChainClickStake(stakingOption, DappObject, HandleClick, flrPublicKey, ethaddr);
+                console.log("Value: " + value);
+
+                DappObject.ledgerSelectedAddress = value;
+
+                ConnectPChainClickStake(stakingOption, DappObject, HandleClick, flrPublicKey, ethaddr, value);
             }
 
-            $('#select-account').selectize({
+            var $select = $('#select-account').selectize({
                 maxItems: 1,
                 valueField: 'id',
                 labelField: 'title',
                 searchField: ["title"],
-                options: insert,
+                options: DappObject.ledgerAddrArray,
                 render: {
                     item: function (item, escape) {
                         return (
@@ -1324,6 +1340,14 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                 create: false,
                 dropdownParent: "body",
             });
+
+            selectize = $select[0].selectize;
+
+            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedAddress);
+
+            if (DappObject.ledgerSelectedAddress !== "") {
+                selectize.setValue([Number(DappObject.ledgerSelectedAddress)]);
+            }
 
             let addressDropdown = document.querySelector(".selectize-input");
             let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
@@ -1464,6 +1488,10 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
         document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
 
         DappObject.signatureStaking = "";
+
+        DappObject.ledgerSelectedAddress = "";
+
+        DappObject.ledgerAddrArray = [];
 
         var ClickHandler;
 
@@ -2375,7 +2403,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.ledgerStake === false) {
+                if (DappObject.ledgerStake === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
 
@@ -2402,7 +2430,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.ledgerStake === false) {
+                if (DappObject.ledgerStake === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
             }
