@@ -1653,7 +1653,7 @@ async function transferTokens(DappObject) {
                     // export tokens
 
                     try {
-                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt);
+                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
 
                         showSpinner(async () => {
                             await waitCchainAtomicTxStatus(cChainTxId[0]);
@@ -1666,7 +1666,7 @@ async function transferTokens(DappObject) {
                     // import tokens
 
                     try {
-                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1);
+                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
 
                         showSpinner(async () => {
                             await waitPchainAtomicTxStatus(pChainTxId[0]);
@@ -1689,7 +1689,7 @@ async function transferTokens(DappObject) {
                     // export tokens
 
                     try {
-                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueWeiBN.toString());
+                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
 
                         showSpinner(async () => {
                             await waitPchainAtomicTxStatus(pChainTxId);
@@ -1702,7 +1702,7 @@ async function transferTokens(DappObject) {
                     // import tokens
 
                     try {
-                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined);
+                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
 
                         showSpinner(async () => {
                             await waitCchainAtomicTxStatus(cChainTxId);
