@@ -1656,7 +1656,7 @@ async function transferTokens(DappObject) {
                         const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
 
                         showSpinner(async () => {
-                            await waitCchainAtomicTxStatus(cChainTxId[0]);
+                            await waitCchainAtomicTxStatus(cChainTxId.txid);
                         });
                     } catch (error) {
                         console.log("ERROR C-chain to P-chain export");
@@ -1669,7 +1669,7 @@ async function transferTokens(DappObject) {
                         const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
 
                         showSpinner(async () => {
-                            await waitPchainAtomicTxStatus(pChainTxId[0]);
+                            await waitPchainAtomicTxStatus(pChainTxId.txid);
                         });
                     } catch (error) {
                         console.log("ERROR C-chain to P-chain import");
