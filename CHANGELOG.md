@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.8 (2024-06-17)
+
+- Fixes a minor issue when the Flare blockchain is slow.
+
 ## 0.9.7 (2024-01-23)
 
 - Fixes an issue when undelegating with a single provider.
