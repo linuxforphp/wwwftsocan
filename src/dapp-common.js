@@ -318,14 +318,17 @@ async function checkTx(hash, web32, spinner) {
             }
         });
         
-        if (i === 10) {
+        if (i === 20) {
+            spinner.close();
+
             showFail();
+
             document.getElementById("ConnectWallet").click();
             
             // Clear interval
             clearInterval(interval);
         }
-    }, 5000)
+    }, 6000)
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
