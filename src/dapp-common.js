@@ -26,6 +26,7 @@ var DappObject = {
     signatureStaking: "",
     unPrefixedAddr: "",
     ledgerAddrArray: [],
+    ledgerSelectedIndex: "",
     ledgerSelectedAddress: "",
 }
 
@@ -116,6 +117,29 @@ async function showConfirmationSpinner(txHash, web32) {
     });
 }
 
+async function showConfirmationSpinnerStake(doSomething) {
+    var spinner =
+    $.confirm({
+        escapeKey: false,
+        backgroundDismiss: false,
+        icon: 'fa fa-spinner fa-spin',
+        title: 'Loading...',
+        content: 'Waiting for network confirmation. <br />Please wait...',
+        theme: 'material',
+        type: 'orange',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            ok: {
+                isHidden: true, // hide the button
+            },
+        },
+        onContentReady: async function () {
+            await doSomething(this);
+        }
+    });
+}
+
 async function showConfirm(txHash) {
     $.confirm({
         escapeKey: true,
@@ -142,7 +166,7 @@ async function showConfirm(txHash) {
     });
 }
 
-async function showConfirmStake() {
+async function showConfirmStake(DappObject, stakingOption, txHash) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
@@ -156,11 +180,12 @@ async function showConfirmStake() {
         buttons: {
             ok: {
                 action: function () {
-                    document.getElementById("ConnectPChain").click();
+                    RefreshStakingPage(DappObject, stakingOption);
                 },
             }
         },
         onContentReady: async function () {
+            this.setContentAppend(txHash);
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -182,6 +207,31 @@ function showFail() {
             ok: {
                 action: function () {
                     document.getElementById("ConnectWallet").click();
+                },
+            },
+        },
+        onContentReady: function () {
+            this.showLoading(true);
+            this.hideLoading(true);
+        }
+    });
+}
+
+function showFailStake(DappObject, stakingOption) {
+    $.confirm({
+        escapeKey: true,
+        backgroundDismiss: true,
+        icon: 'fa fa-warning red',
+        title: 'Transaction declined!',
+        content: '',
+        type: 'red',
+        theme: 'material',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            ok: {
+                action: function () {
+                    RefreshStakingPage(DappObject, stakingOption);
                 },
             },
         },
@@ -1267,7 +1317,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
         let selectize;
 
         if (typeof addressIndex !== "undefined") {
-            DappObject.ledgerSelectedAddress = addressIndex;
+            DappObject.ledgerSelectedIndex = addressIndex;
         }
 
         if (DappObject.ledgerStake === true && typeof PassedPublicKey === "undefined") {
@@ -1298,11 +1348,19 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                 
                 flrPublicKey = pubKey;
 
-                account = ethaddr
+                account = ethaddr;
+
+                DappObject.ledgerSelectedAddress = account;
 
                 console.log("Value: " + value);
 
-                DappObject.ledgerSelectedAddress = value;
+                DappObject.ledgerSelectedIndex = value;
+
+                connectChainsAndKeys(flrPublicKey);
+
+                let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+
+                DappObject.unPrefixedAddr = unprefixed;
 
                 ConnectPChainClickStake(stakingOption, DappObject, HandleClick, flrPublicKey, ethaddr, value);
             }
@@ -1343,10 +1401,10 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
             selectize = $select[0].selectize;
 
-            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedAddress);
+            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
 
-            if (DappObject.ledgerSelectedAddress !== "") {
-                selectize.setValue([Number(DappObject.ledgerSelectedAddress)]);
+            if (DappObject.ledgerSelectedIndex !== "") {
+                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
             }
 
             let addressDropdown = document.querySelector(".selectize-input");
@@ -1420,6 +1478,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
             DappObject.unPrefixedAddr = PchainAddr;
 
+            DappObject.ledgerSelectedAddress = account;
+
             const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
                 
             const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
@@ -1489,7 +1549,11 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
         DappObject.signatureStaking = "";
 
+        DappObject.ledgerSelectedIndex = "";
+
         DappObject.ledgerSelectedAddress = "";
+
+        DappObject.unPrefixedAddr = "";
 
         DappObject.ledgerAddrArray = [];
 
@@ -1498,6 +1562,58 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
         document.getElementById("ConnectPChain").addEventListener("click", ClickHandler = async () => {
             ConnectPChainClickStake(stakingOption, DappObject, ClickHandler);
         });
+    }
+}
+
+async function RefreshStakingPage(DappObject, stakingOption) {
+    let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
+
+    let web32 = new Web3(rpcUrl);
+
+    if (DappObject.unPrefixedAddr !== "") {
+
+        const prefixedPchainAddress = "P-" + DappObject.unPrefixedAddr;
+
+        const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+
+        const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+
+        const balance = await web32.eth.getBalance(DappObject.ledgerSelectedAddress);
+
+        let addressBox = document.querySelector(".selectize-input");
+
+        if (DappObject.ledgerStake === true) {          
+            addressBox.childNodes[0].childNodes[0].innerText = prefixedPchainAddress;
+        } else {
+            showAccountAddress(prefixedPchainAddress);
+        }
+
+        if (stakingOption === 1) {
+            if (DappObject.transferBool === true) {
+                showBalance(round(web32.utils.fromWei(balance, "ether")));
+
+                showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+            } else {
+                showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+
+                showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
+            }
+        } else if (stakingOption === 2) {
+            let delegatedIcon1 = document.getElementById("delegatedIcon1");
+            delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+        
+            // isDelegateInput1(DappObject);
+        
+            await populateValidators();
+        
+            try {
+                // await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+            } catch (error) {
+                // console.log(error);
+            }
+        }
+    } else {
+        document.getElementById("ConnectPChain").click();
     }
 }
 
@@ -1531,7 +1647,7 @@ async function showPchainBalance(Pchainbalance) {
     document.getElementById("TokenBalance").innerText = Pchainbalance;
 }
 
-async function toggleTransferButton(DappObject) {
+async function toggleTransferButton(DappObject, stakingOption) {
     var transferIcon = document.getElementById("TransferIcon");
 
     var fromText = document.getElementById("FromText");
@@ -1539,8 +1655,8 @@ async function toggleTransferButton(DappObject) {
 
     // Switching wrap/unwrap.
     if (DappObject.transferBool === true) {
+
         DappObject.transferBool = false;
-        transferIcon.style.transform = "rotate(180deg)";
         setTransferButton2(DappObject);
 
         fromText.style.color = "#000";
@@ -1549,7 +1665,6 @@ async function toggleTransferButton(DappObject) {
         toText.innerText = "C";
     } else {
         DappObject.transferBool = true;
-        transferIcon.style.transform = "rotate(0deg)";
         setTransferButton(DappObject);
 
         fromText.style.color = "#fd000f";
@@ -1558,7 +1673,7 @@ async function toggleTransferButton(DappObject) {
         toText.innerText = "P";
     }
 
-    document.getElementById("ConnectPChain").click();
+    RefreshStakingPage(DappObject, stakingOption);
 }
 
 // Is there a valid input?
@@ -1613,13 +1728,11 @@ function copyTransferInput() {
 
 // Transfer button
 
-async function transferTokens(DappObject) {
+async function transferTokens(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
         $.alert("Please enter a valid value");
     } else {
         let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
-
-        let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
 
         var web32 = new Web3(rpcUrl);
 
@@ -1650,33 +1763,66 @@ async function transferTokens(DappObject) {
 
                     console.log(cKeychain);
 
-                    // export tokens
+                    // export tokens C-Chain
 
                     try {
-                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
+                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                            console.log("C Chain TX ID: " + result);
+                            showConfirmationSpinnerStake(async (spinner) => {
+                                try {
+                                    let status = waitCchainAtomicTxStatus(result).then(value => {
+                                        console.log(value);
 
-                        showSpinner(async () => {
-                            await waitCchainAtomicTxStatus(cChainTxId.txid);
+                                        switch (value) {
+                                            case "Accepted":
+                                                spinner.close();
+                                                showConfirmStake(DappObject, stakingOption, value);
+                                            case "Dropped":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            case "Unknown":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            default:
+                                                break
+                                        }
+                                    });
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            });
+                        });
+
+                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                            console.log("P Chain TX ID: " + result.txid);
+                            showConfirmationSpinnerStake(async (spinner) => {
+                                try {
+                                    let status = waitPchainAtomicTxStatus(result.txid).then(value => {
+                                        console.log(value);
+
+                                        switch (value) {
+                                            case "Committed":
+                                                spinner.close();
+                                                showConfirmStake(DappObject, stakingOption, value);
+                                            case "Dropped":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            case "Unknown":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            default:
+                                                break
+                                        }
+                                    });
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            });
                         });
                     } catch (error) {
-                        console.log("ERROR C-chain to P-chain export");
+                        console.log("ERROR C-chain to P-chain");
                         throw error;
                     }
-                    
-                    // import tokens
-
-                    try {
-                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
-
-                        showSpinner(async () => {
-                            await waitPchainAtomicTxStatus(pChainTxId.txid);
-                        });
-                    } catch (error) {
-                        console.log("ERROR C-chain to P-chain import");
-                        throw error;
-                    }
-
-                    showConfirmStake();
                 } else {
                     // P-chain to C-chain
 
@@ -1686,33 +1832,67 @@ async function transferTokens(DappObject) {
 
                     const pKeychain = await keychainp();
 
-                    // export tokens
+                    // export tokens P-Chain
 
                     try {
-                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
+                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                            console.log("P Chain TX ID: " + result.txid);
+                            showConfirmationSpinnerStake(async (spinner) => {
+                                try {
+                                    let status = waitPchainAtomicTxStatus(result.txid).then(value => {
+                                        console.log(value);
 
-                        showSpinner(async () => {
-                            await waitPchainAtomicTxStatus(pChainTxId);
+                                        switch (value) {
+                                            case "Committed":
+                                                spinner.close();
+                                                showConfirmStake(DappObject, stakingOption, value);
+                                            case "Dropped":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            case "Unknown":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            default:
+                                                break
+                                        }
+                                    });
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            });
+                        });
+
+                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                            console.log("C Chain TX ID: " + result);
+                            showConfirmationSpinnerStake(async (spinner) => {
+                                try {
+                                    let status = waitCchainAtomicTxStatus(result).then(value => {
+                                        console.log(value);
+
+                                        switch (value) {
+                                            case "Accepted":
+                                                spinner.close();
+                                                showConfirmStake(DappObject, stakingOption, value);
+                                            case "Dropped":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            case "Unknown":
+                                                spinner.close();
+                                                showFailStake(DappObject, stakingOption);
+                                            default:
+                                                break
+                                        }
+                                    });
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            });
+                            
                         });
                     } catch (error) {
-                        console.log("ERROR P-chain to C-chain export");
+                        console.log("ERROR P-chain to C-chain");
                         throw error;
                     }
-                    
-                    // import tokens
-
-                    try {
-                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined, DappObject.ledgerStake, DappObject.ledgerSelectedAddress);
-
-                        showSpinner(async () => {
-                            await waitCchainAtomicTxStatus(cChainTxId);
-                        });
-                    } catch (error) {
-                        console.log("ERROR P-chain to C-chain import");
-                        throw error;
-                    }
-
-                    showConfirmStake();
                 }
 
                 if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
@@ -1724,7 +1904,7 @@ async function transferTokens(DappObject) {
             }
         } catch (error) {
             console.log(error);
-            showFail();
+            showFailStake(DappObject, stakingOption);
         }
     }
 }
@@ -2419,11 +2599,11 @@ window.dappInit = async (option, stakingOption) => {
                 });
 
                 document.getElementById("TransferIcon").addEventListener("click", async () => {
-                    toggleTransferButton(DappObject);
+                    toggleTransferButton(DappObject, stakingOption);
                 });
 
                 document.getElementById("WrapButton").addEventListener("click", async () => {
-                    transferTokens(DappObject);
+                    transferTokens(DappObject, stakingOption);
                 });
             } else if (stakingOption === 2) {
                 document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
