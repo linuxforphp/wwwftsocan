@@ -124,7 +124,7 @@ async function showConfirmationSpinnerStake(doSomething) {
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
-        content: 'Waiting for network confirmation. <br />Please wait...',
+        content: '<div id="ExportTx"><div id="ExportTxIcon" class="fa fa-spinner fa-spin"></div> Export Transaction status: <div id="ExportTxStatus">Processing...</div></div><br />' + '<div id="ImportTx"><div id="ImportTxIcon" class="fa fa-spinner fa-spin"></div> Import Transaction status: <div id="ImportTxStatus">Processing...</div></div>',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
@@ -166,7 +166,7 @@ async function showConfirm(txHash) {
     });
 }
 
-async function showConfirmStake(DappObject, stakingOption, txHash) {
+async function showConfirmStake(DappObject, stakingOption, txHashes) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
@@ -185,7 +185,10 @@ async function showConfirmStake(DappObject, stakingOption, txHash) {
             }
         },
         onContentReady: async function () {
-            this.setContentAppend(txHash);
+            for (let i = 0; i < txHashes.length; i++) {
+                this.setContentAppend(txHashes[i] + "<br />");
+            }
+
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -1766,23 +1769,32 @@ async function transferTokens(DappObject, stakingOption) {
                     // export tokens C-Chain
 
                     try {
-                        const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
-                            console.log("C Chain TX ID: " + result);
-                            showConfirmationSpinnerStake(async (spinner) => {
+                        showConfirmationSpinnerStake(async (spinner) => {
+                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                console.log("C Chain TX ID: " + result);
+                                
                                 try {
                                     let status = waitCchainAtomicTxStatus(result).then(value => {
                                         console.log(value);
 
                                         switch (value) {
                                             case "Accepted":
-                                                spinner.close();
-                                                showConfirmStake(DappObject, stakingOption, value);
+                                                spinner.$content.find('#ExportTxStatus').html('Accepted');
+                                                spinner.$content.find('#ExportTxIcon').removeClass();
+                                                spinner.$content.find('#ExportTxIcon').addClass("fa fa-solid fa-check");
+                                                break
                                             case "Dropped":
+                                                spinner.$content.find('#ExportTxStatus').html('Dropped');
+                                                spinner.$content.find('#ExportTxIcon').removeClass();
+                                                spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
                                                 spinner.close();
                                                 showFailStake(DappObject, stakingOption);
+                                                break
                                             case "Unknown":
-                                                spinner.close();
-                                                showFailStake(DappObject, stakingOption);
+                                                spinner.$content.find('#ExportTxStatus').html('Unknown');
+                                                spinner.$content.find('#ExportTxIcon').removeClass();
+                                                spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
+                                                break
                                             default:
                                                 break
                                         }
@@ -1791,25 +1803,36 @@ async function transferTokens(DappObject, stakingOption) {
                                     console.log(error);
                                 }
                             });
-                        });
 
-                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
-                            console.log("P Chain TX ID: " + result.txid);
-                            showConfirmationSpinnerStake(async (spinner) => {
+                            const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                console.log("P Chain TX ID: " + result.txid);
+                            
                                 try {
                                     let status = waitPchainAtomicTxStatus(result.txid).then(value => {
                                         console.log(value);
 
                                         switch (value) {
                                             case "Committed":
+                                                spinner.$content.find('#ImportTxStatus').html('Committed');
+                                                spinner.$content.find('#ImportTxIcon').removeClass();
+                                                spinner.$content.find('#ImportTxIcon').addClass("fa fa-solid fa-check");
                                                 spinner.close();
-                                                showConfirmStake(DappObject, stakingOption, value);
+                                                showConfirmStake(DappObject, stakingOption, [cChainTxId,result.txid]);
+                                                break
                                             case "Dropped":
+                                                spinner.$content.find('#ImportTxStatus').html('Dropped');
+                                                spinner.$content.find('#ImportTxIcon').removeClass();
+                                                spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                 spinner.close();
                                                 showFailStake(DappObject, stakingOption);
+                                                break
                                             case "Unknown":
+                                                spinner.$content.find('#ImportTxStatus').html('Unknown');
+                                                spinner.$content.find('#ImportTxIcon').removeClass();
+                                                spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                 spinner.close();
                                                 showFailStake(DappObject, stakingOption);
+                                                break
                                             default:
                                                 break
                                         }
@@ -1835,23 +1858,32 @@ async function transferTokens(DappObject, stakingOption) {
                     // export tokens P-Chain
 
                     try {
-                        const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
-                            console.log("P Chain TX ID: " + result.txid);
-                            showConfirmationSpinnerStake(async (spinner) => {
+                        showConfirmationSpinnerStake(async (spinner) => {
+                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                console.log("P Chain TX ID: " + result.txid);
+                            
                                 try {
                                     let status = waitPchainAtomicTxStatus(result.txid).then(value => {
                                         console.log(value);
 
                                         switch (value) {
                                             case "Committed":
-                                                spinner.close();
-                                                showConfirmStake(DappObject, stakingOption, value);
+                                                spinner.$content.find('#ExportTxStatus').html('Committed');
+                                                spinner.$content.find('#ExportTxIcon').removeClass();
+                                                spinner.$content.find('#ExportTxIcon').addClass("fa fa-solid fa-check");
+                                                break
                                             case "Dropped":
+                                                spinner.$content.find('#ExportTxStatus').html('Dropped');
+                                                spinner.$content.find('#ExportTxIcon').removeClass();
+                                                spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
                                                 spinner.close();
                                                 showFailStake(DappObject, stakingOption);
+                                                break
                                             case "Unknown":
-                                                spinner.close();
-                                                showFailStake(DappObject, stakingOption);
+                                                spinner.$content.find('#ExportTxStatus').html('Unknown');
+                                                spinner.$content.find('#ExportTxIcon').removeClass();
+                                                spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
+                                                break
                                             default:
                                                 break
                                         }
@@ -1860,34 +1892,44 @@ async function transferTokens(DappObject, stakingOption) {
                                     console.log(error);
                                 }
                             });
-                        });
 
-                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
-                            console.log("C Chain TX ID: " + result);
-                            showConfirmationSpinnerStake(async (spinner) => {
+                            const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                console.log("C Chain TX ID: " + result);
+                                
                                 try {
                                     let status = waitCchainAtomicTxStatus(result).then(value => {
                                         console.log(value);
 
                                         switch (value) {
                                             case "Accepted":
+                                                spinner.$content.find('#ImportTxStatus').html('Accepted');
+                                                spinner.$content.find('#ImportTxIcon').removeClass();
+                                                spinner.$content.find('#ImportTxIcon').addClass("fa fa-solid fa-check");
                                                 spinner.close();
-                                                showConfirmStake(DappObject, stakingOption, value);
+                                                showConfirmStake(DappObject, stakingOption, [pChainTxId.txid,result]);
+                                                break
                                             case "Dropped":
+                                                spinner.$content.find('#ImportTxStatus').html('Dropped');
+                                                spinner.$content.find('#ImportTxIcon').removeClass();
+                                                spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                 spinner.close();
                                                 showFailStake(DappObject, stakingOption);
+                                                break
                                             case "Unknown":
+                                                spinner.$content.find('#ImportTxStatus').html('Unknown');
+                                                spinner.$content.find('#ImportTxIcon').removeClass();
+                                                spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                 spinner.close();
                                                 showFailStake(DappObject, stakingOption);
+                                                break
                                             default:
                                                 break
                                         }
                                     });
                                 } catch (error) {
                                     console.log(error);
-                                }
+                                }   
                             });
-                            
                         });
                     } catch (error) {
                         console.log("ERROR P-chain to C-chain");
