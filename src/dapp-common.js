@@ -1766,15 +1766,21 @@ async function transferTokens(DappObject, stakingOption) {
 
                     console.log(cKeychain);
 
+                    let cChainTransactionId;
+
+                    let pChainTransactionId;
+
                     // export tokens C-Chain
 
                     try {
                         showConfirmationSpinnerStake(async (spinner) => {
                             const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
-                                console.log("C Chain TX ID: " + result);
+                                console.log("C Chain TX ID: " + result.txid);
+
+                                cChainTransactionId = result.txid;
                                 
                                 try {
-                                    let status = waitCchainAtomicTxStatus(result).then(value => {
+                                    let status = waitCchainAtomicTxStatus(result.txid).then(value => {
                                         console.log(value);
 
                                         switch (value) {
@@ -1806,6 +1812,8 @@ async function transferTokens(DappObject, stakingOption) {
 
                             const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                 console.log("P Chain TX ID: " + result.txid);
+
+                                pChainTransactionId = result.txid;
                             
                                 try {
                                     let status = waitPchainAtomicTxStatus(result.txid).then(value => {
@@ -1817,7 +1825,7 @@ async function transferTokens(DappObject, stakingOption) {
                                                 spinner.$content.find('#ImportTxIcon').removeClass();
                                                 spinner.$content.find('#ImportTxIcon').addClass("fa fa-solid fa-check");
                                                 spinner.close();
-                                                showConfirmStake(DappObject, stakingOption, [cChainTxId,result.txid]);
+                                                showConfirmStake(DappObject, stakingOption, [cChainTransactionId,pChainTransactionId]);
                                                 break
                                             case "Dropped":
                                                 spinner.$content.find('#ImportTxStatus').html('Dropped');
@@ -1855,15 +1863,21 @@ async function transferTokens(DappObject, stakingOption) {
 
                     const pKeychain = await keychainp();
 
+                    let cChainTransactionId;
+
+                    let pChainTransactionId;
+
                     // export tokens P-Chain
 
                     try {
                         showConfirmationSpinnerStake(async (spinner) => {
                             const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
-                                console.log("P Chain TX ID: " + result.txid);
+                                console.log("P Chain TX ID: " + result);
+
+                                pChainTransactionId = result;
                             
                                 try {
-                                    let status = waitPchainAtomicTxStatus(result.txid).then(value => {
+                                    let status = waitPchainAtomicTxStatus(result).then(value => {
                                         console.log(value);
 
                                         switch (value) {
@@ -1895,6 +1909,8 @@ async function transferTokens(DappObject, stakingOption) {
 
                             const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, undefined, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                 console.log("C Chain TX ID: " + result);
+
+                                cChainTransactionId = result;
                                 
                                 try {
                                     let status = waitCchainAtomicTxStatus(result).then(value => {
@@ -1906,7 +1922,7 @@ async function transferTokens(DappObject, stakingOption) {
                                                 spinner.$content.find('#ImportTxIcon').removeClass();
                                                 spinner.$content.find('#ImportTxIcon').addClass("fa fa-solid fa-check");
                                                 spinner.close();
-                                                showConfirmStake(DappObject, stakingOption, [pChainTxId.txid,result]);
+                                                showConfirmStake(DappObject, stakingOption, [pChainTransactionId,cChainTransactionId]);
                                                 break
                                             case "Dropped":
                                                 spinner.$content.find('#ImportTxStatus').html('Dropped');
