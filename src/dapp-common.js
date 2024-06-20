@@ -124,7 +124,7 @@ async function showConfirmationSpinnerStake(doSomething) {
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
-        content: '<div id="ExportTx"><div id="ExportTxIcon" class="fa fa-spinner fa-spin"></div> Export Transaction status: <div id="ExportTxStatus">Processing...</div></div><br />' + '<div id="ImportTx"><div id="ImportTxIcon" class="fa fa-spinner fa-spin"></div> Import Transaction status: <div id="ImportTxStatus">Processing...</div></div>',
+        content: '<div id="ExportTx"><div id="ExportTxIcon" class="fa fa-spinner fa-spin"></div> Export Transaction status: <div id="ExportTxStatus">Please check your Wallet...</div></div><br />' + '<div id="ImportTx"><div id="ImportTxIcon" class="fa fa-spinner fa-spin"></div> Import Transaction status: <div id="ImportTxStatus">Waiting for Export status...</div></div>',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
@@ -1821,6 +1821,7 @@ async function transferTokens(DappObject, stakingOption) {
                                 });
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
+                                    document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
                                     const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("P Chain TX ID: " + result.txid);
         
@@ -1931,6 +1932,7 @@ async function transferTokens(DappObject, stakingOption) {
                                 });
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
+                                    document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
                                     const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("C Chain TX ID: " + result);
 
