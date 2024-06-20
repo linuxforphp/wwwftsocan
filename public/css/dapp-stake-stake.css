@@ -44,3 +44,90 @@
     font-size: 1.3rem !important;
     color: #67696a !important;
 }
+
+
+.stake-amount {
+    display: inline-block;
+    margin: 27px 100px 25px 25px;
+    position: relative;
+    width: 10%;
+}
+
+.stake-amount input {
+    border-radius: 0px;
+    background-color: transparent;
+    border: none;
+    min-width: 110px;
+    height: 30px;
+    float: left;
+    display: block;
+    padding: 0 15px 0 2px;
+    margin: 0;
+    text-align: center;
+}
+
+.stake-amount input:focus {
+    outline: 0;
+}
+
+.stake-amount .stake-amount-nav {
+    float: left;
+    position: relative;
+    height: 30px;
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button {
+    position: relative;
+    cursor: pointer;
+    width: 22px;
+    text-align: center;
+    color: #333;
+    font-size: 12px;
+    line-height: 1.8;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.stake-amount-button-up:active,
+.stake-amount-button-down:active {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-up {
+    border-left: 1px solid rgb(181, 181, 181);
+    border-right: 1px solid rgb(181, 181, 181);
+    position: absolute;
+    height: 70%;
+    bottom: 15px;
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-down {
+    border-left: 1px solid rgb(181, 181, 181);
+    border-right: 1px solid rgb(181, 181, 181);
+    position: absolute;
+    top: 15px;
+    height: 70%;
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-max {
+    position: absolute;
+    top: 4px;
+    left: 42px;
+    height: 70%;
+    width: 40px;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

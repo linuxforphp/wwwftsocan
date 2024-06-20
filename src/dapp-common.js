@@ -1528,6 +1528,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
                 
                     // isDelegateInput1(DappObject);
+
+                    customInput(PchainBalanceBigInt);
                 
                     await populateValidators();
                 
@@ -2097,6 +2099,83 @@ async function populateValidators() {
             resolve();
         }, 200);
     })
+}
+
+//Custom Input 
+
+async function customInput(Pbalance) {
+    $('<div class="stake-amount-nav"><div id="stakeAmountUp" class="stake-amount-button stake-amount-button-up fa fa-solid fa-angle-up"></div><div id="stakeAmountDown" class="stake-amount-button stake-amount-button-down fa fa-solid fa-angle-down"></div><div id="stakeAmountMax" class="stake-amount-button stake-amount-button-max">MAX</div></div>').insertAfter("#stakeAmount input");
+
+    let spinner = $("#stakeAmount");
+
+    let input = document.getElementById("Amount1");
+
+    let btnUp = spinner.find("#stakeAmountUp");
+
+    let btnDown = spinner.find("#stakeAmountDown");
+
+    let btnMax = spinner.find("#stakeAmountMax");
+
+    let min = input.getAttribute("min");
+    let max = input.getAttribute("max");
+
+    btnUp.on("click", function() {
+        var oldValue = Number(input.value.slice(0, -1));
+
+        console.log("oldValue: " + oldValue);
+
+        var newVal;
+
+        if (oldValue == 0) {
+            newVal = "50k";
+        } else {
+            if (max != null && oldValue + 50 > max) {
+                newVal = "9950k";
+            } else {
+                newVal = String(oldValue + 50) + "k";
+            }
+        }
+
+        console.log("newVal: " + newVal);
+
+        input.value = newVal;
+        spinner.find("input").trigger("change");
+    });
+
+    btnDown.on("click", function() {
+        var oldValue = Number(input.value.slice(0, -1));
+
+        console.log("oldValue: " + oldValue);
+
+        var newVal;
+
+        if (oldValue == 0) {
+            newVal = "0";
+        } else {
+            if (oldValue - 50 < min) {
+                newVal = "0";
+            } else {
+                newVal = String(oldValue - 50) + "k";
+            }
+        }
+
+        console.log("newVal: " + newVal);
+
+        input.value = newVal;
+        spinner.find("input").trigger("change");
+    });
+
+    btnMax.on("click", function() {
+        if (Pbalance / 100000000n > 50000n) {
+            var newVal = Number(Pbalance / 100000000n / 50000n);
+
+            input.value = String(newVal * 50) + "k";
+        } else {
+            input.value = "0";
+        }
+
+        spinner.find("input").trigger("change");
+    });
 }
 
 // INIT
@@ -2688,6 +2767,7 @@ window.dappInit = async (option, stakingOption) => {
                     transferTokens(DappObject, stakingOption);
                 });
             } else if (stakingOption === 2) {
+
                 document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });

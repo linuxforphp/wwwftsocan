@@ -29,7 +29,9 @@
             <div class="row">
                 <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
                 <select id="select-validator" placeholder="Select Validator"></select>
-                <input id="Amount1" class="amount-delegate"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
+                <div id="stakeAmount" class="stake-amount">
+                    <input id="Amount1" class="amount-delegate" type="text" min="50" max="9950" step="50" placeholder="50k" readOnly="true">
+                </div>
             </div>
         </span>
     </div>
