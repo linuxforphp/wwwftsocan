@@ -30,7 +30,7 @@
                 <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
                 <select id="select-validator" placeholder="Select Validator"></select>
                 <div id="stakeAmount" class="stake-amount">
-                    <input id="Amount1" class="amount-delegate" type="text" min="50" max="9950" step="50" placeholder="50k" readOnly="true">
+                    <input id="Amount1" class="amount-delegate" type="text" min="50" max="950" step="50" placeholder="50k" readOnly="true">
                 </div>
             </div>
         </span>

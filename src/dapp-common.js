@@ -77,7 +77,7 @@ async function showSpinner(doSomething) {
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
-        content: 'We are processing your transaction. <br />Please wait...',
+        content: 'We are processing your transaction. <br />Please check your Wallet...',
         theme: 'material',
         type: 'dark',
         typeAnimated: true,
@@ -117,7 +117,7 @@ async function showConfirmationSpinner(txHash, web32) {
     });
 }
 
-async function showConfirmationSpinnerStake(doSomething) {
+async function showConfirmationSpinnerTransfer(doSomething) {
     var spinner =
     $.confirm({
         escapeKey: false,
@@ -125,6 +125,29 @@ async function showConfirmationSpinnerStake(doSomething) {
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
         content: '<div id="ExportTx"><div id="ExportTxIcon" class="fa fa-spinner fa-spin"></div> Export Transaction status: <div id="ExportTxStatus">Please check your Wallet...</div></div><br />' + '<div id="ImportTx"><div id="ImportTxIcon" class="fa fa-spinner fa-spin"></div> Import Transaction status: <div id="ImportTxStatus">Waiting for Export status...</div></div>',
+        theme: 'material',
+        type: 'orange',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            ok: {
+                isHidden: true, // hide the button
+            },
+        },
+        onContentReady: async function () {
+            await doSomething(this);
+        }
+    });
+}
+
+async function showConfirmationSpinnerStake(doSomething) {
+    var spinner =
+    $.confirm({
+        escapeKey: false,
+        backgroundDismiss: false,
+        icon: 'fa fa-spinner fa-spin',
+        title: 'Loading...',
+        content: 'We are processing your transaction. <br />Please check your Wallet...',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
@@ -1526,10 +1549,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                 } else if (stakingOption === 2) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
-                
-                    // isDelegateInput1(DappObject);
 
-                    customInput(PchainBalanceBigInt);
+                    customInput(PchainBalanceBigInt, DappObject);
                 
                     await populateValidators();
                 
@@ -1607,15 +1628,9 @@ async function RefreshStakingPage(DappObject, stakingOption) {
             let delegatedIcon1 = document.getElementById("delegatedIcon1");
             delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
         
-            // isDelegateInput1(DappObject);
+            isStakeInput1(DappObject);
         
             await populateValidators();
-        
-            try {
-                // await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-            } catch (error) {
-                // console.log(error);
-            }
         }
     } else {
         document.getElementById("ConnectPChain").click();
@@ -1742,8 +1757,6 @@ async function transferTokens(DappObject, stakingOption) {
         var web32 = new Web3(rpcUrl);
 
         try {
-            const accounts = await provider.request({method: 'eth_accounts'});
-            const account = accounts[0];
             var amountFrom = document.getElementById("AmountFrom");
             var amountTo = document.getElementById("AmountTo");
             const amountFromValue = amountFrom.value;
@@ -1775,8 +1788,8 @@ async function transferTokens(DappObject, stakingOption) {
                     // export tokens C-Chain
 
                     try {
-                        showConfirmationSpinnerStake(async (spinner) => {
-                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, account, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                        showConfirmationSpinnerTransfer(async (spinner) => {
+                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     console.log("C Chain TX ID: " + result.txid);
 
@@ -1822,7 +1835,7 @@ async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, account, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("P Chain TX ID: " + result.txid);
         
                                         pChainTransactionId = result.txid;
@@ -1886,8 +1899,8 @@ async function transferTokens(DappObject, stakingOption) {
                     // export tokens P-Chain
 
                     try {
-                        showConfirmationSpinnerStake(async (spinner) => {
-                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, account, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                        showConfirmationSpinnerTransfer(async (spinner) => {
+                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     console.log("P Chain TX ID: " + result);
 
@@ -1933,7 +1946,7 @@ async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, account, cKeychain, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, cKeychain, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("C Chain TX ID: " + result);
 
                                         cChainTransactionId = result;
@@ -1995,6 +2008,26 @@ async function transferTokens(DappObject, stakingOption) {
     }
 }
 
+function isStakeInput1(DappObject) {
+    let claimButton = document.getElementById("ClaimButton");
+
+    let wrapbox1 = document.getElementById('select-validator').childNodes[0];
+
+    let amount1 = document.getElementById("Amount1");
+
+    if (wrapbox1.value !== "" && amount1.value !== "0") {
+        claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+        claimButton.style.cursor = "pointer";
+        DappObject.isRealValue = true;
+        document.getElementById("ClaimButtonText").innerText = "Delegate";
+    } else {
+        claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+        claimButton.style.cursor = "auto";
+        document.getElementById("ClaimButtonText").innerText = "Enter Amount";
+        DappObject.isRealValue = false;
+    }
+}
+
 // Populate select elements.
 async function populateValidators() {
     return new Promise((resolve) => {
@@ -2012,7 +2045,7 @@ async function populateValidators() {
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");
                     delegatedicon.src = img;
-                    // isDelegateInput1(DappObject);
+                    isStakeInput1(DappObject);
                 }
 
                 // Origin: https://raw.githubusercontent.com/jtcaya/validator_list_json/master/validatorlist.json
@@ -2105,7 +2138,7 @@ async function populateValidators() {
 
 //Custom Input 
 
-async function customInput(Pbalance) {
+async function customInput(Pbalance, DappObject) {
     $('<div class="stake-amount-nav"><div id="stakeAmountUp" class="stake-amount-button stake-amount-button-up fa fa-solid fa-angle-up"></div><div id="stakeAmountDown" class="stake-amount-button stake-amount-button-down fa fa-solid fa-angle-down"></div><div id="stakeAmountMax" class="stake-amount-button stake-amount-button-max">MAX</div></div>').insertAfter("#stakeAmount input");
 
     let spinner = $("#stakeAmount");
@@ -2122,19 +2155,25 @@ async function customInput(Pbalance) {
     let max = input.getAttribute("max");
 
     btnUp.on("click", function() {
-        var oldValue = Number(input.value.slice(0, -1));
+        var oldValue = input.value;
 
         console.log("oldValue: " + oldValue);
 
         var newVal;
 
-        if (oldValue == 0) {
+        if (Number(oldValue.slice(0, -1)) == 0) {
             newVal = "50k";
         } else {
-            if (max != null && oldValue + 50 > max) {
-                newVal = "9950k";
+            if (oldValue.endsWith("k") && Number(oldValue.slice(0, -1)) + 50 > max) {
+                newVal = "1M";
+            } else if (oldValue.endsWith("M") && Number(oldValue.slice(0, -1)) + 1 > 10) {
+                newVal = "10M";
             } else {
-                newVal = String(oldValue + 50) + "k";
+                if (oldValue.endsWith("M")) {
+                    newVal = String(Number(oldValue.slice(0, -1)) + 1) + "M";
+                } else {
+                    newVal = String(Number(oldValue.slice(0, -1)) + 50) + "k";
+                }
             }
         }
 
@@ -2142,22 +2181,30 @@ async function customInput(Pbalance) {
 
         input.value = newVal;
         spinner.find("input").trigger("change");
+
+        isStakeInput1(DappObject);
     });
 
     btnDown.on("click", function() {
-        var oldValue = Number(input.value.slice(0, -1));
+        var oldValue = input.value;
 
         console.log("oldValue: " + oldValue);
 
         var newVal;
 
-        if (oldValue == 0) {
+        if (Number(oldValue.slice(0, -1)) == 0) {
             newVal = "0";
         } else {
-            if (oldValue - 50 < min) {
+            if (oldValue.endsWith("k") && Number(oldValue.slice(0, -1)) - 50 < min) {
                 newVal = "0";
+            } else if (oldValue.endsWith("M") && Number(oldValue.slice(0, -1)) - 1 < 1) {
+                newVal = "950k";
             } else {
-                newVal = String(oldValue - 50) + "k";
+                if (oldValue.endsWith("M")) {
+                    newVal = String(Number(oldValue.slice(0, -1)) - 1) + "M";
+                } else {
+                    newVal = String(Number(oldValue.slice(0, -1)) - 50) + "k";
+                }
             }
         }
 
@@ -2165,6 +2212,8 @@ async function customInput(Pbalance) {
 
         input.value = newVal;
         spinner.find("input").trigger("change");
+
+        isStakeInput1(DappObject);
     });
 
     btnMax.on("click", function() {
@@ -2177,7 +2226,104 @@ async function customInput(Pbalance) {
         }
 
         spinner.find("input").trigger("change");
+
+        isStakeInput1(DappObject);
     });
+}
+
+async function stake(DappObject, stakingOption) {
+    if (DappObject.isRealValue === false) {
+        $.alert("Please enter valid value. (More than 0)");
+    } else {
+        // TODO: GET DAYS AND HOURS
+
+        let amount1 = document.getElementById("Amount1");
+        let ftso1 = document.querySelector(".selectize-input");
+
+        let web32 = new Web3(object.rpcUrl);
+
+        web32.setProvider(provider);
+
+        const prefixedPchainAddress = "P-" + DappObject.unPrefixedAddr;
+
+        const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+
+        const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+
+        var addr1 = ftso1.childNodes[0].childNodes[0].getAttribute('data-addr');
+
+        let stakeAmount;
+
+        if (amount1.value.endsWith("k")) {
+            stakeAmount = BigInt(Number(amount1.value.slice(0, -1)) * 1000);
+        } else {
+            stakeAmount = BigInt(Number(amount1.value.slice(0, -1)) * 1000000);
+        }
+
+        amount1.value = "0";
+
+        if (PchainBalanceBigInt < stakeAmount * 1000000000n) {
+            $.alert("Insufficient funds!");
+        } else {
+            // Getting C-Chain Keychain
+
+            const cKeychain = await keychainc();
+
+            const pKeychain = await keychainp();
+
+            let pChainTransactionId;
+
+            try {
+                const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+                let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+                const accounts = await provider.request({method: 'eth_requestAccounts'});
+                const account = accounts[0];
+
+                const transactionParameters2 = {
+                    from: account,
+                    to: wrappedTokenAddr,
+                    data: tokenContract.methods.delegate(addr1, bips1).encodeABI(),
+                };
+
+                showConfirmationSpinnerStake(async (spinner) => {
+                    const PchainTxId = await addDelegator(DappObject.ledgerSelectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, DAYS, HOURS, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                        console.log("P Chain TX ID: " + result);
+
+                        pChainTransactionId = result;
+                    
+                        try {
+                            let status = waitPchainAtomicTxStatus(result).then(value => {
+                                console.log(value);
+
+                                switch (value) {
+                                    case "Committed":
+                                        spinner.close();
+                                        showConfirmStake(DappObject, stakingOption, [pChainTransactionId]);
+                                        break
+                                    case "Dropped":
+                                        spinner.close();
+                                        showFailStake(DappObject, stakingOption);
+                                        break
+                                    case "Unknown":
+                                        spinner.close();
+                                        showFailStake(DappObject, stakingOption);
+                                        break
+                                    default:
+                                        break
+                                }
+                            });
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    });
+                });
+
+                isStakeInput1(DappObject);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
 }
 
 // INIT
