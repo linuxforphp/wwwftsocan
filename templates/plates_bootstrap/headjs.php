@@ -24,9 +24,11 @@
 
     <!-- Fontawesome Icon font -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/all.min.css">
-    <!-- bootstrap.min -->
+    <!-- jquery -->
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-ui.min.css">
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery.fancybox.css">
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-confirm.min.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-ui-timepicker-addon.min.css">
     <!-- bootstrap.min -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/selectize.default.css">
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/selectize.bootstrap4.css">

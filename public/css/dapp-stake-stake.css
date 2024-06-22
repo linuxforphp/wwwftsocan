@@ -131,3 +131,27 @@ input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.stake-calendar {
+    display: inline-block;
+    margin: 27px 100px 25px 25px;
+    position: relative;
+    width: 10%;
+}
+
+.stake-calendar input {
+    border-radius: 0px;
+    background-color: transparent;
+    border: none;
+    min-width: 110px;
+    height: 30px;
+    float: left;
+    display: block;
+    padding: 0 15px 0 2px;
+    margin: 0;
+    text-align: center;
+}
+
+.stake-calendar input:focus {
+    outline: 0;
+}

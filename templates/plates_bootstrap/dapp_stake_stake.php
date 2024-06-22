@@ -37,6 +37,17 @@
     </div>
 </div>
 <div class="row">
+    <div class="wrap-box" style="overflow: visible;">
+        <span class="wrap-box-content">
+            <div class="row">
+                <div class="stake-calendar">
+                    <input id="calendar" type="text" name="calendar" placeholder="2024 06 09" class="calendar">
+                </div>
+            </div>
+        </span>
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-6">
         <button id="ConnectPChain" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Connect to P-Chain</i></button>
     </div>

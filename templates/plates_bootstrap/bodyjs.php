@@ -9,6 +9,7 @@
         ================================================== -->
 <!-- Main jQuery -->
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-1.11.1.min.js"></script>
+
 <!-- feather.min.js -->
 <script src="<?=$view['urlbaseaddr'] ?>js/feather.min.js"></script>
 <!-- Twitter Bootstrap -->
@@ -165,6 +166,11 @@
 <?php foreach($view['jsscripts'] as $key => $value): ?>
     <?php echo $value ?>
 <?php endforeach; ?>
+
+<script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui.min.js"></script>
+
+<!-- Custom calendar -->
+<script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui-timepicker-addon.min.js"></script>
 
 <!-- Custom alert box -->
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-confirm.min.js"></script>
