@@ -41,7 +41,7 @@
         <span class="wrap-box-content">
             <div class="row">
                 <div class="stake-calendar">
-                    <input id="calendar" type="text" name="calendar" placeholder="2024 06 09" class="calendar">
+                    <input id="calendar" type="text" name="calendar" placeholder="2024 06 09" class="calendar" readOnly="true">
                 </div>
             </div>
         </span>

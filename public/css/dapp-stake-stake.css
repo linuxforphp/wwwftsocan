@@ -155,3 +155,32 @@ input[type="number"]::-webkit-outer-spin-button {
 .stake-calendar input:focus {
     outline: 0;
 }
+
+.ui-datepicker-close {
+    border-radius: 15px;
+    background-color: #fff !important;
+    color: #383a3b !important;
+}
+
+.ui-datepicker-current {
+    border-radius: 15px;
+    background-color: rgb(253, 0, 15, 0.8) !important;
+    color: #fff !important;
+}
+
+.ui-datepicker-header {
+    color: #fff !important;
+    background-color: rgb(255, 0, 15, 0.7) !important;
+    font-weight: normal;
+    border-radius: 15px;
+}
+
+.ui-datepicker-prev span,
+.ui-datepicker-next span {
+    content: "";
+    color: #fff;
+}
+
+.disabled {
+    opacity: 0.7 !important;
+}
