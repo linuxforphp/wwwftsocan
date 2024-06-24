@@ -156,16 +156,23 @@ input[type="number"]::-webkit-outer-spin-button {
     outline: 0;
 }
 
+.ui-datepicker-calendar {
+    border-bottom: 1px solid #aaa;
+    table-layout: fixed;
+}
+
 .ui-datepicker-close {
     border-radius: 15px;
     background-color: #fff !important;
     color: #383a3b !important;
+    border-style: solid;
 }
 
 .ui-datepicker-current {
     border-radius: 15px;
     background-color: rgb(253, 0, 15, 0.8) !important;
     color: #fff !important;
+    border-style: solid;
 }
 
 .ui-datepicker-header {
@@ -179,6 +186,11 @@ input[type="number"]::-webkit-outer-spin-button {
 .ui-datepicker-next span {
     content: "";
     color: #fff;
+}
+
+.ui-timepicker-select {
+    background: transparent;
+    border: none;
 }
 
 .disabled {

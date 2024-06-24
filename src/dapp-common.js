@@ -29,6 +29,7 @@ var DappObject = {
     ledgerSelectedIndex: "",
     ledgerSelectedAddress: "",
     selectedDateTime: "",
+    StakeMaxDate: "",
 }
 
 const provider = window.ethereum;
@@ -1607,11 +1608,40 @@ function createCalendar(DappObject) {
         controlType: 'select',
         oneLine: true,
         timeFormat: 'hh:mm tt',
+        currentText: "MAX",
         onSelect: function (selectedDateTime) {
             console.log(selectedDateTime);
             DappObject.SelectedDateTime = selectedDateTime;
+        },
+        beforeShow: function( input, inst ) {
+            setTodayCalendarButton(inst);
+        },
+        onChangeMonthYear: function( year, month, inst ) { 
+            setTodayCalendarButton(inst);
         }
     });
+}
+
+function setTodayCalendarButton(inst) {
+    setTimeout(function() {
+        if (DappObject.StakeMaxDate != "") {
+            let todayButton = $('#calendarToday');
+
+            todayButton.toggleClass("disabled", false);
+
+            todayButton.unbind("click");
+
+            todayButton.bind("click", function () {
+                $.datepicker._setDate(inst, DappObject.StakeMaxDate);
+            })
+        } else {
+            let todayButton = $('#calendarToday');
+
+            todayButton.unbind("click");
+
+            todayButton.toggleClass("disabled", true);
+        }
+    }, 1 );
 }
 
 async function RefreshStakingPage(DappObject, stakingOption) {

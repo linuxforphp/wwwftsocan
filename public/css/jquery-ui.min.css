@@ -277,7 +277,7 @@ button.ui-button::-moz-focus-inner {
 	width: 100%;
 	font-size: .9em;
 	border-collapse: collapse;
-	margin: 0 0 .4em;
+	margin: 0 0 1em;
 }
 .ui-datepicker th {
 	padding: .7em .3em;
@@ -293,7 +293,7 @@ button.ui-button::-moz-focus-inner {
 .ui-datepicker td a {
 	display: block;
 	padding: .2em;
-	text-align: right;
+	text-align: center;
 	text-decoration: none;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
@@ -833,7 +833,6 @@ body .ui-tooltip {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-	font-family: Verdana,Arial,sans-serif;
 	font-size: 1em;
 }
 .ui-widget-content {
@@ -842,7 +841,7 @@ body .ui-tooltip {
 	color: #222222;
 }
 .ui-widget-content a {
-	color: #222222;
+	color: #383a3b;
 }
 .ui-widget-header {
 	border: 1px solid #aaaaaa;
@@ -856,14 +855,6 @@ body .ui-tooltip {
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default,
-.ui-widget-content .ui-state-default,
-.ui-widget-header .ui-state-default {
-	border: 1px solid #d3d3d3;
-	background: #e6e6e6;
-	font-weight: normal;
-	color: #555555;
-}
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
@@ -884,10 +875,10 @@ body .ui-tooltip {
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-	border: 1px solid #aaaaaa;
-	background: #ffffff;
-	font-weight: normal;
-	color: #212121;
+	border: 1px solid #fca1a1 !important;
+	background: rgb(255, 0, 15, 0.7) !important;
+	color: #fff !important;
+	border-radius: 15px;
 }
 .ui-state-active a,
 .ui-state-active a:link,
@@ -901,10 +892,19 @@ body .ui-tooltip {
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-	border: 1px solid #fca1a1;
-	background: #ffdfdf;
-	color: #363636;
+	border: 1.5px solid #ccc;
+	color: #383a3b;
+	border-radius: 15px;
 }
+
+.ui-state-highlight:hover {
+	color: #fd000f;
+}
+
+.ui-state-active:hover {
+	color: #fff !important;
+}
+
 .ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a,
 .ui-widget-header .ui-state-highlight a {
