@@ -1632,6 +1632,7 @@ function createCalendar(DappObject) {
                 let dateArray = selectedDateTime.split(' ');
                 DappObject.SelectedDateTime = dateArray[0] + "T" + dateArray[1];
                 console.log(DappObject.SelectedDateTime);
+                isStakeInput1(DappObject);
             },
             beforeShow: function( inst ) {
                 setTodayCalendarButton(inst);
@@ -2090,7 +2091,13 @@ function isStakeInput1(DappObject) {
 
     let amount1 = document.getElementById("Amount1");
 
-    if (select1.value !== "" && (amount1.value != "0" || amount1.value != undefined || amount1.value != null || amount1.value != '')) {
+    console.log("Select1: " + select1.value);
+
+    console.log("Amount1: " + amount1.value);
+
+    console.log("DappObject: " + DappObject.selectedDateTime);
+
+    if (select1.value !== "" && amount1.value !== "" && DappObject.selectedDateTime !== "") {
         claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimButton.style.cursor = "pointer";
         DappObject.isRealValue = true;
@@ -2117,7 +2124,7 @@ async function populateValidators() {
 
                 var onInputChange = async (value) => {
                     document.getElementById("calendar").title = "";
-                    
+
                     let ftso1 = document.querySelector(".selectize-input");
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");
