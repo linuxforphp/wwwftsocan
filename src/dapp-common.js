@@ -2116,6 +2116,8 @@ async function populateValidators() {
                 console.log(ftsoList);
 
                 var onInputChange = async (value) => {
+                    document.getElementById("calendar").title = "";
+                    
                     let ftso1 = document.querySelector(".selectize-input");
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");

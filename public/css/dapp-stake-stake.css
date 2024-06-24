@@ -134,9 +134,13 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .stake-calendar {
     display: inline-block;
-    margin: 27px 100px 25px 25px;
+    margin: 27px 130px 25px 25px;
     position: relative;
     width: 10%;
+}
+
+#calendarToday {
+    display: none;
 }
 
 .stake-calendar input {

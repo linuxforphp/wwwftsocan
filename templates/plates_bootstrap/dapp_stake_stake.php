@@ -28,20 +28,12 @@
         <span class="wrap-box-content">
             <div class="row">
                 <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
-                <select id="select-validator" placeholder="Select Validator"></select>
+                <select id="select-validator" placeholder="Validator List"></select>
+                <div class="stake-calendar">
+                    <input id="calendar" title="Please select a Validator" type="text" name="calendar" placeholder="2022/06/24 18:00" class="calendar" readOnly="true">
+                </div>
                 <div id="stakeAmount" class="stake-amount">
                     <input id="Amount1" class="amount-delegate" type="text" min="50" max="950" step="50" placeholder="50k" readOnly="true">
-                </div>
-            </div>
-        </span>
-    </div>
-</div>
-<div class="row">
-    <div class="wrap-box" style="overflow: visible;">
-        <span class="wrap-box-content">
-            <div class="row">
-                <div class="stake-calendar">
-                    <input id="calendar" type="text" name="calendar" placeholder="2022/06/24 18:00" class="calendar" readOnly="true">
                 </div>
             </div>
         </span>
