@@ -1609,28 +1609,36 @@ function createCalendar(DappObject) {
     const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
 
     console.log(maximumDate);
-    
-    $('#calendar').datetimepicker({
-        minDate: now,
-	    maxDate: maximumDate,
-        hideIfNoPrevNext: true,
-        controlType: 'select',
-        oneLine: true,
-        dateFormat: 'yy-mm-dd',
-        timeFormat: 'HH:mm',
-        currentText: "MAX",
-        onSelect: function (selectedDateTime) {
-            let dateArray = selectedDateTime.split(' ');
-            DappObject.SelectedDateTime = dateArray[0] + "T" + dateArray[1];
-            console.log(DappObject.SelectedDateTime);
-        },
-        beforeShow: function( inst ) {
-            setTodayCalendarButton(inst);
-        },
-        onChangeMonthYear: function( year, month, inst ) { 
-            setTodayCalendarButton(inst);
-        }
-    });
+
+    var prevMaxDate = $('#calendar').datepicker( "option", "maxDate" );
+
+    console.log(prevMaxDate);
+
+    if (prevMaxDate !== maximumDate && prevMaxDate !== null) {
+        $('#calendar').datepicker( "option", "maxDate", maximumDate );
+    } else {
+        $('#calendar').datetimepicker({
+            minDate: now,
+            maxDate: maximumDate,
+            hideIfNoPrevNext: true,
+            controlType: 'select',
+            oneLine: true,
+            dateFormat: 'yy-mm-dd',
+            timeFormat: 'HH:mm',
+            currentText: "MAX",
+            onSelect: function (selectedDateTime) {
+                let dateArray = selectedDateTime.split(' ');
+                DappObject.SelectedDateTime = dateArray[0] + "T" + dateArray[1];
+                console.log(DappObject.SelectedDateTime);
+            },
+            beforeShow: function( inst ) {
+                setTodayCalendarButton(inst);
+            },
+            onChangeMonthYear: function( year, month, inst ) {
+                setTodayCalendarButton(inst);
+            }
+        });
+    }
 }
 
 function setTodayCalendarButton(inst) {
