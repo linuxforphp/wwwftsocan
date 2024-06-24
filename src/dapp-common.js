@@ -30,6 +30,7 @@ var DappObject = {
     ledgerSelectedAddress: "",
     selectedDateTime: "",
     StakeMaxDate: "",
+    StakeMinDate: "",
 }
 
 const provider = window.ethereum;
@@ -1602,7 +1603,7 @@ function createCalendar(DappObject) {
         }
     });
 
-    const now = new Date();
+    const now = new Date(Number(DappObject.StakeMinDate) * 1000);;
 
     now.setDate(now.getDate() + 14);
 
@@ -1616,6 +1617,7 @@ function createCalendar(DappObject) {
 
     if (prevMaxDate !== maximumDate && prevMaxDate !== null) {
         $('#calendar').datepicker( "option", "maxDate", maximumDate );
+        $('#calendar').datepicker( "option", "minDate", now );
     } else {
         $('#calendar').datetimepicker({
             minDate: now,
@@ -2117,6 +2119,7 @@ async function populateValidators() {
                     let ftso1 = document.querySelector(".selectize-input");
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");
+                    DappObject.StakeMinDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-startdate');
                     DappObject.StakeMaxDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-enddate');
                     delegatedicon.src = img;
                     createCalendar(DappObject);
