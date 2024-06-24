@@ -1554,8 +1554,6 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                 
                     try {                 
                         customInput(PchainBalanceBigInt, DappObject);
-
-                        createCalendar(DappObject);
                     
                         await populateValidators();
                     } catch (error) {
@@ -1603,17 +1601,30 @@ function createCalendar(DappObject) {
             '<i class="fa fa-solid fa-angle-down"></i></span>';
         }
     });
+
+    const now = new Date();
+
+    now.setDate(now.getDate() + 14);
+
+    const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
+
+    console.log(maximumDate);
     
     $('#calendar').datetimepicker({
+        minDate: now,
+	    maxDate: maximumDate,
+        hideIfNoPrevNext: true,
         controlType: 'select',
         oneLine: true,
-        timeFormat: 'hh:mm tt',
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'HH:mm',
         currentText: "MAX",
         onSelect: function (selectedDateTime) {
-            console.log(selectedDateTime);
-            DappObject.SelectedDateTime = selectedDateTime;
+            let dateArray = selectedDateTime.split(' ');
+            DappObject.SelectedDateTime = dateArray[0] + "T" + dateArray[1];
+            console.log(DappObject.SelectedDateTime);
         },
-        beforeShow: function( input, inst ) {
+        beforeShow: function( inst ) {
             setTodayCalendarButton(inst);
         },
         onChangeMonthYear: function( year, month, inst ) { 
@@ -1623,23 +1634,24 @@ function createCalendar(DappObject) {
 }
 
 function setTodayCalendarButton(inst) {
-    setTimeout(function() {
-        if (DappObject.StakeMaxDate != "") {
-            let todayButton = $('#calendarToday');
+    setTimeout(function(){
+        var buttonPane = $(".ui-datepicker-buttonpane");
 
-            todayButton.toggleClass("disabled", false);
-
-            todayButton.unbind("click");
-
-            todayButton.bind("click", function () {
-                $.datepicker._setDate(inst, DappObject.StakeMaxDate);
-            })
-        } else {
-            let todayButton = $('#calendarToday');
-
-            todayButton.unbind("click");
-
-            todayButton.toggleClass("disabled", true);
+        const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
+        
+        var btn = $("<button id='calendarMax' type='button' class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all'>MAX</button>");
+        
+        btn.off("click").on("click", function () {
+            inst.selectedDay = maximumDate.getDate();
+            inst.drawMonth = inst.selectedMonth = maximumDate.getMonth();
+            inst.drawYear = inst.selectedYear = maximumDate.getFullYear();
+            $('#calendar').datepicker('setDate', maximumDate);
+        });
+        
+        // Check if buttonPane has that button
+        
+        if( buttonPane.has('#calendarMax').length == 0 ) {
+            btn.appendTo( buttonPane );
         }
     }, 1 );
 }
@@ -2062,21 +2074,21 @@ async function transferTokens(DappObject, stakingOption) {
 }
 
 function isStakeInput1(DappObject) {
-    let claimButton = document.getElementById("ClaimButton");
+    let claimButton = document.getElementById("WrapButton");
 
-    let wrapbox1 = document.getElementById('select-validator').childNodes[0];
+    let select1 = document.getElementById('select-validator').childNodes[0];
 
     let amount1 = document.getElementById("Amount1");
 
-    if (wrapbox1.value !== "" && amount1.value !== "0") {
+    if (select1.value !== "" && (amount1.value != "0" || amount1.value != undefined || amount1.value != null || amount1.value != '')) {
         claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimButton.style.cursor = "pointer";
         DappObject.isRealValue = true;
-        document.getElementById("ClaimButtonText").innerText = "Delegate";
+        document.getElementById("WrapButtonText").innerText = "Delegate";
     } else {
         claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         claimButton.style.cursor = "auto";
-        document.getElementById("ClaimButtonText").innerText = "Enter Amount";
+        document.getElementById("WrapButtonText").innerText = "Enter Amount";
         DappObject.isRealValue = false;
     }
 }
@@ -2097,7 +2109,9 @@ async function populateValidators() {
                     let ftso1 = document.querySelector(".selectize-input");
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");
+                    DappObject.StakeMaxDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-enddate');
                     delegatedicon.src = img;
+                    createCalendar(DappObject);
                     isStakeInput1(DappObject);
                 }
 
@@ -2123,7 +2137,9 @@ async function populateValidators() {
                                             id: 0,
                                             title: FtsoInfo.validators[indexNumber].name,
                                             nodeid: ftsoList[i].nodeID,
-                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png"
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png",
+                                            startdate: ftsoList[i].startTime,
+                                            enddate: ftsoList[i].endTime
                                         }; 
                                     } else {
                                         // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
@@ -2131,7 +2147,9 @@ async function populateValidators() {
                                             id: g,
                                             title: FtsoInfo.validators[indexNumber].name,
                                             nodeid: ftsoList[i].nodeID,
-                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png"
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png",
+                                            startdate: ftsoList[i].startTime,
+                                            enddate: ftsoList[i].endTime
                                         }; 
 
                                         g += 1;
@@ -2153,7 +2171,7 @@ async function populateValidators() {
                                 return (
                                 "<div>" +
                                 (item.title
-                                    ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
+                                    ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid} data-startdate=${item.startdate} data-enddate=${item.enddate}>` + escape(item.title) + "</span>"
                                     : "") +
                                 "</div>"
                                 );
