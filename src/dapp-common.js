@@ -2315,9 +2315,14 @@ async function customInput(Pbalance, DappObject) {
 
 async function stake(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
-        $.alert("Please enter valid value. (More than 0)");
+        $.alert("Please enter valid staking amount. (More than 0)");
     } else {
-        // TODO: GET DAYS AND HOURS
+        let selectedDate = new Date(DappObject.selectedDateTime);
+
+        let Days = new Date();
+
+        const diffTime = Math.abs(selectedDate - Days);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
         let amount1 = document.getElementById("Amount1");
         let ftso1 = document.querySelector(".selectize-input");
@@ -2368,7 +2373,7 @@ async function stake(DappObject, stakingOption) {
                 };
 
                 showConfirmationSpinnerStake(async (spinner) => {
-                    const PchainTxId = await addDelegator(DappObject.ledgerSelectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, DAYS, HOURS, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                    const PchainTxId = await addDelegator(DappObject.ledgerSelectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
                         console.log("P Chain TX ID: " + result);
 
                         pChainTransactionId = result;
