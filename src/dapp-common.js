@@ -1371,7 +1371,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
 
             var onInputChange = async (value) => {
-                let addressBox = document.querySelector(".connect-wallet-text");
+                let addressBox = document.querySelector("span.connect-wallet-text");
                 let ethaddr = addressBox.getAttribute('data-ethkey');
                 let pubKey = addressBox.getAttribute('data-pubkey');
                 
@@ -1531,7 +1531,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                 console.log(flrPublicKey);
 
-                let addressBox = document.querySelector(".connect-wallet-text");
+                let addressBox = document.querySelector("span.connect-wallet-text");
 
                 if (DappObject.ledgerStake === true) {          
                     addressBox.innerText = prefixedPchainAddress;
@@ -1700,7 +1700,7 @@ async function RefreshStakingPage(DappObject, stakingOption) {
 
         const balance = await web32.eth.getBalance(DappObject.ledgerSelectedAddress);
 
-        let addressBox = document.querySelector(".connect-wallet-text");
+        let addressBox = document.querySelector("span.connect-wallet-text");
 
         if (DappObject.ledgerStake === true) {          
             addressBox.innerText = prefixedPchainAddress;
