@@ -8,6 +8,7 @@ export const FlareAbis = {
     WNat: wnatAbi,
     FlareRegistry: flareAbi,
     AddressBinder: addressBinderAbi,
+    ValidatorRewardManager: validatorRewardAbi,
 };
 
 export var selectedNetwork = document.getElementById("SelectedNetwork");

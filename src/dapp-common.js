@@ -15,6 +15,7 @@ var DappObject = {
     distributionAbiLocal: FlareAbis.DistributionToDelegators,
     ftsoRewardAbiLocal: FlareAbis.FtsoRewardManager,
     addressBinderAbiLocal: FlareAbis.AddressBinder,
+    validatorRewardAbiLocal: FlareAbis.ValidatorRewardManager,
     wrapBool: true,
     claimBool: false,
     fdClaimBool: false,
@@ -1560,6 +1561,40 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                     } catch (error) {
                         console.log(error);
                     }
+                } else if (stakingOption === 3) {
+                    const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
+
+                    const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
+
+                    const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
+
+                    showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
+                    showStakeRewards(0);
+                    showConnectedAccountAddress(prefixedPchainAddress);
+
+                    // Changing the color of Claim button.
+                    if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+                        switchClaimButtonColor();
+                        
+                        DappObject.claimBool = true;
+                    } else {
+                        switchClaimButtonColorBack();
+
+                        DappObject.claimBool = false;
+                    }
+
+                    // Getting the unclaimed Rewards and affecting the Claim button.
+                    const RewardStates = await ValidatorRewardContract.getStateOfRewards(DappObject.ledgerSelectedAddress);
+
+                    let totalReward = RewardStates[0];
+                    let claimedReward = RewardStates[1];
+
+                    let unclaimedAmount = totalReward - claimedReward;
+                    
+                    const convertedRewards = String(Number.parseFloat(web32.utils.fromWei(unclaimedAmount, "ether")).toFixed(2));
+                    
+                    // Changing the color of Claim button.
+                    showClaimRewards(convertedRewards);
                 }
             } else {
                 await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
@@ -2425,6 +2460,78 @@ async function stake(DappObject, stakingOption) {
     }
 }
 
+// Show current rewards.
+function showStakeRewards(rewards) {
+    document.getElementById('ClaimButtonText').innerText = rewards == 0 ? '0' : rewards;
+}
+
+// Claim Staking rewards
+
+async function claimStakingRewards(DappObject) {
+    if (DappObject.claimBool === true) {
+        let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
+
+        let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
+
+        let web32 = new Web3(rpcUrl);
+        var checkBox = document.getElementById("RewardsCheck");
+
+        try {
+            const accounts = await provider.request({method: 'eth_requestAccounts'});
+            const account = accounts[0];
+            const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
+
+            const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
+
+            const RewardStates = await ValidatorRewardContract.getStateOfRewards(DappObject.ledgerSelectedAddress);
+
+            let totalReward = RewardStates[0];
+            let claimedReward = RewardStates[1];
+
+            let unclaimedAmount = totalReward - claimedReward;
+
+            let txPayload = {};
+
+            if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
+                if (checkBox.checked) {
+                    txPayload = {
+                        from: account,
+                        to: ValidatorRewardAddr,
+                        data: ValidatorRewardContract.claim(account, account, unclaimedAmount, true).encodeABI(),
+                    };
+                } else {
+                    txPayload = {
+                        from: account,
+                        to: ValidatorRewardAddr,
+                        data: ValidatorRewardContract.claim(account, account, unclaimedAmount, false).encodeABI(),
+                    };
+                }
+                
+                const transactionParameters = txPayload;
+
+                showSpinner(async () => {
+                    await provider.request({
+                        method: 'eth_sendTransaction',
+                        params: [transactionParameters],
+                    })
+                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                    .catch((error) => showFail());
+                });
+
+                const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
+                
+                showClaimRewards(0);
+                switchClaimButtonColorBack(DappObject.claimBool);
+                showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
+            } else {
+                $.alert("The Rewards Bucket is empty! Please try again later.")
+            }
+        } catch (error) {
+            // console.log(error);
+        }
+    }
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
@@ -3028,6 +3135,20 @@ window.dappInit = async (option, stakingOption) => {
                         $.alert("Please enter valid staking amount. (More than 0)");
                     } else {
                         stake(DappObject, stakingOption);
+                    }
+                });
+            } else if (stakingOption === 3) {
+                document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
+                    ConnectPChainClickStake(stakingOption, DappObject, handleClick);
+                });
+
+                if (DappObject.ledgerStake === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+                    document.getElementById("ConnectPChain").click();
+                }
+
+                document.getElementById("ClaimButton").addEventListener("click", async () => {
+                    if (DappObject.claimBool === true) {
+                        claimStakingRewards(DappObject)
                     }
                 });
             }
