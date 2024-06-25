@@ -1603,9 +1603,19 @@ function createCalendar(DappObject) {
         }
     });
 
-    const now = new Date(Number(DappObject.StakeMinDate) * 1000);;
+    const now = new Date();
 
-    now.setDate(now.getDate() + 14);
+    const validatorMinDate = new Date(Number(DappObject.StakeMinDate) * 1000);
+
+    let minimumDate;
+
+    if (Math.sign(now - validatorMinDate) === 1) {
+        minimumDate = now;
+    } else {
+        minimumDate = validatorMinDate;
+    }
+
+    minimumDate.setDate(minimumDate.getDate() + 14);
 
     const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
 
@@ -1617,10 +1627,10 @@ function createCalendar(DappObject) {
 
     if (prevMaxDate !== maximumDate && prevMaxDate !== null) {
         $('#calendar').datepicker( "option", "maxDate", maximumDate );
-        $('#calendar').datepicker( "option", "minDate", now );
+        $('#calendar').datepicker( "option", "minDate", minimumDate );
     } else {
         $('#calendar').datetimepicker({
-            minDate: now,
+            minDate: minimumDate,
             maxDate: maximumDate,
             hideIfNoPrevNext: true,
             controlType: 'select',
@@ -1629,10 +1639,7 @@ function createCalendar(DappObject) {
             timeFormat: 'HH:mm',
             currentText: "MAX",
             onSelect: function (selectedDateTime) {
-                let dateArray = selectedDateTime.split(' ');
-                DappObject.SelectedDateTime = dateArray[0] + "T" + dateArray[1];
-                console.log(DappObject.SelectedDateTime);
-                isStakeInput1(DappObject);
+                OnSelectCalendar(selectedDateTime, DappObject);
             },
             beforeShow: function( inst ) {
                 setTodayCalendarButton(inst);
@@ -1642,6 +1649,13 @@ function createCalendar(DappObject) {
             }
         });
     }
+}
+
+function OnSelectCalendar(selectedDateTime, DappObject) {
+    let dateArray = selectedDateTime.split(' ');
+    DappObject.SelectedDateTime = dateArray[0] + "T" + dateArray[1];
+    console.log(DappObject.SelectedDateTime);
+    isStakeInput1(DappObject);
 }
 
 function setTodayCalendarButton(inst) {
@@ -2321,6 +2335,8 @@ async function customInput(Pbalance, DappObject) {
         isStakeInput1(DappObject);
     });
 }
+
+// Staking function
 
 async function stake(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
