@@ -1371,9 +1371,9 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
 
             var onInputChange = async (value) => {
-                let addressBox = document.querySelector(".selectize-input");
-                let ethaddr = addressBox.childNodes[0].childNodes[0].getAttribute('data-ethkey');
-                let pubKey = addressBox.childNodes[0].childNodes[0].getAttribute('data-pubkey');
+                let addressBox = document.querySelector(".connect-wallet-text");
+                let ethaddr = addressBox.getAttribute('data-ethkey');
+                let pubKey = addressBox.getAttribute('data-pubkey');
                 
                 flrPublicKey = pubKey;
 
@@ -1531,10 +1531,10 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                 console.log(flrPublicKey);
 
-                let addressBox = document.querySelector(".selectize-input");
+                let addressBox = document.querySelector(".connect-wallet-text");
 
                 if (DappObject.ledgerStake === true) {          
-                    addressBox.childNodes[0].childNodes[0].innerText = prefixedPchainAddress;
+                    addressBox.innerText = prefixedPchainAddress;
                 } else {
                     showAccountAddress(prefixedPchainAddress);
                 }
@@ -1625,21 +1625,32 @@ function createCalendar(DappObject) {
 
     console.log(prevMaxDate);
 
+    var OnSelectCalendar = async (selectedDateTime) => {
+        if (selectedDateTime !== '') {
+            let dateArray = selectedDateTime.split(' ');
+            DappObject.selectedDateTime = dateArray[0] + "T" + dateArray[1];
+            console.log(DappObject.selectedDateTime);
+            isStakeInput1(DappObject);
+        }
+    }
+
     if (prevMaxDate !== maximumDate && prevMaxDate !== null) {
         $('#calendar').datepicker( "option", "maxDate", maximumDate );
         $('#calendar').datepicker( "option", "minDate", minimumDate );
     } else {
         $('#calendar').datetimepicker({
+            showAnim: "drop",
             minDate: minimumDate,
             maxDate: maximumDate,
+            selectOtherMonths: true,
             hideIfNoPrevNext: true,
             controlType: 'select',
             oneLine: true,
             dateFormat: 'yy-mm-dd',
             timeFormat: 'HH:mm',
             currentText: "MAX",
-            onSelect: function (selectedDateTime) {
-                OnSelectCalendar(selectedDateTime, DappObject);
+            onClose: function (selectedDateTime, inst) {
+                OnSelectCalendar(selectedDateTime);
             },
             beforeShow: function( inst ) {
                 setTodayCalendarButton(inst);
@@ -1649,13 +1660,6 @@ function createCalendar(DappObject) {
             }
         });
     }
-}
-
-function OnSelectCalendar(selectedDateTime, DappObject) {
-    let dateArray = selectedDateTime.split(' ');
-    DappObject.SelectedDateTime = dateArray[0] + "T" + dateArray[1];
-    console.log(DappObject.SelectedDateTime);
-    isStakeInput1(DappObject);
 }
 
 function setTodayCalendarButton(inst) {
@@ -1696,10 +1700,10 @@ async function RefreshStakingPage(DappObject, stakingOption) {
 
         const balance = await web32.eth.getBalance(DappObject.ledgerSelectedAddress);
 
-        let addressBox = document.querySelector(".selectize-input");
+        let addressBox = document.querySelector(".connect-wallet-text");
 
         if (DappObject.ledgerStake === true) {          
-            addressBox.childNodes[0].childNodes[0].innerText = prefixedPchainAddress;
+            addressBox.innerText = prefixedPchainAddress;
         } else {
             showAccountAddress(prefixedPchainAddress);
         }
@@ -2115,7 +2119,7 @@ function isStakeInput1(DappObject) {
         claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimButton.style.cursor = "pointer";
         DappObject.isRealValue = true;
-        document.getElementById("WrapButtonText").innerText = "Delegate";
+        document.getElementById("WrapButtonText").innerText = "Stake";
     } else {
         claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         claimButton.style.cursor = "auto";
@@ -2322,8 +2326,8 @@ async function customInput(Pbalance, DappObject) {
     });
 
     btnMax.on("click", function() {
-        if (Pbalance / 100000000n > 50000n) {
-            var newVal = Number(Pbalance / 100000000n / 50000n);
+        if (Pbalance / 1000000000n > 50000n) {
+            var newVal = Number(Pbalance / 1000000000n / 50000n);
 
             input.value = String(newVal * 50) + "k";
         } else {
@@ -2339,101 +2343,84 @@ async function customInput(Pbalance, DappObject) {
 // Staking function
 
 async function stake(DappObject, stakingOption) {
-    if (DappObject.isRealValue === false) {
-        $.alert("Please enter valid staking amount. (More than 0)");
+    let selectedDate = new Date(DappObject.selectedDateTime);
+
+    let Days = new Date();
+
+    const diffTime = Math.abs(selectedDate - Days);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    let amount1 = document.getElementById("Amount1");
+    let ftso1 = document.querySelector(".selectize-input");
+
+    const prefixedPchainAddress = "P-" + DappObject.unPrefixedAddr;
+
+    const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+
+    const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+
+    var addr1 = ftso1.childNodes[0].childNodes[0].getAttribute('data-addr');
+
+    let stakeAmount;
+
+    if (amount1.value.endsWith("k")) {
+        stakeAmount = BigInt(Number(amount1.value.slice(0, -1))) * 1000n * 1000000000n;
     } else {
-        let selectedDate = new Date(DappObject.selectedDateTime);
+        stakeAmount = BigInt(Number(amount1.value.slice(0, -1))) * 1000000n * 1000000000n;
+    }
 
-        let Days = new Date();
+    amount1.value = "0";
 
-        const diffTime = Math.abs(selectedDate - Days);
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    if (PchainBalanceBigInt < stakeAmount) {
+        $.alert("Insufficient funds!");
+    } else {
+        // Getting C-Chain Keychain
 
-        let amount1 = document.getElementById("Amount1");
-        let ftso1 = document.querySelector(".selectize-input");
+        const cKeychain = await keychainc();
 
-        let web32 = new Web3(object.rpcUrl);
+        const pKeychain = await keychainp();
 
-        web32.setProvider(provider);
+        let pChainTransactionId;
 
-        const prefixedPchainAddress = "P-" + DappObject.unPrefixedAddr;
+        console.log(stakeAmount);
 
-        const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+        try {
+            showConfirmationSpinnerStake(async (spinner) => {
+                const PchainTxId = await addDelegator(DappObject.ledgerSelectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                    console.log("P Chain TX ID: " + result);
 
-        const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+                    pChainTransactionId = result;
+                
+                    try {
+                        let status = waitPchainAtomicTxStatus(result).then(value => {
+                            console.log(value);
 
-        var addr1 = ftso1.childNodes[0].childNodes[0].getAttribute('data-addr');
-
-        let stakeAmount;
-
-        if (amount1.value.endsWith("k")) {
-            stakeAmount = BigInt(Number(amount1.value.slice(0, -1)) * 1000);
-        } else {
-            stakeAmount = BigInt(Number(amount1.value.slice(0, -1)) * 1000000);
-        }
-
-        amount1.value = "0";
-
-        if (PchainBalanceBigInt < stakeAmount * 1000000000n) {
-            $.alert("Insufficient funds!");
-        } else {
-            // Getting C-Chain Keychain
-
-            const cKeychain = await keychainc();
-
-            const pKeychain = await keychainp();
-
-            let pChainTransactionId;
-
-            try {
-                const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
-                let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-                const accounts = await provider.request({method: 'eth_requestAccounts'});
-                const account = accounts[0];
-
-                const transactionParameters2 = {
-                    from: account,
-                    to: wrappedTokenAddr,
-                    data: tokenContract.methods.delegate(addr1, bips1).encodeABI(),
-                };
-
-                showConfirmationSpinnerStake(async (spinner) => {
-                    const PchainTxId = await addDelegator(DappObject.ledgerSelectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
-                        console.log("P Chain TX ID: " + result);
-
-                        pChainTransactionId = result;
-                    
-                        try {
-                            let status = waitPchainAtomicTxStatus(result).then(value => {
-                                console.log(value);
-
-                                switch (value) {
-                                    case "Committed":
-                                        spinner.close();
-                                        showConfirmStake(DappObject, stakingOption, [pChainTransactionId]);
-                                        break
-                                    case "Dropped":
-                                        spinner.close();
-                                        showFailStake(DappObject, stakingOption);
-                                        break
-                                    case "Unknown":
-                                        spinner.close();
-                                        showFailStake(DappObject, stakingOption);
-                                        break
-                                    default:
-                                        break
-                                }
-                            });
-                        } catch (e) {
-                            console.log(e);
-                        }
-                    });
+                            switch (value) {
+                                case "Committed":
+                                    spinner.close();
+                                    showConfirmStake(DappObject, stakingOption, [pChainTransactionId]);
+                                    break
+                                case "Dropped":
+                                    spinner.close();
+                                    showFailStake(DappObject, stakingOption);
+                                    break
+                                case "Unknown":
+                                    spinner.close();
+                                    showFailStake(DappObject, stakingOption);
+                                    break
+                                default:
+                                    break
+                            }
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
                 });
+            });
 
-                isStakeInput1(DappObject);
-            } catch (error) {
-                console.log(error);
-            }
+            isStakeInput1(DappObject);
+        } catch (error) {
+            console.log(error);
         }
     }
 }
@@ -3035,6 +3022,14 @@ window.dappInit = async (option, stakingOption) => {
                 if (DappObject.ledgerStake === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
+
+                document.getElementById("WrapButton").addEventListener("click", async () => {
+                    if (DappObject.isRealValue === false) {
+                        $.alert("Please enter valid staking amount. (More than 0)");
+                    } else {
+                        stake(DappObject, stakingOption);
+                    }
+                });
             }
 
             window.ethereum.on("accountsChanged", async (accounts) => {
