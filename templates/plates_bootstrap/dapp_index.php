@@ -60,6 +60,7 @@
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/address-binder-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/validator-reward-abi.js"></script>
 
 <script>
     var uriPath = <?= json_encode($view['path']); ?>;
@@ -94,6 +95,11 @@
             $.get("stakeStake", function(data) {
                 $("#dapp-root").html(data);
                 window.dappInit(4, 2);
+            });
+        } else if (uriPath[2] === 'stakeRewards') {
+            $.get("stakeRewards", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(4, 3);
             });
         } else if (uriPath[2] === 'stakeMetamask') {
             $.get("stakeMetamask", function(data) {

@@ -302,7 +302,7 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
     });
 }
 
-async function handleAccountsChanged(accounts, DappObject, pageIndex = 1) {
+async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption) {
     DappObject.signatureStaking = "";
 
     if (pageIndex === 1 || pageIndex === '1') {
@@ -340,7 +340,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1) {
               });
         }
     } else if (pageIndex === 4 || pageIndex === '4') {
-        document.getElementById("ConnectPChain").click();
+        RefreshStakingPage(DappObject, stakingOption);
     }
 }
 
@@ -1120,10 +1120,10 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
             }
         }
         
-        const convertedRewards = String(Number.parseFloat(web32.utils.fromWei(unclaimedAmount, "ether")).toFixed(2));
+        const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
         
         // Changing the color of Claim button.
-        showClaimRewards(convertedRewards);
+        showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
 
         if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
             let claimableAmountFd = BigInt(0);
@@ -1144,10 +1144,10 @@ async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
                 }
             }
             
-            const convertedRewardsFd = String(Number.parseFloat(web32.utils.fromWei(claimableAmountFd, "ether")).toFixed(2));
+            const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
 
             // Changing the color of FlareDrop Claim button.
-            showFdRewards(convertedRewardsFd);
+            showFdRewards(convertedRewardsFd[0] + convertedRewardsFd[1].slice(0, 2));
 
             if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
                 switchClaimFdButtonColor();
@@ -1564,6 +1564,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                     const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
 
+                    console.log(StakeAmounts.staked);
+
                     showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
                     showStakeRewards(0);
                     showConnectedAccountAddress(prefixedPchainAddress);
@@ -1580,17 +1582,30 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                     }
 
                     // Getting the unclaimed Rewards and affecting the Claim button.
-                    const RewardStates = await ValidatorRewardContract.getStateOfRewards(DappObject.ledgerSelectedAddress);
+                    const RewardStates = await ValidatorRewardContract.methods.getStateOfRewards(DappObject.ledgerSelectedAddress).call();
 
                     let totalReward = RewardStates[0];
                     let claimedReward = RewardStates[1];
 
                     let unclaimedAmount = totalReward - claimedReward;
-                    
-                    const convertedRewards = String(Number.parseFloat(web32.utils.fromWei(unclaimedAmount, "ether")).toFixed(2));
+
+                    const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
+
+                    console.log(unclaimedAmount);
                     
                     // Changing the color of Claim button.
-                    showClaimRewards(convertedRewards);
+                    showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
+
+                    // Changing the color of Claim button.
+                    if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+                        switchClaimButtonColor();
+                        
+                        DappObject.claimBool = true;
+                    } else {
+                        switchClaimButtonColorBack();
+
+                        DappObject.claimBool = false;
+                    }
                 }
             } else {
                 await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
@@ -2464,89 +2479,87 @@ function showStakeRewards(rewards) {
 // Claim Staking rewards
 
 async function claimStakingRewards(DappObject, stakingOption) {
-    if (DappObject.claimBool === true) {
-        let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
+    let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
 
-        let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
+    let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
 
-        let web32 = new Web3(rpcUrl);
-        var checkBox = document.getElementById("RewardsCheck");
+    let web32 = new Web3(rpcUrl);
+    var checkBox = document.getElementById("RewardsCheck");
 
-        try {
-            const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
+    try {
+        const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
 
-            const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
+        const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
 
-            const RewardStates = await ValidatorRewardContract.getStateOfRewards(DappObject.ledgerSelectedAddress);
+        const RewardStates = await ValidatorRewardContract.methods.getStateOfRewards(DappObject.ledgerSelectedAddress).call();
 
-            let totalReward = RewardStates[0];
-            let claimedReward = RewardStates[1];
+        let totalReward = RewardStates[0];
+        let claimedReward = RewardStates[1];
 
-            let unclaimedAmount = totalReward - claimedReward;
+        let unclaimedAmount = totalReward - claimedReward;
 
-            let txPayload = {};
+        let txPayload = {};
 
-            if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
-                if (checkBox.checked) {
-                    txPayload = {
-                        from: DappObject.ledgerSelectedAddress,
-                        to: ValidatorRewardAddr,
-                        data: ValidatorRewardContract.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, true).encodeABI(),
-                    };
-                } else {
-                    txPayload = {
-                        from: DappObject.ledgerSelectedAddress,
-                        to: ValidatorRewardAddr,
-                        data: ValidatorRewardContract.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, false).encodeABI(),
-                    };
-                }
-                
-                const transactionParameters = txPayload;
-
-                if (DappObject.ledgerStake === true) {
-                    await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, true);
-                } else {
-                    showSpinner(async () => {
-                        await provider.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
-                        })
-                        .then(txHash => showConfirmationSpinner(txHash, web32))
-                        .catch((error) => showFail());
-                    });
-                }
-
-                const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
-                
-                showClaimRewards(0);
-                switchClaimButtonColorBack(DappObject.claimBool);
-                showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
+        if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
+            if (checkBox.checked) {
+                txPayload = {
+                    from: DappObject.ledgerSelectedAddress,
+                    to: ValidatorRewardAddr,
+                    data: ValidatorRewardContract.methods.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, true).encodeABI(),
+                };
             } else {
-                $.alert("The Rewards Bucket is empty! Please try again later.")
+                txPayload = {
+                    from: DappObject.ledgerSelectedAddress,
+                    to: ValidatorRewardAddr,
+                    data: ValidatorRewardContract.methods.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, false).encodeABI(),
+                };
             }
-        } catch (error) {
-            // console.log(error);
+            
+            const transactionParameters = txPayload;
+
+            if (DappObject.ledgerStake === true) {
+                await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, true, unclaimedAmount);
+            } else {
+                showSpinner(async () => {
+                    await provider.request({
+                        method: 'eth_sendTransaction',
+                        params: [transactionParameters],
+                    })
+                    .then(txHash => showConfirmationSpinner(txHash, web32))
+                    .catch((error) => showFail());
+                });
+            }
+
+            const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
+            
+            showClaimRewards(0);
+            switchClaimButtonColorBack(DappObject.claimBool);
+            showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
+        } else {
+            $.alert("The Rewards Bucket is empty! Please try again later.")
         }
+    } catch (error) {
+        console.log(error);
     }
 }
 
 // Ledger EVM
 
-async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake = false) {
+async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, isStake = false, value) {
     const ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
 
     const nonce = await web32.eth.getTransactionCount(DappObject.ledgerSelectedAddress);
 
-    const gasPrice = await web32.eth.getgasPrice();
+    const gasPrice = await web32.eth.getGasPrice();
 
     const LedgerTxPayload = {
-        from: txPayload.from,
         to: txPayload.to,
         gasPrice: gasPrice,
         gasLimit: "0x186A0",
         nonce: nonce,
         chainId: 14,
-        data: txPayload.data
+        data: txPayload.data,
+        value: value.toString(16)
     };
 
     const serializedTx = ethers.utils.serializeTransaction(LedgerTxPayload).slice(2);
@@ -3194,7 +3207,7 @@ window.dappInit = async (option, stakingOption) => {
             }
 
             window.ethereum.on("accountsChanged", async (accounts) => {
-                handleAccountsChanged(accounts, DappObject, 4);
+                handleAccountsChanged(accounts, DappObject, 4, stakingOption);
             });
 
             window.ethereum.on("chainChanged", async () => {
