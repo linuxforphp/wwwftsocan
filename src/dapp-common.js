@@ -1222,8 +1222,6 @@ async function delegate(object, DappObject) {
 
         let web32 = new Web3(object.rpcUrl);
 
-        web32.setProvider(provider);
-
         const value1 = amount1.value;
 
         const percent1 = value1.replace(/[^0-9]/g, '');
@@ -1262,8 +1260,6 @@ async function delegate(object, DappObject) {
 
 async function undelegate(object) {
     let web32 = new Web3(object.rpcUrl);
-
-    web32.setProvider(provider);
 
     try {
         const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
@@ -2467,7 +2463,7 @@ function showStakeRewards(rewards) {
 
 // Claim Staking rewards
 
-async function claimStakingRewards(DappObject) {
+async function claimStakingRewards(DappObject, stakingOption) {
     if (DappObject.claimBool === true) {
         let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
 
@@ -2477,8 +2473,6 @@ async function claimStakingRewards(DappObject) {
         var checkBox = document.getElementById("RewardsCheck");
 
         try {
-            const accounts = await provider.request({method: 'eth_requestAccounts'});
-            const account = accounts[0];
             const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
 
             const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
@@ -2495,28 +2489,63 @@ async function claimStakingRewards(DappObject) {
             if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
                 if (checkBox.checked) {
                     txPayload = {
-                        from: account,
+                        from: DappObject.ledgerSelectedAddress,
                         to: ValidatorRewardAddr,
-                        data: ValidatorRewardContract.claim(account, account, unclaimedAmount, true).encodeABI(),
+                        data: ValidatorRewardContract.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, true).encodeABI(),
                     };
                 } else {
                     txPayload = {
-                        from: account,
+                        from: DappObject.ledgerSelectedAddress,
                         to: ValidatorRewardAddr,
-                        data: ValidatorRewardContract.claim(account, account, unclaimedAmount, false).encodeABI(),
+                        data: ValidatorRewardContract.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, false).encodeABI(),
                     };
                 }
                 
                 const transactionParameters = txPayload;
 
-                showSpinner(async () => {
-                    await provider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters],
-                    })
-                    .then(txHash => showConfirmationSpinner(txHash, web32))
-                    .catch((error) => showFail());
-                });
+                if (DappObject.ledgerStake === true) {
+                    const ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
+
+                    const nonce = await web32.eth.getTransactionCount(DappObject.ledgerSelectedAddress);
+
+                    const gasPrice = await web32.eth.getgasPrice();
+
+                    const LedgerTxPayload = {
+                        from: txPayload.from,
+                        to: txPayload.to,
+                        gasPrice: gasPrice,
+                        gasLimit: "0x186A0",
+                        nonce: nonce,
+                        chainId: 14,
+                        data: txPayload.data
+                    };
+
+                    const serializedTx = ethers.utils.serializeTransaction(LedgerTxPayload).slice(2);
+
+                    showSpinner(async () => {
+                        await ledgerSignEVM(serializedTx, DappObject.ledgerSelectedIndex).then(async ledgerSignature => {
+                            const signedTx = ethers.utils.serializeTransaction(unsignedTx, ledgerSignature);
+                            console.log(signedTx);
+
+                            showConfirmationSpinnerStake(async (spinner) => {
+                                spinner.content = "Waiting for network confirmation. <br />Please wait...";
+                                ethersProvider.sendTransaction(signedTx).then(response => {
+                                    spinner.close();
+                                    showConfirmStake(DappObject, stakingOption, [response.hash]);
+                                });
+                            });
+                        })
+                    });
+                } else {
+                    showSpinner(async () => {
+                        await provider.request({
+                            method: 'eth_sendTransaction',
+                            params: [transactionParameters],
+                        })
+                        .then(txHash => showConfirmationSpinner(txHash, web32))
+                        .catch((error) => showFail());
+                    });
+                }
 
                 const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
                 
@@ -3148,7 +3177,7 @@ window.dappInit = async (option, stakingOption) => {
 
                 document.getElementById("ClaimButton").addEventListener("click", async () => {
                     if (DappObject.claimBool === true) {
-                        claimStakingRewards(DappObject)
+                        claimStakingRewards(DappObject, stakingOption);
                     }
                 });
             }
