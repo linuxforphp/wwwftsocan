@@ -2504,38 +2504,7 @@ async function claimStakingRewards(DappObject, stakingOption) {
                 const transactionParameters = txPayload;
 
                 if (DappObject.ledgerStake === true) {
-                    const ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
-
-                    const nonce = await web32.eth.getTransactionCount(DappObject.ledgerSelectedAddress);
-
-                    const gasPrice = await web32.eth.getgasPrice();
-
-                    const LedgerTxPayload = {
-                        from: txPayload.from,
-                        to: txPayload.to,
-                        gasPrice: gasPrice,
-                        gasLimit: "0x186A0",
-                        nonce: nonce,
-                        chainId: 14,
-                        data: txPayload.data
-                    };
-
-                    const serializedTx = ethers.utils.serializeTransaction(LedgerTxPayload).slice(2);
-
-                    showSpinner(async () => {
-                        await ledgerSignEVM(serializedTx, DappObject.ledgerSelectedIndex).then(async ledgerSignature => {
-                            const signedTx = ethers.utils.serializeTransaction(unsignedTx, ledgerSignature);
-                            console.log(signedTx);
-
-                            showConfirmationSpinnerStake(async (spinner) => {
-                                spinner.content = "Waiting for network confirmation. <br />Please wait...";
-                                ethersProvider.sendTransaction(signedTx).then(response => {
-                                    spinner.close();
-                                    showConfirmStake(DappObject, stakingOption, [response.hash]);
-                                });
-                            });
-                        })
-                    });
+                    await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, true);
                 } else {
                     showSpinner(async () => {
                         await provider.request({
@@ -2559,6 +2528,48 @@ async function claimStakingRewards(DappObject, stakingOption) {
             // console.log(error);
         }
     }
+}
+
+// Ledger EVM
+
+async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake = false) {
+    const ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
+
+    const nonce = await web32.eth.getTransactionCount(DappObject.ledgerSelectedAddress);
+
+    const gasPrice = await web32.eth.getgasPrice();
+
+    const LedgerTxPayload = {
+        from: txPayload.from,
+        to: txPayload.to,
+        gasPrice: gasPrice,
+        gasLimit: "0x186A0",
+        nonce: nonce,
+        chainId: 14,
+        data: txPayload.data
+    };
+
+    const serializedTx = ethers.utils.serializeTransaction(LedgerTxPayload).slice(2);
+
+    showSpinner(async () => {
+        await ledgerSignEVM(serializedTx, DappObject.ledgerSelectedIndex).then(async ledgerSignature => {
+            const signedTx = ethers.utils.serializeTransaction(unsignedTx, ledgerSignature);
+            console.log(signedTx);
+
+            showConfirmationSpinnerStake(async (spinner) => {
+                spinner.content = "Waiting for network confirmation. <br />Please wait...";
+                ethersProvider.sendTransaction(signedTx).then(response => {
+                    spinner.close();
+
+                    if (isStake === true) {
+                        showConfirmStake(DappObject, stakingOption, [response.hash]);
+                    } else {
+                        showConfirm(response.hash);
+                    }
+                });
+            });
+        })
+    });
 }
 
 // INIT
