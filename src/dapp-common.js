@@ -3130,10 +3130,18 @@ window.dappInit = async (option, stakingOption) => {
                     getDappPage(5);
                 });
             } else if (stakingOption === 5) {
-                document.getElementById("ContinueAnyway").addEventListener("click", async () => {
-                    DappObject.ledgerStake = true;
-                    getDappPage(5);
-                });
+                if (!navigator.usb) {
+                    document.getElementById("ledgerContent").innerHTML = '<div class="row"><div class="col-sm-12"><button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div><div class="row"><div class="col-md-12"><span>Whoops! Your browser does not support <strong>WEBUSB</strong>! </br> Please switch to a compatible browser.</span></div></div><div class="row"><div class="dummytext"><div class="addr-wrap"><span><?=$view["dappName"] ?></span></div></div></div>'
+
+                    document.getElementById("ContinueAnyway").addEventListener("click", async () => {
+                        getDappPage(4);
+                    });
+                } else {
+                    document.getElementById("ContinueAnyway").addEventListener("click", async () => {
+                        DappObject.ledgerStake = true;
+                        getDappPage(5);
+                    });
+                }
             } else if (stakingOption === 1) {
                 document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);

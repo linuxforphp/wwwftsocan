@@ -23,21 +23,22 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Continue</i></button>
+<div id="ledgerContent">
+    <div class="row">
+        <div class="col-sm-12">
+            <button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Continue</i></button>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <span>Before using the staking functionality of the <strong>FTSOCAN DApp</strong>, You must open the <strong>Avalanche App</strong> on your Ledger device.</span>
+    <div class="row">
+        <div class="col-md-12">
+            <span>Before using the staking functionality of the <strong>FTSOCAN DApp</strong>, You must open the <strong>Avalanche App</strong> on your Ledger device.</span>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="dummytext">
-        <div class="addr-wrap">
-            <span><?=$view['dappName'] ?></span>
+    <div class="row">
+        <div class="dummytext">
+            <div class="addr-wrap">
+                <span><?=$view['dappName'] ?></span>
+            </div>
         </div>
     </div>
 </div>
-
