@@ -24,16 +24,6 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-12">
-        <div class="rewards" style="float: none !important; margin: 5px 0px;">
-            <div class="rewards-text">
-                <input type="checkbox" id="RewardsCheck" class="rewards-check" name="RewardsCheck" checked="checked" />
-                <span class="rewards-check-label">Auto Wrap</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
     <div class="wrap-box" id='wrapBox'>
         <span class="wrap-box-content">
             <div class="row">

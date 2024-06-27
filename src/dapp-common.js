@@ -1568,7 +1568,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                     showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
                     showStakeRewards(0);
-                    showConnectedAccountAddress(prefixedPchainAddress);
+                    showConnectedAccountAddress(prefixedPchainAddress.slice(0, 20) + "...");
 
                     // Changing the color of Claim button.
                     if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
@@ -2484,7 +2484,6 @@ async function claimStakingRewards(DappObject, stakingOption) {
     let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
 
     let web32 = new Web3(rpcUrl);
-    var checkBox = document.getElementById("RewardsCheck");
 
     try {
         const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
@@ -2501,24 +2500,16 @@ async function claimStakingRewards(DappObject, stakingOption) {
         let txPayload = {};
 
         if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
-            if (checkBox.checked) {
-                txPayload = {
-                    from: DappObject.ledgerSelectedAddress,
-                    to: ValidatorRewardAddr,
-                    data: ValidatorRewardContract.methods.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, true).encodeABI(),
-                };
-            } else {
-                txPayload = {
-                    from: DappObject.ledgerSelectedAddress,
-                    to: ValidatorRewardAddr,
-                    data: ValidatorRewardContract.methods.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, false).encodeABI(),
-                };
-            }
+            txPayload = {
+                from: DappObject.ledgerSelectedAddress,
+                to: ValidatorRewardAddr,
+                data: ValidatorRewardContract.methods.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, false).encodeABI(),
+            };
             
             const transactionParameters = txPayload;
 
             if (DappObject.ledgerStake === true) {
-                await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, true, unclaimedAmount);
+                await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, true);
             } else {
                 showSpinner(async () => {
                     await provider.request({
@@ -2545,29 +2536,26 @@ async function claimStakingRewards(DappObject, stakingOption) {
 
 // Ledger EVM
 
-async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, isStake = false, value) {
+async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, isStake = false) {
     const ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
 
-    const nonce = await web32.eth.getTransactionCount(DappObject.ledgerSelectedAddress);
+    const nonce = await ethersProvider.getTransactionCount(DappObject.ledgerSelectedAddress, "latest");
 
-    const gasPrice = await web32.eth.getGasPrice();
+    const gasPrice = await ethersProvider.getGasPrice();
+
+    console.log(gasPrice);
 
     const LedgerTxPayload = {
         to: txPayload.to,
-        gasPrice: gasPrice,
-        gasLimit: "0x186A0",
+        gasPrice: gasPrice._hex,
+        gasLimit: ethers.utils.hexlify(100000),
         nonce: nonce,
         chainId: 14,
         data: txPayload.data,
-        value: value.toString(16)
     };
 
-    const serializedTx = ethers.utils.serializeTransaction(LedgerTxPayload).slice(2);
-
     showSpinner(async () => {
-        await ledgerSignEVM(serializedTx, DappObject.ledgerSelectedIndex).then(async ledgerSignature => {
-            const signedTx = ethers.utils.serializeTransaction(unsignedTx, ledgerSignature);
-            console.log(signedTx);
+        await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
 
             showConfirmationSpinnerStake(async (spinner) => {
                 spinner.content = "Waiting for network confirmation. <br />Please wait...";
