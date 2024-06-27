@@ -121,6 +121,32 @@ h1, h2 {
     font-style: normal;
 }
 
+.continue-wallet {
+    width: 100%;
+    background-color: rgba(253, 0, 15, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-left: none;
+    border-right: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 20px;
+    padding: 20px;
+    letter-spacing: normal;
+    transition: 0.5s;
+}
+
+.wallet-icon {
+    height: 118px;
+}
+
 /* .connect-wallet-text::before {
     content: '';
     position: absolute;

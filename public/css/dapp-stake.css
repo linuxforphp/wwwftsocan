@@ -38,6 +38,8 @@
 }
 
 .stake {
+    border-left: 1px solid rgba(253, 0, 15, 0.8);
+    border-right: 1px solid rgba(253, 0, 15, 0.8);
     border-radius: 0;
 }
 

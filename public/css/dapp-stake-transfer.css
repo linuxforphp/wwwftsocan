@@ -73,7 +73,7 @@ input#select-account-selectized::-webkit-input-placeholder {
     border-radius: 50%;
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    background-color: rgba(253, 0, 15, 0.8);
+    background-color: rgb(247, 64, 46);
     color: white;
     padding: 10px;
     margin: -25px auto;
