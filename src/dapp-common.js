@@ -768,7 +768,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
         let selectize;
 
-        if (typeof addressIndex !== "undefined" && addressIndex === "") {
+        if (typeof addressIndex !== "undefined" && addressIndex !== "") {
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
@@ -880,9 +880,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             
             account = accounts[0];
 
-        } else if (typeof PassedPublicKey !== "undefined" && PassedPublicKey !== "") {
+        } else if (typeof addressIndex !== "undefined" && addressIndex !== "") {
             account = PassedEthAddr;
-            flrPublicKey = PassedPublicKey;
             if (HandleClick) {
                 document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
             }
@@ -891,6 +890,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
         if (DappObject.isLedger === true && (typeof addressIndex == "undefined" || addressIndex === "")) {
 
         } else if ((DappObject.isLedger === true && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.isLedger === false) {
+            DappObject.selectedAddress = account;
+
             try {
                 if (pageIndex === 0) {
                     const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
@@ -1041,7 +1042,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
     } catch (error) {
         console.log(error);
 
-        document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
+        document.getElementById("ConnectWalletText").innerText = "Connect Wallet";
 
         DappObject.signatureStaking = "";
 
@@ -1376,8 +1377,7 @@ async function delegate(object, DappObject) {
         try {
             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
             let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-            const accounts = await provider.request({method: 'eth_requestAccounts'});
-            const account = accounts[0];
+            const account = DappObject.selectedAddress;
 
             const transactionParameters2 = {
                 from: account,
@@ -1411,8 +1411,7 @@ async function undelegate(object, DappObject) {
     try {
         const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const account = accounts[0];
+        const account = DappObject.selectedAddress;
 
         const transactionParameters = {
             from: account,
@@ -1433,7 +1432,7 @@ async function undelegate(object, DappObject) {
             });
         }
     } catch(error) {
-
+        console.log(error);
     }
 }
 
@@ -1452,7 +1451,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
             undelegate: {
                 btnClass: 'btn-red',
                 action: function () {
-                    undelegate(object);
+                    undelegate(object, DappObject);
                 },
             },
             cancel: function () {
@@ -2690,39 +2689,88 @@ async function claimStakingRewards(DappObject, stakingOption) {
 // Ledger EVM
 
 async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake = false, object, pageIndex) {
-    const ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
+
+    let ethersProvider;
+
+    let web32;
+
+    if (object.rpcUrl) {
+        ethersProvider = new ethers.providers.JsonRpcProvider(object.rpcUrl);
+
+        web32 = new Web3(object.rpcUrl);
+    } else {
+        ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
+
+        web32 = new Web3('https://sbi.flr.ftsocan.com/ext/C/rpc');
+    }
 
     const nonce = await ethersProvider.getTransactionCount(DappObject.selectedAddress, "latest");
 
-    const gasPrice = await ethersProvider.getGasPrice();
+    const feeData = await web32.eth.calculateFeeData();
 
-    console.log(gasPrice);
+    let chainId = 14;
 
-    const LedgerTxPayload = {
-        to: txPayload.to,
-        gasPrice: gasPrice._hex,
-        gasLimit: ethers.utils.hexlify(100000),
-        nonce: nonce,
-        chainId: 14,
-        data: txPayload.data,
-    };
+    if (object.rpcUrl && object.rpcUrl.includes("flr")) {
+        chainId = 14;
+    } else if (object.rpcUrl && object.rpcUrl.includes("sgb")) {
+        chainId = 19;
+    }
+
+    console.log(feeData);
+
+    let LedgerTxPayload;
+
+    if (txPayload.value) {
+        LedgerTxPayload = {
+            to: txPayload.to,
+            maxPriorityFeePerGas: feeData.maxFeePerGas * 20n,
+            maxFeePerGas: feeData.maxFeePerGas * 20n,
+            gasPrice: feeData.gasPrice,
+            gasLimit: ethers.utils.hexlify(300000),
+            nonce: nonce,
+            chainId: chainId,
+            data: txPayload.data,
+            value: txPayload.value
+        };
+    } else {
+        LedgerTxPayload = {
+            to: txPayload.to,
+            maxPriorityFeePerGas: feeData.maxFeePerGas * 20n,
+            maxFeePerGas: feeData.maxFeePerGas * 20n,
+            gasPrice: feeData.gasPrice,
+            gasLimit: ethers.utils.hexlify(300000),
+            nonce: nonce,
+            chainId: chainId,
+            data: txPayload.data,
+        };
+    }
+
+    console.log(LedgerTxPayload);
 
     showSpinner(async () => {
-        await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
+        try {
+            await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
 
-            showConfirmationSpinnerStake(async (spinner) => {
-                spinner.content = "Waiting for network confirmation. <br />Please wait...";
-                ethersProvider.sendTransaction(signedTx).then(response => {
-                    spinner.close();
-
-                    if (isStake === true) {
-                        showConfirmStake(DappObject, stakingOption, [response.hash]);
-                    } else {
-                        showConfirm(response.hash, object, DappObject, pageIndex);
-                    }
+                showConfirmationSpinnerStake(async (spinner) => {
+                    spinner.setContent("Waiting for network confirmation. <br />Please wait...");
+                    ethersProvider.sendTransaction(signedTx).then(response => {
+                        console.log("SignedTX: ");
+                        console.log(response);
+                        if (isStake === true) {
+                            checkTxStake(response.hash, web32, spinner, DappObject);
+                        } else {
+                            checkTx(response.hash, web32, spinner, object, DappObject, pageIndex);
+                        }
+                    });
                 });
-            });
-        })
+            })
+        } catch (error) {
+            if (isStake === true) {
+                showFailStake(DappObject, stakingOption);
+            } else {
+                showFail(object, DappObject, pageIndex);
+            }
+        }
     });
 }
 
@@ -2733,6 +2781,8 @@ window.dappInit = async (option, stakingOption) => {
         downloadMetamask();
     } else {
         await MMSDK.init();
+
+        console.log("Is Ledger: " + DappObject.isLedger);
         if (option === 1 || option === '1') {
             let selectedNetwork = document.getElementById("SelectedNetwork");
             let chainidhex;
@@ -2835,7 +2885,7 @@ window.dappInit = async (option, stakingOption) => {
                                     }
                                 }
                             } catch (error) {
-                                // console.log(error);
+                                console.log(error);
                                 // showFail();
                             }
                         }
@@ -2963,8 +3013,7 @@ window.dappInit = async (option, stakingOption) => {
                         try {
                             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
                             let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-                            const accounts = await provider.request({method: 'eth_requestAccounts'});
-                            const account = accounts[0];
+                            const account = DappObject.selectedAddress;
                 
                             const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
                             const delegatedFtsos = delegatesOfUser[0];
@@ -2995,7 +3044,7 @@ window.dappInit = async (option, stakingOption) => {
                                 let delegatedBips = getDelegatedBips();
                 
                                 if (delegatedFtsos.length === 2 || delegatedBips === 100) {
-                                    showAlreadyDelegated(ftsoNames, object);
+                                    showAlreadyDelegated(ftsoNames, object, DappObject);
                                 } else {
                                     delegate(object, DappObject);
                                 }
@@ -3062,8 +3111,7 @@ window.dappInit = async (option, stakingOption) => {
                             var checkBox = document.getElementById("RewardsCheck");
                 
                             try {
-                                const accounts = await provider.request({method: 'eth_requestAccounts'});
-                                const account = accounts[0];
+                                const account = DappObject.selectedAddress;
                                 const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
                                 let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                                 const ftsoRewardAddr = await GetContract("FtsoRewardManager", object.rpcUrl, object.flrAddr);
@@ -3123,8 +3171,7 @@ window.dappInit = async (option, stakingOption) => {
                             var checkBox = document.getElementById("RewardsCheck");
                 
                             try {
-                                const accounts = await provider.request({method: 'eth_requestAccounts'});
-                                const account = accounts[0];
+                                const account = DappObject.selectedAddress;
                                 const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
                                 let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                                 const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", object.rpcUrl, object.flrAddr);
