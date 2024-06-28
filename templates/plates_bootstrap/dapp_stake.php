@@ -1,11 +1,11 @@
 <div class="top">
-<div class="wrap-box" style="text-align: center !important; padding: 16px 0 !important;">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 style="color: #383a3b; font-size: 23px">How would you like to access your Wallet?</h1>
+    <div class="wrap-box" style="text-align: center !important; padding: 16px 0 !important;">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 style="color: #383a3b; font-size: 23px">How would you like to access your Wallet?</h1>
+            </div>
         </div>
     </div>
-</div>
 </div>
 <div class="row" style="padding: 0 20px;">
     <div class="col-sm-6">

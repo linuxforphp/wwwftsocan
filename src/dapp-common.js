@@ -23,12 +23,12 @@ var DappObject = {
     isAmount2Active: false,
     transferBool: true,
     metamaskInstalled: false,
-    ledgerStake: false,
+    isLedger: false,
     signatureStaking: "",
     unPrefixedAddr: "",
     ledgerAddrArray: [],
     ledgerSelectedIndex: "",
-    ledgerSelectedAddress: "",
+    selectedAddress: "",
     selectedDateTime: "",
     StakeMaxDate: "",
     StakeMinDate: "",
@@ -38,30 +38,6 @@ const provider = window.ethereum;
 
 function unPrefix0x (input) {
     return input.startsWith("0x") ? input.slice(2) : input;
-}
-
-async function getAccount(operation) {
-    var accountAddr = document.getElementById("Accounts").getAttribute('data-address');
-
-    if (operation === 'GET' || operation === 'POST') {
-        if (accountAddr.trim().length === 0 || accountAddr.trim() === null) {
-            const accounts = await provider.request({method: 'eth_accounts'});
-            const account = accounts[0].trim();
-
-            document.getElementById("Accounts").setAttribute('data-address', account);
-
-            return account;
-        } else {
-            return accountAddr;
-        }
-    } else if (operation === 'SET') {
-        const accounts = await provider.request({method: 'eth_accounts'});
-        const account = accounts[0].trim();
-
-        document.getElementById("Accounts").setAttribute('data-address', account);
-
-        return account;
-    }
 }
 
 function decimalToInteger(dec, offset) {
@@ -98,7 +74,7 @@ async function showSpinner(doSomething) {
     });
 }
 
-async function showConfirmationSpinner(txHash, web32) {
+async function showConfirmationSpinner(txHash, web32, object, DappObject, pageIndex) {
     var spinner =
     $.confirm({
         escapeKey: false,
@@ -116,7 +92,7 @@ async function showConfirmationSpinner(txHash, web32) {
             },
         },
         onContentReady: async function () {
-            await checkTx(txHash, web32, this);
+            await checkTx(txHash, web32, this, object, DappObject, pageIndex);
         }
     });
 }
@@ -167,7 +143,7 @@ async function showConfirmationSpinnerStake(doSomething) {
     });
 }
 
-async function showConfirm(txHash) {
+async function showConfirm(txHash, object, DappObject, pageIndex) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
@@ -181,7 +157,7 @@ async function showConfirm(txHash) {
         buttons: {
             ok: {
                 action: function () {
-                    document.getElementById("ConnectWallet").click();
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, pageIndex, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                 },
             }
         },
@@ -222,7 +198,7 @@ async function showConfirmStake(DappObject, stakingOption, txHashes) {
     });
 }
 
-function showFail() {
+function showFail(object, DappObject, pageIndex) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
@@ -236,7 +212,7 @@ function showFail() {
         buttons: {
             ok: {
                 action: function () {
-                    document.getElementById("ConnectWallet").click();
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, pageIndex, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                 },
             },
         },
@@ -302,7 +278,7 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
     });
 }
 
-async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption) {
+async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption, rpcUrl, flrAddr) {
     DappObject.signatureStaking = "";
 
     if (pageIndex === 1 || pageIndex === '1') {
@@ -313,7 +289,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showBalance(0);
             showTokenBalance(0);
     
-            await window.ethereum.request({
+            await window.ethereum?.request({
                 "method": "wallet_revokePermissions",
                 "params": [
                   {
@@ -324,13 +300,13 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
         }
     } else if (pageIndex === 3 || pageIndex === '3') {
         if (accounts.length !== 0) {
-            document.getElementById("ConnectWallet").click();
+            ConnectWalletClick(rpcUrl, flrAddr, DappObject, 2);
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
             showTokenBalance(0);
             showConnectedAccountAddress('0x0');
     
-            await window.ethereum.request({
+            await window.ethereum?.request({
                 "method": "wallet_revokePermissions",
                 "params": [
                   {
@@ -366,7 +342,7 @@ async function handleChainChanged() {
                 }
             }
 
-            await window.ethereum.request({
+            await window.ethereum?.request({
                 method: "wallet_switchEthereumChain",
                 params: [
                     {
@@ -383,7 +359,7 @@ async function handleChainChanged() {
 }
 
 async function handleChainChangedStake() {
-    await window.ethereum.request({
+    await window.ethereum?.request({
         method: "wallet_switchEthereumChain",
         params: [
             {
@@ -435,10 +411,6 @@ function isNumber(value) {
     return !isNaN(value - 0);
 }
 
-async function getChainIdHex() {
-    return await provider.request({method: 'eth_chainId'});
-}
-
 async function isConnected() {
     const accounts = await provider.request({method: 'eth_accounts'});
 
@@ -463,7 +435,7 @@ function updateCall() {
     }, 20000);
 }
 
-async function checkTx(hash, web32, spinner) {
+async function checkTx(hash, web32, spinner, object, DappObject, pageIndex) {
     var i = 0;
     
     // Set interval to regularly check if we can get a receipt
@@ -476,11 +448,9 @@ async function checkTx(hash, web32, spinner) {
                 spinner.close();
                 
                 if (Number(receipt.status) === 1) {
-                    showConfirm(receipt.transactionHash);
-                    document.getElementById("ConnectWallet").click();
+                    showConfirm(receipt.transactionHash, object, DappObject, pageIndex);
                 } else if (Number(receipt.status) === 0) {
-                    showFail();
-                    document.getElementById("ConnectWallet").click();
+                    showFail(object, DappObject, pageIndex);
                 }
 
                 // Clear interval
@@ -491,9 +461,41 @@ async function checkTx(hash, web32, spinner) {
         if (i === 20) {
             spinner.close();
 
-            showFail();
+            showFail(object, DappObject, pageIndex);
+            
+            // Clear interval
+            clearInterval(interval);
+        }
+    }, 6000)
+}
 
-            document.getElementById("ConnectWallet").click();
+async function checkTxStake(hash, web32, spinner, DappObject) {
+    var i = 0;
+    
+    // Set interval to regularly check if we can get a receipt
+    let interval = setInterval(() => {
+        i += 1;
+        
+        web32.eth.getTransactionReceipt(hash).then((receipt) => {
+            // If we've got a receipt, check status and log / change text accordingly
+            if (receipt) {
+                spinner.close();
+                
+                if (Number(receipt.status) === 1) {
+                    showConfirmStake(DappObject, 3, [receipt.transactionHash]);
+                } else if (Number(receipt.status) === 0) {
+                    showFailStake(DappObject, 3);
+                }
+
+                // Clear interval
+                clearInterval(interval);
+            }
+        });
+        
+        if (i === 20) {
+            spinner.close();
+
+            showFailStake(DappObject, 3);
             
             // Clear interval
             clearInterval(interval);
@@ -545,74 +547,81 @@ async function createSelectedNetwork(DappObject) {
 
             networkSelectBox.options[0].setAttribute('selected', 'selected');
             networkSelectBox.options.selectedIndex = 0;
-            
-            await provider.request({method: 'eth_requestAccounts'}).then(async function () {
-                if (!provider) {
-                    DappObject.metamaskInstalled = false;
-                    downloadMetamask();
-                } else {
-                    DappObject.metamaskInstalled = true;
-                    isConnected()
-                        .then(async function () {
-                            var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
-                                var realChainId;
 
-                                realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
+            if (!DappObject.isLedger) {        
+                await provider.request({method: 'eth_requestAccounts'}).then(async function () {
+                    if (!provider) {
+                        DappObject.metamaskInstalled = false;
+                        downloadMetamask();
+                    } else {
+                        DappObject.metamaskInstalled = true;
+                        isConnected()
+                            .then(async function () {
+                                var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                                    var realChainId;
 
-                                for (var i = 0; i < networkSelectBox.options.length; i++) {
-                                    if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
-                                        networkSelectBox.options[i].setAttribute('selected', 'selected');
-                                        networkSelectBox.options.selectedIndex = i;
-                                        realChainId = chainIdHex;
-                                    } else {
-                                        networkSelectBox.options[i].removeAttribute('selected');
+                                    realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
+
+                                    for (var i = 0; i < networkSelectBox.options.length; i++) {
+                                        if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
+                                            networkSelectBox.options[i].setAttribute('selected', 'selected');
+                                            networkSelectBox.options.selectedIndex = i;
+                                            realChainId = chainIdHex;
+                                        } else {
+                                            networkSelectBox.options[i].removeAttribute('selected');
+                                        }
                                     }
-                                }
-            
-                                if (DappObject.metamaskInstalled === true) {
-                                    try {
-                                        await window.ethereum.request({
-                                            method: "wallet_switchEthereumChain",
-                                            params: [
-                                                {
-                                                "chainId": realChainId
-                                                }
-                                            ]
-                                            }).catch((error) => console.error(error));
-                                    } catch (error) {
-                                        // console.log(error);
+                
+                                    if (DappObject.metamaskInstalled === true) {
+                                        try {
+                                            await window.ethereum?.request({
+                                                method: "wallet_switchEthereumChain",
+                                                params: [
+                                                    {
+                                                    "chainId": realChainId
+                                                    }
+                                                ]
+                                                }).catch((error) => console.error(error));
+                                        } catch (error) {
+                                            // console.log(error);
 
-                                        if (error.code === 4902) {
-                                            try {
-                                                await ethereum.request({
-                                                    method: 'wallet_addEthereumChain',
-                                                    params: [
-                                                        {
-                                                            "chainId": realChainId,
-                                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                            "iconUrls": [
-                                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                            ],
-                                                            "nativeCurrency": {
-                                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                                "decimals": 18
-                                                            }
-                                                        },
-                                                    ],
-                                                });
-                                            } catch (error) {
-                                                throw(error);
+                                            if (error.code === 4902) {
+                                                try {
+                                                    await ethereum.request({
+                                                        method: 'wallet_addEthereumChain',
+                                                        params: [
+                                                            {
+                                                                "chainId": realChainId,
+                                                                "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                                "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                                "iconUrls": [
+                                                                    `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                                ],
+                                                                "nativeCurrency": {
+                                                                    "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                    "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                    "decimals": 18
+                                                                }
+                                                            },
+                                                        ],
+                                                    });
+                                                } catch (error) {
+                                                    throw(error);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                resolve();
-                            });        
-                        });
-                }
-            })
+                                    resolve();
+                                });        
+                            });
+                    }
+                })
+            } else {
+                networkSelectBox.options[0].setAttribute('selected', 'selected');
+                networkSelectBox.options[1].removeAttribute('selected');
+                networkSelectBox.options.selectedIndex = 0;
+                resolve();
+            }
         }, 200);
     })
 }
@@ -745,31 +754,310 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
 
 // WRAP MODULE
 
-async function ConnectWalletClickWrap(rpcUrl, flrAddr, DappObject) {
-    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
+    if (typeof addressIndex === "undefined" || addressIndex === "") {
+        document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+    }
     
     let web32 = new Web3(rpcUrl);
 
     try {
-        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
-        let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const account = accounts[0];
-        showAccountAddress(account);
-        const balance = await web32.eth.getBalance(account);
-        const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+        let flrPublicKey;
 
-        DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
+        let account;
 
-        if (DappObject.wrapBool === true) {
-            showBalance(round(web32.utils.fromWei(balance, "ether")));
-            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-        } else {
-            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+        let selectize;
+
+        if (typeof addressIndex !== "undefined" && addressIndex === "") {
+            DappObject.ledgerSelectedIndex = addressIndex;
+        }
+
+        if (DappObject.isLedger === true && (typeof addressIndex === "undefined" || addressIndex === "")) {
+            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                let addresses;
+
+                if (rpcUrl.includes("flr")) {
+                    addresses = await getLedgerAddresses("flare");
+                } else if (rpcUrl.includes("sgb")) {
+                    addresses = await getLedgerAddresses("songbird");
+                }
+
+                let insert = [];
+
+                for (let i = 0; i < addresses.length; i++) {
+                    insert[i] = {
+                        id: i,
+                        title: addresses[i].ethAddress,
+                        pubkey: addresses[i].publicKey,
+                    };
+                }
+
+                DappObject.ledgerAddrArray = insert;
+            }
+
+            console.log(DappObject.ledgerAddrArray);
+
+            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
+
+            var onInputChange = async (value) => {
+                let addressBox = document.querySelector("span.connect-wallet-text");
+                let ethaddr = addressBox.getAttribute('data-ethkey');
+                let pubKey = addressBox.getAttribute('data-pubkey');
+                
+                flrPublicKey = pubKey;
+
+                account = ethaddr;
+
+                DappObject.selectedAddress = account;
+
+                console.log("Value: " + value);
+
+                DappObject.ledgerSelectedIndex = value;
+
+                connectChainsAndKeys(flrPublicKey);
+
+                let unprefixed;
+
+                if (rpcUrl.includes("flr")) {
+                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+                } else if (rpcUrl.includes("sgb")) {
+                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
+                }
+
+                DappObject.unPrefixedAddr = unprefixed;
+
+                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+            }
+
+            var $select = $('#select-account').selectize({
+                maxItems: 1,
+                valueField: 'id',
+                labelField: 'title',
+                searchField: ["title"],
+                options: DappObject.ledgerAddrArray,
+                render: {
+                    item: function (item, escape) {
+                        return (
+                        "<div>" +
+                        (item.title
+                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                            : "") +
+                        "</div>"
+                        );
+                    },
+                    option: function (item, escape) {
+                        var label = item.title;
+                        return (
+                        "<div>" +
+                        '<span class="connect-wallet-text">' +
+                        escape(label) +
+                        "</span>" +
+                        "</div>"
+                        );
+                    },
+                },
+                onChange: function(value) {
+                    onInputChange(value);
+                },
+                create: false,
+                dropdownParent: "body",
+            });
+
+            selectize = $select[0].selectize;
+
+            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
+
+            if (DappObject.ledgerSelectedIndex !== "") {
+                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+            }
+
+            let addressDropdown = document.querySelector(".selectize-input");
+            let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                
+            flrPublicKey = publicKey;
+        } else if (DappObject.isLedger === false && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
+            const accounts = await provider.request({method: 'eth_requestAccounts'});
+            
+            account = accounts[0];
+
+        } else if (typeof PassedPublicKey !== "undefined" && PassedPublicKey !== "") {
+            account = PassedEthAddr;
+            flrPublicKey = PassedPublicKey;
+            if (HandleClick) {
+                document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+            }
+        }
+
+        if (DappObject.isLedger === true && (typeof addressIndex == "undefined" || addressIndex === "")) {
+
+        } else if ((DappObject.isLedger === true && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.isLedger === false) {
+            try {
+                if (pageIndex === 0) {
+                    const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
+                    let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+                    showAccountAddress(account);
+                    const balance = await web32.eth.getBalance(account);
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+    
+                    DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
+    
+                    if (DappObject.wrapBool === true) {
+                        showBalance(round(web32.utils.fromWei(balance, "ether")));
+                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                    } else {
+                        showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                        showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+                    }
+                } else if (pageIndex === 1) {
+                    let delegatedIcon1 = document.getElementById("delegatedIcon1");
+                    delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+    
+                    isDelegateInput1(DappObject);
+    
+                    await populateFtsos(rpcUrl, flrAddr);
+    
+                    try {
+                        showAccountAddress(account);
+                        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+                    } catch (error) {
+                        // console.log(error);
+                    }
+                } else if (pageIndex === 2) {
+                    var networkSelectBox = document.getElementById('SelectedNetwork');
+    
+                    try {
+                        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
+                        const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
+                        const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
+                        let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+                        let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
+                        let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
+                        const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+    
+                        showAccountAddress(account);
+                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                        showFdRewards(0);
+                        showClaimRewards(0);
+                        showConnectedAccountAddress(account);
+    
+                        // Changing the color of Claim button.
+                        if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+                            switchClaimButtonColor();
+                            
+                            DappObject.claimBool = true;
+                        } else {
+                            switchClaimButtonColorBack();
+    
+                            DappObject.claimBool = false;
+                        }
+    
+                        if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
+                            switchClaimFdButtonColor();
+                            
+                            DappObject.fdClaimBool = true;
+                        } else {
+                            switchClaimFdButtonColorBack();
+    
+                            DappObject.fdClaimBool = false;
+                        }
+    
+                        remove(".wrap-box-ftso");
+    
+                        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+    
+                        // Getting the unclaimed Rewards and affecting the Claim button.
+                        const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
+                        let unclaimedAmount = BigInt(0);
+                        let l;
+    
+                        for (var k = 0; k < epochsUnclaimed.length; k++) {
+                            l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
+                            
+                            if (typeof l[1][0] === "bigint") {
+                                unclaimedAmount += l[1][0];
+                            } else {
+                                unclaimedAmount += BigInt(l[1][0]);
+                            }
+                        }
+                        
+                        const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
+                        
+                        // Changing the color of Claim button.
+                        showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
+    
+                        if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
+                            let claimableAmountFd = BigInt(0);
+                            let month;
+                            const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
+    
+                            for (const property in claimableMonths) {
+                                month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
+    
+                                if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
+                                    let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
+                                    
+                                    if (typeof claimableAmountMonth === "bigint") {
+                                        claimableAmountFd += claimableAmountMonth;
+                                    } else {
+                                        claimableAmountFd += BigInt(claimableAmountMonth);
+                                    }
+                                }
+                            }
+                            
+                            const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
+    
+                            // Changing the color of FlareDrop Claim button.
+                            showFdRewards(convertedRewardsFd[0] + convertedRewardsFd[1].slice(0, 2));
+    
+                            if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
+                                switchClaimFdButtonColor();
+    
+                                DappObject.fdClaimBool = true;
+                            } else {
+                                switchClaimFdButtonColorBack();
+    
+                                DappObject.fdClaimBool = false;
+                            }
+                        }
+    
+                        if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
+                            switchClaimButtonColor();
+    
+                            DappObject.claimBool = true;
+                        } else {
+                            showClaimRewards(0);
+                            switchClaimButtonColorBack();
+    
+                            DappObject.claimBool = false;
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            } catch (error) {
+                // console.log(error);
+            }
         }
     } catch (error) {
-        // console.log(error);
+        console.log(error);
+
+        document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
+
+        DappObject.signatureStaking = "";
+
+        DappObject.ledgerSelectedIndex = "";
+
+        DappObject.selectedAddress = "";
+
+        DappObject.unPrefixedAddr = "";
+
+        DappObject.ledgerAddrArray = [];
+
+        var ClickHandler;
+
+        document.getElementById("ConnectWallet").addEventListener("click", ClickHandler = async () => {
+            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, ClickHandler);
+        });
     }
 }
 
@@ -795,7 +1083,7 @@ async function toggleWrapButton(DappObject, tokenIdentifier, wrappedTokenIdentif
         setWrapButton(DappObject);
     }
 
-    document.getElementById("ConnectWallet").click();
+    ConnectWalletClick(rpcUrl, flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
 }
 
 // Is there a valid input?
@@ -833,30 +1121,6 @@ function copyWrapInput() {
 
     amountTo.value = newValue;
 }
-
-// DELEGATE MODULE
-
-async function ConnectWalletClickDelegate(rpcUrl, flrAddr, DappObject) {
-    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-
-    let delegatedIcon1 = document.getElementById("delegatedIcon1");
-    delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
-
-    isDelegateInput1(DappObject);
-
-    await populateFtsos(rpcUrl, flrAddr);
-
-    let web32 = new Web3(rpcUrl);
-
-    try {
-        const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const account = accounts[0];
-        showAccountAddress(account);
-        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-    } catch (error) {
-        // console.log(error);
-    }
-};
 
 // Switch claim button to claimable.
 function switchDelegateButtonColor(claimBool) {
@@ -1054,127 +1318,6 @@ async function populateFtsos(rpcUrl, flrAddr) {
     })
 }
 
-// CLAIM MODULE
-
-async function ConnectWalletClickClaim(rpcUrl, flrAddr, DappObject) {
-    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-
-    var networkSelectBox = document.getElementById('SelectedNetwork');
-
-    let web32 = new Web3(rpcUrl);
-
-    try {
-        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
-        const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
-        const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
-        let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-        let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
-        let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
-        const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const account = accounts[0];
-        const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-
-        showAccountAddress(account);
-        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-        showFdRewards(0);
-        showClaimRewards(0);
-        showConnectedAccountAddress(account);
-
-        // Changing the color of Claim button.
-        if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
-            switchClaimButtonColor();
-            
-            DappObject.claimBool = true;
-        } else {
-            switchClaimButtonColorBack();
-
-            DappObject.claimBool = false;
-        }
-
-        if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
-            switchClaimFdButtonColor();
-            
-            DappObject.fdClaimBool = true;
-        } else {
-            switchClaimFdButtonColorBack();
-
-            DappObject.fdClaimBool = false;
-        }
-
-        remove(".wrap-box-ftso");
-
-        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-
-        // Getting the unclaimed Rewards and affecting the Claim button.
-        const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-        let unclaimedAmount = BigInt(0);
-        let l;
-
-        for (var k = 0; k < epochsUnclaimed.length; k++) {
-            l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
-            
-            if (typeof l[1][0] === "bigint") {
-                unclaimedAmount += l[1][0];
-            } else {
-                unclaimedAmount += BigInt(l[1][0]);
-            }
-        }
-        
-        const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
-        
-        // Changing the color of Claim button.
-        showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
-
-        if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
-            let claimableAmountFd = BigInt(0);
-            let month;
-            const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
-
-            for (const property in claimableMonths) {
-                month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
-
-                if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
-                    let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
-                    
-                    if (typeof claimableAmountMonth === "bigint") {
-                        claimableAmountFd += claimableAmountMonth;
-                    } else {
-                        claimableAmountFd += BigInt(claimableAmountMonth);
-                    }
-                }
-            }
-            
-            const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
-
-            // Changing the color of FlareDrop Claim button.
-            showFdRewards(convertedRewardsFd[0] + convertedRewardsFd[1].slice(0, 2));
-
-            if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
-                switchClaimFdButtonColor();
-
-                DappObject.fdClaimBool = true;
-            } else {
-                switchClaimFdButtonColorBack();
-
-                DappObject.fdClaimBool = false;
-            }
-        }
-
-        if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
-            switchClaimButtonColor();
-
-            DappObject.claimBool = true;
-        } else {
-            showClaimRewards(0);
-            switchClaimButtonColorBack();
-
-            DappObject.claimBool = false;
-        }
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 function showConnectedAccountAddress(address) {
     document.getElementById('AccountAddress').innerText = address;
 }
@@ -1242,14 +1385,18 @@ async function delegate(object, DappObject) {
                 data: tokenContract.methods.delegate(addr1, bips1).encodeABI(),
             };
 
-            showSpinner(async () => {
-                await provider.request({
-                    method: 'eth_sendTransaction',
-                    params: [transactionParameters2],
-                })
-                .then(txHash => showConfirmationSpinner(txHash, web32))
-                .catch((error) => showFail());
-            });
+            if (DappObject.isLedger === true) {
+                await LedgerEVMSingleSign(transactionParameters2, DappObject, undefined, false, object, 1);
+            } else {
+                showSpinner(async () => {
+                    await provider.request({
+                        method: 'eth_sendTransaction',
+                        params: [transactionParameters2],
+                    })
+                    .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 1))
+                    .catch((error) => showFail(object, DappObject, 1));
+                });
+            }
 
             isDelegateInput1(DappObject);
         } catch (error) {
@@ -1258,7 +1405,7 @@ async function delegate(object, DappObject) {
     }
 }
 
-async function undelegate(object) {
+async function undelegate(object, DappObject) {
     let web32 = new Web3(object.rpcUrl);
 
     try {
@@ -1273,14 +1420,18 @@ async function undelegate(object) {
             data: tokenContract.methods.undelegateAll().encodeABI(),
         };
 
-        showSpinner(async () => {
-            await provider.request({
-                method: 'eth_sendTransaction',
-                params: [transactionParameters],
-            })
-            .then(txHash => showConfirmationSpinner(txHash, web32))
-            .catch((error) => showFail());
-        });
+        if (DappObject.isLedger === true) {
+            await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 1);
+        } else {
+            showSpinner(async () => {
+                await provider.request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters],
+                })
+                .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 1))
+                .catch((error) => showFail(object, DappObject, 1));
+            });
+        }
     } catch(error) {
 
     }
@@ -1346,7 +1497,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
-        if (DappObject.ledgerStake === true && typeof PassedPublicKey === "undefined") {
+        if (DappObject.isLedger === true && typeof PassedPublicKey === "undefined") {
             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                 let addresses = await getLedgerAddresses("flare");
 
@@ -1376,7 +1527,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                 account = ethaddr;
 
-                DappObject.ledgerSelectedAddress = account;
+                DappObject.selectedAddress = account;
 
                 console.log("Value: " + value);
 
@@ -1437,7 +1588,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
                 
             flrPublicKey = publicKey;
-        } else if (DappObject.ledgerStake === false && typeof PassedPublicKey === "undefined") {
+        } else if (DappObject.isLedger === false && typeof PassedPublicKey === "undefined") {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
@@ -1504,7 +1655,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
             DappObject.unPrefixedAddr = PchainAddr;
 
-            DappObject.ledgerSelectedAddress = account;
+            DappObject.selectedAddress = account;
 
             const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
                 
@@ -1530,7 +1681,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                 let addressBox = document.querySelector("span.connect-wallet-text");
 
-                if (DappObject.ledgerStake === true) {          
+                if (DappObject.isLedger === true) {          
                     addressBox.innerText = prefixedPchainAddress;
                 } else {
                     showAccountAddress(prefixedPchainAddress);
@@ -1582,7 +1733,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                     }
 
                     // Getting the unclaimed Rewards and affecting the Claim button.
-                    const RewardStates = await ValidatorRewardContract.methods.getStateOfRewards(DappObject.ledgerSelectedAddress).call();
+                    const RewardStates = await ValidatorRewardContract.methods.getStateOfRewards(DappObject.selectedAddress).call();
 
                     let totalReward = RewardStates[0];
                     let claimedReward = RewardStates[1];
@@ -1624,7 +1775,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
         DappObject.ledgerSelectedIndex = "";
 
-        DappObject.ledgerSelectedAddress = "";
+        DappObject.selectedAddress = "";
 
         DappObject.unPrefixedAddr = "";
 
@@ -1744,11 +1895,11 @@ async function RefreshStakingPage(DappObject, stakingOption) {
 
         const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
 
-        const balance = await web32.eth.getBalance(DappObject.ledgerSelectedAddress);
+        const balance = await web32.eth.getBalance(DappObject.selectedAddress);
 
         let addressBox = document.querySelector("span.connect-wallet-text");
 
-        if (DappObject.ledgerStake === true) {          
+        if (DappObject.isLedger === true) {          
             addressBox.innerText = prefixedPchainAddress;
         } else {
             showAccountAddress(prefixedPchainAddress);
@@ -1929,7 +2080,7 @@ async function transferTokens(DappObject, stakingOption) {
 
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
-                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, cKeychain, nonce, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, nonce, amountFromValueInt, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     console.log("C Chain TX ID: " + result.txid);
 
@@ -1975,7 +2126,7 @@ async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, pKeychain, 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, 1, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("P Chain TX ID: " + result.txid);
         
                                         pChainTransactionId = result.txid;
@@ -2040,7 +2191,7 @@ async function transferTokens(DappObject, stakingOption) {
 
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
-                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, pKeychain, amountFromValueInt, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, amountFromValueInt, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     console.log("P Chain TX ID: " + result);
 
@@ -2086,7 +2237,7 @@ async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.ledgerSelectedAddress, cKeychain, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("C Chain TX ID: " + result);
 
                                         cChainTransactionId = result;
@@ -2432,7 +2583,7 @@ async function stake(DappObject, stakingOption) {
 
         try {
             showConfirmationSpinnerStake(async (spinner) => {
-                const PchainTxId = await addDelegator(DappObject.ledgerSelectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.ledgerStake, DappObject.ledgerSelectedIndex).then(result => {
+                const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
                     console.log("P Chain TX ID: " + result);
 
                     pChainTransactionId = result;
@@ -2490,7 +2641,7 @@ async function claimStakingRewards(DappObject, stakingOption) {
 
         const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
 
-        const RewardStates = await ValidatorRewardContract.methods.getStateOfRewards(DappObject.ledgerSelectedAddress).call();
+        const RewardStates = await ValidatorRewardContract.methods.getStateOfRewards(DappObject.selectedAddress).call();
 
         let totalReward = RewardStates[0];
         let claimedReward = RewardStates[1];
@@ -2501,23 +2652,25 @@ async function claimStakingRewards(DappObject, stakingOption) {
 
         if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
             txPayload = {
-                from: DappObject.ledgerSelectedAddress,
+                from: DappObject.selectedAddress,
                 to: ValidatorRewardAddr,
-                data: ValidatorRewardContract.methods.claim(DappObject.ledgerSelectedAddress, DappObject.ledgerSelectedAddress, unclaimedAmount, false).encodeABI(),
+                data: ValidatorRewardContract.methods.claim(DappObject.selectedAddress, DappObject.selectedAddress, unclaimedAmount, false).encodeABI(),
             };
             
             const transactionParameters = txPayload;
 
-            if (DappObject.ledgerStake === true) {
-                await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, true);
+            if (DappObject.isLedger === true) {
+                await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, true);
             } else {
                 showSpinner(async () => {
                     await provider.request({
                         method: 'eth_sendTransaction',
                         params: [transactionParameters],
                     })
-                    .then(txHash => showConfirmationSpinner(txHash, web32))
-                    .catch((error) => showFail());
+                    .then(txHash => showConfirmationSpinnerStake(async (spinner) => {
+                        checkTxStake(txHash, web32, spinner, DappObject);
+                    }))
+                    .catch((error) => showFailStake(DappObject, 2));
                 });
             }
 
@@ -2536,10 +2689,10 @@ async function claimStakingRewards(DappObject, stakingOption) {
 
 // Ledger EVM
 
-async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, isStake = false) {
+async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake = false, object, pageIndex) {
     const ethersProvider = new ethers.providers.JsonRpcProvider('https://sbi.flr.ftsocan.com/ext/C/rpc');
 
-    const nonce = await ethersProvider.getTransactionCount(DappObject.ledgerSelectedAddress, "latest");
+    const nonce = await ethersProvider.getTransactionCount(DappObject.selectedAddress, "latest");
 
     const gasPrice = await ethersProvider.getGasPrice();
 
@@ -2565,7 +2718,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, web32, 
                     if (isStake === true) {
                         showConfirmStake(DappObject, stakingOption, [response.hash]);
                     } else {
-                        showConfirm(response.hash);
+                        showConfirm(response.hash, object, DappObject, pageIndex);
                     }
                 });
             });
@@ -2599,7 +2752,7 @@ window.dappInit = async (option, stakingOption) => {
                     showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
 
                     document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClickWrap(object.rpcUrl, object.flrAddr, DappObject);
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1));
                     });
                 
                     // We check if the input is valid, then copy it to the wrapped tokens section.
@@ -2622,8 +2775,7 @@ window.dappInit = async (option, stakingOption) => {
                             try {
                                 const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
                                 let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-                                const accounts = await provider.request({method: 'eth_accounts'});
-                                const account = accounts[0];
+                                const account = DappObject.selectedAddress;
                                 let balance = await web32.eth.getBalance(account);
                                 let tokenBalance = await tokenContract.methods.balanceOf(account).call();
                                 var amountFrom = document.getElementById("AmountFrom");
@@ -2666,14 +2818,18 @@ window.dappInit = async (option, stakingOption) => {
                                             amountTo.value = "";
                                         }
 
-                                        showSpinner(async () => {
-                                            await provider.request({
-                                                method: 'eth_sendTransaction',
-                                                params: [transactionParameters],
-                                            })
-                                                .then(txHash => showConfirmationSpinner(txHash, web32))
-                                                .catch((error) => showFail());
-                                        });
+                                        if (DappObject.isLedger === true) {
+                                            await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 0);
+                                        } else {
+                                            showSpinner(async () => {
+                                                await provider.request({
+                                                    method: 'eth_sendTransaction',
+                                                    params: [transactionParameters],
+                                                })
+                                                .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 0))
+                                                .catch((error) => showFail(object, DappObject, 0));
+                                            });
+                                        }
 
                                         setWrapButton(DappObject);
                                     }
@@ -2685,7 +2841,7 @@ window.dappInit = async (option, stakingOption) => {
                         }
                     });
 
-                    document.getElementById("ConnectWallet").click();
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
 
                     // When the Connect Wallet button is clicked, we connect the wallet, and if it
                     // has already been clicked, we copy the public address to the clipboard.
@@ -2736,7 +2892,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         // Alert Metamask to switch.
                         try {
-                            await window.ethereum.request({
+                            await window.ethereum?.request({
                                 method: "wallet_switchEthereumChain",
                                 params: [
                                     {
@@ -2745,7 +2901,7 @@ window.dappInit = async (option, stakingOption) => {
                                 ]
                                 }).catch((error) => console.error(error));
 
-                            document.getElementById("ConnectWallet").click();
+                            ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                         } catch (error) {
                             // console.log(error);
                         }
@@ -2753,11 +2909,11 @@ window.dappInit = async (option, stakingOption) => {
                         setWrapButton(DappObject);
                     }
 
-                    window.ethereum.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts, DappObject);
+                    window.ethereum?.on("accountsChanged", async (accounts) => {
+                        handleAccountsChanged(accounts, DappObject, 1, undefined, object.rpcUrl, object.flrAddr);
                     });
 
-                    window.ethereum.on("chainChanged", async () => {
+                    window.ethereum?.on("chainChanged", async () => {
                         handleChainChanged();
                     });
                 });
@@ -2774,7 +2930,7 @@ window.dappInit = async (option, stakingOption) => {
                 getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
 
                     document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClickDelegate(object.rpcUrl, object.flrAddr, DappObject);
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1));
                     });
                 
                     document.getElementById("Amount1").addEventListener('input', function () {
@@ -2807,7 +2963,8 @@ window.dappInit = async (option, stakingOption) => {
                         try {
                             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
                             let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-                            const account = await getAccount('GET');
+                            const accounts = await provider.request({method: 'eth_requestAccounts'});
+                            const account = accounts[0];
                 
                             const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
                             const delegatedFtsos = delegatesOfUser[0];
@@ -2848,7 +3005,7 @@ window.dappInit = async (option, stakingOption) => {
                         }
                     });
 
-                    document.getElementById("ConnectWallet").click();
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex)
 
                     isDelegateInput1(DappObject);
 
@@ -2859,7 +3016,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         // Alert Metamask to switch.
                         try {
-                            await window.ethereum.request({
+                            await window.ethereum?.request({
                                 method: "wallet_switchEthereumChain",
                                 params: [
                                     {
@@ -2872,11 +3029,11 @@ window.dappInit = async (option, stakingOption) => {
                         }
                     };
 
-                    window.ethereum.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts, DappObject);
+                    window.ethereum?.on("accountsChanged", async (accounts) => {
+                        handleAccountsChanged(accounts, DappObject, 1, undefined, object.rpcUrl, object.flrAddr);
                     });
 
-                    window.ethereum.on("chainChanged", async () => {
+                    window.ethereum?.on("chainChanged", async () => {
                         handleChainChanged();
                     });
                 });
@@ -2896,7 +3053,7 @@ window.dappInit = async (option, stakingOption) => {
                     showTokenIdentifiers(null, object.wrappedTokenIdentifier);
 
                     document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClickClaim(object.rpcUrl, object.flrAddr, DappObject);
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1));
                     });
                 
                     document.getElementById("ClaimButton").addEventListener("click", async () => {
@@ -2932,15 +3089,19 @@ window.dappInit = async (option, stakingOption) => {
                                     }
                                     
                                     const transactionParameters = txPayload;
-                    
-                                    showSpinner(async () => {
-                                        await provider.request({
-                                            method: 'eth_sendTransaction',
-                                            params: [transactionParameters],
-                                        })
-                                        .then(txHash => showConfirmationSpinner(txHash, web32))
-                                        .catch((error) => showFail());
-                                    });
+
+                                    if (DappObject.isLedger === true) {
+                                        await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
+                                    } else {
+                                        showSpinner(async () => {
+                                            await provider.request({
+                                                method: 'eth_sendTransaction',
+                                                params: [transactionParameters],
+                                            })
+                                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
+                                            .catch((error) => showFail(object, DappObject, 2));
+                                        });
+                                    }
 
                                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                                     
@@ -3000,15 +3161,19 @@ window.dappInit = async (option, stakingOption) => {
                                     }
                                     
                                     const transactionParameters = txPayload;
-            
-                                    showSpinner(async () => {
-                                        await provider.request({
-                                            method: 'eth_sendTransaction',
-                                            params: [transactionParameters],
-                                        })
-                                        .then(txHash => showConfirmationSpinner(txHash, web32))
-                                        .catch((error) => showFail());
-                                    });
+
+                                    if (DappObject.isLedger === true) {
+                                        await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
+                                    } else {
+                                        showSpinner(async () => {
+                                            await provider.request({
+                                                method: 'eth_sendTransaction',
+                                                params: [transactionParameters],
+                                            })
+                                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
+                                            .catch((error) => showFail(object, DappObject, 2));
+                                        });
+                                    }
                                     
                                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
                                     
@@ -3022,7 +3187,7 @@ window.dappInit = async (option, stakingOption) => {
                         }
                     });
 
-                    document.getElementById("ConnectWallet").click();
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex)
 
                     if (object.networkValue === '1') {
                         document.getElementById("layer3").innerHTML = DappObject.flrLogo;
@@ -3051,7 +3216,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         // Alert Metamask to switch.
                         try {
-                            await window.ethereum.request({
+                            await window.ethereum?.request({
                                 method: "wallet_switchEthereumChain",
                                 params: [
                                     {
@@ -3064,12 +3229,12 @@ window.dappInit = async (option, stakingOption) => {
                         }
                     };
 
-                    window.ethereum.on("accountsChanged", async (accounts) => {
+                    window.ethereum?.on("accountsChanged", async (accounts) => {
                         remove(".wrap-box-ftso");
-                        handleAccountsChanged(accounts, DappObject, 3);
+                        handleAccountsChanged(accounts, DappObject, 3, undefined, object.rpcUrl, object.flrAddr);
                     });
 
-                    window.ethereum.on("chainChanged", async () => {
+                    window.ethereum?.on("chainChanged", async () => {
                         handleChainChanged();
                     });
                 });
@@ -3077,7 +3242,7 @@ window.dappInit = async (option, stakingOption) => {
         } else if (option === 4 || option === '4') {
             // switch to Flare
             try {
-                await window.ethereum.request({
+                await window.ethereum?.request({
                     method: "wallet_switchEthereumChain",
                     params: [
                         {
@@ -3126,10 +3291,15 @@ window.dappInit = async (option, stakingOption) => {
             } else if (stakingOption === 4) {
                 //Metamask
                 document.getElementById("ContinueAnyway").addEventListener("click", async () => {
-                    DappObject.ledgerStake = false;
-                    getDappPage(5);
+                    DappObject.isLedger = false;
+                    getDappPage(1);
+                });
+
+                document.getElementById("GoBack").addEventListener("click", async () => {
+                    getDappPage(4);
                 });
             } else if (stakingOption === 5) {
+                //Ledger
                 if (!navigator.usb) {
                     document.getElementById("ledgerContent").innerHTML = '<div class="row"><div class="col-sm-12"><button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div><div class="row"><div class="col-md-12"><span>Whoops! Your browser does not support <strong>WEBUSB</strong>! </br> Please switch to a compatible browser.</span></div></div><div class="row"><div class="dummytext"><div class="addr-wrap"><span><?=$view["dappName"] ?></span></div></div></div>'
 
@@ -3138,8 +3308,12 @@ window.dappInit = async (option, stakingOption) => {
                     });
                 } else {
                     document.getElementById("ContinueAnyway").addEventListener("click", async () => {
-                        DappObject.ledgerStake = true;
-                        getDappPage(5);
+                        DappObject.isLedger = true;
+                        getDappPage(1);
+                    });
+
+                    document.getElementById("GoBack").addEventListener("click", async () => {
+                        getDappPage(4);
                     });
                 }
             } else if (stakingOption === 1) {
@@ -3147,7 +3321,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.ledgerStake === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+                if (DappObject.isLedger === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
 
@@ -3175,7 +3349,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.ledgerStake === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+                if (DappObject.isLedger === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
 
@@ -3191,7 +3365,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.ledgerStake === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+                if (DappObject.isLedger === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
 
@@ -3202,11 +3376,11 @@ window.dappInit = async (option, stakingOption) => {
                 });
             }
 
-            window.ethereum.on("accountsChanged", async (accounts) => {
+            window.ethereum?.on("accountsChanged", async (accounts) => {
                 handleAccountsChanged(accounts, DappObject, 4, stakingOption);
             });
 
-            window.ethereum.on("chainChanged", async () => {
+            window.ethereum?.on("chainChanged", async () => {
                 handleChainChangedStake();
             });
 

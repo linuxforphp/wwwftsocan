@@ -66,10 +66,10 @@
     var uriPath = <?= json_encode($view['path']); ?>;
 
     window.onload = () => {
-        if ((typeof uriPath[2] === 'undefined') || uriPath[2] === '' || uriPath[2] === 'index' || uriPath[2] === 'wrap') {
-            $.get("wrap", function(data) {
+        if ((typeof uriPath[2] === 'undefined') || uriPath[2] === '' || uriPath[2] === 'index' || uriPath[2] === 'stake') {
+            $.get("stake", function(data) {
                 $("#dapp-root").html(data);
-                window.dappInit(1);
+                window.dappInit(4);
             });
         } else if (uriPath[2] === 'delegate') {
             $.get("delegate", function(data) {
@@ -81,10 +81,10 @@
                 $("#dapp-root").html(data);
                 window.dappInit(3);
             });
-        } else if (uriPath[2] === 'stake') {
-            $.get("stake", function(data) {
+        } else if (uriPath[2] === 'wrap') {
+            $.get("wrap", function(data) {
                 $("#dapp-root").html(data);
-                window.dappInit(4);
+                window.dappInit(1);
             });
         } else if (uriPath[2] === 'stakeTransfer') {
             $.get("stakeTransfer", function(data) {
