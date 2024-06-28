@@ -37,7 +37,7 @@ Fixed Navigation
                 <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>index')">Home</a></li>
                 <li id="delegate-dropdown">
                     <a href="#" class="delegate-dropdown">Delegation Tools <i class="fas fa-caret-down"></i></a>
-                    <div class="dd-menu">
+                    <div class="dd-menu" style="top: 37px; left: 15px;">
                         <div class="dropdown-menu-dapp" style="left: 0px;">
                             <ul>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')">DApp<sup><strong> NEW!</strong></sup></a></li>
