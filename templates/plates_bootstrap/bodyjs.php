@@ -88,29 +88,35 @@
 
     function getDappPage(option, reconnect = true) {
         if (option === 1) {
-            $.get( "wrap", function( data ) {
-                $( "#dapp-root" ).html( data );
-                
-                if (reconnect === true) {
-                    window.dappInit(1);
-                }
-            });
+            if (DappObject.walletIndex !== -1) {
+                $.get( "wrap", function( data ) {
+                    $( "#dapp-root" ).html( data );
+                    
+                    if (reconnect === true) {
+                        window.dappInit(1);
+                    }
+                });
+            }
         } else if (option === 2) {
-            $.get( "delegate", function( data ) {
-                $( "#dapp-root" ).html( data );
+            if (DappObject.walletIndex !== -1) {
+                $.get( "delegate", function( data ) {
+                    $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(2);
-                }
-            });
+                    if (reconnect === true) {
+                        window.dappInit(2);
+                    }
+                });
+            }
         } else if (option === 3) {
-            $.get( "claim", function( data ) {
-                $( "#dapp-root" ).html( data );
+            if (DappObject.walletIndex !== -1) {
+                $.get( "claim", function( data ) {
+                    $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(3);
-                }
-            });
+                    if (reconnect === true) {
+                        window.dappInit(3);
+                    }
+                });
+            } 
         } else if (option === 4) {
             $.get( "stake", function( data ) {
                 $( "#dapp-root" ).html( data );
@@ -120,29 +126,35 @@
                 }
             });
         } else if (option === 5) {
-            $.get( "stakeTransfer", function( data ) {
-                $( "#dapp-root" ).html( data );
+            if (DappObject.walletIndex !== -1) {
+                $.get( "stakeTransfer", function( data ) {
+                    $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(4, 1);
-                }
-            });
-        }  else if (option === 6) {
-            $.get( "stakeStake", function( data ) {
-                $( "#dapp-root" ).html( data );
+                    if (reconnect === true) {
+                        window.dappInit(4, 1);
+                    }
+                });
+            }
+        } else if (option === 6) {
+            if (DappObject.walletIndex !== -1) {
+                $.get( "stakeStake", function( data ) {
+                    $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(4, 2);
-                }
-            });
-        }   else if (option === 7) {
-            $.get( "stakeRewards", function( data ) {
-                $( "#dapp-root" ).html( data );
+                    if (reconnect === true) {
+                        window.dappInit(4, 2);
+                    }
+                });
+            }
+        } else if (option === 7) {
+            if (DappObject.walletIndex !== -1) {
+                $.get( "stakeRewards", function( data ) {
+                    $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(4, 3);
-                }
-            });
+                    if (reconnect === true) {
+                        window.dappInit(4, 3);
+                    }
+                });
+            }
         } else if (option === 8) {
             $.get( "stakeMetamask", function( data ) {
                 $( "#dapp-root" ).html( data );

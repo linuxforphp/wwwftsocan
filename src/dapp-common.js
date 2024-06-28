@@ -6,7 +6,7 @@ import { ethers } from "./ethers.js";
 
 // ALL MODULES.
 
-var DappObject = {
+window.DappObject = {
     costonLogo: FlareLogos.costonLogo,
     flrLogo: FlareLogos.flrLogo,
     sgbLogo: FlareLogos.sgbLogo,
@@ -23,7 +23,7 @@ var DappObject = {
     isAmount2Active: false,
     transferBool: true,
     metamaskInstalled: false,
-    isLedger: false,
+    walletIndex: -1,
     signatureStaking: "",
     unPrefixedAddr: "",
     ledgerAddrArray: [],
@@ -548,7 +548,7 @@ async function createSelectedNetwork(DappObject) {
             networkSelectBox.options[0].setAttribute('selected', 'selected');
             networkSelectBox.options.selectedIndex = 0;
 
-            if (!DappObject.isLedger) {        
+            if (DappObject.walletIndex === 0) {        
                 await provider.request({method: 'eth_requestAccounts'}).then(async function () {
                     if (!provider) {
                         DappObject.metamaskInstalled = false;
@@ -772,7 +772,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
-        if (DappObject.isLedger === true && (typeof addressIndex === "undefined" || addressIndex === "")) {
+        if (DappObject.walletIndex === 1 && (typeof addressIndex === "undefined" || addressIndex === "")) {
             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                 let addresses;
 
@@ -875,7 +875,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
                 
             flrPublicKey = publicKey;
-        } else if (DappObject.isLedger === false && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
+        } else if (DappObject.walletIndex === 0 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
@@ -887,9 +887,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             }
         }
 
-        if (DappObject.isLedger === true && (typeof addressIndex == "undefined" || addressIndex === "")) {
+        if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
 
-        } else if ((DappObject.isLedger === true && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.isLedger === false) {
+        } else if ((DappObject.walletIndex === 1 && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.walletIndex === 0) {
             DappObject.selectedAddress = account;
 
             try {
@@ -1385,7 +1385,7 @@ async function delegate(object, DappObject) {
                 data: tokenContract.methods.delegate(addr1, bips1).encodeABI(),
             };
 
-            if (DappObject.isLedger === true) {
+            if (DappObject.walletIndex === 1) {
                 await LedgerEVMSingleSign(transactionParameters2, DappObject, undefined, false, object, 1);
             } else {
                 showSpinner(async () => {
@@ -1419,7 +1419,7 @@ async function undelegate(object, DappObject) {
             data: tokenContract.methods.undelegateAll().encodeABI(),
         };
 
-        if (DappObject.isLedger === true) {
+        if (DappObject.walletIndex === 1) {
             await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 1);
         } else {
             showSpinner(async () => {
@@ -1496,7 +1496,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
-        if (DappObject.isLedger === true && typeof PassedPublicKey === "undefined") {
+        if (DappObject.walletIndex === 1 && typeof PassedPublicKey === "undefined") {
             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                 let addresses = await getLedgerAddresses("flare");
 
@@ -1587,7 +1587,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
                 
             flrPublicKey = publicKey;
-        } else if (DappObject.isLedger === false && typeof PassedPublicKey === "undefined") {
+        } else if (DappObject.walletIndex === 0 && typeof PassedPublicKey === "undefined") {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
@@ -1680,7 +1680,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                 let addressBox = document.querySelector("span.connect-wallet-text");
 
-                if (DappObject.isLedger === true) {          
+                if (DappObject.walletIndex === 1) {          
                     addressBox.innerText = prefixedPchainAddress;
                 } else {
                     showAccountAddress(prefixedPchainAddress);
@@ -1898,7 +1898,7 @@ async function RefreshStakingPage(DappObject, stakingOption) {
 
         let addressBox = document.querySelector("span.connect-wallet-text");
 
-        if (DappObject.isLedger === true) {          
+        if (DappObject.walletIndex === 1) {          
             addressBox.innerText = prefixedPchainAddress;
         } else {
             showAccountAddress(prefixedPchainAddress);
@@ -2079,7 +2079,7 @@ async function transferTokens(DappObject, stakingOption) {
 
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
-                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, nonce, amountFromValueInt, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
+                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, nonce, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     console.log("C Chain TX ID: " + result.txid);
 
@@ -2125,7 +2125,7 @@ async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, 1, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
+                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("P Chain TX ID: " + result.txid);
         
                                         pChainTransactionId = result.txid;
@@ -2190,7 +2190,7 @@ async function transferTokens(DappObject, stakingOption) {
 
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
-                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, amountFromValueInt, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
+                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     console.log("P Chain TX ID: " + result);
 
@@ -2236,7 +2236,7 @@ async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
+                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                         console.log("C Chain TX ID: " + result);
 
                                         cChainTransactionId = result;
@@ -2582,7 +2582,7 @@ async function stake(DappObject, stakingOption) {
 
         try {
             showConfirmationSpinnerStake(async (spinner) => {
-                const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.isLedger, DappObject.ledgerSelectedIndex).then(result => {
+                const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                     console.log("P Chain TX ID: " + result);
 
                     pChainTransactionId = result;
@@ -2658,7 +2658,7 @@ async function claimStakingRewards(DappObject, stakingOption) {
             
             const transactionParameters = txPayload;
 
-            if (DappObject.isLedger === true) {
+            if (DappObject.walletIndex === 1) {
                 await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, true);
             } else {
                 showSpinner(async () => {
@@ -2782,7 +2782,7 @@ window.dappInit = async (option, stakingOption) => {
     } else {
         await MMSDK.init();
 
-        console.log("Is Ledger: " + DappObject.isLedger);
+        console.log("Is Ledger: " + DappObject.walletIndex);
         if (option === 1 || option === '1') {
             let selectedNetwork = document.getElementById("SelectedNetwork");
             let chainidhex;
@@ -2868,7 +2868,7 @@ window.dappInit = async (option, stakingOption) => {
                                             amountTo.value = "";
                                         }
 
-                                        if (DappObject.isLedger === true) {
+                                        if (DappObject.walletIndex === 1) {
                                             await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 0);
                                         } else {
                                             showSpinner(async () => {
@@ -3138,7 +3138,7 @@ window.dappInit = async (option, stakingOption) => {
                                     
                                     const transactionParameters = txPayload;
 
-                                    if (DappObject.isLedger === true) {
+                                    if (DappObject.walletIndex === 1) {
                                         await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
                                     } else {
                                         showSpinner(async () => {
@@ -3209,7 +3209,7 @@ window.dappInit = async (option, stakingOption) => {
                                     
                                     const transactionParameters = txPayload;
 
-                                    if (DappObject.isLedger === true) {
+                                    if (DappObject.walletIndex === 1) {
                                         await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
                                     } else {
                                         showSpinner(async () => {
@@ -3329,6 +3329,7 @@ window.dappInit = async (option, stakingOption) => {
             var handleClick;
 
             if (typeof stakingOption === 'undefined') {
+                DappObject.walletIndex = -1;
                 document.getElementById("ContinueMetamask").addEventListener("click", async () => {
                     getDappPage(8);
                 });
@@ -3338,7 +3339,7 @@ window.dappInit = async (option, stakingOption) => {
             } else if (stakingOption === 4) {
                 //Metamask
                 document.getElementById("ContinueAnyway").addEventListener("click", async () => {
-                    DappObject.isLedger = false;
+                    DappObject.walletIndex = 0;
                     getDappPage(1);
                 });
 
@@ -3355,7 +3356,7 @@ window.dappInit = async (option, stakingOption) => {
                     });
                 } else {
                     document.getElementById("ContinueAnyway").addEventListener("click", async () => {
-                        DappObject.isLedger = true;
+                        DappObject.walletIndex = 1;
                         getDappPage(1);
                     });
 
@@ -3368,7 +3369,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.isLedger === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+                if (DappObject.walletIndex === 0 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
 
@@ -3396,7 +3397,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.isLedger === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+                if (DappObject.walletIndex === 0 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
 
@@ -3412,7 +3413,7 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);
                 });
 
-                if (DappObject.isLedger === false || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+                if (DappObject.walletIndex === 0 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
                     document.getElementById("ConnectPChain").click();
                 }
 
