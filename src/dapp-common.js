@@ -1928,7 +1928,7 @@ async function RefreshStakingPage(DappObject, stakingOption, accounts) {
         }
     } else {
         DappObject.signatureStaking = "";
-        
+
         DappObject.unPrefixedAddr = "";
 
         DappObject.ledgerAddrArray = [];
@@ -2708,7 +2708,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     let web32;
 
-    if (object.rpcUrl) {
+    if (typeof object !== "undefined") {
         ethersProvider = new ethers.providers.JsonRpcProvider(object.rpcUrl);
 
         web32 = new Web3(object.rpcUrl);
@@ -2724,9 +2724,9 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     let chainId = 14;
 
-    if (object.rpcUrl && object.rpcUrl.includes("flr")) {
+    if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
-    } else if (object.rpcUrl && object.rpcUrl.includes("sgb")) {
+    } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
     }
 
