@@ -5,7 +5,7 @@
     outline: none;
     font-size: 2.4rem !important;
     padding: 20px;
-    padding-right: 40px;
+    padding-right: 30px;
     cursor: pointer;
     border-radius: .3em;
     margin: 0.2em 10em 0 0 !important;
@@ -64,6 +64,7 @@
     padding: 0 15px 0 2px;
     margin: 0;
     text-align: center;
+    font-size: 25px;
 }
 
 .stake-amount input:focus {
@@ -157,9 +158,11 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: transparent;
     border: none;
     min-width: 110px;
+    width: auto;
     height: 30px;
     float: left;
     display: block;
+    padding-right: 15px !important;
     padding: 0 15px 0 2px;
     margin: 0;
     text-align: center;
@@ -208,4 +211,37 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .disabled {
     opacity: 0.7 !important;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+    .selectize-input {
+        font-size: 2rem !important;
+    }
+
+    .stake-calendar input {
+        min-width: none;
+        width: 95%;
+    }
+
+    .stake-calendar {
+        width: 40%;
+        margin: 60px 0px 0px -10px;
+    }
+
+    .stake-amount {
+        margin: 27px 100px 33px 0px;
+    }
+
+    .stake-amount input {
+        min-width: 90px;
+        font-size: 22px;
+    }
+
+    .stake-amount .stake-amount-nav .stake-amount-button {
+        font-size: 10px;
+    }
+
+    .stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-max {
+        top: 6px;
+    }
 }

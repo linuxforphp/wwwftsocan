@@ -282,7 +282,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
     DappObject.signatureStaking = "";
 
     if (pageIndex === 1 || pageIndex === '1') {
-        if (accounts.length !== 0) {
+        if (isNumber(accounts.length) && accounts.length > 0) {
             document.getElementById("ConnectWallet").click();
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
@@ -299,7 +299,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
               });
         }
     } else if (pageIndex === 3 || pageIndex === '3') {
-        if (accounts.length !== 0) {
+        if (isNumber(accounts.length) && accounts.length > 0) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 2);
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
@@ -316,7 +316,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
               });
         }
     } else if (pageIndex === 4 || pageIndex === '4') {
-        RefreshStakingPage(DappObject, stakingOption);
+        RefreshStakingPage(DappObject, stakingOption, accounts);
     }
 }
 
@@ -1881,48 +1881,62 @@ function setTodayCalendarButton(inst) {
     }, 1 );
 }
 
-async function RefreshStakingPage(DappObject, stakingOption) {
+async function RefreshStakingPage(DappObject, stakingOption, accounts) {
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
 
     let web32 = new Web3(rpcUrl);
 
-    if (DappObject.unPrefixedAddr !== "") {
+    if ((DappObject.walletIndex === 0 && isNumber(accounts.length) && accounts.length > 0) || DappObject.walletIndex === 1) {
+        if (DappObject.unPrefixedAddr !== "") {
 
-        const prefixedPchainAddress = "P-" + DappObject.unPrefixedAddr;
-
-        const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
-
-        const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
-
-        const balance = await web32.eth.getBalance(DappObject.selectedAddress);
-
-        let addressBox = document.querySelector("span.connect-wallet-text");
-
-        if (DappObject.walletIndex === 1) {          
-            addressBox.innerText = prefixedPchainAddress;
-        } else {
-            showAccountAddress(prefixedPchainAddress);
-        }
-
-        if (stakingOption === 1) {
-            if (DappObject.transferBool === true) {
-                showBalance(round(web32.utils.fromWei(balance, "ether")));
-
-                showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+            const prefixedPchainAddress = "P-" + DappObject.unPrefixedAddr;
+    
+            const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+    
+            const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+    
+            const balance = await web32.eth.getBalance(DappObject.selectedAddress);
+    
+            let addressBox = document.querySelector("span.connect-wallet-text");
+    
+            if (DappObject.walletIndex === 1) {          
+                addressBox.innerText = prefixedPchainAddress;
             } else {
-                showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
-
-                showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
+                showAccountAddress(prefixedPchainAddress);
             }
-        } else if (stakingOption === 2) {
-            let delegatedIcon1 = document.getElementById("delegatedIcon1");
-            delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
-        
-            isStakeInput1(DappObject);
-        
-            await populateValidators();
+    
+            if (stakingOption === 1) {
+                if (DappObject.transferBool === true) {
+                    showBalance(round(web32.utils.fromWei(balance, "ether")));
+    
+                    showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+                } else {
+                    showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+    
+                    showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
+                }
+            } else if (stakingOption === 2) {
+                let delegatedIcon1 = document.getElementById("delegatedIcon1");
+                delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+            
+                isStakeInput1(DappObject);
+            
+                await populateValidators();
+            }
+        } else {
+            document.getElementById("ConnectPChain").click();
         }
     } else {
+        DappObject.signatureStaking = "";
+        
+        DappObject.unPrefixedAddr = "";
+
+        DappObject.ledgerAddrArray = [];
+
+        DappObject.ledgerSelectedIndex = "";
+
+        DappObject.selectedAddress = "";
+
         document.getElementById("ConnectPChain").click();
     }
 }
@@ -3349,21 +3363,17 @@ window.dappInit = async (option, stakingOption) => {
             } else if (stakingOption === 5) {
                 //Ledger
                 if (!navigator.usb) {
-                    document.getElementById("ledgerContent").innerHTML = '<div class="row"><div class="col-sm-12"><button id="ContinueAnyway" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div><div class="row"><div class="col-md-12"><span>Whoops! Your browser does not support <strong>WEBUSB</strong>! </br> Please switch to a compatible browser.</span></div></div><div class="row"><div class="dummytext"><div class="addr-wrap"><span><?=$view["dappName"] ?></span></div></div></div>'
-
-                    document.getElementById("ContinueAnyway").addEventListener("click", async () => {
-                        getDappPage(4);
-                    });
+                    document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> WARNING</span></div></div><div class="row"><div class="col-md-12"><span style="font-size: 12px;">Your browser does not currently support <i style="font-style: italic;">WEBUSB</i> ! </br> Please switch to a compatible browser.</span></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div>';
                 } else {
                     document.getElementById("ContinueAnyway").addEventListener("click", async () => {
                         DappObject.walletIndex = 1;
                         getDappPage(1);
                     });
-
-                    document.getElementById("GoBack").addEventListener("click", async () => {
-                        getDappPage(4);
-                    });
                 }
+
+                document.getElementById("GoBack").addEventListener("click", async () => {
+                    getDappPage(4);
+                });
             } else if (stakingOption === 1) {
                 document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
                     ConnectPChainClickStake(stakingOption, DappObject, handleClick);

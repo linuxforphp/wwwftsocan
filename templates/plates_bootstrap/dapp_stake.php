@@ -1,8 +1,8 @@
 <div class="top">
-    <div class="wrap-box" style="text-align: center !important; padding: 16px 0 !important;">
+    <div class="wrap-box" style="white-space: normal; text-align: center !important; padding: 5% !important;">
         <div class="row">
             <div class="col-md-12">
-                <h1 style="color: #383a3b; font-size: 23px">How would you like to access your Wallet?</h1>
+                <span style="margin: auto; font-weight: bold; color: #383a3b; font-size: 23px;">How would you like to access your Wallet?</span>
             </div>
         </div>
     </div>
