@@ -2731,12 +2731,18 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     const feeData = await web32.eth.calculateFeeData();
 
+    let maxFeePerGas;
+
     let chainId = 14;
 
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
+
+        maxFeePerGas = feeData.maxFeePerGas * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
+
+        maxFeePerGas = feeData.maxFeePerGas;
     }
 
     console.log(feeData);
@@ -2746,8 +2752,8 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
     if (txPayload.value) {
         LedgerTxPayload = {
             to: txPayload.to,
-            maxPriorityFeePerGas: feeData.maxFeePerGas * 20n,
-            maxFeePerGas: feeData.maxFeePerGas * 20n,
+            maxPriorityFeePerGas: maxFeePerGas,
+            maxFeePerGas: maxFeePerGas,
             gasPrice: feeData.gasPrice,
             gasLimit: ethers.utils.hexlify(300000),
             nonce: nonce,
