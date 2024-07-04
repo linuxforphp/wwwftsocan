@@ -891,7 +891,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
         } else if (typeof addressIndex !== "undefined" && addressIndex !== "") {
             account = PassedEthAddr;
-            if (HandleClick) {
+            if (typeof HandleClick !== "undefined") {
                 document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
             }
         }
@@ -2830,8 +2830,8 @@ window.dappInit = async (option, stakingOption) => {
 
                     showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
 
-                    document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1));
+                    document.getElementById("ConnectWallet").addEventListener("click", handleClick = async () => {
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
                     });
                 
                     // We check if the input is valid, then copy it to the wrapped tokens section.
@@ -3012,8 +3012,8 @@ window.dappInit = async (option, stakingOption) => {
             await createSelectedNetwork(DappObject).then( async () => {
                 getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
 
-                    document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1));
+                    document.getElementById("ConnectWallet").addEventListener("click", handleClick = async () => {
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
                     });
                 
                     document.getElementById("Amount1").addEventListener('input', function () {
@@ -3137,8 +3137,8 @@ window.dappInit = async (option, stakingOption) => {
 
                     showTokenIdentifiers(null, object.wrappedTokenIdentifier);
 
-                    document.getElementById("ConnectWallet").addEventListener("click", async () => {
-                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1));
+                    document.getElementById("ConnectWallet").addEventListener("click", handleClick = async () => {
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
                     });
                 
                     document.getElementById("ClaimButton").addEventListener("click", async () => {
