@@ -5,6 +5,7 @@ export const FlareAbis = {
     DistributionToDelegators: distributionAbi,
     VoterWhitelister: voterWhitelisterAbi,
     FtsoRewardManager: ftsoRewardAbi,
+    RewardManager: rewardManagerAbi,
     WNat: wnatAbi,
     FlareRegistry: flareAbi,
     AddressBinder: addressBinderAbi,
