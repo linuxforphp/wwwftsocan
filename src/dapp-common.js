@@ -1111,7 +1111,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
     
                             // Changing the color of FlareDrop Claim button.
-                            showFdRewards(convertedRewardsFd[0] + convertedRewardsFd[1].slice(0, 2));
+                            showFdRewards(convertedRewardsFd[0] + "." + convertedRewardsFd[1].slice(0, 2));
     
                             if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
                                 switchClaimFdButtonColor();
