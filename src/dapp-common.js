@@ -803,6 +803,11 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                                 }
                             } else {
                                 $.alert('The FTSO you have delegated to is invalid!');
+
+                                document.getElementById("ClaimButtonText").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+                                document.getElementById("ClaimButtonText").style.cursor = "pointer";
+                                DappObject.isRealValue = true;
+                                document.getElementById("ClaimButtonText").innerText = "Undelegate all";
                             }
                         }
                     }
@@ -1375,12 +1380,11 @@ async function populateFtsos(rpcUrl, flrAddr) {
 
                     console.log(insert);
 
-                    $('#select-ftso').selectize({
+                    var $select = $('#select-ftso').selectize({
                         maxItems: 1,
                         valueField: 'id',
                         labelField: 'title',
                         searchField: ["title", "nodeid"],
-                        options: insert,
                         render: {
                             item: function (item, escape) {
                                 return (
@@ -1412,6 +1416,19 @@ async function populateFtsos(rpcUrl, flrAddr) {
                         create: false,
                         dropdownParent: "body",
                     });
+
+                    var control = $select[0].selectize;
+
+                    control.clearOptions();
+
+                    for (var z = 0; z < insert.length; z++) {
+                        control.addOption({
+                            id: insert[z].id,
+                            title: insert[z].title,
+                            nodeid: insert[z].nodeid,
+                            img: insert[z].img
+                        });
+                    }
                 });
             } catch (error) {
                 // console.log(error)
@@ -2832,11 +2849,11 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
 
-        maxFeePerGas = feeData.maxFeePerGas * 2n;
+        maxFeePerGas = feeData.maxFeePerGas * 5n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
 
-        maxFeePerGas = feeData.maxFeePerGas;
+        maxFeePerGas = feeData.maxFeePerGas * 5n;
     }
 
     console.log(feeData);
@@ -2849,7 +2866,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             maxPriorityFeePerGas: maxFeePerGas,
             maxFeePerGas: maxFeePerGas,
             gasPrice: feeData.gasPrice,
-            gasLimit: ethers.utils.hexlify(300000),
+            gasLimit: ethers.utils.hexlify(400000),
             nonce: nonce,
             chainId: chainId,
             data: txPayload.data,
@@ -2858,10 +2875,10 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
     } else {
         LedgerTxPayload = {
             to: txPayload.to,
-            maxPriorityFeePerGas: feeData.maxFeePerGas * 20n,
-            maxFeePerGas: feeData.maxFeePerGas * 20n,
+            maxPriorityFeePerGas: maxFeePerGas,
+            maxFeePerGas: maxFeePerGas,
             gasPrice: feeData.gasPrice,
-            gasLimit: ethers.utils.hexlify(300000),
+            gasLimit: ethers.utils.hexlify(400000),
             nonce: nonce,
             chainId: chainId,
             data: txPayload.data,
@@ -2924,21 +2941,21 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
 
-        maxFeePerGas = feeData.maxFeePerGas * 2n;
+        maxFeePerGas = feeData.maxFeePerGas * 5n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
 
-        maxFeePerGas = feeData.maxFeePerGas;
+        maxFeePerGas = feeData.maxFeePerGas * 5n;
     }
 
     console.log(feeData);
 
     let LedgerTxPayload = {
         to: txPayload.to,
-        maxPriorityFeePerGas: feeData.maxFeePerGas * 20n,
-        maxFeePerGas: feeData.maxFeePerGas * 20n,
+        maxPriorityFeePerGas: maxFeePerGas,
+        maxFeePerGas: maxFeePerGas,
         gasPrice: feeData.gasPrice,
-        gasLimit: ethers.utils.hexlify(300000),
+        gasLimit: ethers.utils.hexlify(400000),
         nonce: nonce,
         chainId: chainId,
         data: txPayload.data,
@@ -2946,10 +2963,10 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     let LedgerTxPayloadV2 = {
         to: txPayloadV2.to,
-        maxPriorityFeePerGas: feeData.maxFeePerGas * 20n,
-        maxFeePerGas: feeData.maxFeePerGas * 20n,
+        maxPriorityFeePerGas: maxFeePerGas,
+        maxFeePerGas: maxFeePerGas,
         gasPrice: feeData.gasPrice,
-        gasLimit: ethers.utils.hexlify(300000),
+        gasLimit: ethers.utils.hexlify(400000),
         nonce: nonce,
         chainId: chainId,
         data: txPayloadV2.data,
@@ -3306,7 +3323,7 @@ window.dappInit = async (option, stakingOption) => {
 
                             let delegatedBips = getDelegatedBips();
             
-                            if (delegatedFtsos.length === 2 || delegatedBips === 100) {
+                            if (delegatedFtsos.length === 2 || delegatedBips === 100 || document.getElementById("ClaimButton").innerText === "Undelegate All") {
                                 showAlreadyDelegated(ftsoNames, object, DappObject);
                             } else {
                                 delegate(object, DappObject);
