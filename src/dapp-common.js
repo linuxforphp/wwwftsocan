@@ -107,7 +107,7 @@ async function showConfirmationSpinnerv2(doSomething) {
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
-        content: '<div id="v1Tx"><div id="v1TxIcon" class="fa fa-spinner fa-spin"></div> Old rewards claim status: <div id="v1TxStatus">Please check your Wallet...</div></div><br />' + '<div id="v2Tx"><div id="v2TxIcon" class="fa fa-spinner fa-spin"></div> New rewards claim status: <div id="v2TxStatus">Waiting for Old reward status...</div></div>',
+        content: '<div id="v1Tx"><div id="v1TxIcon" class="fa fa-spinner fa-spin"></div> V1 rewards claim status: <div id="v1TxStatus">Please check your Wallet...</div></div><br />' + '<div id="v2Tx"><div id="v2TxIcon" class="fa fa-spinner fa-spin"></div> V2 rewards claim status: <div id="v2TxStatus">Waiting for V1 reward status...</div></div>',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
