@@ -3338,6 +3338,8 @@ window.dappInit = async (option, stakingOption) => {
                                 ]
                             }).catch((error) => console.error(error));
                         }
+
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
                         // console.log(error);
                     }
@@ -3683,6 +3685,8 @@ window.dappInit = async (option, stakingOption) => {
                                 ]
                             }).catch((error) => console.error(error));
                         }
+
+                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
                         // console.log(error);
                     }
