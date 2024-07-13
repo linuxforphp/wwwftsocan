@@ -143,6 +143,10 @@ h1, h2 {
     transition: 0.5s;
 }
 
+.continue-wallet:hover {
+    letter-spacing: 1.5px;
+}
+
 .wallet-icon {
     height: 118px;
 }
