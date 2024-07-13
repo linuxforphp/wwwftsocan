@@ -274,7 +274,7 @@ function showFailStake(DappObject, stakingOption) {
     });
 }
 
-async function showBindPAddress(contract, address, publicKey, addressPchainEncoded) {
+async function showBindPAddress(contract, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
@@ -288,7 +288,25 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
         buttons: {
             yes: {
                 action: function () {
-                    contract.registerAddresses(publicKey, addressPchainEncoded, address);
+                    const transactionParameters = {
+                        from: address,
+                        to: contract.options.address,
+                        data: contract.methods.registerAddresses(publicKey, addressPchainEncoded, address).encodeABI(),
+                    };
+        
+                    if (DappObject.walletIndex === 1) {
+                        LedgerEVMSingleSign(transactionParameters, DappObject, stakingOption, true);
+                    } else {
+                        showSpinner(async () => {
+                            await provider.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            })
+                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 1))
+                            .catch((error) => showFail(object, DappObject, 1));
+                        });
+                    }
+                    ;
                 },
             },
             no: {
@@ -1841,7 +1859,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                     }
                 }
             } else {
-                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded);
+                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded, DappObject, stakingOption);
 
                 document.getElementById("ConnectPChain").click();
             }
