@@ -126,7 +126,7 @@
                 }
             });
         } else if (option === 5) {
-            if (DappObject.walletIndex !== -1) {
+            if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
                 $.get( "stakeTransfer", function( data ) {
                     $( "#dapp-root" ).html( data );
 
@@ -136,7 +136,7 @@
                 });
             }
         } else if (option === 6) {
-            if (DappObject.walletIndex !== -1) {
+            if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
                 $.get( "stakeStake", function( data ) {
                     $( "#dapp-root" ).html( data );
 
@@ -146,7 +146,7 @@
                 });
             }
         } else if (option === 7) {
-            if (DappObject.walletIndex !== -1) {
+            if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
                 $.get( "stakeRewards", function( data ) {
                     $( "#dapp-root" ).html( data );
 
