@@ -327,13 +327,34 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
 
     if (pageIndex === 1 || pageIndex === '1') {
         if (isNumber(accounts.length) && accounts.length > 0) {
-            document.getElementById("ConnectWallet").click();
+            ConnectWalletClick(rpcUrl, flrAddr, DappObject, 0);
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
             showBalance(0);
             showTokenBalance(0);
 
             if (DappObject.walletIndex === 0) {   
+                await window.ethereum?.request({
+                    "method": "wallet_revokePermissions",
+                    "params": [
+                    {
+                        "eth_accounts": {}
+                    }
+                    ]
+                });
+            }
+        }
+    } else if (pageIndex === 2 || pageIndex === '2') {
+        if (isNumber(accounts.length) && accounts.length > 0) {
+            ConnectWalletClick(rpcUrl, flrAddr, DappObject, 1);
+        } else {
+            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+            document.getElementById("ClaimButton").style.cursor = "auto";
+            document.getElementById("ClaimButtonText").innerText = "Enter Amount";
+            DappObject.isRealValue = false;
+
+            if (DappObject.walletIndex === 0) {  
                 await window.ethereum?.request({
                     "method": "wallet_revokePermissions",
                     "params": [
@@ -804,8 +825,8 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                             } else {
                                 $.alert('The FTSO you have delegated to is invalid!');
 
-                                document.getElementById("ClaimButtonText").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-                                document.getElementById("ClaimButtonText").style.cursor = "pointer";
+                                document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+                                document.getElementById("ClaimButton").style.cursor = "pointer";
                                 DappObject.isRealValue = true;
                                 document.getElementById("ClaimButtonText").innerText = "Undelegate all";
                             }
@@ -3363,7 +3384,7 @@ window.dappInit = async (option, stakingOption) => {
                 };
                 if (DappObject.walletIndex === 0) {
                     window.ethereum?.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts, DappObject, 1, undefined, object.rpcUrl, object.flrAddr);
+                        handleAccountsChanged(accounts, DappObject, 2, undefined, object.rpcUrl, object.flrAddr);
                     });
 
                     window.ethereum?.on("chainChanged", async () => {
