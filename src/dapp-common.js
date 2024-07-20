@@ -1330,8 +1330,7 @@ function isDelegateInput1(DappObject) {
 
 // Populate select elements.
 async function populateFtsos(rpcUrl, flrAddr) {
-    return new Promise((resolve) => {
-        setTimeout(async () => {
+    return new Promise(async (resolve) => {
             var insert = [];
             let web32 = new Web3(rpcUrl);
             let selectedNetwork = document.getElementById('SelectedNetwork');
@@ -1352,6 +1351,44 @@ async function populateFtsos(rpcUrl, flrAddr) {
                     delegatedicon.src = img;
                     isDelegateInput1(DappObject);
                 }
+
+
+                var $select = $('#select-ftso').selectize({
+                    maxItems: 1,
+                    valueField: 'id',
+                    labelField: 'title',
+                    searchField: ["title", "nodeid"],
+                    render: {
+                        item: function (item, escape) {
+                            return (
+                            "<div>" +
+                            (item.title
+                                ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
+                                : "") +
+                            "</div>"
+                            );
+                        },
+                        option: function (item, escape) {
+                            var label = item.title || item.nodeid;
+                            var caption = item.title ? item.nodeid : null;
+                            return (
+                            "<div>" +
+                            '<span class="ftso-name">' +
+                            escape(label) +
+                            "</span>" +
+                            (caption
+                                ? '<span class="ftso-address">' + escape(caption) + "</span>"
+                                : "") +
+                            "</div>"
+                            );
+                        },
+                    },
+                    onChange: function(value) {
+                        onInputChange(value);
+                    },
+                    create: false,
+                    dropdownParent: "body",
+                });
 
                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
                 fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
@@ -1401,43 +1438,6 @@ async function populateFtsos(rpcUrl, flrAddr) {
 
                     console.log(insert);
 
-                    var $select = $('#select-ftso').selectize({
-                        maxItems: 1,
-                        valueField: 'id',
-                        labelField: 'title',
-                        searchField: ["title", "nodeid"],
-                        render: {
-                            item: function (item, escape) {
-                                return (
-                                "<div>" +
-                                (item.title
-                                    ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
-                                    : "") +
-                                "</div>"
-                                );
-                            },
-                            option: function (item, escape) {
-                                var label = item.title || item.nodeid;
-                                var caption = item.title ? item.nodeid : null;
-                                return (
-                                "<div>" +
-                                '<span class="ftso-name">' +
-                                escape(label) +
-                                "</span>" +
-                                (caption
-                                    ? '<span class="ftso-address">' + escape(caption) + "</span>"
-                                    : "") +
-                                "</div>"
-                                );
-                            },
-                        },
-                        onChange: function(value) {
-                            onInputChange(value);
-                        },
-                        create: false,
-                        dropdownParent: "body",
-                    });
-
                     var control = $select[0].selectize;
 
                     control.clearOptions();
@@ -1456,7 +1456,6 @@ async function populateFtsos(rpcUrl, flrAddr) {
             }
 
             resolve();
-        }, 200);
     })
 }
 
@@ -2481,118 +2480,129 @@ function isStakeInput1(DappObject) {
 
 // Populate select elements.
 async function populateValidators() {
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-            var insert = [];
+    return new Promise(async (resolve) => {
+        var insert = [];
 
-            try {
+        try {
 
-                const ftsoList = await getValidators();
+            const ftsoList = await getValidators();
 
-                console.log(ftsoList);
+            console.log(ftsoList);
 
-                var onInputChange = async (value) => {
-                    document.getElementById("calendar").title = "";
+            var onInputChange = async (value) => {
+                document.getElementById("calendar").title = "";
 
-                    let ftso1 = document.querySelector(".selectize-input");
-                    let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
-                    let delegatedicon = document.getElementById("delegatedIcon1");
-                    DappObject.StakeMinDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-startdate');
-                    DappObject.StakeMaxDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-enddate');
-                    delegatedicon.src = img;
-                    createCalendar(DappObject);
-                    isStakeInput1(DappObject);
-                }
+                let ftso1 = document.querySelector(".selectize-input");
+                let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
+                let delegatedicon = document.getElementById("delegatedIcon1");
+                DappObject.StakeMinDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-startdate');
+                DappObject.StakeMaxDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-enddate');
+                delegatedicon.src = img;
+                createCalendar(DappObject);
+                isStakeInput1(DappObject);
+            }
 
-                // Origin: https://raw.githubusercontent.com/jtcaya/validator_list_json/master/validatorlist.json
-                fetch(dappUrlBaseAddr + 'validatorlist.json')
-                    .then(res => res.json())
-                    .then(FtsoInfo => {
-                        FtsoInfo.validators.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                        let indexNumber;
+            var $select = $('#select-validator').selectize({
+                maxItems: 1,
+                valueField: 'id',
+                labelField: 'title',
+                searchField: ["title", "nodeid"],
+                render: {
+                    item: function (item, escape) {
+                        return (
+                        "<div>" +
+                        (item.title
+                            ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid} data-startdate=${item.startdate} data-enddate=${item.enddate}>` + escape(item.title) + "</span>"
+                            : "") +
+                        "</div>"
+                        );
+                    },
+                    option: function (item, escape) {
+                        var label = item.title || item.nodeid;
+                        var caption = item.title ? item.nodeid : null;
+                        return (
+                        "<div>" +
+                        '<span class="ftso-name">' +
+                        escape(label) +
+                        "</span>" +
+                        (caption
+                            ? '<span class="ftso-address">' + escape(caption) + "</span>"
+                            : "") +
+                        "</div>"
+                        );
+                    },
+                },
+                onChange: function(value) {
+                    onInputChange(value);
+                },
+                create: false,
+                dropdownParent: "body",
+            });
 
-                        let g = 1;
+            // Origin: https://raw.githubusercontent.com/jtcaya/validator_list_json/master/validatorlist.json
+            fetch(dappUrlBaseAddr + 'validatorlist.json')
+                .then(res => res.json())
+                .then(FtsoInfo => {
+                    FtsoInfo.validators.sort((a, b) => a.name > b.name ? 1 : -1);
 
-                        for (var f = 0; f < FtsoInfo.validators.length; f++) {
-                            for (var i = 0; i < ftsoList.length; i++) {
-                                if (FtsoInfo.validators[f].nodeId === ftsoList[i].nodeID) {
-                                    indexNumber = f;
+                    let indexNumber;
 
-                                    //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
-                                    if (FtsoInfo.validators[indexNumber].name === "FTSOCAN") {
-                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                        insert[0] = {
-                                            id: 0,
-                                            title: FtsoInfo.validators[indexNumber].name,
-                                            nodeid: ftsoList[i].nodeID,
-                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png",
-                                            startdate: ftsoList[i].startTime,
-                                            enddate: ftsoList[i].endTime
-                                        }; 
-                                    } else {
-                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                        insert[g] = {
-                                            id: g,
-                                            title: FtsoInfo.validators[indexNumber].name,
-                                            nodeid: ftsoList[i].nodeID,
-                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png",
-                                            startdate: ftsoList[i].startTime,
-                                            enddate: ftsoList[i].endTime
-                                        }; 
+                    let g = 1;
 
-                                        g += 1;
-                                    }
+                    for (var f = 0; f < FtsoInfo.validators.length; f++) {
+                        for (var i = 0; i < ftsoList.length; i++) {
+                            if (FtsoInfo.validators[f].nodeId === ftsoList[i].nodeID) {
+                                indexNumber = f;
+
+                                //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+                                if (FtsoInfo.validators[indexNumber].name === "FTSOCAN") {
+                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                    insert[0] = {
+                                        id: 0,
+                                        title: FtsoInfo.validators[indexNumber].name,
+                                        nodeid: ftsoList[i].nodeID,
+                                        img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png",
+                                        startdate: ftsoList[i].startTime,
+                                        enddate: ftsoList[i].endTime
+                                    }; 
+                                } else {
+                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                    insert[g] = {
+                                        id: g,
+                                        title: FtsoInfo.validators[indexNumber].name,
+                                        nodeid: ftsoList[i].nodeID,
+                                        img: dappUrlBaseAddr + "assets/" + FtsoInfo.validators[indexNumber].address + ".png",
+                                        startdate: ftsoList[i].startTime,
+                                        enddate: ftsoList[i].endTime
+                                    }; 
+
+                                    g += 1;
                                 }
                             }
                         }
+                    }
 
-                    console.log(insert);
+                console.log(insert);
 
-                    $('#select-validator').selectize({
-                        maxItems: 1,
-                        valueField: 'id',
-                        labelField: 'title',
-                        searchField: ["title", "nodeid"],
-                        options: insert,
-                        render: {
-                            item: function (item, escape) {
-                                return (
-                                "<div>" +
-                                (item.title
-                                    ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid} data-startdate=${item.startdate} data-enddate=${item.enddate}>` + escape(item.title) + "</span>"
-                                    : "") +
-                                "</div>"
-                                );
-                            },
-                            option: function (item, escape) {
-                                var label = item.title || item.nodeid;
-                                var caption = item.title ? item.nodeid : null;
-                                return (
-                                "<div>" +
-                                '<span class="ftso-name">' +
-                                escape(label) +
-                                "</span>" +
-                                (caption
-                                    ? '<span class="ftso-address">' + escape(caption) + "</span>"
-                                    : "") +
-                                "</div>"
-                                );
-                            },
-                        },
-                        onChange: function(value) {
-                            onInputChange(value);
-                        },
-                        create: false,
-                        dropdownParent: "body",
+                var control = $select[0].selectize;
+
+                control.clearOptions();
+
+                for (var z = 0; z < insert.length; z++) {
+                    control.addOption({
+                        id: insert[z].id,
+                        title: insert[z].title,
+                        nodeid: insert[z].nodeid,
+                        img: insert[z].img
                     });
-                });
-            } catch (error) {
-                // console.log(error)
-            }
+                }
+            });
+        } catch (error) {
+            // console.log(error)
+        }
 
-            resolve();
-        }, 200);
+        resolve();
     })
 }
 
