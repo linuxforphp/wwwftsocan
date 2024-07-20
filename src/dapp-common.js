@@ -1106,8 +1106,10 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                                     unclaimedAmount += BigInt(unclaimedAmountv2[i][0].amount);
                                 }
                             } else {
-                                DappObject.hasV1Rewards = false;
+                                DappObject.hasV2Rewards = false;
                             }
+                        } else {
+                            DappObject.hasV2Rewards = false;
                         }
                         
                         const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
@@ -2774,7 +2776,9 @@ async function stake(DappObject, stakingOption) {
                             }
                         });
                     } catch (e) {
-                        console.log(e);
+                        spinner.close();
+                        
+                        showFailStake(DappObject, stakingOption);
                     }
                 });
             });
@@ -2923,16 +2927,21 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
 
                 showConfirmationSpinnerStake(async (spinner) => {
-                    spinner.setContent("Waiting for network confirmation. <br />Please wait...");
-                    ethersProvider.sendTransaction(signedTx).then(response => {
-                        console.log("SignedTX: ");
-                        console.log(response);
-                        if (isStake === true) {
-                            checkTxStake(response.hash, web32, spinner, DappObject);
-                        } else {
-                            checkTx(response.hash, web32, spinner, object, DappObject, pageIndex);
-                        }
-                    });
+                    try {
+                        spinner.setContent("Waiting for network confirmation. <br />Please wait...");
+                        ethersProvider.sendTransaction(signedTx).then(response => {
+                            console.log("SignedTX: ");
+                            console.log(response);
+                            if (isStake === true) {
+                                checkTxStake(response.hash, web32, spinner, DappObject);
+                            } else {
+                                checkTx(response.hash, web32, spinner, object, DappObject, pageIndex);
+                            }
+                        });
+                    } catch (error) {
+                        spinner.close();
+                        throw error;
+                    }
                 });
             })
         } catch (error) {
@@ -3081,6 +3090,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
                 });
             });
         } catch (error) {
+            v2Spinner.close();
+
             showFail(object, DappObject, pageIndex);
         }
     });
@@ -3504,7 +3515,7 @@ window.dappInit = async (option, stakingOption) => {
                                             .catch((error) => showFail(object, DappObject, 2));
                                         });
                                     }
-                                } else if (DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true) {
+                                } else if (DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true && typeof rewardManagerContract !== "undefined") {
                                     const transactionParametersV2 = txPayloadV2;
 
                                     if (DappObject.walletIndex === 1) {
@@ -3519,7 +3530,7 @@ window.dappInit = async (option, stakingOption) => {
                                             .catch((error) => showFail(object, DappObject, 2));
                                         });
                                     }
-                                } else if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true) {
+                                } else if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true && typeof rewardManagerContract !== "undefined") {
                                     const transactionParametersV2 = txPayloadV2;
 
                                     if (DappObject.walletIndex === 1) {
@@ -3601,6 +3612,8 @@ window.dappInit = async (option, stakingOption) => {
                                                     })
                                                 });
                                             } catch (error) {
+                                                v2Spinner.close();
+
                                                 showFail(object, DappObject, 2);
                                             }
                                         });
