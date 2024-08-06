@@ -2877,6 +2877,8 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     const feeData = await web32.eth.calculateFeeData();
 
+    const latestBlock = await ethersProvider.getBlock("latest");
+
     let maxFeePerGas;
 
     let chainId = 14;
@@ -2901,7 +2903,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             maxPriorityFeePerGas: maxFeePerGas,
             maxFeePerGas: maxFeePerGas,
             gasPrice: feeData.gasPrice,
-            gasLimit: ethers.utils.hexlify(400000),
+            gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
             nonce: nonce,
             chainId: chainId,
             data: txPayload.data,
@@ -2913,7 +2915,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             maxPriorityFeePerGas: maxFeePerGas,
             maxFeePerGas: maxFeePerGas,
             gasPrice: feeData.gasPrice,
-            gasLimit: ethers.utils.hexlify(400000),
+            gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
             nonce: nonce,
             chainId: chainId,
             data: txPayload.data,
@@ -2947,8 +2949,10 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         } catch (error) {
             if (isStake === true) {
                 showFailStake(DappObject, stakingOption);
+                console.log(error);
             } else {
                 showFail(object, DappObject, pageIndex);
+                console.log(error);
             }
         }
     });
@@ -2990,12 +2994,14 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     console.log(feeData);
 
+    const latestBlock = await ethersProvider.getBlock("latest");
+
     let LedgerTxPayload = {
         to: txPayload.to,
         maxPriorityFeePerGas: maxFeePerGas,
         maxFeePerGas: maxFeePerGas,
         gasPrice: feeData.gasPrice,
-        gasLimit: ethers.utils.hexlify(400000),
+        gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
         nonce: nonce,
         chainId: chainId,
         data: txPayload.data,
@@ -3006,7 +3012,7 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         maxPriorityFeePerGas: maxFeePerGas,
         maxFeePerGas: maxFeePerGas,
         gasPrice: feeData.gasPrice,
-        gasLimit: ethers.utils.hexlify(400000),
+        gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
         nonce: nonce,
         chainId: chainId,
         data: txPayloadV2.data,
