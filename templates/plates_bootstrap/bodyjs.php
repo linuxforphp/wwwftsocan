@@ -87,90 +87,92 @@
     }
 
     function getDappPage(option, reconnect = true) {
-        if (option === 1) {
-            if (DappObject.walletIndex !== -1) {
-                $.get( "wrap", function( data ) {
-                    $( "#dapp-root" ).html( data );
-                    
-                    if (reconnect === true) {
-                        window.dappInit(1);
-                    }
-                });
-            }
-        } else if (option === 2) {
-            if (DappObject.walletIndex !== -1) {
-                $.get( "delegate", function( data ) {
-                    $( "#dapp-root" ).html( data );
-
-                    if (reconnect === true) {
-                        window.dappInit(2);
-                    }
-                });
-            }
-        } else if (option === 3) {
-            if (DappObject.walletIndex !== -1) {
-                $.get( "claim", function( data ) {
-                    $( "#dapp-root" ).html( data );
-
-                    if (reconnect === true) {
-                        window.dappInit(3);
-                    }
-                });
-            } 
-        } else if (option === 4) {
-            $.get( "stake", function( data ) {
-                $( "#dapp-root" ).html( data );
-
-                if (reconnect === true) {
-                    window.dappInit(4);
+        if (DappObject.isAccountConnected === true) {
+            if (option === 1) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "wrap", function( data ) {
+                        $( "#dapp-root" ).html( data );
+                        
+                        if (reconnect === true) {
+                            window.dappInit(1);
+                        }
+                    });
                 }
-            });
-        } else if (option === 5) {
-            if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
-                $.get( "stakeTransfer", function( data ) {
-                    $( "#dapp-root" ).html( data );
+            } else if (option === 2) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "delegate", function( data ) {
+                        $( "#dapp-root" ).html( data );
 
-                    if (reconnect === true) {
-                        window.dappInit(4, 1);
-                    }
-                });
-            }
-        } else if (option === 6) {
-            if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
-                $.get( "stakeStake", function( data ) {
-                    $( "#dapp-root" ).html( data );
-
-                    if (reconnect === true) {
-                        window.dappInit(4, 2);
-                    }
-                });
-            }
-        } else if (option === 7) {
-            if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
-                $.get( "stakeRewards", function( data ) {
-                    $( "#dapp-root" ).html( data );
-
-                    if (reconnect === true) {
-                        window.dappInit(4, 3);
-                    }
-                });
-            }
-        } else if (option === 8) {
-            $.get( "stakeMetamask", function( data ) {
-                $( "#dapp-root" ).html( data );
-
-                if (reconnect === true) {
-                    window.dappInit(4, 4);
+                        if (reconnect === true) {
+                            window.dappInit(2);
+                        }
+                    });
                 }
-            });
-        } else if (option === 9) {
-            $.get( "stakeLedger", function( data ) {
-                $( "#dapp-root" ).html( data );
+            } else if (option === 3) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "claim", function( data ) {
+                        $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(4, 5);
+                        if (reconnect === true) {
+                            window.dappInit(3);
+                        }
+                    });
+                } 
+            } else if (option === 4) {
+                $.get( "stake", function( data ) {
+                    $( "#dapp-root" ).html( data );
+
+                    if (reconnect === true) {
+                        window.dappInit(4);
+                    }
+                });
+            } else if (option === 5) {
+                if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
+                    $.get( "stakeTransfer", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(4, 1);
+                        }
+                    });
                 }
-            });
+            } else if (option === 6) {
+                if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
+                    $.get( "stakeStake", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(4, 2);
+                        }
+                    });
+                }
+            } else if (option === 7) {
+                if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 0) {
+                    $.get( "stakeRewards", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(4, 3);
+                        }
+                    });
+                }
+            } else if (option === 8) {
+                $.get( "stakeMetamask", function( data ) {
+                    $( "#dapp-root" ).html( data );
+
+                    if (reconnect === true) {
+                        window.dappInit(4, 4);
+                    }
+                });
+            } else if (option === 9) {
+                $.get( "stakeLedger", function( data ) {
+                    $( "#dapp-root" ).html( data );
+
+                    if (reconnect === true) {
+                        window.dappInit(4, 5);
+                    }
+                });
+            }
         }
     }
 </script>

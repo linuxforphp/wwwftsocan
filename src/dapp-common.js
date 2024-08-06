@@ -7,6 +7,7 @@ import { ethers } from "./ethers.js";
 // ALL MODULES.
 
 window.DappObject = {
+    isAccountConnected: false,
     costonLogo: FlareLogos.costonLogo,
     flrLogo: FlareLogos.flrLogo,
     sgbLogo: FlareLogos.sgbLogo,
@@ -850,6 +851,8 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
 // WRAP MODULE
 
 async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
+    DappObject.isAccountConnected = false;
+
     if (typeof addressIndex === "undefined" || addressIndex === "") {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     }
@@ -975,11 +978,15 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             
             account = accounts[0];
 
+            DappObject.isAccountConnected = true;
+
         } else if (typeof addressIndex !== "undefined" && addressIndex !== "") {
             account = PassedEthAddr;
             if (typeof HandleClick !== "undefined") {
                 document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
             }
+
+            DappObject.isAccountConnected = true;
         }
 
         if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
@@ -3816,6 +3823,7 @@ window.dappInit = async (option, stakingOption) => {
         var handleClick;
 
         if (typeof stakingOption === 'undefined') {
+            DappObject.isAccountConnected = true;
             DappObject.walletIndex = -1;
             document.getElementById("ContinueMetamask").addEventListener("click", async () => {
                 getDappPage(8);
@@ -3825,6 +3833,7 @@ window.dappInit = async (option, stakingOption) => {
             });
         } else if (stakingOption === 4) {
             //Metamask
+            DappObject.isAccountConnected = true;
             document.getElementById("ContinueAnyway").addEventListener("click", async () => {
                 DappObject.walletIndex = 0;
                 getDappPage(1);
@@ -3835,6 +3844,7 @@ window.dappInit = async (option, stakingOption) => {
             });
         } else if (stakingOption === 5) {
             //Ledger
+            DappObject.isAccountConnected = true;
             if (!("usb" in navigator) && !("hid" in navigator)) {
                 document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> WARNING</span></div></div><div class="row"><div class="col-md-12"><span style="font-size: 12px;">Your browser does not currently support <i style="font-style: italic;">Ledger Transport</i> ! </br> Please switch to a compatible browser.</span></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div>';
             } else {
