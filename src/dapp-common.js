@@ -871,108 +871,117 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
         }
 
         if (DappObject.walletIndex === 1 && (typeof addressIndex === "undefined" || addressIndex === "")) {
-            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                let addresses;
+                await getLedgerApp("Avalanche").then(async result => {
+                    switch (result) {
+                        case "Success":
+                            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                                let addresses;
 
-                if (rpcUrl.includes("flr")) {
-                    addresses = await getLedgerAddresses("flare");
-                } else if (rpcUrl.includes("sgb")) {
-                    addresses = await getLedgerAddresses("songbird");
-                }
-
-                let insert = [];
-
-                for (let i = 0; i < addresses.length; i++) {
-                    insert[i] = {
-                        id: i,
-                        title: addresses[i].ethAddress,
-                        pubkey: addresses[i].publicKey,
-                    };
-                }
-
-                DappObject.ledgerAddrArray = insert;
-            }
-
-            console.log(DappObject.ledgerAddrArray);
-
-            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
-
-            var onInputChange = async (value) => {
-                let addressBox = document.querySelector("span.connect-wallet-text");
-                let ethaddr = addressBox.getAttribute('data-ethkey');
-                let pubKey = addressBox.getAttribute('data-pubkey');
-                
-                flrPublicKey = pubKey;
-
-                account = ethaddr;
-
-                DappObject.selectedAddress = account;
-
-                console.log("Value: " + value);
-
-                DappObject.ledgerSelectedIndex = value;
-
-                connectChainsAndKeys(flrPublicKey);
-
-                let unprefixed;
-
-                if (rpcUrl.includes("flr")) {
-                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-                } else if (rpcUrl.includes("sgb")) {
-                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
-                }
-
-                DappObject.unPrefixedAddr = unprefixed;
-
-                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
-            }
-
-            var $select = $('#select-account').selectize({
-                maxItems: 1,
-                valueField: 'id',
-                labelField: 'title',
-                searchField: ["title"],
-                options: DappObject.ledgerAddrArray,
-                render: {
-                    item: function (item, escape) {
-                        return (
-                        "<div>" +
-                        (item.title
-                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
-                            : "") +
-                        "</div>"
-                        );
-                    },
-                    option: function (item, escape) {
-                        var label = item.title;
-                        return (
-                        "<div>" +
-                        '<span class="connect-wallet-text">' +
-                        escape(label) +
-                        "</span>" +
-                        "</div>"
-                        );
-                    },
-                },
-                onChange: function(value) {
-                    onInputChange(value);
-                },
-                create: false,
-                dropdownParent: "body",
-            });
-
-            selectize = $select[0].selectize;
-
-            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
-
-            if (DappObject.ledgerSelectedIndex !== "") {
-                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
-            }
-
-            let addressDropdown = document.querySelector(".selectize-input");
-            let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
-                
-            flrPublicKey = publicKey;
+                                console.log("Fetching Addresses...");
+    
+                                if (rpcUrl.includes("flr")) {
+                                    addresses = await getLedgerAddresses("flare");
+                                } else if (rpcUrl.includes("sgb")) {
+                                    addresses = await getLedgerAddresses("songbird");
+                                }
+    
+                                let insert = [];
+    
+                                for (let i = 0; i < addresses.length; i++) {
+                                    insert[i] = {
+                                        id: i,
+                                        title: addresses[i].ethAddress,
+                                        pubkey: addresses[i].publicKey,
+                                    };
+                                }
+    
+                                DappObject.ledgerAddrArray = insert;
+                            }
+    
+                            console.log(DappObject.ledgerAddrArray);
+    
+                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
+    
+                            var onInputChange = async (value) => {
+                                let addressBox = document.querySelector("span.connect-wallet-text");
+                                let ethaddr = addressBox.getAttribute('data-ethkey');
+                                let pubKey = addressBox.getAttribute('data-pubkey');
+                                
+                                flrPublicKey = pubKey;
+    
+                                account = ethaddr;
+    
+                                DappObject.selectedAddress = account;
+    
+                                console.log("Value: " + value);
+    
+                                DappObject.ledgerSelectedIndex = value;
+    
+                                connectChainsAndKeys(flrPublicKey);
+    
+                                let unprefixed;
+    
+                                if (rpcUrl.includes("flr")) {
+                                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+                                } else if (rpcUrl.includes("sgb")) {
+                                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
+                                }
+    
+                                DappObject.unPrefixedAddr = unprefixed;
+    
+                                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+                            }
+    
+                            var $select = $('#select-account').selectize({
+                                maxItems: 1,
+                                valueField: 'id',
+                                labelField: 'title',
+                                searchField: ["title"],
+                                options: DappObject.ledgerAddrArray,
+                                render: {
+                                    item: function (item, escape) {
+                                        return (
+                                        "<div>" +
+                                        (item.title
+                                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                            : "") +
+                                        "</div>"
+                                        );
+                                    },
+                                    option: function (item, escape) {
+                                        var label = item.title;
+                                        return (
+                                        "<div>" +
+                                        '<span class="connect-wallet-text">' +
+                                        escape(label) +
+                                        "</span>" +
+                                        "</div>"
+                                        );
+                                    },
+                                },
+                                onChange: function(value) {
+                                    onInputChange(value);
+                                },
+                                create: false,
+                                dropdownParent: "body",
+                            });
+    
+                            selectize = $select[0].selectize;
+    
+                            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
+    
+                            if (DappObject.ledgerSelectedIndex !== "") {
+                                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                            }
+    
+                            let addressDropdown = document.querySelector(".selectize-input");
+                            let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                                
+                            flrPublicKey = publicKey;
+                        case "Failed: App not Installed":
+                        case "Failed: User Rejected":
+                    }
+                });
         } else if (DappObject.walletIndex === 0 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             
@@ -1646,96 +1655,104 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
         }
 
         if (DappObject.walletIndex === 1 && typeof PassedPublicKey === "undefined") {
-            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                let addresses = await getLedgerAddresses("flare");
-
-                let insert = [];
-
-                for (let i = 0; i < addresses.length; i++) {
-                    insert[i] = {
-                        id: i,
-                        title: addresses[i].ethAddress,
-                        pubkey: addresses[i].publicKey,
-                    };
+            await getLedgerApp("Avalanche").then(async result => {
+                switch (result) {
+                    case "Success":
+                        if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                            console.log("Fetching Addresses...");
+                            let addresses = await getLedgerAddresses("flare");
+    
+                            let insert = [];
+    
+                            for (let i = 0; i < addresses.length; i++) {
+                                insert[i] = {
+                                    id: i,
+                                    title: addresses[i].ethAddress,
+                                    pubkey: addresses[i].publicKey,
+                                };
+                            }
+    
+                            DappObject.ledgerAddrArray = insert;
+                        }
+    
+                        console.log(DappObject.ledgerAddrArray);
+    
+                        document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
+    
+                        var onInputChange = async (value) => {
+                            let addressBox = document.querySelector("span.connect-wallet-text");
+                            let ethaddr = addressBox.getAttribute('data-ethkey');
+                            let pubKey = addressBox.getAttribute('data-pubkey');
+                            
+                            flrPublicKey = pubKey;
+    
+                            account = ethaddr;
+    
+                            DappObject.selectedAddress = account;
+    
+                            console.log("Value: " + value);
+    
+                            DappObject.ledgerSelectedIndex = value;
+    
+                            connectChainsAndKeys(flrPublicKey);
+    
+                            let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+    
+                            DappObject.unPrefixedAddr = unprefixed;
+    
+                            ConnectPChainClickStake(stakingOption, DappObject, HandleClick, flrPublicKey, ethaddr, value);
+                        }
+    
+                        var $select = $('#select-account').selectize({
+                            maxItems: 1,
+                            valueField: 'id',
+                            labelField: 'title',
+                            searchField: ["title"],
+                            options: DappObject.ledgerAddrArray,
+                            render: {
+                                item: function (item, escape) {
+                                    return (
+                                    "<div>" +
+                                    (item.title
+                                        ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                        : "") +
+                                    "</div>"
+                                    );
+                                },
+                                option: function (item, escape) {
+                                    var label = item.title;
+                                    return (
+                                    "<div>" +
+                                    '<span class="connect-wallet-text">' +
+                                    escape(label) +
+                                    "</span>" +
+                                    "</div>"
+                                    );
+                                },
+                            },
+                            onChange: function(value) {
+                                onInputChange(value);
+                            },
+                            create: false,
+                            dropdownParent: "body",
+                        });
+    
+                        selectize = $select[0].selectize;
+    
+                        console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
+    
+                        if (DappObject.ledgerSelectedIndex !== "") {
+                            selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                        }
+    
+                        let addressDropdown = document.querySelector(".selectize-input");
+                        let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                            
+                        flrPublicKey = publicKey;
+                    case "Failed: App not Installed":
+                    case "Failed: User Rejected":
                 }
-
-                DappObject.ledgerAddrArray = insert;
-            }
-
-            console.log(DappObject.ledgerAddrArray);
-
-            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
-
-            var onInputChange = async (value) => {
-                let addressBox = document.querySelector("span.connect-wallet-text");
-                let ethaddr = addressBox.getAttribute('data-ethkey');
-                let pubKey = addressBox.getAttribute('data-pubkey');
-                
-                flrPublicKey = pubKey;
-
-                account = ethaddr;
-
-                DappObject.selectedAddress = account;
-
-                console.log("Value: " + value);
-
-                DappObject.ledgerSelectedIndex = value;
-
-                connectChainsAndKeys(flrPublicKey);
-
-                let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-
-                DappObject.unPrefixedAddr = unprefixed;
-
-                ConnectPChainClickStake(stakingOption, DappObject, HandleClick, flrPublicKey, ethaddr, value);
-            }
-
-            var $select = $('#select-account').selectize({
-                maxItems: 1,
-                valueField: 'id',
-                labelField: 'title',
-                searchField: ["title"],
-                options: DappObject.ledgerAddrArray,
-                render: {
-                    item: function (item, escape) {
-                        return (
-                        "<div>" +
-                        (item.title
-                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
-                            : "") +
-                        "</div>"
-                        );
-                    },
-                    option: function (item, escape) {
-                        var label = item.title;
-                        return (
-                        "<div>" +
-                        '<span class="connect-wallet-text">' +
-                        escape(label) +
-                        "</span>" +
-                        "</div>"
-                        );
-                    },
-                },
-                onChange: function(value) {
-                    onInputChange(value);
-                },
-                create: false,
-                dropdownParent: "body",
             });
-
-            selectize = $select[0].selectize;
-
-            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
-
-            if (DappObject.ledgerSelectedIndex !== "") {
-                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
-            }
-
-            let addressDropdown = document.querySelector(".selectize-input");
-            let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
-                
-            flrPublicKey = publicKey;
         } else if (DappObject.walletIndex === 0 && typeof PassedPublicKey === "undefined") {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             
