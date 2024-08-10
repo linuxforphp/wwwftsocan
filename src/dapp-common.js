@@ -40,6 +40,10 @@ window.DappObject = {
 
 const provider = window.ethereum;
 
+function wait(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
 function unPrefix0x (input) {
     return input.startsWith("0x") ? input.slice(2) : input;
 }
@@ -874,6 +878,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                 await getLedgerApp("Avalanche").then(async result => {
                     switch (result) {
                         case "Success":
+                            await wait(2000);
+
                             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                                 let addresses;
 
@@ -1658,6 +1664,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             await getLedgerApp("Avalanche").then(async result => {
                 switch (result) {
                     case "Success":
+                        await wait(2000);
+
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             console.log("Fetching Addresses...");
                             let addresses = await getLedgerAddresses("flare");
@@ -3127,10 +3135,86 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
     });
 }
 
+async function handleTransportConnect(chosenNavigator, DappObject, option, stakingOption) {
+    let numberOfLedgers = await getNumberOfLedgers(chosenNavigator);
+
+    if (numberOfLedgers >= 1) {
+        let requiredApp;
+
+        if (DappObject.walletIndex === 0) {
+            requiredApp = "Ethereum";
+        } else if (DappObject.walletIndex === 1) {
+            requiredApp = "Avalanche";
+        }
+
+        await getLedgerApp(requiredApp).then(async result => {
+            switch (result) {
+                case "Success":
+                    let rpc;
+
+                    let registryaddr;
+
+                    if (option != 4) {
+                        var networkSelectBox = document.getElementById('SelectedNetwork');
+
+                        rpc = networkSelectBox.getAttribute("data-rpcurl");
+
+                        registryaddr = networkSelectBox.getAttribute("data-registrycontract");
+                    }
+              
+                    handleAccountsChanged([], DappObject, option, stakingOption, rpc, registryaddr);
+                case "Failed: App not Installed":
+                case "Failed: User Rejected":
+            }
+        });
+    } else {
+        console.log("No Devices!");
+    }
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
     console.log("Is Ledger: " + DappObject.walletIndex);
+
+    if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
+        // USB Connect Event
+
+        navigator.usb.addEventListener('connect', async event => {
+            console.log("Connected!");
+            if (DappObject.walletIndex !== -1) {
+                await handleTransportConnect(navigator.usb, DappObject, option, stakingOption);
+            }
+        });
+
+        // USB Disconnect Event
+          
+        navigator.usb.addEventListener('disconnect', async event => {
+            console.log("Disconnected!");
+            if (DappObject.walletIndex !== -1) {
+                await handleTransportConnect(navigator.usb, DappObject, option, stakingOption);
+            }
+        });
+    } else if (("hid" in navigator) && !("usb" in navigator)) {
+        // HID Connect Event
+
+        navigator.hid.addEventListener('connect', async event => {
+            console.log("Connected!");
+            if (DappObject.walletIndex !== -1) {
+                await handleTransportConnect(navigator.hid, DappObject, option, stakingOption);
+            }
+        });
+
+        // HID Disconnect Event
+          
+        navigator.hid.addEventListener('disconnect', async event => {
+            console.log("Disconnected!");
+            if (DappObject.walletIndex !== -1) {
+                await handleTransportConnect(navigator.hid, DappObject, option, stakingOption);
+            }
+        });
+    }
+
     if (option === 1 || option === '1') {
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let chainidhex;
