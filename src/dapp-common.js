@@ -7,6 +7,7 @@ import { ethers } from "./ethers.js";
 // ALL MODULES.
 
 window.DappObject = {
+    isHandlingOperation: false,
     isAccountConnected: false,
     costonLogo: FlareLogos.costonLogo,
     flrLogo: FlareLogos.flrLogo,
@@ -292,7 +293,7 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
         draggable: false,
         buttons: {
             yes: {
-                action: function () {
+                action: async function () {
                     const transactionParameters = {
                         from: address,
                         to: contract.options.address,
@@ -300,7 +301,7 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
                     };
         
                     if (DappObject.walletIndex === 1) {
-                        LedgerEVMSingleSign(transactionParameters, DappObject, stakingOption, true);
+                        await LedgerEVMSingleSign(transactionParameters, DappObject, stakingOption, true);
                     } else {
                         showSpinner(async () => {
                             await provider.request({
@@ -327,11 +328,11 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
     });
 }
 
-async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption, rpcUrl, flrAddr) {
+async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption, rpcUrl, flrAddr, autoRefresh) {
     DappObject.signatureStaking = "";
 
     if (pageIndex === 1 || pageIndex === '1') {
-        if (isNumber(accounts.length) && accounts.length > 0) {
+        if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 0);
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
@@ -350,7 +351,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             }
         }
     } else if (pageIndex === 2 || pageIndex === '2') {
-        if (isNumber(accounts.length) && accounts.length > 0) {
+        if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 1);
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
@@ -371,7 +372,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             }
         }
     } else if (pageIndex === 3 || pageIndex === '3') {
-        if (isNumber(accounts.length) && accounts.length > 0) {
+        if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 2);
         } else {
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
@@ -855,6 +856,8 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
 // WRAP MODULE
 
 async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
+    DappObject.isHandlingOperation = true;
+
     DappObject.isAccountConnected = false;
 
     if (typeof addressIndex === "undefined" || addressIndex === "") {
@@ -878,12 +881,12 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                 await getLedgerApp("Avalanche").then(async result => {
                     switch (result) {
                         case "Success":
-                            await wait(2000);
+                            await wait(3000);
 
                             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                                 let addresses;
 
-                                console.log("Fetching Addresses...");
+                                console.log("Fetching Addresses... ETH");
     
                                 if (rpcUrl.includes("flr")) {
                                     addresses = await getLedgerAddresses("flare");
@@ -1005,7 +1008,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
         }
 
         if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
-
+            DappObject.isHandlingOperation = false;
         } else if ((DappObject.walletIndex === 1 && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.walletIndex === 0) {
             DappObject.selectedAddress = account;
 
@@ -1038,7 +1041,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         showAccountAddress(account);
                         await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
                     } catch (error) {
-                        // console.log(error);
+                        throw error;
                     }
                 } else if (pageIndex === 2) {
                     var networkSelectBox = document.getElementById('SelectedNetwork');
@@ -1185,15 +1188,19 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             DappObject.claimBool = false;
                         }
                     } catch (error) {
-                        console.error(error);
+                        throw error;
                     }
                 }
+
+                DappObject.isHandlingOperation = false;
             } catch (error) {
-                // console.log(error);
+                throw error
             }
         }
     } catch (error) {
         console.log(error);
+
+        DappObject.isHandlingOperation = false;
 
         document.getElementById("ConnectWalletText").innerText = "Connect Wallet";
 
@@ -1637,6 +1644,8 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 // STAKE MODULE
 
 async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
+    DappObject.isHandlingOperation = true;
+
     if (typeof PassedPublicKey === "undefined") {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     }
@@ -1664,10 +1673,10 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
             await getLedgerApp("Avalanche").then(async result => {
                 switch (result) {
                     case "Success":
-                        await wait(2000);
+                        await wait(3000);
 
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                            console.log("Fetching Addresses...");
+                            console.log("Fetching Addresses... P-Chain");
                             let addresses = await getLedgerAddresses("flare");
     
                             let insert = [];
@@ -1931,16 +1940,20 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                         DappObject.claimBool = false;
                     }
                 }
+
+                DappObject.isHandlingOperation = false;
             } else {
                 await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded, DappObject, stakingOption);
-
-                document.getElementById("ConnectPChain").click();
             }
         } else {
             document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
+
+            DappObject.isHandlingOperation = false;
         }
     } catch (error) {
         console.log(error);
+
+        DappObject.isHandlingOperation = false;
 
         document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
 
@@ -2056,6 +2069,8 @@ function setTodayCalendarButton(inst) {
 }
 
 async function RefreshStakingPage(DappObject, stakingOption, accounts) {
+    DappObject.isHandlingOperation = true;
+
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
 
     let web32 = new Web3(rpcUrl);
@@ -2230,6 +2245,8 @@ async function transferTokens(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
         $.alert("Please enter a valid value");
     } else {
+        DappObject.isHandlingOperation = true;
+
         let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
 
         var web32 = new Web3(rpcUrl);
@@ -2308,6 +2325,7 @@ async function transferTokens(DappObject, stakingOption) {
                                         });
                                     } catch (error) {
                                         console.log(error);
+                                        throw error;
                                     }
                                 });
                             }).then(async result => {
@@ -2350,6 +2368,7 @@ async function transferTokens(DappObject, stakingOption) {
                                             });
                                         } catch (error) {
                                             console.log(error);
+                                            throw error;
                                         }
                                     });
                                 };
@@ -2419,6 +2438,7 @@ async function transferTokens(DappObject, stakingOption) {
                                         });
                                     } catch (error) {
                                         console.log(error);
+                                        throw error;
                                     }
                                 });
                             }).then(async result => {
@@ -2461,6 +2481,7 @@ async function transferTokens(DappObject, stakingOption) {
                                             });
                                         } catch (error) {
                                             console.log(error);
+                                            throw error;
                                         }   
                                     });
                                 };
@@ -2478,9 +2499,14 @@ async function transferTokens(DappObject, stakingOption) {
                 }
 
                 setTransferButton(DappObject);
+
+                DappObject.isHandlingOperation = false;
             }
         } catch (error) {
             console.log(error);
+
+            DappObject.isHandlingOperation = false;
+
             showFailStake(DappObject, stakingOption);
         }
     }
@@ -2738,6 +2764,8 @@ async function customInput(Pbalance, DappObject) {
 // Staking function
 
 async function stake(DappObject, stakingOption) {
+    DappObject.isHandlingOperation = true;
+
     let selectedDate = new Date(DappObject.selectedDateTime);
 
     let Days = new Date();
@@ -2811,12 +2839,18 @@ async function stake(DappObject, stakingOption) {
                         spinner.close();
                         
                         showFailStake(DappObject, stakingOption);
+
+                        throw e;
                     }
                 });
             });
 
+            DappObject.isHandlingOperation = false;
+
             isStakeInput1(DappObject);
         } catch (error) {
+            DappObject.isHandlingOperation = false;
+
             console.log(error);
         }
     }
@@ -2830,6 +2864,8 @@ function showStakeRewards(rewards) {
 // Claim Staking rewards
 
 async function claimStakingRewards(DappObject, stakingOption) {
+    DappObject.isHandlingOperation = true;
+
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
 
     let flrAddr = "0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019";
@@ -2875,14 +2911,20 @@ async function claimStakingRewards(DappObject, stakingOption) {
             }
 
             const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
+
+            DappObject.isHandlingOperation = false;
             
             showClaimRewards(0);
             switchClaimButtonColorBack(DappObject.claimBool);
             showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
         } else {
+            DappObject.isHandlingOperation = false;
+
             $.alert("The Rewards Bucket is empty! Please try again later.")
         }
     } catch (error) {
+        DappObject.isHandlingOperation = false;
+
         console.log(error);
     }
 }
@@ -2890,6 +2932,7 @@ async function claimStakingRewards(DappObject, stakingOption) {
 // Ledger EVM
 
 async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake = false, object, pageIndex) {
+    DappObject.isHandlingOperation = true;
 
     let ethersProvider;
 
@@ -2991,6 +3034,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 }
 
 async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, pageIndex, txHashes) {
+    DappObject.isHandlingOperation = true;
 
     let ethersProvider;
 
@@ -3136,6 +3180,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 }
 
 async function handleTransportConnect(chosenNavigator, DappObject, option, stakingOption) {
+    DappObject.isHandlingOperation = true;
+
     let numberOfLedgers = await getNumberOfLedgers(chosenNavigator);
 
     if (numberOfLedgers >= 1) {
@@ -3157,17 +3203,21 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
                     if (option != 4) {
                         var networkSelectBox = document.getElementById('SelectedNetwork');
 
-                        rpc = networkSelectBox.getAttribute("data-rpcurl");
+                        rpc = networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute("data-rpcurl");
 
-                        registryaddr = networkSelectBox.getAttribute("data-registrycontract");
+                        registryaddr = networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute("data-registrycontract");
                     }
+
+                    await wait(3000);
               
-                    handleAccountsChanged([], DappObject, option, stakingOption, rpc, registryaddr);
+                    handleAccountsChanged([], DappObject, option, stakingOption, rpc, registryaddr, true);
                 case "Failed: App not Installed":
                 case "Failed: User Rejected":
             }
         });
     } else {
+        DappObject.isHandlingOperation = false;
+
         console.log("No Devices!");
     }
 }
@@ -3175,6 +3225,11 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
+
+    window.dappOption = option;
+
+    window.dappStakingOption = stakingOption;
+
     console.log("Is Ledger: " + DappObject.walletIndex);
 
     if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
@@ -3182,8 +3237,8 @@ window.dappInit = async (option, stakingOption) => {
 
         navigator.usb.addEventListener('connect', async event => {
             console.log("Connected!");
-            if (DappObject.walletIndex !== -1) {
-                await handleTransportConnect(navigator.usb, DappObject, option, stakingOption);
+            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+                await handleTransportConnect(navigator.usb, DappObject, dappOption, dappStakingOption);
             }
         });
 
@@ -3191,8 +3246,8 @@ window.dappInit = async (option, stakingOption) => {
           
         navigator.usb.addEventListener('disconnect', async event => {
             console.log("Disconnected!");
-            if (DappObject.walletIndex !== -1) {
-                await handleTransportConnect(navigator.usb, DappObject, option, stakingOption);
+            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+                await handleTransportConnect(navigator.usb, DappObject, dappOption, dappStakingOption);
             }
         });
     } else if (("hid" in navigator) && !("usb" in navigator)) {
@@ -3200,8 +3255,8 @@ window.dappInit = async (option, stakingOption) => {
 
         navigator.hid.addEventListener('connect', async event => {
             console.log("Connected!");
-            if (DappObject.walletIndex !== -1) {
-                await handleTransportConnect(navigator.hid, DappObject, option, stakingOption);
+            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+                await handleTransportConnect(navigator.hid, DappObject, dappOption, dappStakingOption);
             }
         });
 
@@ -3209,8 +3264,8 @@ window.dappInit = async (option, stakingOption) => {
           
         navigator.hid.addEventListener('disconnect', async event => {
             console.log("Disconnected!");
-            if (DappObject.walletIndex !== -1) {
-                await handleTransportConnect(navigator.hid, DappObject, option, stakingOption);
+            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+                await handleTransportConnect(navigator.hid, DappObject, dappOption, dappStakingOption);
             }
         });
     }
@@ -3252,6 +3307,8 @@ window.dappInit = async (option, stakingOption) => {
                     if (DappObject.isRealValue === false) {
                         $.alert("Please enter a valid value");
                     } else {
+                        DappObject.isHandlingOperation = true;
+
                         var web32 = new Web3(object.rpcUrl);
             
                         try {
@@ -3313,11 +3370,16 @@ window.dappInit = async (option, stakingOption) => {
                                         });
                                     }
 
+                                    DappObject.isHandlingOperation = false;
+
                                     setWrapButton(DappObject);
                                 }
                             }
                         } catch (error) {
                             console.log(error);
+
+                            DappObject.isHandlingOperation = false;
+
                             // showFail();
                         }
                     }
@@ -3445,6 +3507,8 @@ window.dappInit = async (option, stakingOption) => {
             
                 document.getElementById("ClaimButton").addEventListener("click", async () => {
                     let web32 = new Web3(object.rpcUrl);
+
+                    DappObject.isHandlingOperation = true;
             
                     try {
                         const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
@@ -3484,8 +3548,12 @@ window.dappInit = async (option, stakingOption) => {
                             } else {
                                 delegate(object, DappObject);
                             }
+
+                            DappObject.isHandlingOperation = false;
                         });
                     } catch(error) {
+                        DappObject.isHandlingOperation = false;
+
                         //console.log(error);
                     }
                 });
@@ -3548,6 +3616,8 @@ window.dappInit = async (option, stakingOption) => {
             
                 document.getElementById("ClaimButton").addEventListener("click", async () => {
                     if (DappObject.claimBool === true) {
+                        DappObject.isHandlingOperation = true;
+
                         let web32 = new Web3(object.rpcUrl);
                         var checkBox = document.getElementById("RewardsCheck");
             
@@ -3743,10 +3813,16 @@ window.dappInit = async (option, stakingOption) => {
                                 showClaimRewards(0);
                                 switchClaimButtonColorBack(DappObject.claimBool);
                                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+
+                                DappObject.isHandlingOperation = false;
                             } else {
+                                DappObject.isHandlingOperation = false;
+
                                 $.alert("The Rewards Bucket is empty! Please try again later.")
                             }
                         } catch (error) {
+                            DappObject.isHandlingOperation = false;
+
                             // console.log(error);
                         }
                     }
@@ -3754,6 +3830,8 @@ window.dappInit = async (option, stakingOption) => {
             
                 document.getElementById("ClaimFdButton").addEventListener("click", async () => {
                     if (DappObject.fdClaimBool === true) {
+                        DappObject.isHandlingOperation = true;
+
                         let web32 = new Web3(object.rpcUrl);
                         var checkBox = document.getElementById("RewardsCheck");
             
@@ -3810,12 +3888,16 @@ window.dappInit = async (option, stakingOption) => {
                                 }
                                 
                                 const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+
+                                DappObject.isHandlingOperation = false;
                                 
                                 showFdRewards(0);
                                 switchClaimFdButtonColorBack(DappObject.fdClaimBool);
                                 showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                             }
                         } catch (error) {
+                            DappObject.isHandlingOperation = false;
+
                             // console.log(error);
                         }
                     }
