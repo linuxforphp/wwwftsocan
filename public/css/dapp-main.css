@@ -354,6 +354,7 @@ h1, h2 {
 }
 
 .current-wallet-icon-border, .btn-bell {
+    transition: 2s;
 	border-radius: 50%;
 	position: absolute;
 	top: 50%;
@@ -362,9 +363,11 @@ h1, h2 {
 }
 
 .current-wallet {
+    cursor: pointer;
+    transition: 2s;
     border-radius: 50%;
 	position: absolute;
-	top: 80%;
+	top: 82%;
 	left: 85%;
 	height: 80px; 
 	width: 80px;
@@ -375,7 +378,36 @@ h1, h2 {
 }
 
 .current-wallet.ring {
+    animation-play-state: running;
     animation-name: col;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+
+
+.current-wallet.ring .current-wallet-icon {
+    animation-play-state: running;
+    animation-name: col;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+
+
+.current-wallet.ring .current-wallet-icon-border {
+    animation-play-state: running;
+    height: 29px !important; 
+	width: 29px !important;
+    border: 1px solid inherit !important;
+    box-shadow: 2px 2px 5px #ccc, -2px -2px 5px #ccc !important;
+    animation-name: bord-pop;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+
+
+.current-wallet.ring .btn-bell {
+    animation-play-state: running;
+    animation-name: bell-ring;
 	animation-duration: 2s;
 	animation-iteration-count: infinite;
 }
@@ -388,14 +420,8 @@ h1, h2 {
 	height: 27px; 
 	width: 27px;
 	background-color: #aaa;
-    border: 3px solid #dadada !important;
+    border: 3px solid #dadada;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-}
-
-.current-wallet.ring .current-wallet-icon {
-    animation-name: col;
-	animation-duration: 2s;
-	animation-iteration-count: infinite;
 }
 
 .current-wallet-icon-border {
@@ -405,26 +431,31 @@ h1, h2 {
 	box-shadow: none;
 }
 
-.current-wallet.ring .current-wallet-icon-border {
-    height: 29px !important; 
-	width: 29px !important;
-    border: 1px solid inherit !important;
-    box-shadow: 2px 2px 5px #ccc, -2px -2px 5px #ccc !important;
-    animation-name: bord-pop;
-	animation-duration: 2s;
-	animation-iteration-count: infinite;
-}
-
 .btn-bell {
 	color: white;
     height: 70px; 
 	width: 70px;
 }
 
-.current-wallet.ring .btn-bell {
-    animation-name: bell-ring;
-	animation-duration: 2s;
-	animation-iteration-count: infinite;
+.current-wallet.paused {
+    animation-play-state: paused;
+    transform: scale(1) translate(0,0);
+}
+
+.current-wallet.paused .current-wallet-icon {
+    animation-play-state: paused;
+    transform: scale(1) translate(0,0);
+}
+
+.current-wallet.paused .current-wallet-icon-border {
+    animation-play-state: paused;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.current-wallet.paused .btn-bell {
+    animation-play-state: paused;
+    transform: translate(-50%, -50%) rotate(0deg);
 }
 
 @keyframes bord-pop {
@@ -470,6 +501,54 @@ h1, h2 {
 	100% {
 		transform: translate(-50%, -50%) rotate(0deg);
 	}
+}
+
+/*Dialog box*/
+.current-wallet-popup {
+    opacity: 0;
+    cursor: auto;
+    border-radius: 30px;
+    width: 250px;
+    position: absolute;
+    bottom: 80px;
+    left: -105%;
+    padding: 10px;
+    background: #f4f4f4;
+    border: 4px solid rgb(247, 75, 60);
+    transition: 0.5s;
+}
+
+.current-wallet-popup.showing {
+    opacity: 1;
+    bottom: 90px;
+}
+
+.current-wallet-popup:after, .current-wallet-popup:before {
+    border: solid transparent;
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+}
+.current-wallet-popup:after {
+    border-width: 4px;
+}
+.current-wallet-popup:before {
+    border-width: 8px;
+}
+ 
+/*Arrow pointing BOTTOM*/
+.current-wallet-popup:after, .current-wallet-popup:before {
+    left: 50%;
+    top: 100%;
+}
+.current-wallet-popup:after {
+    border-color:  #f4f4f4 transparent transparent transparent ;
+    margin-left: -4px;
+}
+.current-wallet-popup:before {
+    border-color:  rgb(247, 75, 60) transparent transparent transparent ;
+    margin-left: -8px;
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {

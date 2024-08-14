@@ -339,6 +339,8 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showBalance(0);
             showTokenBalance(0);
 
+            setCurrentAppState("Null");
+
             if (DappObject.walletIndex === 0) {   
                 await window.ethereum?.request({
                     "method": "wallet_revokePermissions",
@@ -360,6 +362,8 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             document.getElementById("ClaimButtonText").innerText = "Enter Amount";
             DappObject.isRealValue = false;
 
+            setCurrentAppState("Null");
+
             if (DappObject.walletIndex === 0) {  
                 await window.ethereum?.request({
                     "method": "wallet_revokePermissions",
@@ -378,6 +382,8 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
             showTokenBalance(0);
             showConnectedAccountAddress('0x0');
+
+            setCurrentAppState("Null");
 
             if (DappObject.walletIndex === 0) {  
                 await window.ethereum?.request({
@@ -487,18 +493,6 @@ function isNumber(value) {
         return true;
     }
     return !isNaN(value - 0);
-}
-
-async function isConnected() {
-    const accounts = await provider.request({method: 'eth_accounts'});
-
-    if (accounts.length) {
-        // console.log(`You're connected to: ${accounts[0]}`);
-        return true;
-    } else {
-        // console.log("Metamask is not connected");
-        return false;
-    }
 }
 
 function checkConnection() {
@@ -642,76 +636,72 @@ async function createSelectedNetwork(DappObject) {
 
             if (DappObject.walletIndex === 0) {    
                 await MMSDK.init();
+
+                if (!provider) {
+                    DappObject.metamaskInstalled = false;
+                    downloadMetamask();
+                } else {
+                    DappObject.metamaskInstalled = true;
+                    
+                    var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                        var realChainId;
+
+                        realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
+
+                        for (var i = 0; i < networkSelectBox.options.length; i++) {
+                            if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
+                                networkSelectBox.options[i].setAttribute('selected', 'selected');
+                                networkSelectBox.options.selectedIndex = i;
+                                realChainId = chainIdHex;
+                            } else {
+                                networkSelectBox.options[i].removeAttribute('selected');
+                            }
+                        }
     
-                await provider.request({method: 'eth_requestAccounts'}).then(async function () {
-                    if (!provider) {
-                        DappObject.metamaskInstalled = false;
-                        downloadMetamask();
-                    } else {
-                        DappObject.metamaskInstalled = true;
-                        isConnected()
-                            .then(async function () {
-                                var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
-                                    var realChainId;
-
-                                    realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
-
-                                    for (var i = 0; i < networkSelectBox.options.length; i++) {
-                                        if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
-                                            networkSelectBox.options[i].setAttribute('selected', 'selected');
-                                            networkSelectBox.options.selectedIndex = i;
-                                            realChainId = chainIdHex;
-                                        } else {
-                                            networkSelectBox.options[i].removeAttribute('selected');
-                                        }
-                                    }
-                
-                                    if (DappObject.metamaskInstalled === true) {
-                                        try {
-                                            if (DappObject.walletIndex === 0) {
-                                                await window.ethereum?.request({
-                                                    method: "wallet_switchEthereumChain",
-                                                    params: [
-                                                        {
-                                                        "chainId": realChainId
-                                                        }
-                                                    ]
-                                                    }).catch((error) => console.error(error));
+                        if (DappObject.metamaskInstalled === true) {
+                            try {
+                                if (DappObject.walletIndex === 0) {
+                                    await window.ethereum?.request({
+                                        method: "wallet_switchEthereumChain",
+                                        params: [
+                                            {
+                                            "chainId": realChainId
                                             }
-                                        } catch (error) {
-                                            // console.log(error);
+                                        ]
+                                        }).catch((error) => console.error(error));
+                                }
+                            } catch (error) {
+                                // console.log(error);
 
-                                            if (error.code === 4902) {
-                                                try {
-                                                    await ethereum.request({
-                                                        method: 'wallet_addEthereumChain',
-                                                        params: [
-                                                            {
-                                                                "chainId": realChainId,
-                                                                "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                                "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                                "iconUrls": [
-                                                                    `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                                ],
-                                                                "nativeCurrency": {
-                                                                    "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                                    "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                                    "decimals": 18
-                                                                }
-                                                            },
-                                                        ],
-                                                    });
-                                                } catch (error) {
-                                                    throw(error);
-                                                }
-                                            }
-                                        }
+                                if (error.code === 4902) {
+                                    try {
+                                        await ethereum.request({
+                                            method: 'wallet_addEthereumChain',
+                                            params: [
+                                                {
+                                                    "chainId": realChainId,
+                                                    "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                    "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                    "iconUrls": [
+                                                        `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                    ],
+                                                    "nativeCurrency": {
+                                                        "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                        "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                        "decimals": 18
+                                                    }
+                                                },
+                                            ],
+                                        });
+                                    } catch (error) {
+                                        throw(error);
                                     }
-                                    resolve();
-                                });        
-                            });
-                    }
-                })
+                                }
+                            }
+                        }
+                        resolve();
+                    });        
+                }
             } else {
                 networkSelectBox.options[0].setAttribute('selected', 'selected');
                 networkSelectBox.options[1].removeAttribute('selected');
@@ -858,6 +848,8 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
 async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
     DappObject.isHandlingOperation = true;
 
+    await setCurrentAppState("Connecting");
+
     DappObject.isAccountConnected = false;
 
     if (typeof addressIndex === "undefined" || addressIndex === "") {
@@ -996,6 +988,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             
             account = accounts[0];
 
+            await setCurrentAppState("Connected");
+
             DappObject.isAccountConnected = true;
 
         } else if (typeof addressIndex !== "undefined" && addressIndex !== "") {
@@ -1003,6 +997,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             if (typeof HandleClick !== "undefined") {
                 document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
             }
+
+            await setCurrentAppState("Connected");
 
             DappObject.isAccountConnected = true;
         }
@@ -1645,6 +1641,8 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
     DappObject.isHandlingOperation = true;
+
+    await setCurrentAppState("Connecting");
 
     if (typeof PassedPublicKey === "undefined") {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
@@ -3222,9 +3220,64 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
     }
 }
 
+async function setCurrentAppState(state) {
+    const currentWallet = document.getElementById("currentWallet");
+
+    const appLogo = document.getElementById("appLogo");
+
+    const walletNotification = document.getElementById("currentWalletIcon");
+
+    switch (DappObject.walletIndex) {
+        case -1:
+            appLogo.innerHTML = '<svg class="btn-bell" fill="none" version="1.1" viewBox="0 0 185 185" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g transform="translate(0 26.5)"><g transform="matrix(.93 0 0 .93 6.12 8.72)" fill="#fff" style="mix-blend-mode:normal"><path d="m98.8-11.9s-3.45 6.65-7.58 14.8c-4.13 8.13-7.68 15-7.91 15.3-0.451 0.61-1.04 0.959-1.73 1.12-0.963 0.175-1.82-0.222-2.54-0.6-1.1-0.572-3.01-1.68-6.75-3.83-4.21-2.43-7.67-4.41-7.68-4.39-0.0179 0.0185 2.08 10.9 4.67 24.3 2.23 11.5 3.4 17.6 4 20.9 0.297 1.64 0.449 2.58 0.516 3.15 0.179 1.28-0.51 2.31-1.53 2.9-0.982 0.423-2.09 0.351-2.99-0.172-0.28-0.201-4.75-4.92-9.93-10.5-5.18-5.57-9.53-10.2-9.67-10.4-0.0305-0.0319-0.059-0.0553-0.0907-0.0614-0.0316-0.0061-0.0663 0.0056-0.108 0.0442-0.0841 0.0772-0.198 0.263-0.379 0.632-0.362 0.738-0.993 2.21-2.19 5.02-1.14 2.67-1.78 4.16-2.2 5.03-0.334 0.806-0.813 1.4-1.53 1.78-1.07 0.517-2.26 0.169-3.2-0.0083-1.75-0.331-4.89-0.996-10.8-2.25-6.88-1.47-12.5-2.64-12.6-2.61-0.0307 0.0287 1.86 5.95 4.21 13.2 1.64 5.04 2.7 8.36 3.36 10.5 0.328 1.07 0.554 1.84 0.698 2.38 0.202 0.555 0.221 1.13 0.131 1.66-0.148 0.665-0.517 1.19-1 1.6-0.267 0.199-2.68 1.38-5.35 2.63l-4.87 2.27 16.9 13.7c13.1 10.6 19.6 15.9 22.9 18.6 1.67 1.37 2.54 2.09 3.02 2.51 0.465 0.366 0.828 0.823 1.03 1.31 0.198 1.02-0.039 2.04-0.325 2.94-0.352 1.1-1.02 2.94-2.26 6.35-1.46 4-2.63 7.29-2.6 7.31 0.0281 0.0215 2.8-0.448 6.16-1.04 5.31-0.942 10.1-1.83 14.2-2.63 4.13-0.804 7.66-1.52 10.5-2.13 5.75-1.21 8.91-1.97 9.15-2.04 1.08-0.296 2.33-0.65 3.69-1.03-0.267 0.0511-0.536 0.0933-0.806 0.127-6.73-0.0855-12.2-5.57-12.2-12.1 0.0784-7.9 7.71-13.6 15.1-11.8 0.0336 0.0101 0.0672 0.0204 0.101 0.0308l0.0625-21-16.5 0.0199c-0.464-4.28 0.776-8.53 2.83-12.3 2.85-5.36 8.17-8.32 13.8-9.84l0.0697-23.4-15.5 0.0863c-0.395-3.38 0.337-6.77 1.63-9.93 2.4-6.28 7.68-10.4 14-12.1z"/><path d="m108 15.2c-2.81 0.0422-5.16 0.0931-6.84 0.154-5.82 0.575-11.6 3.81-14.4 8.92-0.36 0.659-0.685 1.35-0.981 2.04-1.35 2.79-1.61 5.46-1.45 8.53l68.8-0.368c5.31-0.324 10.2-3.26 13.5-7.33 2.61-3.51 3.31-7.8 3.67-12.1-20.8 0.0319-40.5-0.158-62.3 0.165z"/><path d="m113 60.5c-4.57 0.0229-8.92 0.0842-12.4 0.207-5.15 0.55-10.5 2.94-13.7 7.04-2.81 3.73-4 7.85-3.74 12.5 13.8-0.0159 27.6-0.0324 41.4-0.0487 4.96-0.312 9.85-2.74 13.1-6.4 3.31-3.57 4.21-8.3 4.62-13.1-10.4-0.142-18.9-0.257-29.3-0.207z"/><path d="m95.4 104c-5.85 0.0737-10.6 4.83-10.6 10.5 0.0819 5.88 4.95 10.5 10.6 10.5 5.8-0.157 10.6-4.77 10.6-10.5-0.0157-5.82-4.92-10.5-10.6-10.5z"/></g></g></svg>';
+            break
+        case 0:
+            appLogo.innerHTML = '<svg class="btn-bell" fill="none" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 79.374998 79.375" version="1.1" id="svg1" xml:space="preserve" <g id="layer1"><path style="fill:#FFFFFF" d="m 31.704516,54.76963 c -4.375814,-6.160866 -7.922539,-11.247117 -7.881611,-11.30278 0.04093,-0.05566 3.593184,1.983209 7.893905,4.530827 5.047396,2.989926 8.022846,4.553998 8.393112,4.411913 0.315491,-0.121065 3.842011,-2.14287 7.83671,-4.492899 3.9947,-2.350029 7.406681,-4.354063 7.582181,-4.453409 0.185732,-0.105139 0.191732,0.02645 0.01436,0.31485 C 54.951014,44.74094 40.471667,65.093835 40.069032,65.529353 39.751451,65.87287 37.889917,63.47828 31.704516,54.76963 Z M 31.75,45.034923 c -5.211187,-3.083904 -7.897706,-4.869531 -7.821643,-5.198748 0.237348,-1.027294 15.739202,-26.414666 15.975582,-26.163196 0.135321,0.143959 3.814868,6.16979 8.176771,13.390737 l 7.930733,13.128993 -7.961961,4.686285 C 43.670403,47.45645 39.997516,49.60284 39.88751,49.648749 39.777505,49.694658 36.115625,47.618436 31.75,45.034923 Z" id="path5"/></g></svg>'
+            break
+        case 1:
+            appLogo.innerHTML = '<svg class="btn-bell" viewBox="0 0 1503 1504" fill="none" version="1.1" id="svg1" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M 538.688,1050.86 H 392.94 c -30.626,0 -45.754,0 -54.978,-5.9 -9.963,-6.46 -16.051,-17.16 -16.789,-28.97 -0.554,-10.88 7.011,-24.168 22.139,-50.735 l 359.87,-634.32 c 15.313,-26.936 23.061,-40.404 32.839,-45.385 10.516,-5.35 23.062,-5.35 33.578,0 9.778,4.981 17.527,18.449 32.839,45.385 l 73.982,129.144 0.377,0.659 c 16.539,28.897 24.926,43.551 28.588,58.931 4.058,16.789 4.058,34.5 0,51.289 -3.69,15.497 -11.992,30.257 -28.781,59.591 l -189.031,334.153 -0.489,0.856 c -16.648,29.135 -25.085,43.902 -36.778,55.042 -12.73,12.18 -28.043,21.03 -44.832,26.02 -15.313,4.24 -32.47,4.24 -66.786,4.24 z m 368.062,0 h 208.84 c 30.81,0 46.31,0 55.54,-6.08 9.96,-6.46 16.23,-17.35 16.79,-29.15 0.53,-10.53 -6.87,-23.3 -21.37,-48.323 -0.5,-0.852 -1,-1.719 -1.51,-2.601 l -104.61,-178.956 -1.19,-2.015 c -14.7,-24.858 -22.12,-37.411 -31.65,-42.263 -10.51,-5.351 -22.88,-5.351 -33.391,0 -9.594,4.981 -17.342,18.08 -32.655,44.462 l -104.238,178.957 -0.357,0.616 c -15.259,26.34 -22.885,39.503 -22.335,50.303 0.738,11.81 6.826,22.69 16.788,29.15 9.041,5.9 24.538,5.9 55.348,5.9 z" fill="#FFFFFF" id="path1"/></svg>'
+            break
+    }
+
+    switch (state) {
+        case "Null":
+            currentWallet.classList.remove("ring");
+            currentWallet.classList.add("paused");
+
+            walletNotification.style.backgroundColor = "#aaa";
+            walletNotification.style.border = "3px solid #dadada";
+            break
+        case "Alert":
+            currentWallet.classList.add("ring");
+            currentWallet.classList.remove("paused");
+
+            walletNotification.style.backgroundColor = "#f45f58";
+            walletNotification.style.border = "3px solid #ff9994";
+            break
+        case "Connecting":
+            currentWallet.classList.add("ring");
+            currentWallet.classList.remove("paused");
+
+            walletNotification.style.backgroundColor = "#f9be2f";
+            walletNotification.style.border = "3px solid #ffe5a7";
+            break
+        case "Connected":
+            currentWallet.classList.remove("ring");
+            currentWallet.classList.add("paused");
+
+            walletNotification.style.backgroundColor = "#42ca40";
+            walletNotification.style.border = "3px solid #8fe18e";
+            break
+    }
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
+
+    document.getElementById("currentWallet").addEventListener("click", () => {
+        document.getElementById("currentWalletPopup").classList.toggle("showing");
+    });
 
     window.dappOption = option;
 
@@ -4007,7 +4060,11 @@ window.dappInit = async (option, stakingOption) => {
 
         if (typeof stakingOption === 'undefined') {
             DappObject.isAccountConnected = true;
+
             DappObject.walletIndex = -1;
+
+            await setCurrentAppState("Null");
+
             document.getElementById("ContinueMetamask").addEventListener("click", async () => {
                 getDappPage(8);
             });
@@ -4017,6 +4074,9 @@ window.dappInit = async (option, stakingOption) => {
         } else if (stakingOption === 4) {
             //Metamask
             DappObject.isAccountConnected = true;
+
+            await setCurrentAppState("Null");
+
             document.getElementById("ContinueAnyway").addEventListener("click", async () => {
                 DappObject.walletIndex = 0;
                 getDappPage(1);
@@ -4028,6 +4088,9 @@ window.dappInit = async (option, stakingOption) => {
         } else if (stakingOption === 5) {
             //Ledger
             DappObject.isAccountConnected = true;
+
+            await setCurrentAppState("Null");
+
             if (!("usb" in navigator) && !("hid" in navigator)) {
                 document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> WARNING</span></div></div><div class="row"><div class="col-md-12"><span style="font-size: 12px;">Your browser does not currently support <i style="font-style: italic;">Ledger Transport</i> ! </br> Please switch to a compatible browser.</span></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div>';
             } else {
