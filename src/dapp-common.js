@@ -7,6 +7,7 @@ import { ethers } from "./ethers.js";
 // ALL MODULES.
 
 window.DappObject = {
+    latestPopupTimeoutId: undefined,
     isHandlingOperation: false,
     isAccountConnected: false,
     costonLogo: FlareLogos.costonLogo,
@@ -850,6 +851,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
     await setCurrentAppState("Connecting");
 
+    await setCurrentPopup("Connecting...");
+
     DappObject.isAccountConnected = false;
 
     if (typeof addressIndex === "undefined" || addressIndex === "") {
@@ -979,8 +982,19 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
                                 
                             flrPublicKey = publicKey;
+                            break
                         case "Failed: App not Installed":
+                            await setCurrentAppState("Alert");
+
+                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                            }, 500);
+
+                            throw new Error("Ledger Avalanche App not installed!");
+                            break
                         case "Failed: User Rejected":
+                            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
+                            break
                     }
                 });
         } else if (DappObject.walletIndex === 0 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
@@ -989,6 +1003,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             account = accounts[0];
 
             await setCurrentAppState("Connected");
+
+            await setCurrentPopup("Connected to account: </br>" + account);
 
             DappObject.isAccountConnected = true;
 
@@ -999,6 +1015,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             }
 
             await setCurrentAppState("Connected");
+
+            await setCurrentPopup("Connected to account: </br>" + account);
 
             DappObject.isAccountConnected = true;
         }
@@ -1025,6 +1043,12 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                         showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
                     }
+
+                    await setCurrentPopup("This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB respectively. This will allow you to delegate to an FTSO and earn passive income!", true);
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB respectively. This will allow you to delegate to an FTSO and earn passive income!", true);
+                    }, 500);
                 } else if (pageIndex === 1) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
@@ -1039,6 +1063,12 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     } catch (error) {
                         throw error;
                     }
+
+                    await setCurrentPopup("This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an FTSO and earn passive income!", true);
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an FTSO and earn passive income!", true);
+                    }, 500);
                 } else if (pageIndex === 2) {
                     var networkSelectBox = document.getElementById('SelectedNetwork');
     
@@ -1183,6 +1213,12 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
     
                             DappObject.claimBool = false;
                         }
+
+                        await setCurrentPopup("This is the 'Claim' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
+
+                        DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                            await setCurrentPopup("This is the 'Claim' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
+                        }, 500);
                     } catch (error) {
                         throw error;
                     }
@@ -1644,6 +1680,10 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
     await setCurrentAppState("Connecting");
 
+    await setCurrentPopup("Connecting...");
+
+    DappObject.isAccountConnected = false;
+
     if (typeof PassedPublicKey === "undefined") {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     }
@@ -1764,8 +1804,19 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                         let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
                             
                         flrPublicKey = publicKey;
+                        break
                     case "Failed: App not Installed":
+                        await setCurrentAppState("Alert");
+
+                        DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                            await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                        }, 500);
+
+                        throw new Error("Ledger Avalanche App not installed!");
+                        break
                     case "Failed: User Rejected":
+                        ConnectPChainClickStake(stakingOption, DappObject, HandleClick);
+                        break
                 }
             });
         } else if (DappObject.walletIndex === 0 && typeof PassedPublicKey === "undefined") {
@@ -1811,10 +1862,22 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                 signSpinner.close();
             }
 
+            await setCurrentAppState("Connected");
+
+            await setCurrentPopup("Connected to account: </br>" + account);
+
+            DappObject.isAccountConnected = true;
+
             flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
         } else if (typeof PassedPublicKey !== "undefined") {
             account = PassedEthAddr;
             flrPublicKey = PassedPublicKey;
+
+            await setCurrentAppState("Connected");
+
+            await setCurrentPopup("Connected to account: </br>" + account);
+
+            DappObject.isAccountConnected = true;
         }
 
         console.log(flrPublicKey);
@@ -1877,6 +1940,12 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                         showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
                     }
+
+                    await setCurrentPopup("This is the 'Transfer' page,!", true);
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("This is the 'Transfer' page,!", true);
+                    }, 500);
                 } else if (stakingOption === 2) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
@@ -3210,11 +3279,29 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
               
                     handleAccountsChanged([], DappObject, option, stakingOption, rpc, registryaddr, true);
                 case "Failed: App not Installed":
+                    await setCurrentAppState("Alert");
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("Whoops! Looks like you do not have the " + requiredApp + " App installed on your Ledger device! Please install it and come back again later!", true);
+                    }, 500);
+
+                    throw new Error("Ledger " + requiredApp + " App not installed!");
+                    break
                 case "Failed: User Rejected":
             }
         });
     } else {
         DappObject.isHandlingOperation = false;
+
+        if (DappObject.walletIndex === 1) {
+            await setCurrentAppState("Alert");
+
+            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                await setCurrentPopup("Whoops! Looks like your Ledger device is not plugged in! Please plug in your Ledger device!", true);
+            }, 500);
+
+            throw new Error("Ledger not plugged in.");
+        }
 
         console.log("No Devices!");
     }
@@ -3271,13 +3358,33 @@ async function setCurrentAppState(state) {
     }
 }
 
+async function setCurrentPopup(message, open) {
+    document.getElementById("currentWalletPopup").classList.remove("showing");
+
+    if (open === true) {
+        await wait(1000);
+
+        document.getElementById("currentWalletPopup").classList.add("showing");
+    }
+
+    document.getElementById("currentWalletPopupText").innerText = message;
+}
+
+function closeCurrentPopup() {
+    document.getElementById("currentWalletPopup").classList.remove("showing");
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
 
+    closeCurrentPopup();
+
     document.getElementById("currentWallet").addEventListener("click", () => {
         document.getElementById("currentWalletPopup").classList.toggle("showing");
     });
+
+    clearTimeout(DappObject.latestPopupTimeoutId);
 
     window.dappOption = option;
 
@@ -4063,14 +4170,20 @@ window.dappInit = async (option, stakingOption) => {
 
             DappObject.walletIndex = -1;
 
-            await setCurrentAppState("Null");
-
             document.getElementById("ContinueMetamask").addEventListener("click", async () => {
                 getDappPage(8);
             });
             document.getElementById("ContinueLedger").addEventListener("click", async () => {
                 getDappPage(9);
             });
+
+            await setCurrentAppState("Null");
+
+            await setCurrentPopup("Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and help efficiently claim your FLR or SGB rewards!", true);
+
+            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                await setCurrentPopup("First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet if stored within Metamask, please choose the Metamask option. More are coming soon!", true);
+            }, 9000);
         } else if (stakingOption === 4) {
             //Metamask
             DappObject.isAccountConnected = true;
@@ -4085,6 +4198,8 @@ window.dappInit = async (option, stakingOption) => {
             document.getElementById("GoBack").addEventListener("click", async () => {
                 getDappPage(4);
             });
+
+            await setCurrentPopup("To use the FTSOCAN DApp's staking features, you must turn on eth_sign in Metamask.", true);
         } else if (stakingOption === 5) {
             //Ledger
             DappObject.isAccountConnected = true;
@@ -4093,11 +4208,15 @@ window.dappInit = async (option, stakingOption) => {
 
             if (!("usb" in navigator) && !("hid" in navigator)) {
                 document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> WARNING</span></div></div><div class="row"><div class="col-md-12"><span style="font-size: 12px;">Your browser does not currently support <i style="font-style: italic;">Ledger Transport</i> ! </br> Please switch to a compatible browser.</span></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div>';
+
+                await setCurrentPopup("Whoops! Your browser does not currently support Ledger Transport! You will need to use another wallet.", true);
             } else {
                 document.getElementById("ContinueAnyway").addEventListener("click", async () => {
                     DappObject.walletIndex = 1;
                     getDappPage(1);
                 });
+
+                await setCurrentPopup("Before continuing, you will need to open the Avalanche app on your Ledger Device.", true);
             }
 
             document.getElementById("GoBack").addEventListener("click", async () => {

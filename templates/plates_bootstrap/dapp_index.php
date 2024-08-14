@@ -19,7 +19,7 @@
         <div class="dapp-container" id="dapp-root"></div>
         <div id="currentWallet" class="current-wallet paused">
             <div id="currentWalletPopup" class="current-wallet-popup">
-                <p id="current-wallet-popup-text">This is an example of a CSS bubble dialog box with an arrow pointing to the bottom.</p>
+                <p id="currentWalletPopupText">Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and help efficiently claim your FLR or SGB rewards!</p>
             </div>
             <div id="currentWalletIcon" class="current-wallet-icon">
                 <div class="current-wallet-icon-border"></div>
