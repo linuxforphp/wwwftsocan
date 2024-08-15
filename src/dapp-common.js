@@ -818,8 +818,6 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                                                 </div>`;
                                 }
                             } else {
-                                clearTimeout(DappObject.latestPopupTimeoutId);
-
                                 await setCurrentPopup('The FTSO you have delegated to is invalid!', true);
 
                                 document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
@@ -855,7 +853,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
     await setCurrentAppState("Connecting");
 
-    await setCurrentPopup("Connecting...");
+    await setCurrentPopup("Connecting...", true);
 
     DappObject.isAccountConnected = false;
 
@@ -881,6 +879,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                 switch (result) {
                     case "Success":
                         await wait(3000);
+
+                        await setCurrentPopup("Connecting...", true);
 
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             let addresses;
@@ -980,6 +980,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                         if (DappObject.ledgerSelectedIndex !== "") {
                             selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                        } else {
+                            await setCurrentPopup("Please select an account.", true);
                         }
 
                         let addressDropdown = document.querySelector(".selectize-input");
@@ -992,7 +994,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                         DappObject.latestPopupTimeoutId = setTimeout( async () => {
                             await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
-                        }, 500);
+                        }, 1000);
 
                         throw new Error("Ledger Avalanche App not installed!");
                         break
@@ -1369,9 +1371,6 @@ async function isDelegateInput1(DappObject) {
             DappObject.isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Undelegate all";
         }
-
-        clearTimeout(DappObject.latestPopupTimeoutId);
-
         await setCurrentPopup("Looks like you have already delegated 100% of your tokens! If you want to delegate to another FTSO, you will need to undelegate first!", true);
     } else {
         if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
@@ -1499,8 +1498,6 @@ async function populateFtsos(rpcUrl, flrAddr) {
                                                 g += 1;
                                             }
                                         } else {
-                                            clearTimeout(DappObject.latestPopupTimeoutId);
-
                                             await setCurrentPopup('The FTSO you have delegated to is invalid!', true);
                                             break;
                                         }
@@ -1572,8 +1569,6 @@ function showClaimRewards(rewards) {
 
 async function delegate(object, DappObject) {
     if (DappObject.isRealValue === false) {
-        clearTimeout(DappObject.latestPopupTimeoutId);
-
         await setCurrentPopup('You need to enter a valid value! (50% or 100%.)', true);
     } else {
         let amount1 = document.getElementById("Amount1");
@@ -1696,7 +1691,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
     await setCurrentAppState("Connecting");
 
-    await setCurrentPopup("Connecting...");
+    await setCurrentPopup("Connecting...", true);
 
     DappObject.isAccountConnected = false;
 
@@ -1728,6 +1723,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                 switch (result) {
                     case "Success":
                         await wait(3000);
+
+                        await setCurrentPopup("Connecting...", true);
 
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             console.log("Fetching Addresses... P-Chain");
@@ -1814,6 +1811,8 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
     
                         if (DappObject.ledgerSelectedIndex !== "") {
                             selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                        } else {
+                            await setCurrentPopup("Please select an account.", true);
                         }
     
                         let addressDropdown = document.querySelector(".selectize-input");
@@ -1826,7 +1825,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                         DappObject.latestPopupTimeoutId = setTimeout( async () => {
                             await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
-                        }, 500);
+                        }, 1000);
 
                         throw new Error("Ledger Avalanche App not installed!");
                         break
@@ -2338,8 +2337,6 @@ function copyTransferInput() {
 
 async function transferTokens(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
-        clearTimeout(DappObject.latestPopupTimeoutId);
-
         await setCurrentPopup('You need to enter a valid amount of tokens! (A number that is not greater than your balance.)', true);
     } else {
         DappObject.isHandlingOperation = true;
@@ -2354,8 +2351,6 @@ async function transferTokens(DappObject, stakingOption) {
             const amountFromValue = amountFrom.value;
 
             if (!isNumber(amountFromValue)) {
-                clearTimeout(DappObject.latestPopupTimeoutId);
-
                 await setCurrentPopup('The amount you have entered is not a number!', true);
             } else {
                 const amountFromValueInt = web32.utils.toWei(amountFromValue, "gwei");
@@ -2894,8 +2889,6 @@ async function stake(DappObject, stakingOption) {
     amount1.value = "0";
 
     if (PchainBalanceBigInt < stakeAmount) {
-        clearTimeout(DappObject.latestPopupTimeoutId);
-
         await setCurrentPopup('You have insufficient funds!', true);
     } else {
         // Getting C-Chain Keychain
@@ -3020,8 +3013,6 @@ async function claimStakingRewards(DappObject, stakingOption) {
             showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
         } else {
             DappObject.isHandlingOperation = false;
-
-            clearTimeout(DappObject.latestPopupTimeoutId);
 
             await setCurrentPopup('The Rewards Bucket is empty! Please try again later.', true);
         }
@@ -3285,6 +3276,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 async function handleTransportConnect(chosenNavigator, DappObject, option, stakingOption) {
     DappObject.isHandlingOperation = true;
 
+    clearTimeout(DappObject.latestPopupTimeoutId);
+
     let numberOfLedgers = await getNumberOfLedgers(chosenNavigator);
 
     if (numberOfLedgers >= 1) {
@@ -3295,6 +3288,8 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
         } else if (DappObject.walletIndex === 1) {
             requiredApp = "Avalanche";
         }
+
+        await setCurrentAppState("Connecting");
 
         await getLedgerApp(requiredApp).then(async result => {
             switch (result) {
@@ -3314,12 +3309,13 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
                     await wait(3000);
               
                     handleAccountsChanged([], DappObject, option, stakingOption, rpc, registryaddr, true);
+                    break
                 case "Failed: App not Installed":
                     await setCurrentAppState("Alert");
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
                         await setCurrentPopup("Whoops! Looks like you do not have the " + requiredApp + " App installed on your Ledger device! Please install it and come back again later!", true);
-                    }, 500);
+                    }, 1000);
 
                     throw new Error("Ledger " + requiredApp + " App not installed!");
                     break
@@ -3330,13 +3326,13 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
         DappObject.isHandlingOperation = false;
 
         if (DappObject.walletIndex === 1) {
-            await setCurrentAppState("Alert");
-
             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                await setCurrentPopup("Whoops! Looks like your Ledger device is not plugged in! Please plug in your Ledger device and click on Connect Wallet!", true);
-            }, 500);
+                await setCurrentAppState("Alert");
 
-            throw new Error("Ledger not plugged in.");
+                await setCurrentPopup("Whoops! Looks like your Ledger device is not plugged in! Please plug in your Ledger device and click on Connect Wallet!", true);
+
+                throw new Error("Ledger not plugged in.");
+            }, 3000);
         }
 
         console.log("No Devices!");
@@ -3396,6 +3392,8 @@ async function setCurrentAppState(state) {
 
 async function setCurrentPopup(message, open) {
     document.getElementById("currentWalletPopup").classList.remove("showing");
+
+    clearTimeout(DappObject.latestPopupTimeoutId);
 
     if (open === true) {
         await wait(1000);
@@ -3489,8 +3487,6 @@ window.dappInit = async (option, stakingOption) => {
                 // If the input is valid, we wrap on click of "WrapButton".
                 document.getElementById("WrapButton").addEventListener("click", async () => {
                     if (DappObject.isRealValue === false) {
-                        clearTimeout(DappObject.latestPopupTimeoutId);
-
                         await setCurrentPopup('You need to enter a valid value! (A number that is not greater than your balance.)', true);
                     } else {
                         DappObject.isHandlingOperation = true;
@@ -3508,8 +3504,6 @@ window.dappInit = async (option, stakingOption) => {
                             const amountFromValue = parseFloat(amountFrom.value);
 
                             if (!isNumber(amountFromValue)) {
-                                clearTimeout(DappObject.latestPopupTimeoutId);
-
                                 await setCurrentPopup('The value you have entered is not a number!', true);
                             } else {
                                 const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
@@ -3536,12 +3530,8 @@ window.dappInit = async (option, stakingOption) => {
                                 const transactionParameters = txPayload;
 
                                 if (DappObject.wrapBool === true && amountFromValueWeiBN > balance) {
-                                    clearTimeout(DappObject.latestPopupTimeoutId);
-
                                     await setCurrentPopup('You do not have enough native tokens!', true);
                                 } else if (DappObject.wrapBool === false && amountFromValueWeiBN > tokenBalance) {
-                                    clearTimeout(DappObject.latestPopupTimeoutId);
-
                                     await setCurrentPopup('You do not have enough wrapped tokens!', true);
                                 } else {
                                     if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
@@ -4008,8 +3998,6 @@ window.dappInit = async (option, stakingOption) => {
                             } else {
                                 DappObject.isHandlingOperation = false;
 
-                                clearTimeout(DappObject.latestPopupTimeoutId);
-
                                 await setCurrentPopup('The Rewards Bucket is empty! Please try again later.', true);
                             }
                         } catch (error) {
@@ -4293,8 +4281,6 @@ window.dappInit = async (option, stakingOption) => {
 
             document.getElementById("WrapButton").addEventListener("click", async () => {
                 if (DappObject.isRealValue === false) {
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
                     await setCurrentPopup('Please enter a valid staking amount. (More than 0!)', true);
                 } else {
                     stake(DappObject, stakingOption);
