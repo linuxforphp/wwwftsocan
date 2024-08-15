@@ -4,6 +4,7 @@
 }
 
 body {
+    overflow-x: hidden;
     padding-top: 12.7em;
     font-family: 'Poppins', sans-serif;
     background-image: url("../img/Flare-Network-Red.png") !important;

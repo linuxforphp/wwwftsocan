@@ -498,14 +498,12 @@ function isNumber(value) {
 
 function checkConnection() {
     if (!navigator.onLine) {
-        $.alert('Your Internet connection is unstable! Please make sure you can access the Internet.');
-    }
-}
+        setCurrentAppState("Alert");
 
-function updateCall() {
-    setInterval(function() {
-        checkConnection();
-    }, 20000);
+        setCurrentPopup('Your Internet connection is unstable! Please make sure you can access the Internet.', true);
+
+        throw new Error("No Internet!");
+    }
 }
 
 async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2 = false) {
@@ -765,7 +763,7 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
     // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
     fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
         .then(res => res.json())
-        .then(FtsoInfo => {
+        .then(async FtsoInfo => {
                 FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
                 var indexNumber;
@@ -820,7 +818,9 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                                                 </div>`;
                                 }
                             } else {
-                                $.alert('The FTSO you have delegated to is invalid!');
+                                clearTimeout(DappObject.latestPopupTimeoutId);
+
+                                await setCurrentPopup('The FTSO you have delegated to is invalid!', true);
 
                                 document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                                 document.getElementById("ClaimButton").style.cursor = "pointer";
@@ -849,6 +849,10 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
 async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
     DappObject.isHandlingOperation = true;
 
+    clearTimeout(DappObject.latestPopupTimeoutId);
+
+    checkConnection();
+
     await setCurrentAppState("Connecting");
 
     await setCurrentPopup("Connecting...");
@@ -873,130 +877,130 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
         }
 
         if (DappObject.walletIndex === 1 && (typeof addressIndex === "undefined" || addressIndex === "")) {
-                await getLedgerApp("Avalanche").then(async result => {
-                    switch (result) {
-                        case "Success":
-                            await wait(3000);
+            await getLedgerApp("Avalanche").then(async result => {
+                switch (result) {
+                    case "Success":
+                        await wait(3000);
 
-                            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                                let addresses;
+                        if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                            let addresses;
 
-                                console.log("Fetching Addresses... ETH");
-    
-                                if (rpcUrl.includes("flr")) {
-                                    addresses = await getLedgerAddresses("flare");
-                                } else if (rpcUrl.includes("sgb")) {
-                                    addresses = await getLedgerAddresses("songbird");
-                                }
-    
-                                let insert = [];
-    
-                                for (let i = 0; i < addresses.length; i++) {
-                                    insert[i] = {
-                                        id: i,
-                                        title: addresses[i].ethAddress,
-                                        pubkey: addresses[i].publicKey,
-                                    };
-                                }
-    
-                                DappObject.ledgerAddrArray = insert;
+                            console.log("Fetching Addresses... ETH");
+
+                            if (rpcUrl.includes("flr")) {
+                                addresses = await getLedgerAddresses("flare");
+                            } else if (rpcUrl.includes("sgb")) {
+                                addresses = await getLedgerAddresses("songbird");
                             }
-    
-                            console.log(DappObject.ledgerAddrArray);
-    
-                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
-    
-                            var onInputChange = async (value) => {
-                                let addressBox = document.querySelector("span.connect-wallet-text");
-                                let ethaddr = addressBox.getAttribute('data-ethkey');
-                                let pubKey = addressBox.getAttribute('data-pubkey');
-                                
-                                flrPublicKey = pubKey;
-    
-                                account = ethaddr;
-    
-                                DappObject.selectedAddress = account;
-    
-                                console.log("Value: " + value);
-    
-                                DappObject.ledgerSelectedIndex = value;
-    
-                                connectChainsAndKeys(flrPublicKey);
-    
-                                let unprefixed;
-    
-                                if (rpcUrl.includes("flr")) {
-                                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-                                } else if (rpcUrl.includes("sgb")) {
-                                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
-                                }
-    
-                                DappObject.unPrefixedAddr = unprefixed;
-    
-                                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+
+                            let insert = [];
+
+                            for (let i = 0; i < addresses.length; i++) {
+                                insert[i] = {
+                                    id: i,
+                                    title: addresses[i].ethAddress,
+                                    pubkey: addresses[i].publicKey,
+                                };
                             }
-    
-                            var $select = $('#select-account').selectize({
-                                maxItems: 1,
-                                valueField: 'id',
-                                labelField: 'title',
-                                searchField: ["title"],
-                                options: DappObject.ledgerAddrArray,
-                                render: {
-                                    item: function (item, escape) {
-                                        return (
-                                        "<div>" +
-                                        (item.title
-                                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
-                                            : "") +
-                                        "</div>"
-                                        );
-                                    },
-                                    option: function (item, escape) {
-                                        var label = item.title;
-                                        return (
-                                        "<div>" +
-                                        '<span class="connect-wallet-text">' +
-                                        escape(label) +
-                                        "</span>" +
-                                        "</div>"
-                                        );
-                                    },
+
+                            DappObject.ledgerAddrArray = insert;
+                        }
+
+                        console.log(DappObject.ledgerAddrArray);
+
+                        document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
+
+                        var onInputChange = async (value) => {
+                            let addressBox = document.querySelector("span.connect-wallet-text");
+                            let ethaddr = addressBox.getAttribute('data-ethkey');
+                            let pubKey = addressBox.getAttribute('data-pubkey');
+                            
+                            flrPublicKey = pubKey;
+
+                            account = ethaddr;
+
+                            DappObject.selectedAddress = account;
+
+                            console.log("Value: " + value);
+
+                            DappObject.ledgerSelectedIndex = value;
+
+                            connectChainsAndKeys(flrPublicKey);
+
+                            let unprefixed;
+
+                            if (rpcUrl.includes("flr")) {
+                                unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+                            } else if (rpcUrl.includes("sgb")) {
+                                unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
+                            }
+
+                            DappObject.unPrefixedAddr = unprefixed;
+
+                            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+                        }
+
+                        var $select = $('#select-account').selectize({
+                            maxItems: 1,
+                            valueField: 'id',
+                            labelField: 'title',
+                            searchField: ["title"],
+                            options: DappObject.ledgerAddrArray,
+                            render: {
+                                item: function (item, escape) {
+                                    return (
+                                    "<div>" +
+                                    (item.title
+                                        ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                        : "") +
+                                    "</div>"
+                                    );
                                 },
-                                onChange: function(value) {
-                                    onInputChange(value);
+                                option: function (item, escape) {
+                                    var label = item.title;
+                                    return (
+                                    "<div>" +
+                                    '<span class="connect-wallet-text">' +
+                                    escape(label) +
+                                    "</span>" +
+                                    "</div>"
+                                    );
                                 },
-                                create: false,
-                                dropdownParent: "body",
-                            });
-    
-                            selectize = $select[0].selectize;
-    
-                            console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
-    
-                            if (DappObject.ledgerSelectedIndex !== "") {
-                                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
-                            }
-    
-                            let addressDropdown = document.querySelector(".selectize-input");
-                            let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
-                                
-                            flrPublicKey = publicKey;
-                            break
-                        case "Failed: App not Installed":
-                            await setCurrentAppState("Alert");
+                            },
+                            onChange: function(value) {
+                                onInputChange(value);
+                            },
+                            create: false,
+                            dropdownParent: "body",
+                        });
 
-                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
-                            }, 500);
+                        selectize = $select[0].selectize;
 
-                            throw new Error("Ledger Avalanche App not installed!");
-                            break
-                        case "Failed: User Rejected":
-                            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
-                            break
-                    }
-                });
+                        console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
+
+                        if (DappObject.ledgerSelectedIndex !== "") {
+                            selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                        }
+
+                        let addressDropdown = document.querySelector(".selectize-input");
+                        let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                            
+                        flrPublicKey = publicKey;
+                        break
+                    case "Failed: App not Installed":
+                        await setCurrentAppState("Alert");
+
+                        DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                            await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                        }, 500);
+
+                        throw new Error("Ledger Avalanche App not installed!");
+                        break
+                    case "Failed: User Rejected":
+                        ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
+                        break
+                }
+            });
         } else if (DappObject.walletIndex === 0 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             
@@ -1004,7 +1008,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: </br>" + account);
+            await setCurrentPopup("Connected to account: " + account);
 
             DappObject.isAccountConnected = true;
 
@@ -1016,7 +1020,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: </br>" + account);
+            await setCurrentPopup("Connected to account: " + account);
 
             DappObject.isAccountConnected = true;
         }
@@ -1047,15 +1051,21 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     await setCurrentPopup("This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB respectively. This will allow you to delegate to an FTSO and earn passive income!", true);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB respectively. This will allow you to delegate to an FTSO and earn passive income!", true);
-                    }, 500);
+                        await setCurrentPopup("First, choose if you would like to Wrap, or Unwrap your tokens by clicking on the top left button. Then, input the amount of tokens you would like to transfer. (Don't forget to keep some FLR or SGB for gas fees!)", true);
+                    }, 15000);
                 } else if (pageIndex === 1) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
     
-                    isDelegateInput1(DappObject);
+                    await isDelegateInput1(DappObject);
     
                     await populateFtsos(rpcUrl, flrAddr);
+
+                    await setCurrentPopup("This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an FTSO and earn passive income!", true);
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("First, choose an FTSO from the dropdown list. Then, enter the percentage you would like to delegate to that FTSO. (either 50% or 100%!)", true);
+                    }, 15000);
     
                     try {
                         showAccountAddress(account);
@@ -1063,12 +1073,6 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     } catch (error) {
                         throw error;
                     }
-
-                    await setCurrentPopup("This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an FTSO and earn passive income!", true);
-
-                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an FTSO and earn passive income!", true);
-                    }, 500);
                 } else if (pageIndex === 2) {
                     var networkSelectBox = document.getElementById('SelectedNetwork');
     
@@ -1217,8 +1221,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         await setCurrentPopup("This is the 'Claim' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
 
                         DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                            await setCurrentPopup("This is the 'Claim' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
-                        }, 500);
+                            await setCurrentPopup("If you have any rewards, one of the bottom buttons will become red and contain the amount of rewards you have earned. You only need to click it to begin the claiming process!", true);
+                        }, 15000);
                     } catch (error) {
                         throw error;
                     }
@@ -1350,7 +1354,7 @@ function getDelegatedBips() {
     return delegatedBips;
 }
 
-function isDelegateInput1(DappObject) {
+async function isDelegateInput1(DappObject) {
     let delegatedBips = getDelegatedBips();
 
     let claimButton = document.getElementById("ClaimButton");
@@ -1365,6 +1369,10 @@ function isDelegateInput1(DappObject) {
             DappObject.isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Undelegate all";
         }
+
+        clearTimeout(DappObject.latestPopupTimeoutId);
+
+        await setCurrentPopup("Looks like you have already delegated 100% of your tokens! If you want to delegate to another FTSO, you will need to undelegate first!", true);
     } else {
         if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
             wrapbox1.removeAttribute('style');
@@ -1412,7 +1420,7 @@ async function populateFtsos(rpcUrl, flrAddr) {
                     let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
                     let delegatedicon = document.getElementById("delegatedIcon1");
                     delegatedicon.src = img;
-                    isDelegateInput1(DappObject);
+                    await isDelegateInput1(DappObject);
                 }
 
 
@@ -1456,7 +1464,7 @@ async function populateFtsos(rpcUrl, flrAddr) {
                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
                 fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
                     .then(res => res.json())
-                    .then(FtsoInfo => {
+                    .then(async FtsoInfo => {
                         FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
 
                         let indexNumber;
@@ -1491,7 +1499,9 @@ async function populateFtsos(rpcUrl, flrAddr) {
                                                 g += 1;
                                             }
                                         } else {
-                                            $.alert('The FTSO you are delegated to is invalid!');
+                                            clearTimeout(DappObject.latestPopupTimeoutId);
+
+                                            await setCurrentPopup('The FTSO you have delegated to is invalid!', true);
                                             break;
                                         }
                                     }
@@ -1562,7 +1572,9 @@ function showClaimRewards(rewards) {
 
 async function delegate(object, DappObject) {
     if (DappObject.isRealValue === false) {
-        $.alert("Please enter valid value. (50% or 100%)");
+        clearTimeout(DappObject.latestPopupTimeoutId);
+
+        await setCurrentPopup('You need to enter a valid value! (50% or 100%.)', true);
     } else {
         let amount1 = document.getElementById("Amount1");
         let ftso1 = document.querySelector(".selectize-input");
@@ -1601,7 +1613,7 @@ async function delegate(object, DappObject) {
                 });
             }
 
-            isDelegateInput1(DappObject);
+            await isDelegateInput1(DappObject);
         } catch (error) {
             console.log(error);
         }
@@ -1677,6 +1689,10 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
 
 async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
     DappObject.isHandlingOperation = true;
+
+    clearTimeout(DappObject.latestPopupTimeoutId);
+
+    checkConnection();
 
     await setCurrentAppState("Connecting");
 
@@ -1864,7 +1880,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: </br>" + account);
+            await setCurrentPopup("Connected to account: " + account);
 
             DappObject.isAccountConnected = true;
 
@@ -1875,7 +1891,7 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: </br>" + account);
+            await setCurrentPopup("Connected to account: " + account);
 
             DappObject.isAccountConnected = true;
         }
@@ -1941,11 +1957,11 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                         showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
                     }
 
-                    await setCurrentPopup("This is the 'Transfer' page,!", true);
+                    await setCurrentPopup("This is the 'Transfer' page, where you can transfer your FLR tokens from the C-Chain to the P-Chain, to enable you to stake to a validator node and earn passive income!", true);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("This is the 'Transfer' page,!", true);
-                    }, 500);
+                        await setCurrentPopup("First, choose if you would like to send your tokens from, or to the P-Chain by clicking on the arrow button. Then, input the amount of tokens you would like to transfer. (Don't forget to keep some FLR for gas fees!)", true);
+                    }, 15000);
                 } else if (stakingOption === 2) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
@@ -1957,6 +1973,12 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
                     } catch (error) {
                         console.log(error);
                     }
+
+                    await setCurrentPopup("This is the 'Stake' page, where you can stake your FLR tokens (at least 50,000) to a validator node and earn passive income!", true);
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("First, choose a validator from the dropdown list. Then, enter for how many days you would like to stake in the calendar. (Your FLR will be locked until that date.) Finally, enter the amount you would like to stake to that validator. (at least 50,000!)", true);
+                    }, 15000);
                 } else if (stakingOption === 3) {
                     const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
 
@@ -2006,6 +2028,12 @@ async function ConnectPChainClickStake(stakingOption, DappObject, HandleClick, P
 
                         DappObject.claimBool = false;
                     }
+
+                    await setCurrentPopup("This is the 'Rewards' page, where you can claim the FLR tokens that you have earned by staking to a validator node!", true);
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("If you have any rewards, the bottom button will become red and contain the amount of rewards you have earned. You only need to click it to begin the claiming process!", true);
+                    }, 15000);
                 }
 
                 DappObject.isHandlingOperation = false;
@@ -2310,7 +2338,9 @@ function copyTransferInput() {
 
 async function transferTokens(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
-        $.alert("Please enter a valid value");
+        clearTimeout(DappObject.latestPopupTimeoutId);
+
+        await setCurrentPopup('You need to enter a valid amount of tokens! (A number that is not greater than your balance.)', true);
     } else {
         DappObject.isHandlingOperation = true;
 
@@ -2324,7 +2354,9 @@ async function transferTokens(DappObject, stakingOption) {
             const amountFromValue = amountFrom.value;
 
             if (!isNumber(amountFromValue)) {
-                $.alert("Invalid number of tokens!");
+                clearTimeout(DappObject.latestPopupTimeoutId);
+
+                await setCurrentPopup('The amount you have entered is not a number!', true);
             } else {
                 const amountFromValueInt = web32.utils.toWei(amountFromValue, "gwei");
 
@@ -2862,7 +2894,9 @@ async function stake(DappObject, stakingOption) {
     amount1.value = "0";
 
     if (PchainBalanceBigInt < stakeAmount) {
-        $.alert("Insufficient funds!");
+        clearTimeout(DappObject.latestPopupTimeoutId);
+
+        await setCurrentPopup('You have insufficient funds!', true);
     } else {
         // Getting C-Chain Keychain
 
@@ -2987,7 +3021,9 @@ async function claimStakingRewards(DappObject, stakingOption) {
         } else {
             DappObject.isHandlingOperation = false;
 
-            $.alert("The Rewards Bucket is empty! Please try again later.")
+            clearTimeout(DappObject.latestPopupTimeoutId);
+
+            await setCurrentPopup('The Rewards Bucket is empty! Please try again later.', true);
         }
     } catch (error) {
         DappObject.isHandlingOperation = false;
@@ -3297,7 +3333,7 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
             await setCurrentAppState("Alert");
 
             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                await setCurrentPopup("Whoops! Looks like your Ledger device is not plugged in! Please plug in your Ledger device!", true);
+                await setCurrentPopup("Whoops! Looks like your Ledger device is not plugged in! Please plug in your Ledger device and click on Connect Wallet!", true);
             }, 500);
 
             throw new Error("Ledger not plugged in.");
@@ -3386,6 +3422,8 @@ window.dappInit = async (option, stakingOption) => {
 
     clearTimeout(DappObject.latestPopupTimeoutId);
 
+    checkConnection();
+
     window.dappOption = option;
 
     window.dappStakingOption = stakingOption;
@@ -3393,42 +3431,28 @@ window.dappInit = async (option, stakingOption) => {
     console.log("Is Ledger: " + DappObject.walletIndex);
 
     if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
-        // USB Connect Event
-
-        navigator.usb.addEventListener('connect', async event => {
-            console.log("Connected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
-                await handleTransportConnect(navigator.usb, DappObject, dappOption, dappStakingOption);
-            }
-        });
-
-        // USB Disconnect Event
-          
-        navigator.usb.addEventListener('disconnect', async event => {
-            console.log("Disconnected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
-                await handleTransportConnect(navigator.usb, DappObject, dappOption, dappStakingOption);
-            }
-        });
+        window.chosenNavigator = navigator.usb;
     } else if (("hid" in navigator) && !("usb" in navigator)) {
-        // HID Connect Event
-
-        navigator.hid.addEventListener('connect', async event => {
-            console.log("Connected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
-                await handleTransportConnect(navigator.hid, DappObject, dappOption, dappStakingOption);
-            }
-        });
-
-        // HID Disconnect Event
-          
-        navigator.hid.addEventListener('disconnect', async event => {
-            console.log("Disconnected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
-                await handleTransportConnect(navigator.hid, DappObject, dappOption, dappStakingOption);
-            }
-        });
+        window.chosenNavigator = navigator.hid;
     }
+
+    // USB Connect Event
+
+    navigator.usb.addEventListener('connect', async event => {
+        console.log("Connected!");
+        if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+            await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
+        }
+    });
+
+    // USB Disconnect Event
+        
+    navigator.usb.addEventListener('disconnect', async event => {
+        console.log("Disconnected!");
+        if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+            await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
+        }
+    });
 
     if (option === 1 || option === '1') {
         let selectedNetwork = document.getElementById("SelectedNetwork");
@@ -3465,7 +3489,9 @@ window.dappInit = async (option, stakingOption) => {
                 // If the input is valid, we wrap on click of "WrapButton".
                 document.getElementById("WrapButton").addEventListener("click", async () => {
                     if (DappObject.isRealValue === false) {
-                        $.alert("Please enter a valid value");
+                        clearTimeout(DappObject.latestPopupTimeoutId);
+
+                        await setCurrentPopup('You need to enter a valid value! (A number that is not greater than your balance.)', true);
                     } else {
                         DappObject.isHandlingOperation = true;
 
@@ -3482,7 +3508,9 @@ window.dappInit = async (option, stakingOption) => {
                             const amountFromValue = parseFloat(amountFrom.value);
 
                             if (!isNumber(amountFromValue)) {
-                                $.alert("Invalid number of tokens!");
+                                clearTimeout(DappObject.latestPopupTimeoutId);
+
+                                await setCurrentPopup('The value you have entered is not a number!', true);
                             } else {
                                 const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
                                 const amountFromValueWeiBN = BigInt(amountFromValueWei);
@@ -3508,9 +3536,13 @@ window.dappInit = async (option, stakingOption) => {
                                 const transactionParameters = txPayload;
 
                                 if (DappObject.wrapBool === true && amountFromValueWeiBN > balance) {
-                                    $.alert("Insufficient balance!");
+                                    clearTimeout(DappObject.latestPopupTimeoutId);
+
+                                    await setCurrentPopup('You do not have enough native tokens!', true);
                                 } else if (DappObject.wrapBool === false && amountFromValueWeiBN > tokenBalance) {
-                                    $.alert("Insufficient balance!");
+                                    clearTimeout(DappObject.latestPopupTimeoutId);
+
+                                    await setCurrentPopup('You do not have enough wrapped tokens!', true);
                                 } else {
                                     if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
                                         amountFrom.value = "";
@@ -3626,8 +3658,6 @@ window.dappInit = async (option, stakingOption) => {
                 }
             });
         });
-
-        updateCall();
     } else if (option === 2 || option === '2') {
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let rpcUrl;
@@ -3641,8 +3671,8 @@ window.dappInit = async (option, stakingOption) => {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
                 });
             
-                document.getElementById("Amount1").addEventListener('input', function () {
-                    isDelegateInput1(DappObject);
+                document.getElementById("Amount1").addEventListener('input', async function () {
+                    await isDelegateInput1(DappObject);
             
                     var str = this.value;
                     var suffix = "%";
@@ -3720,7 +3750,7 @@ window.dappInit = async (option, stakingOption) => {
 
                 ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex)
 
-                isDelegateInput1(DappObject);
+                await isDelegateInput1(DappObject);
 
                 selectedNetwork.onchange = async () => {
                     object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
@@ -3978,7 +4008,9 @@ window.dappInit = async (option, stakingOption) => {
                             } else {
                                 DappObject.isHandlingOperation = false;
 
-                                $.alert("The Rewards Bucket is empty! Please try again later.")
+                                clearTimeout(DappObject.latestPopupTimeoutId);
+
+                                await setCurrentPopup('The Rewards Bucket is empty! Please try again later.', true);
                             }
                         } catch (error) {
                             DappObject.isHandlingOperation = false;
@@ -4261,7 +4293,9 @@ window.dappInit = async (option, stakingOption) => {
 
             document.getElementById("WrapButton").addEventListener("click", async () => {
                 if (DappObject.isRealValue === false) {
-                    $.alert("Please enter valid staking amount. (More than 0)");
+                    clearTimeout(DappObject.latestPopupTimeoutId);
+
+                    await setCurrentPopup('Please enter a valid staking amount. (More than 0!)', true);
                 } else {
                     stake(DappObject, stakingOption);
                 }
