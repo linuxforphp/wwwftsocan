@@ -364,11 +364,13 @@ h1, h2 {
 }
 
 .current-wallet {
+    z-index: 1031 !important;
+    font-size: inherit;
     cursor: pointer;
     transition: 2s;
     border-radius: 50%;
-	position: absolute;
-	top: 82%;
+	position: sticky;
+	bottom: 8%;
 	left: 85%;
 	height: 80px; 
 	width: 80px;
@@ -509,6 +511,7 @@ h1, h2 {
     opacity: 0;
     cursor: auto;
     border-radius: 30px;
+    height: fit-content;
     width: 250px;
     position: absolute;
     bottom: 80px;
@@ -516,10 +519,17 @@ h1, h2 {
     padding: 10px;
     background: #f4f4f4;
     border: 4px solid rgb(247, 75, 60);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
     transition: 0.5s;
 }
 
 .current-wallet-popup.showing {
+    transform: scaleY(1);
     opacity: 1;
     bottom: 90px;
 }
@@ -623,6 +633,16 @@ h1, h2 {
     .select-container {
         height: fit-content;
     }
+
+    .current-wallet {
+        font-size: 13px;
+        left: 72%;
+    }
+
+    .current-wallet-popup {
+        width: 140px;
+        left: -50%;
+    }
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
@@ -695,6 +715,20 @@ h1, h2 {
 
     .select-container {
         height: fit-content;
+    }
+
+    .current-wallet {
+        font-size: 13px;
+    }
+
+    .current-wallet-popup {
+        width: 375px;
+        left: -325%;
+    }
+
+    .current-wallet-popup:after, .current-wallet-popup:before {
+        left: 75%;
+        top: 100%;
     }
 }
 
