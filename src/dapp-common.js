@@ -937,7 +937,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                             DappObject.unPrefixedAddr = unprefixed;
 
-                            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+                            if (DappObject.selectedAddress !== account) {
+                                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+                            }
                         }
 
                         var $select = $('#select-account').selectize({
@@ -977,6 +979,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         selectize = $select[0].selectize;
 
                         if (typeof HandleClick !== "undefined") {
+                            console.log("REMOVING LISTENER");
                             document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
                         }
 
@@ -1775,8 +1778,10 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                             let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
     
                             DappObject.unPrefixedAddr = unprefixed;
-    
-                            ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
+
+                            if (DappObject.selectedAddress !== account) {        
+                                ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
+                            }
                         }
     
                         var $select = $('#select-account').selectize({
@@ -3597,7 +3602,11 @@ window.dappInit = async (option, stakingOption) => {
                     }
                 });
 
-                ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+                if (DappObject.ledgerSelectedIndex !== "") {
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+                } else {
+                    document.getElementById("ConnectWallet").click();
+                }
 
                 // When the Connect Wallet button is clicked, we connect the wallet, and if it
                 // has already been clicked, we copy the public address to the clipboard.
@@ -3770,7 +3779,11 @@ window.dappInit = async (option, stakingOption) => {
                     }
                 });
 
-                ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex)
+                if (DappObject.ledgerSelectedIndex !== "") {
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+                } else {
+                    document.getElementById("ConnectWallet").click();
+                }
 
                 await isDelegateInput1(DappObject);
 
@@ -4117,7 +4130,11 @@ window.dappInit = async (option, stakingOption) => {
                     }
                 });
 
-                ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex)
+                if (DappObject.ledgerSelectedIndex !== "") {
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+                } else {
+                    document.getElementById("ConnectWallet").click();
+                }
 
                 if (object.networkValue === '1') {
                     document.getElementById("layer3").innerHTML = DappObject.flrLogo;
