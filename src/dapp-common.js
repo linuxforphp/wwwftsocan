@@ -2766,7 +2766,9 @@ async function populateValidators() {
                         id: insert[z].id,
                         title: insert[z].title,
                         nodeid: insert[z].nodeid,
-                        img: insert[z].img
+                        img: insert[z].img,
+                        startdate: insert[z].startdate,
+                        enddate: insert[z].enddate
                     });
                 }
             });
