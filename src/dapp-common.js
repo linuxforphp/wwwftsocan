@@ -1262,10 +1262,10 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
         var ClickHandler;
 
         if (HandleClick) {
-            document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+            document.getElementById("ConnectWallet")?.removeEventListener("click", HandleClick);
         }
 
-        document.getElementById("ConnectWallet").addEventListener("click", ClickHandler = async () => {
+        document.getElementById("ConnectWallet")?.addEventListener("click", ClickHandler = async () => {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, ClickHandler);
         });
     }
@@ -2083,10 +2083,10 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
         var ClickHandler;
 
         if (HandleClick) {
-            document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
+            document.getElementById("ConnectPChain")?.removeEventListener("click", HandleClick);
         }
 
-        document.getElementById("ConnectPChain").addEventListener("click", ClickHandler = async () => {
+        document.getElementById("ConnectPChain")?.addEventListener("click", ClickHandler = async () => {
             ConnectPChainClickStake(DappObject, ClickHandler);
         });
     }
@@ -3441,7 +3441,7 @@ window.dappInit = async (option, stakingOption) => {
 
     closeCurrentPopup();
 
-    document.getElementById("currentWallet").addEventListener("click", (event) => {
+    document.getElementById("currentWallet")?.addEventListener("click", (event) => {
         console.log(event.target);
 
         if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
@@ -3470,7 +3470,7 @@ window.dappInit = async (option, stakingOption) => {
     if (("usb" in navigator) || ("hid" in navigator)) {
         // USB Connect Event
 
-        chosenNavigator.addEventListener('connect', async event => {
+        chosenNavigator?.addEventListener('connect', async event => {
             console.log("Connected!");
             if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
                 await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
@@ -3479,7 +3479,7 @@ window.dappInit = async (option, stakingOption) => {
 
         // USB Disconnect Event
             
-        chosenNavigator.addEventListener('disconnect', async event => {
+        chosenNavigator?.addEventListener('disconnect', async event => {
             console.log("Disconnected!");
             if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
                 await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
@@ -3505,22 +3505,22 @@ window.dappInit = async (option, stakingOption) => {
 
                 showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
 
-                document.getElementById("ConnectWallet").addEventListener("click", handleClick = async () => {
+                document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (dappOption - 1), handleClick);
                 });
             
                 // We check if the input is valid, then copy it to the wrapped tokens section.
-                document.querySelector("#AmountFrom").addEventListener("input", function () {
+                document.querySelector("#AmountFrom")?.addEventListener("input", function () {
                     setWrapButton(DappObject);
                     copyWrapInput();
                 });
             
-                document.getElementById("wrapUnwrap").addEventListener("click", async () => {
+                document.getElementById("wrapUnwrap")?.addEventListener("click", async () => {
                     toggleWrapButton(DappObject, object.tokenIdentifier, object.wrappedTokenIdentifier, object.rpcUrl, object.flrAddr);
                 });
             
                 // If the input is valid, we wrap on click of "WrapButton".
-                document.getElementById("WrapButton").addEventListener("click", async () => {
+                document.getElementById("WrapButton")?.addEventListener("click", async () => {
                     if (DappObject.isRealValue === false) {
                         await setCurrentPopup('You need to enter a valid value! (A number that is not greater than your balance.)', true, DappObject);
                     } else {
@@ -3698,11 +3698,11 @@ window.dappInit = async (option, stakingOption) => {
         await createSelectedNetwork(DappObject).then( async () => {
             getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
 
-                document.getElementById("ConnectWallet").addEventListener("click", handleClick = async () => {
+                document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
                 });
             
-                document.getElementById("Amount1").addEventListener('input', async function () {
+                document.getElementById("Amount1")?.addEventListener('input', async function () {
                     await isDelegateInput1(DappObject);
             
                     var str = this.value;
@@ -3726,7 +3726,7 @@ window.dappInit = async (option, stakingOption) => {
                     }
                 });
             
-                document.getElementById("ClaimButton").addEventListener("click", async () => {
+                document.getElementById("ClaimButton")?.addEventListener("click", async () => {
                     let web32 = new Web3(object.rpcUrl);
 
                     DappObject.isHandlingOperation = true;
@@ -3837,11 +3837,11 @@ window.dappInit = async (option, stakingOption) => {
 
                 showTokenIdentifiers(null, object.wrappedTokenIdentifier);
 
-                document.getElementById("ConnectWallet").addEventListener("click", handleClick = async () => {
+                document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
                 });
             
-                document.getElementById("ClaimButton").addEventListener("click", async () => {
+                document.getElementById("ClaimButton")?.addEventListener("click", async () => {
                     if (DappObject.claimBool === true) {
                         DappObject.isHandlingOperation = true;
 
@@ -4055,7 +4055,7 @@ window.dappInit = async (option, stakingOption) => {
                     }
                 });
             
-                document.getElementById("ClaimFdButton").addEventListener("click", async () => {
+                document.getElementById("ClaimFdButton")?.addEventListener("click", async () => {
                     if (DappObject.fdClaimBool === true) {
                         DappObject.isHandlingOperation = true;
 
@@ -4243,10 +4243,10 @@ window.dappInit = async (option, stakingOption) => {
 
             DappObject.walletIndex = -1;
 
-            document.getElementById("ContinueMetamask").addEventListener("click", async () => {
+            document.getElementById("ContinueMetamask")?.addEventListener("click", async () => {
                 getDappPage(8);
             });
-            document.getElementById("ContinueLedger").addEventListener("click", async () => {
+            document.getElementById("ContinueLedger")?.addEventListener("click", async () => {
                 getDappPage(9);
             });
 
@@ -4263,12 +4263,12 @@ window.dappInit = async (option, stakingOption) => {
 
             await setCurrentAppState("Null");
 
-            document.getElementById("ContinueAnyway").addEventListener("click", async () => {
+            document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
                 DappObject.walletIndex = 0;
                 getDappPage(1);
             });
 
-            document.getElementById("GoBack").addEventListener("click", async () => {
+            document.getElementById("GoBack")?.addEventListener("click", async () => {
                 getDappPage(4);
             });
 
@@ -4284,7 +4284,7 @@ window.dappInit = async (option, stakingOption) => {
 
                 await setCurrentPopup("Whoops! Your browser does not currently support Ledger Transport! You will need to use another wallet.", true, DappObject);
             } else {
-                document.getElementById("ContinueAnyway").addEventListener("click", async () => {
+                document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
                     DappObject.walletIndex = 1;
                     getDappPage(1);
                 });
@@ -4292,11 +4292,11 @@ window.dappInit = async (option, stakingOption) => {
                 await setCurrentPopup("Before continuing, you will need to open the Avalanche app on your Ledger Device.", true, DappObject);
             }
 
-            document.getElementById("GoBack").addEventListener("click", async () => {
+            document.getElementById("GoBack")?.addEventListener("click", async () => {
                 getDappPage(4);
             });
         } else if (stakingOption === 1) {
-            document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
+            document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
 
@@ -4305,26 +4305,26 @@ window.dappInit = async (option, stakingOption) => {
             }
 
             // We check if the input is valid, then copy it to the wrapped tokens section.
-            document.querySelector("#AmountFrom").addEventListener("input", function () {
+            document.querySelector("#AmountFrom")?.addEventListener("input", function () {
                 setTransferButton(DappObject);
                 copyWrapInput();
             });
 
-            document.querySelector("#AmountTo").addEventListener("input", function () {
+            document.querySelector("#AmountTo")?.addEventListener("input", function () {
                 setTransferButton2(DappObject);
                 copyTransferInput();
             });
 
-            document.getElementById("TransferIcon").addEventListener("click", async () => {
+            document.getElementById("TransferIcon")?.addEventListener("click", async () => {
                 toggleTransferButton(DappObject, stakingOption);
             });
 
-            document.getElementById("WrapButton").addEventListener("click", async () => {
+            document.getElementById("WrapButton")?.addEventListener("click", async () => {
                 transferTokens(DappObject, stakingOption);
             });
         } else if (stakingOption === 2) {
 
-            document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
+            document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
 
@@ -4332,7 +4332,7 @@ window.dappInit = async (option, stakingOption) => {
                 document.getElementById("ConnectPChain").click();
             }
 
-            document.getElementById("WrapButton").addEventListener("click", async () => {
+            document.getElementById("WrapButton")?.addEventListener("click", async () => {
                 if (DappObject.isRealValue === false) {
                     await setCurrentPopup('Please enter a valid staking amount. (More than 0!)', true, DappObject);
                 } else {
@@ -4340,7 +4340,7 @@ window.dappInit = async (option, stakingOption) => {
                 }
             });
         } else if (stakingOption === 3) {
-            document.getElementById("ConnectPChain").addEventListener("click", handleClick = async () => {
+            document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
 
@@ -4348,7 +4348,7 @@ window.dappInit = async (option, stakingOption) => {
                 document.getElementById("ConnectPChain").click();
             }
 
-            document.getElementById("ClaimButton").addEventListener("click", async () => {
+            document.getElementById("ClaimButton")?.addEventListener("click", async () => {
                 if (DappObject.claimBool === true) {
                     claimStakingRewards(DappObject, stakingOption);
                 }
