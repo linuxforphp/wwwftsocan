@@ -976,6 +976,10 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                         selectize = $select[0].selectize;
 
+                        if (typeof HandleClick !== "undefined") {
+                            document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+                        }
+
                         console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
 
                         if (DappObject.ledgerSelectedIndex !== "") {
@@ -1810,6 +1814,10 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                         });
     
                         selectize = $select[0].selectize;
+
+                        if (typeof HandleClick !== "undefined") {
+                            document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
+                        }
     
                         console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
     
@@ -1892,6 +1900,10 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             account = PassedEthAddr;
             flrPublicKey = PassedPublicKey;
 
+            if (typeof HandleClick !== "undefined") {
+                document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
+            }
+
             await setCurrentAppState("Connected");
 
             await setCurrentPopup("Connected to account: " + account.slice(0, 17));
@@ -1934,8 +1946,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                 const balance = await web32.eth.getBalance(account);
 
                 console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
-
-                console.log(stakingOption);
 
                 console.log(PchainAddrEncoded);
 
@@ -2041,7 +2051,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
                 DappObject.isHandlingOperation = false;
             } else {
-                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded, DappObject, stakingOption);
+                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
             }
         } else {
             document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
@@ -2374,7 +2384,7 @@ async function transferTokens(DappObject, stakingOption) {
 
                     const pKeychain = await keychainp();
 
-                    const nonce = await web32.eth.getTransactionCount(account);
+                    const nonce = await web32.eth.getTransactionCount(DappObject.selectedAddress);
 
                     console.log(cKeychain);
 
