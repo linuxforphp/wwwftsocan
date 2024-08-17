@@ -154,7 +154,7 @@
                 id="polygon29"
                 style="fill:#ffffff;fill-opacity:1" />&#10;</g>&#10;</svg>
             </div>
-            <i class="connect-wallet-text" id="ConnectWalletText">Metamask</i>
+            <i class="connect-wallet-text">Metamask</i>
         </button>
         <div class="addr-wrap"><strong>DApp</strong></div>
     </div>
@@ -202,7 +202,7 @@
                     style="fill:#ffffff;fill-opacity:1" />
                 </svg>
             </div>
-            <i class="connect-wallet-text" id="ConnectWalletText">Ledger</i>
+            <i class="connect-wallet-text">Ledger</i>
         </button>
         <div class="addr-wrap"><strong>DApp + Staking</strong></div>
     </div>

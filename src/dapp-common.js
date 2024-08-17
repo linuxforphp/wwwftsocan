@@ -383,6 +383,8 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
             showTokenBalance(0);
             showConnectedAccountAddress('0x0');
+            showFdRewards(0);
+            showClaimRewards(0);
 
             setCurrentAppState("Null");
 
@@ -435,7 +437,7 @@ async function handleChainChanged() {
             }
         });
 
-        document.getElementById("ConnectWallet").click();
+        document.getElementById("ConnectWallet")?.click();
     } catch (error) {
         // console.log(error);
     }
@@ -885,7 +887,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             let addresses;
 
-                            console.log("Fetching Addresses... ETH");
+                            // console.log("Fetching Addresses... ETH");
 
                             if (rpcUrl.includes("flr")) {
                                 addresses = await getLedgerAddresses("flare");
@@ -906,7 +908,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             DappObject.ledgerAddrArray = insert;
                         }
 
-                        console.log(DappObject.ledgerAddrArray);
+                        // console.log(DappObject.ledgerAddrArray);
 
                         document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
 
@@ -921,7 +923,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                             DappObject.selectedAddress = account;
 
-                            console.log("Value: " + value);
+                            // console.log("Value: " + value);
 
                             DappObject.ledgerSelectedIndex = value;
 
@@ -937,9 +939,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                             DappObject.unPrefixedAddr = unprefixed;
 
-                            if (DappObject.selectedAddress !== account) {
-                                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
-                            }
+                            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
                         }
 
                         var $select = $('#select-account').selectize({
@@ -979,11 +979,11 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         selectize = $select[0].selectize;
 
                         if (typeof HandleClick !== "undefined") {
-                            console.log("REMOVING LISTENER");
+                            // console.log("REMOVING LISTENER");
                             document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
                         }
 
-                        console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
+                        // console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
 
                         if (DappObject.ledgerSelectedIndex !== "") {
                             selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
@@ -1164,8 +1164,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         if (rewardManagerContract) {
                             unclaimedAmountv2 = await rewardManagerContract.methods.getStateOfRewards(account).call();
                 
-                            console.log("unclaimedAmountv2: ");
-                            console.log(unclaimedAmountv2);
+                            // console.log("unclaimedAmountv2: ");
+                            // console.log(unclaimedAmountv2);
                             // console.log("unclaimedAmount: ");
                             // console.log(unclaimedAmount);
                 
@@ -1270,7 +1270,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
         var ClickHandler;
 
         if (HandleClick) {
-            document.getElementById("ConnectWallet")?.removeEventListener("click", HandleClick);
+            document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
         }
 
         document.getElementById("ConnectWallet")?.addEventListener("click", ClickHandler = async () => {
@@ -1541,7 +1541,7 @@ async function populateFtsos(rpcUrl, flrAddr) {
                     }
                 });
             } catch (error) {
-                // // console.log(error)
+                // console.log(error)
             }
 
             resolve();
@@ -1786,10 +1786,8 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                             let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
     
                             DappObject.unPrefixedAddr = unprefixed;
-
-                            if (DappObject.selectedAddress !== account) {        
-                                ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
-                            }
+     
+                            ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
                         }
     
                         var $select = $('#select-account').selectize({
@@ -2099,7 +2097,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
         var ClickHandler;
 
         if (HandleClick) {
-            document.getElementById("ConnectPChain")?.removeEventListener("click", HandleClick);
+            document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
         }
 
         document.getElementById("ConnectPChain")?.addEventListener("click", ClickHandler = async () => {
@@ -2246,7 +2244,7 @@ async function RefreshStakingPage(DappObject, stakingOption, accounts) {
                 await populateValidators();
             }
         } else {
-            document.getElementById("ConnectPChain").click();
+            document.getElementById("ConnectPChain")?.click();
         }
     } else {
         DappObject.signatureStaking = "";
@@ -2259,7 +2257,7 @@ async function RefreshStakingPage(DappObject, stakingOption, accounts) {
 
         DappObject.selectedAddress = "";
 
-        document.getElementById("ConnectPChain").click();
+        document.getElementById("ConnectPChain")?.click();
     }
 }
 
@@ -2794,7 +2792,7 @@ async function populateValidators() {
                 }
             });
         } catch (error) {
-            // // console.log(error)
+            // console.log(error)
         }
 
         resolve();
@@ -3623,7 +3621,7 @@ window.dappInit = async (option, stakingOption) => {
                 if (DappObject.ledgerSelectedIndex !== "") {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                 } else {
-                    document.getElementById("ConnectWallet").click();
+                    document.getElementById("ConnectWallet")?.click();
                 }
 
                 // When the Connect Wallet button is clicked, we connect the wallet, and if it
@@ -3671,7 +3669,7 @@ window.dappInit = async (option, stakingOption) => {
                     toIcon.style.color = "#000";
                     document.getElementById("Wrap").style.color = "#fd000f";
                     document.getElementById("Unwrap").style.color = "#383a3b";
-                    document.getElementById("wrapUnwrap").click();
+                    document.getElementById("wrapUnwrap")?.click();
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -3690,7 +3688,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
-                        // // console.log(error);
+                        // console.log(error);
                     }
                     
                     setWrapButton(DappObject);
@@ -3800,7 +3798,7 @@ window.dappInit = async (option, stakingOption) => {
                 if (DappObject.ledgerSelectedIndex !== "") {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                 } else {
-                    document.getElementById("ConnectWallet").click();
+                    document.getElementById("ConnectWallet")?.click();
                 }
 
                 await isDelegateInput1(DappObject);
@@ -3827,7 +3825,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
-                        // // console.log(error);
+                        // console.log(error);
                     }
                 };
                 if (DappObject.walletIndex === 0) {
@@ -4068,7 +4066,7 @@ window.dappInit = async (option, stakingOption) => {
                         } catch (error) {
                             DappObject.isHandlingOperation = false;
 
-                            // // console.log(error);
+                            // console.log(error);
                         }
                     }
                 });
@@ -4143,7 +4141,7 @@ window.dappInit = async (option, stakingOption) => {
                         } catch (error) {
                             DappObject.isHandlingOperation = false;
 
-                            // // console.log(error);
+                            // console.log(error);
                         }
                     }
                 });
@@ -4151,7 +4149,7 @@ window.dappInit = async (option, stakingOption) => {
                 if (DappObject.ledgerSelectedIndex !== "") {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                 } else {
-                    document.getElementById("ConnectWallet").click();
+                    document.getElementById("ConnectWallet")?.click();
                 }
 
                 if (object.networkValue === '1') {
@@ -4196,7 +4194,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
-                        // // console.log(error);
+                        // console.log(error);
                     }
                 };
 
@@ -4226,7 +4224,7 @@ window.dappInit = async (option, stakingOption) => {
                     }).catch((error) => console.error(error));
             }
         } catch (error) {
-            // // console.log(error);
+            // console.log(error);
 
             if (error.code === 4902) {
                 try {
@@ -4321,7 +4319,7 @@ window.dappInit = async (option, stakingOption) => {
             });
 
             if (DappObject.walletIndex === 0 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
-                document.getElementById("ConnectPChain").click();
+                document.getElementById("ConnectPChain")?.click();
             }
 
             // We check if the input is valid, then copy it to the wrapped tokens section.
@@ -4349,7 +4347,7 @@ window.dappInit = async (option, stakingOption) => {
             });
 
             if (DappObject.walletIndex === 0 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
-                document.getElementById("ConnectPChain").click();
+                document.getElementById("ConnectPChain")?.click();
             }
 
             document.getElementById("WrapButton")?.addEventListener("click", async () => {
@@ -4365,7 +4363,7 @@ window.dappInit = async (option, stakingOption) => {
             });
 
             if (DappObject.walletIndex === 0 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
-                document.getElementById("ConnectPChain").click();
+                document.getElementById("ConnectPChain")?.click();
             }
 
             document.getElementById("ClaimButton")?.addEventListener("click", async () => {

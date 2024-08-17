@@ -87,6 +87,15 @@
     }
 
     function getDappPage(option, reconnect = true) {
+            if (option === 4) {
+                $.get( "stake", function( data ) {
+                    $( "#dapp-root" ).html( data );
+
+                    if (reconnect === true) {
+                        window.dappInit(4);
+                    }
+                });
+            }
         if (DappObject.isAccountConnected === true) {
             if (option === 1) {
                 if (DappObject.walletIndex !== -1) {
@@ -118,14 +127,6 @@
                         }
                     });
                 } 
-            } else if (option === 4) {
-                $.get( "stake", function( data ) {
-                    $( "#dapp-root" ).html( data );
-
-                    if (reconnect === true) {
-                        window.dappInit(4);
-                    }
-                });
             } else if (option === 5) {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "stakeTransfer", function( data ) {
