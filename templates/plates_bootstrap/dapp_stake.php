@@ -156,7 +156,7 @@
             </div>
             <i class="connect-wallet-text">Metamask</i>
         </button>
-        <div class="addr-wrap"><strong>DApp</strong></div>
+        <div class="addr-wrap"><strong>DApp + Staking</strong></div>
     </div>
     <div class="col-sm-6">
         <button id="ContinueLedger" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
