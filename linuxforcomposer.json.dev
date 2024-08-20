@@ -21,6 +21,7 @@
                     "cd /srv",
                     "mv www www.OLD",
                     "ln -s tempo/wwwftsocan/public www",
+                    "/srv/tempo/wwwftsocan/scripts/ftsocan_add_ssl_support.sh dappdev.ftsocan.com",
                     "/etc/init.d/mysql start",
                     "sleep 5",
                     "mysql -uroot -e \"CREATE DATABASE fw;\"",
@@ -56,6 +57,9 @@
             "ports": {
                 "port1": [
                     "8181:80"
+                ],
+                "port2": [
+                    "8443:443"
                 ]
             },
             "volumes": {
