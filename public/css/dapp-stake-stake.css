@@ -1,0 +1,247 @@
+.selectize-input {
+    position: absolute;
+    z-index: 100;
+    width: auto;
+    outline: none;
+    font-size: 2.4rem !important;
+    padding: 20px;
+    padding-right: 30px;
+    cursor: pointer;
+    border-radius: .3em;
+    margin: 0.2em 10em 0 0 !important;
+    left: 3.5em;
+    background-color: rgba(255, 255, 255, 0.0) !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #67696a !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: 0.5s;
+    letter-spacing: normal;
+}
+
+.selectize-dropdown-content {
+    text-align: left !important;
+}
+
+.selectize-dropdown-content div {
+    padding: 5px 20px;
+}
+
+.selectize-control.single .selectize-input:not(.no-arrow)::after {
+    border-width: 6px 6px 0 6px !important;
+}
+
+.ftso-name {
+    font-size: 2rem !important;
+    color: #383a3b !important;
+}
+
+.ftso-address {
+    display: block;
+    font-size: 1.3rem !important;
+    color: #67696a !important;
+}
+
+
+.stake-amount {
+    display: inline-block;
+    margin: 27px 100px 25px 25px;
+    position: relative;
+    width: 10%;
+}
+
+.stake-amount input {
+    border-radius: 0px;
+    background-color: transparent;
+    border: none;
+    min-width: 110px;
+    height: 30px;
+    float: left;
+    display: block;
+    padding: 0 15px 0 2px;
+    margin: 0;
+    text-align: center;
+    font-size: 25px;
+}
+
+.stake-amount input:focus {
+    outline: 0;
+}
+
+.stake-amount .stake-amount-nav {
+    float: left;
+    position: relative;
+    height: 30px;
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button {
+    position: relative;
+    cursor: pointer;
+    width: 22px;
+    text-align: center;
+    color: #333;
+    font-size: 12px;
+    line-height: 1.8;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.stake-amount-button-up:active,
+.stake-amount-button-down:active {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-up {
+    border-left: 1px solid rgb(181, 181, 181);
+    border-right: 1px solid rgb(181, 181, 181);
+    position: absolute;
+    height: 70%;
+    bottom: 15px;
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-down {
+    border-left: 1px solid rgb(181, 181, 181);
+    border-right: 1px solid rgb(181, 181, 181);
+    position: absolute;
+    top: 15px;
+    height: 70%;
+}
+
+.stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-max {
+    position: absolute;
+    top: 4px;
+    left: 42px;
+    height: 70%;
+    width: 40px;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#ui-datepicker-div {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.stake-calendar {
+    display: inline-block;
+    margin: 27px 130px 25px 25px;
+    position: relative;
+    width: 10%;
+}
+
+#calendarToday {
+    display: none;
+}
+
+#calendarMax {
+    border-color: #fd000f;
+}
+
+.stake-calendar input {
+    border-radius: 0px;
+    background-color: transparent;
+    border: none;
+    min-width: 110px;
+    width: auto;
+    height: 30px;
+    float: left;
+    display: block;
+    padding-right: 15px !important;
+    padding: 0 15px 0 2px;
+    margin: 0;
+    text-align: center;
+}
+
+.stake-calendar input:focus {
+    outline: 0;
+}
+
+.ui-datepicker-calendar {
+    border-bottom: 1px solid #aaa;
+    table-layout: fixed;
+}
+
+.ui-datepicker-close {
+    border-radius: 15px;
+    background-color: #fff !important;
+    color: #383a3b !important;
+    border-style: solid;
+}
+
+.ui-datepicker-current {
+    border-radius: 15px;
+    background-color: rgb(253, 0, 15, 0.8) !important;
+    color: #fff !important;
+    border-style: solid;
+}
+
+.ui-datepicker-header {
+    color: #fff !important;
+    background-color: rgb(255, 0, 15, 0.7) !important;
+    font-weight: normal;
+    border-radius: 15px;
+}
+
+.ui-datepicker-prev span,
+.ui-datepicker-next span {
+    content: "";
+    color: #fff;
+}
+
+.ui-timepicker-select {
+    background: transparent;
+    border: none;
+}
+
+.disabled {
+    opacity: 0.7 !important;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+    .selectize-input {
+        font-size: 2rem !important;
+    }
+
+    .stake-calendar input {
+        min-width: none;
+        width: 95%;
+    }
+
+    .stake-calendar {
+        width: 40%;
+        margin: 60px 0px 0px -10px;
+    }
+
+    .stake-amount {
+        margin: 27px 100px 33px 0px;
+    }
+
+    .stake-amount input {
+        min-width: 90px;
+        font-size: 22px;
+    }
+
+    .stake-amount .stake-amount-nav .stake-amount-button {
+        font-size: 10px;
+    }
+
+    .stake-amount .stake-amount-nav .stake-amount-button.stake-amount-button-max {
+        top: 6px;
+    }
+}

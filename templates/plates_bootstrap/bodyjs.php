@@ -9,6 +9,7 @@
         ================================================== -->
 <!-- Main jQuery -->
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-1.11.1.min.js"></script>
+
 <!-- feather.min.js -->
 <script src="<?=$view['urlbaseaddr'] ?>js/feather.min.js"></script>
 <!-- Twitter Bootstrap -->
@@ -86,30 +87,93 @@
     }
 
     function getDappPage(option, reconnect = true) {
-        if (option === 1) {
-            $.get( "wrap", function( data ) {
-                $( "#dapp-root" ).html( data );
-                
-                if (reconnect === true) {
-                    window.dappInit(1);
-                }
-            });
-        } else if (option === 2) {
-            $.get( "delegate", function( data ) {
-                $( "#dapp-root" ).html( data );
+            if (option === 4) {
+                $.get( "stake", function( data ) {
+                    $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(2);
+                    if (reconnect === true) {
+                        window.dappInit(4);
+                    }
+                });
+            }
+        if (DappObject.isAccountConnected === true) {
+            if (option === 1) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "wrap", function( data ) {
+                        $( "#dapp-root" ).html( data );
+                        
+                        if (reconnect === true) {
+                            window.dappInit(1);
+                        }
+                    });
                 }
-            });
-        } else if (option === 3) {
-            $.get( "claim", function( data ) {
-                $( "#dapp-root" ).html( data );
+            } else if (option === 2) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "delegate", function( data ) {
+                        $( "#dapp-root" ).html( data );
 
-                if (reconnect === true) {
-                    window.dappInit(3);
+                        if (reconnect === true) {
+                            window.dappInit(2);
+                        }
+                    });
                 }
-            });
+            } else if (option === 3) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "claim", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(3);
+                        }
+                    });
+                } 
+            } else if (option === 5) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "stakeTransfer", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(4, 1);
+                        }
+                    });
+                }
+            } else if (option === 6) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "stakeStake", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(4, 2);
+                        }
+                    });
+                }
+            } else if (option === 7) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "stakeRewards", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(4, 3);
+                        }
+                    });
+                }
+            } else if (option === 8) {
+                $.get( "stakeMetamask", function( data ) {
+                    $( "#dapp-root" ).html( data );
+
+                    if (reconnect === true) {
+                        window.dappInit(4, 4);
+                    }
+                });
+            } else if (option === 9) {
+                $.get( "stakeLedger", function( data ) {
+                    $( "#dapp-root" ).html( data );
+
+                    if (reconnect === true) {
+                        window.dappInit(4, 5);
+                    }
+                });
+            }
         }
     }
 </script>
@@ -118,8 +182,17 @@
     <?php echo $value ?>
 <?php endforeach; ?>
 
+<script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui.min.js"></script>
+
+<!-- Custom calendar -->
+<script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui-timepicker-addon.min.js"></script>
+
 <!-- Custom alert box -->
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-confirm.min.js"></script>
+
+<!-- Custom select box -->
+<script src="<?=$view['urlbaseaddr'] ?>js/selectize.js"></script>
+<script src="<?=$view['urlbaseaddr'] ?>js/selectize.min.js"></script>
 
 <!-- Modernizer Script for old Browsers -->
 <script src="<?=$view['urlbaseaddr'] ?>js/modernizr-2.6.2.min.js"></script>

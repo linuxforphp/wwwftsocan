@@ -23,9 +23,7 @@
                 <span class="wrap-box-content">
                     <div class="row">
                         <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
-                        <select class="selected-ftso" id="ftso-1" required>
-                            <option value="" data-ftso="0" disabled selected hidden>Select FTSO</option>
-                        </select>
+                        <select id="select-ftso" placeholder="Select FTSO"></select>
                         <input id="Amount1" class="amount-delegate"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
                     </div>
                 </span>

@@ -37,7 +37,7 @@ Fixed Navigation
                 <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>index')">Home</a></li>
                 <li id="delegate-dropdown">
                     <a href="#" class="delegate-dropdown">Delegation Tools <i class="fas fa-caret-down"></i></a>
-                    <div class="dd-menu">
+                    <div class="dd-menu" style="top: 37px; left: 15px;">
                         <div class="dropdown-menu-dapp" style="left: 0px;">
                             <ul>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')">DApp<sup><strong> NEW!</strong></sup></a></li>
@@ -58,9 +58,11 @@ Fixed Navigation
         <div class="container">
             <div class="collapse navbar-collapse static-top navbar-right" role="navigation" style="border: none; box-shadow: none; -webkit-box-shadow: none;">
                 <ul class="nav navbar-nav navbar-nav-dapp nav-item">
+                    <li><a href="#" class="nav-link" onclick="getDappPage(4)">Select Wallet</a></li>
                     <li><a href="#" class="nav-link" onclick="getDappPage(1)">Wrap</a></li>
                     <li><a href="#" class="nav-link" onclick="getDappPage(2)">Delegate</a></li>
                     <li><a href="#" class="nav-link" onclick="getDappPage(3)">Rewards</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(5)">Stake</a></li>
                 </ul>
             </div>
         </div>

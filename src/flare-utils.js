@@ -5,8 +5,11 @@ export const FlareAbis = {
     DistributionToDelegators: distributionAbi,
     VoterWhitelister: voterWhitelisterAbi,
     FtsoRewardManager: ftsoRewardAbi,
+    RewardManager: rewardManagerAbi,
     WNat: wnatAbi,
     FlareRegistry: flareAbi,
+    AddressBinder: addressBinderAbi,
+    ValidatorRewardManager: validatorRewardAbi,
 };
 
 export var selectedNetwork = document.getElementById("SelectedNetwork");

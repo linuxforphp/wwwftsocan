@@ -23,10 +23,15 @@
     <link href="<?=$view['urlbaseaddr'] ?>css/fonts-opensans.css" rel="stylesheet" type="text/css">
 
     <!-- Fontawesome Icon font -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/font-awesome.min.css">
-    <!-- bootstrap.min -->
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/all.min.css">
+    <!-- jquery -->
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-ui.min.css">
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery.fancybox.css">
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-confirm.min.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/jquery-ui-timepicker-addon.min.css">
+    <!-- bootstrap.min -->
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/selectize.default.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/selectize.bootstrap4.css">
     <!-- bootstrap.min -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/bootstrap.min.css">
     <!-- owl.carousel.min -->
@@ -46,6 +51,11 @@
     <?php foreach($view['jshead'] as $key => $value): ?>
         <script src="<?php echo $value ?>"></script>
     <?php endforeach; ?>
+
+    <script>
+        // Required by some npm packages
+        window.process = { browser: true, env: { ENVIRONMENT: 'BROWSER' } };
+    </script>
 
     <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
 

@@ -123,10 +123,15 @@ class DappController extends AggregateRootController implements AggregateEventLi
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-wrap.css';
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-delegate.css';
         $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-claim.css';
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-stake.css';
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-stake-transfer.css';
+        $this->view['css'][] = $baseConfig['URLBASEADDR'] . 'css/dapp-stake-stake.css';
 
         $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/glob.min.js';
         $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/web3.min.js';
-        $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/ethers.js';
+
+        // $this->view['jsdefer'][] = $baseConfig['URLBASEADDR'] . 'js/flare/avalanche.js';
+        // $this->view['jsdefer'][] = $baseConfig['URLBASEADDR'] . 'js/flare/index.js';
     }
 
     /**
@@ -368,6 +373,348 @@ class DappController extends AggregateRootController implements AggregateEventLi
         $this->view['dappclaim'] = 1;
 
         $this->view['templatefile'] = 'dapp_claim';
+
+        return $this->view;
+    }
+
+    public function preStakeAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function stakeAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        // $this->view['headjsdefer'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappstake'] = 1;
+
+        $this->view['templatefile'] = 'dapp_stake';
+
+        return $this->view;
+    }
+
+    public function preStakeTransferAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function stakeTransferAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        // $this->view['headjsdefer'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappstake'] = 1;
+
+        $this->view['templatefile'] = 'dapp_stake_transfer';
+
+        return $this->view;
+    }
+
+    public function preStakeStakeAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function stakeStakeAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        // $this->view['headjsdefer'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappstake'] = 1;
+
+        $this->view['templatefile'] = 'dapp_stake_stake';
+
+        return $this->view;
+    }
+
+    public function preStakeRewardsAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function stakeRewardsAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        // $this->view['headjsdefer'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappstake'] = 1;
+
+        $this->view['templatefile'] = 'dapp_stake_rewards';
+
+        return $this->view;
+    }
+
+    public function preStakeMetamaskAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function stakeMetamaskAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        // $this->view['headjsdefer'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappstake'] = 1;
+
+        $this->view['templatefile'] = 'dapp_stake_metamask';
+
+        return $this->view;
+    }
+
+    public function preStakeLedgerAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function stakeLedgerAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        // $this->view['headjsdefer'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappstake'] = 1;
+
+        $this->view['templatefile'] = 'dapp_stake_ledger';
 
         return $this->view;
     }

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.0 (2024-08-20)
+
+- Adds the Staking feature.
+- Adds the V2 SGB claim feature.
+- Adds the Ledger Wallet feature.
+
 ## 0.9.8 (2024-06-17)
 
 - Fixes a minor issue when the Flare blockchain is slow.
