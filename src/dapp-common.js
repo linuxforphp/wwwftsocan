@@ -399,7 +399,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
                 });
             }
         }
-    } else if (pageIndex === 4 || pageIndex === '4') {
+    } else if (pageIndex === 4 && stakingOption !== 5) {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             RefreshStakingPage(DappObject);
         } else {
@@ -421,6 +421,21 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
                 });
             }
         }
+    } else if (pageIndex === 4 && stakingOption === 5) {
+        await setCurrentAppState("Connected");
+
+        await setCurrentPopup("Connected!", false);
+
+        document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
+
+        document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
+
+        document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
+            DappObject.walletIndex = 1;
+            getDappPage(1);
+        });
+
+        DappObject.isHandlingOperation = false;
     }
 }
 
@@ -731,20 +746,6 @@ async function createSelectedNetwork(DappObject) {
             }
         }, 200);
     })
-}
-
-async function isWalletConnected(ProviderObject) {
-    if (ProviderObject instanceof MetaMaskSDK.MetaMaskSDK) {
-        const accounts = await ProviderObject.request({method: 'eth_accounts'});
-
-        if (accounts.length) {
-            // console.log(`You're connected to: ${accounts[0]}`);
-            return true;
-        } else {
-            // console.log("Metamask is not connected");
-            return false;
-        }
-    }
 }
 
 // Show the current token identifiers.
@@ -3285,6 +3286,20 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 async function handleTransportConnect(chosenNavigator, DappObject, option, stakingOption) {
     DappObject.isHandlingOperation = true;
 
+    if (option === 4 && stakingOption === 5) {
+        let continueButton = document.getElementById("ContinueAnyway");
+
+        let newButton = continueButton.cloneNode(true);
+
+        continueButton.parentNode.replaceChild(newButton, continueButton);
+
+        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+        
+        document.getElementById("ContinueAnyway")?.classList.add("claim-button");
+
+        DappObject.isHandlingOperation = false;
+    }
+
     clearTimeout(DappObject.latestPopupTimeoutId);
 
     let numberOfLedgers = await getNumberOfLedgers(chosenNavigator);
@@ -3294,7 +3309,7 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
 
         if (DappObject.walletIndex === 0) {
             requiredApp = "Ethereum";
-        } else if (DappObject.walletIndex === 1) {
+        } else if (DappObject.walletIndex === 1 || DappObject.walletIndex === -1) {
             requiredApp = "Avalanche";
         }
 
@@ -3328,9 +3343,36 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
                         await setCurrentPopup("Whoops! Looks like you do not have the " + requiredApp + " App installed on your Ledger device! Please install it and come back again later!", true);
                     }, 1000);
 
+                    if (option === 4 && stakingOption === 5) {
+                        let continueButton = document.getElementById("ContinueAnyway");
+
+                        let newButton = continueButton.cloneNode(true);
+
+                        continueButton.parentNode.replaceChild(newButton, continueButton);
+                        
+                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+                        
+                        document.getElementById("ContinueAnyway")?.classList.add("claim-button");
+
+                        DappObject.isHandlingOperation = false;
+                    }
+
                     throw new Error("Ledger " + requiredApp + " App not installed!");
                     break
                 case "Failed: User Rejected":
+                    if (option === 4 && stakingOption === 5) {
+                        let continueButton = document.getElementById("ContinueAnyway");
+
+                        let newButton = continueButton.cloneNode(true);
+
+                        continueButton.parentNode.replaceChild(newButton, continueButton);
+
+                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+                        
+                        document.getElementById("ContinueAnyway")?.classList.add("claim-button");
+
+                        DappObject.isHandlingOperation = false;
+                    }
             }
         });
     } else {
@@ -3457,8 +3499,11 @@ window.dappInit = async (option, stakingOption) => {
         // USB Connect Event
 
         chosenNavigator?.addEventListener('connect', async event => {
-            // console.log("Connected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+            console.log("Connected!");
+            console.log(dappOption + dappStakingOption);
+            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
+                
+            } else {
                 await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
             }
         });
@@ -3466,8 +3511,11 @@ window.dappInit = async (option, stakingOption) => {
         // USB Disconnect Event
             
         chosenNavigator?.addEventListener('disconnect', async event => {
-            // console.log("Disconnected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+            console.log("Disconnected!");
+            console.log(dappOption + dappStakingOption);
+            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
+                
+            } else {
                 await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
             }
         });
@@ -4272,12 +4320,41 @@ window.dappInit = async (option, stakingOption) => {
 
                 await setCurrentPopup("Whoops! Your browser does not currently support Ledger Transport! You will need to use another wallet.", true);
             } else {
-                document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
-                    DappObject.walletIndex = 1;
-                    getDappPage(1);
-                });
+                await setCurrentAppState("Connecting");
 
-                await setCurrentPopup("Before continuing, you will need to open the Avalanche app on your Ledger Device.", true);
+                await getLedgerApp("Avalanche").then(async result => {
+                    switch (result) {
+                        case "Success":
+                            await wait(3000);
+    
+                            await setCurrentAppState("Connected");
+
+                            await setCurrentPopup("Connected!", false);
+
+                            document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
+
+                            document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
+    
+                            document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
+                                DappObject.walletIndex = 1;
+                                getDappPage(1);
+                            });
+                            break
+                        case "Failed: App not Installed":
+                            await setCurrentAppState("Alert");
+    
+                            clearTimeout(DappObject.latestPopupTimeoutId);
+    
+                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                            }, 1000);
+    
+                            throw new Error("Ledger Avalanche App not installed!");
+                            break
+                        case "Failed: User Rejected":
+                            break
+                    }
+                });
             }
 
             document.getElementById("GoBack")?.addEventListener("click", async () => {
