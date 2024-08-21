@@ -840,7 +840,7 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                                                 </div>`;
                                 }
                             } else {
-                                await setCurrentPopup('The FTSO you have delegated to is invalid!', true);
+                                await setCurrentPopup('The FTSO that you have delegated to is invalid!', true);
 
                                 document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                                 document.getElementById("ClaimButton").style.cursor = "pointer";
@@ -1084,7 +1084,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose if you would like to Wrap, or Unwrap your tokens by clicking on the top left button. Then, input the amount of tokens you would like to transfer. (Don't forget to keep some FLR or SGB for gas fees!)", true);
+                        await setCurrentPopup("First, choose if you would like to Wrap, or Unwrap your tokens by clicking on the top left button. Then, input the amount of tokens you would like to transfer. Don't forget to keep some FLR or SGB for gas fees!", true);
                     }, 15000);
                 } else if (pageIndex === 1) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
@@ -1099,7 +1099,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose an FTSO from the dropdown list. Then, enter the percentage you would like to delegate to that FTSO. (either 50% or 100%!)", true);
+                        await setCurrentPopup("First, choose an FTSO from the dropdown list. Then, enter the percentage you would like to delegate to that FTSO, either 50% or 100%!", true);
                     }, 15000);
     
                     try {
@@ -1410,7 +1410,7 @@ async function isDelegateInput1(DappObject) {
             DappObject.isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Undelegate all";
         }
-        await setCurrentPopup("Looks like you have already delegated 100% of your tokens! If you want to delegate to another FTSO, you will need to undelegate first!", true);
+        await setCurrentPopup("It looks like you have already delegated 100% of your tokens! If you want to delegate to another FTSO, you will need to undelegate first!", true);
     } else {
         if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
             wrapbox1.removeAttribute('style');
@@ -1537,7 +1537,7 @@ async function populateFtsos(rpcUrl, flrAddr) {
                                                 g += 1;
                                             }
                                         } else {
-                                            await setCurrentPopup('The FTSO you have delegated to is invalid!', true);
+                                            await setCurrentPopup('The FTSO that you have delegated to is invalid!', true);
                                             break;
                                         }
                                     }
@@ -1608,7 +1608,7 @@ function showClaimRewards(rewards) {
 
 async function delegate(object, DappObject) {
     if (DappObject.isRealValue === false) {
-        await setCurrentPopup('You need to enter a valid value! (50% or 100%.)', true);
+        await setCurrentPopup('You need to enter a valid value, either 50% or 100%.', true);
     } else {
         let amount1 = document.getElementById("Amount1");
         let ftso1 = document.querySelector(".selectize-input");
@@ -2008,7 +2008,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose if you would like to send your tokens from, or to the P-Chain by clicking on the arrow button. Then, input the amount of tokens you would like to transfer. (Don't forget to keep some FLR for gas fees!)", true);
+                        await setCurrentPopup("First, choose if you would like to send your tokens from, or to the P-Chain by clicking on the arrow button. Then, input the amount of tokens you would like to transfer. Don't forget to keep some FLR for gas fees!", true);
                     }, 15000);
                 } else if (dappStakingOption === 2) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
@@ -2027,7 +2027,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose a validator from the dropdown list. Then, enter for how many days you would like to stake in the calendar. (Your FLR will be locked until that date.) Finally, enter the amount you would like to stake to that validator. (at least 50,000!)", true);
+                        await setCurrentPopup("First, choose a validator from the dropdown list. Then, enter for how many days you would like to stake in the calendar, because your FLR will be locked until that date. Finally, enter the amount you would like to stake to that validator (at least 50,000).", true);
                     }, 15000);
                 } else if (dappStakingOption === 3) {
                     const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
@@ -2079,7 +2079,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                         DappObject.claimBool = false;
                     }
 
-                    await setCurrentPopup("This is the 'Rewards' page, where you can claim the FLR tokens that you have earned by staking to a validator node!", true);
+                    await setCurrentPopup("This is the 'Rewards' page, where you can claim the FLR tokens that you have earned by staking to a validator node.", true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -2342,7 +2342,7 @@ function copyTransferInput() {
 
 async function transferTokens(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
-        await setCurrentPopup('You need to enter a valid amount of tokens! (A number that is not greater than your balance.)', true);
+        await setCurrentPopup('You need to enter a valid amount of tokens: a number that is not greater than your balance.', true);
     } else {
         DappObject.isHandlingOperation = true;
 
@@ -3506,7 +3506,7 @@ window.dappInit = async (option, stakingOption) => {
                 // If the input is valid, we wrap on click of "WrapButton".
                 document.getElementById("WrapButton")?.addEventListener("click", async () => {
                     if (DappObject.isRealValue === false) {
-                        await setCurrentPopup('You need to enter a valid value! (A number that is not greater than your balance.)', true);
+                        await setCurrentPopup('You need to enter a valid value: a number that is not greater than your balance.', true);
                     } else {
                         DappObject.isHandlingOperation = true;
 
@@ -4236,12 +4236,12 @@ window.dappInit = async (option, stakingOption) => {
 
             await setCurrentAppState("Null");
 
-            await setCurrentPopup("Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and help efficiently claim your FLR or SGB rewards!", true);
+            await setCurrentPopup("Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and to help you efficiently claim your FLR or SGB rewards!", true);
 
             clearTimeout(DappObject.latestPopupTimeoutId);
 
             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                await setCurrentPopup("First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet if stored within Metamask, please choose the Metamask option. More are coming soon!", true);
+                await setCurrentPopup("First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within Metamask, please choose the Metamask option. More coming soon!", true);
             }, 9000);
         } else if (stakingOption === 4) {
             //Metamask
@@ -4320,7 +4320,7 @@ window.dappInit = async (option, stakingOption) => {
 
             document.getElementById("WrapButton")?.addEventListener("click", async () => {
                 if (DappObject.isRealValue === false) {
-                    await setCurrentPopup('Please enter a valid staking amount. (More than 0!)', true);
+                    await setCurrentPopup('Please enter a valid staking amount (more than 0).', true);
                 } else {
                     stake(DappObject, stakingOption);
                 }
