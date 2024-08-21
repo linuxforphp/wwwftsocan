@@ -2711,32 +2711,34 @@ async function populateValidators() {
 
                     for (var f = 0; f < FtsoInfo.length; f++) {
                         for (var i = 0; i < ftsoList.length; i++) {
-                            if (FtsoInfo[f].nodeId === ftsoList[i].nodeID) {
-                                indexNumber = f;
-
-                                //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
-                                if (FtsoInfo[indexNumber].name === "FTSOCAN") {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert[0] = {
-                                        id: 0,
-                                        title: FtsoInfo[indexNumber].name,
-                                        nodeid: ftsoList[i].nodeID,
-                                        img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
-                                        startdate: ftsoList[i].startTime,
-                                        enddate: ftsoList[i].endTime
-                                    }; 
-                                } else {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert[g] = {
-                                        id: g,
-                                        title: FtsoInfo[indexNumber].name,
-                                        nodeid: ftsoList[i].nodeID,
-                                        img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
-                                        startdate: ftsoList[i].startTime,
-                                        enddate: ftsoList[i].endTime
-                                    }; 
-
-                                    g += 1;
+                            if (FtsoInfo[f].lastStatus === "ONLINE") {
+                                if (FtsoInfo[f].nodeId === ftsoList[i].nodeID) {
+                                    indexNumber = f;
+    
+                                    //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+                                    if (FtsoInfo[indexNumber].name === "FTSOCAN") {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert[0] = {
+                                            id: 0,
+                                            title: FtsoInfo[indexNumber].name,
+                                            nodeid: ftsoList[i].nodeID,
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
+                                            startdate: ftsoList[i].startTime,
+                                            enddate: ftsoList[i].endTime
+                                        }; 
+                                    } else {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert[g] = {
+                                            id: g,
+                                            title: FtsoInfo[indexNumber].name,
+                                            nodeid: ftsoList[i].nodeID,
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
+                                            startdate: ftsoList[i].startTime,
+                                            enddate: ftsoList[i].endTime
+                                        }; 
+    
+                                        g += 1;
+                                    }
                                 }
                             }
                         }
