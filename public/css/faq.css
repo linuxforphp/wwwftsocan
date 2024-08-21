@@ -1,6 +1,6 @@
 .site-content {
     background-image: url("../img/Component-1.png") !important;
-    background-size: auto;
+    background-size: 100%;
     background-repeat: repeat-y;
     transition: 0.5s;
 }
