@@ -94,7 +94,7 @@
                     </div>
 
                     <ul class="social-button">
-                        <li class="wow animated zoomIn"><a href="https://twitter.com/ftsocan" target="_blank"><i class="fa fa-twitter fa-2x"></i></a></li>
+                        <li class="wow animated zoomIn"><a href="https://twitter.com/ftsocan" target="_blank"><i class="fa fa-brands fa-x-twitter fa-2x"></i></a></li>
                     </ul>
 
                 </div>
