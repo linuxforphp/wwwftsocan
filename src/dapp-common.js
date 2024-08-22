@@ -3107,9 +3107,9 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         };
     }
 
-    console.log(LedgerTxPayload);
+    // console.log(LedgerTxPayload);
 
-    console.log(latestBlock);
+    // console.log(latestBlock);
 
     showSpinner(async () => {
         try {
@@ -3212,7 +3212,7 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         data: txPayloadV2.data,
     };
 
-    console.log(LedgerTxPayload);
+    // console.log(LedgerTxPayload);
 
     showConfirmationSpinnerv2(async (v2Spinner) => {
         try {
