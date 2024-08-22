@@ -3058,6 +3058,8 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     const latestBlock = await ethersProvider.getBlock("latest");
 
+    let gasPrice;
+
     let maxFeePerGas;
 
     let chainId = 14;
@@ -3065,11 +3067,15 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
     // console.log(feeData);
@@ -3081,7 +3087,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             to: txPayload.to,
             maxPriorityFeePerGas: maxFeePerGas,
             maxFeePerGas: maxFeePerGas,
-            gasPrice: feeData.gasPrice,
+            gasPrice: gasPrice,
             gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
             nonce: nonce,
             chainId: chainId,
@@ -3093,7 +3099,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             to: txPayload.to,
             maxPriorityFeePerGas: maxFeePerGas,
             maxFeePerGas: maxFeePerGas,
-            gasPrice: feeData.gasPrice,
+            gasPrice: gasPrice,
             gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
             nonce: nonce,
             chainId: chainId,
@@ -3101,7 +3107,9 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         };
     }
 
-    // console.log(LedgerTxPayload);
+    console.log(LedgerTxPayload);
+
+    console.log(latestBlock);
 
     showSpinner(async () => {
         try {
@@ -3160,16 +3168,22 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     let maxFeePerGas;
 
+    let gasPrice;
+
     let chainId = 14;
 
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
     // console.log(feeData);
@@ -3180,7 +3194,7 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         to: txPayload.to,
         maxPriorityFeePerGas: maxFeePerGas,
         maxFeePerGas: maxFeePerGas,
-        gasPrice: feeData.gasPrice,
+        gasPrice: gasPrice,
         gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
         nonce: nonce,
         chainId: chainId,
@@ -3191,14 +3205,14 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         to: txPayloadV2.to,
         maxPriorityFeePerGas: maxFeePerGas,
         maxFeePerGas: maxFeePerGas,
-        gasPrice: feeData.gasPrice,
+        gasPrice: gasPrice,
         gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
         nonce: nonce,
         chainId: chainId,
         data: txPayloadV2.data,
     };
 
-    // console.log(LedgerTxPayload);
+    console.log(LedgerTxPayload);
 
     showConfirmationSpinnerv2(async (v2Spinner) => {
         try {
