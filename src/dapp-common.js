@@ -545,6 +545,60 @@ function checkConnection() {
 
 async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2 = false) {
     return new Promise((resolve) => {
+        try {
+            var i = 0;
+        
+            // Set interval to regularly check if we can get a receipt
+            let interval = setInterval(() => {
+                i += 1;
+                
+                web32.eth.getTransactionReceipt(hash).then((receipt) => {
+                    // If we've got a receipt, check status and log / change text accordingly
+                    if (receipt) {
+                        if (typeof spinner !== "undefined") {
+                            spinner.close();
+                        }
+                        
+                        if (Number(receipt.status) === 1) {
+                            if (isV2 === false) {
+                                showConfirm(receipt.transactionHash, object, DappObject, pageIndex);
+                            }
+    
+                            resolve("Success");
+                        } else if (Number(receipt.status) === 0) {
+                            if (isV2 === false) {
+                                showFail(object, DappObject, pageIndex);
+                            }
+    
+                            resolve("Fail");
+                        }
+    
+                        // Clear interval
+                        clearInterval(interval);
+                    }
+                });
+                
+                if (i === 20) {
+                    throw new Error("Transaction Dropped.");
+                }
+            }, 6000)
+        } catch (error) {
+            if (typeof spinner !== "undefined") {
+                spinner.close();
+            }
+
+            if (isV2 === false) {
+                showFail(object, DappObject, pageIndex);
+            }
+            
+            // Clear interval
+            clearInterval(interval);
+        }
+    });
+}
+
+async function checkTxStake(hash, web32, spinner, DappObject) {
+    try {
         var i = 0;
         
         // Set interval to regularly check if we can get a receipt
@@ -554,22 +608,12 @@ async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2
             web32.eth.getTransactionReceipt(hash).then((receipt) => {
                 // If we've got a receipt, check status and log / change text accordingly
                 if (receipt) {
-                    if (typeof spinner !== "undefined") {
-                        spinner.close();
-                    }
+                    spinner.close();
                     
                     if (Number(receipt.status) === 1) {
-                        if (isV2 === false) {
-                            showConfirm(receipt.transactionHash, object, DappObject, pageIndex);
-                        }
-
-                        resolve("Success");
+                        showConfirmStake(DappObject, 3, [receipt.transactionHash]);
                     } else if (Number(receipt.status) === 0) {
-                        if (isV2 === false) {
-                            showFail(object, DappObject, pageIndex);
-                        }
-
-                        resolve("Fail");
+                        showFailStake(DappObject, 3);
                     }
 
                     // Clear interval
@@ -578,51 +622,17 @@ async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2
             });
             
             if (i === 20) {
-                if (typeof spinner !== "undefined") {
-                    spinner.close();
-                }
-
-                showFail(object, DappObject, pageIndex);
-                
-                // Clear interval
-                clearInterval(interval);
+                throw new Error("Transaction dropped.");
             }
         }, 6000)
-    });
-}
+    } catch (error) {
+        spinner.close();
 
-async function checkTxStake(hash, web32, spinner, DappObject) {
-    var i = 0;
-    
-    // Set interval to regularly check if we can get a receipt
-    let interval = setInterval(() => {
-        i += 1;
+        showFailStake(DappObject, 3);
         
-        web32.eth.getTransactionReceipt(hash).then((receipt) => {
-            // If we've got a receipt, check status and log / change text accordingly
-            if (receipt) {
-                spinner.close();
-                
-                if (Number(receipt.status) === 1) {
-                    showConfirmStake(DappObject, 3, [receipt.transactionHash]);
-                } else if (Number(receipt.status) === 0) {
-                    showFailStake(DappObject, 3);
-                }
-
-                // Clear interval
-                clearInterval(interval);
-            }
-        });
-        
-        if (i === 20) {
-            spinner.close();
-
-            showFailStake(DappObject, 3);
-            
-            // Clear interval
-            clearInterval(interval);
-        }
-    }, 6000)
+        // Clear interval
+        clearInterval(interval);
+    }
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
