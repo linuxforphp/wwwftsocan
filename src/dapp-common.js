@@ -281,7 +281,7 @@ function showFailStake(DappObject, stakingOption) {
     });
 }
 
-async function showBindPAddress(contract, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
+async function showBindPAddress(contract, web32, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
@@ -309,8 +309,10 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters],
                             })
-                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 1))
-                            .catch((error) => showFail(object, DappObject, 1));
+                            .then(txHash => showConfirmationSpinnerStake(async (spinner) => {
+                                checkTxStake(txHash, web32, spinner, DappObject);
+                            }))
+                            .catch((error) => showFailStake(DappObject, stakingOption));
                         });
                     }
                     ;
@@ -377,6 +379,8 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             }
         }
     } else if (pageIndex === 3 || pageIndex === '3') {
+        remove(".wrap-box-ftso");
+
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 2);
         } else {
@@ -2101,7 +2105,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
                 DappObject.isHandlingOperation = false;
             } else {
-                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
+                await showBindPAddress(AddressBinderContract, web32, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
             }
         } else {
             document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
@@ -3523,8 +3527,8 @@ window.dappInit = async (option, stakingOption) => {
         // USB Connect Event
 
         chosenNavigator?.addEventListener('connect', async event => {
-            console.log("Connected!");
-            console.log(dappOption + dappStakingOption);
+            // console.log("Connected!");
+            // console.log(dappOption + dappStakingOption);
             if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
                 
             } else {
@@ -3535,8 +3539,8 @@ window.dappInit = async (option, stakingOption) => {
         // USB Disconnect Event
             
         chosenNavigator?.addEventListener('disconnect', async event => {
-            console.log("Disconnected!");
-            console.log(dappOption + dappStakingOption);
+            // console.log("Disconnected!");
+            // console.log(dappOption + dappStakingOption);
             if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
                 
             } else {
@@ -4242,7 +4246,6 @@ window.dappInit = async (option, stakingOption) => {
 
                 if (DappObject.walletIndex === 0) {
                     window.ethereum?.on("accountsChanged", async (accounts) => {
-                        remove(".wrap-box-ftso");
                         handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
                     });
 
