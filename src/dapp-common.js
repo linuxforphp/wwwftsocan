@@ -1050,7 +1050,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
 
@@ -1062,7 +1062,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
         }
@@ -1935,7 +1935,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
 
@@ -1950,7 +1950,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
         }
