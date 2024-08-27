@@ -67,7 +67,7 @@ async function showSpinner(doSomething) {
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
-        content: 'We are processing your transaction. <br />Please check your Wallet...',
+        content: 'To continue, you must approve the transaction. <br />Please check your Wallet...',
         theme: 'material',
         type: 'dark',
         typeAnimated: true,
@@ -160,7 +160,7 @@ async function showConfirmationSpinnerStake(doSomething) {
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
-        content: 'We are processing your transaction. <br />Please check your Wallet...',
+        content: 'To continue, you must approve the transaction. <br />Please check your Wallet...',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
@@ -281,7 +281,7 @@ function showFailStake(DappObject, stakingOption) {
     });
 }
 
-async function showBindPAddress(contract, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
+async function showBindPAddress(contract, web32, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
@@ -309,8 +309,10 @@ async function showBindPAddress(contract, address, publicKey, addressPchainEncod
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters],
                             })
-                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 1))
-                            .catch((error) => showFail(object, DappObject, 1));
+                            .then(txHash => showConfirmationSpinnerStake(async (spinner) => {
+                                checkTxStake(txHash, web32, spinner, DappObject);
+                            }))
+                            .catch((error) => showFailStake(DappObject, stakingOption));
                         });
                     }
                     ;
@@ -377,6 +379,8 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             }
         }
     } else if (pageIndex === 3 || pageIndex === '3') {
+        remove(".wrap-box-ftso");
+
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 2);
         } else {
@@ -399,7 +403,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
                 });
             }
         }
-    } else if (pageIndex === 4 || pageIndex === '4') {
+    } else if (pageIndex === 4 && stakingOption !== 5) {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             RefreshStakingPage(DappObject);
         } else {
@@ -421,6 +425,21 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
                 });
             }
         }
+    } else if (pageIndex === 4 && stakingOption === 5) {
+        await setCurrentAppState("Connected");
+
+        await setCurrentPopup("Connected!", false);
+
+        document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
+
+        document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
+
+        document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
+            DappObject.walletIndex = 1;
+            getDappPage(1);
+        });
+
+        DappObject.isHandlingOperation = false;
     }
 }
 
@@ -530,6 +549,60 @@ function checkConnection() {
 
 async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2 = false) {
     return new Promise((resolve) => {
+        try {
+            var i = 0;
+        
+            // Set interval to regularly check if we can get a receipt
+            let interval = setInterval(() => {
+                i += 1;
+                
+                web32.eth.getTransactionReceipt(hash).then((receipt) => {
+                    // If we've got a receipt, check status and log / change text accordingly
+                    if (receipt) {
+                        if (typeof spinner !== "undefined") {
+                            spinner.close();
+                        }
+                        
+                        if (Number(receipt.status) === 1) {
+                            if (isV2 === false) {
+                                showConfirm(receipt.transactionHash, object, DappObject, pageIndex);
+                            }
+    
+                            resolve("Success");
+                        } else if (Number(receipt.status) === 0) {
+                            if (isV2 === false) {
+                                showFail(object, DappObject, pageIndex);
+                            }
+    
+                            resolve("Fail");
+                        }
+    
+                        // Clear interval
+                        clearInterval(interval);
+                    }
+                });
+                
+                if (i === 20) {
+                    throw new Error("Transaction Dropped.");
+                }
+            }, 6000)
+        } catch (error) {
+            if (typeof spinner !== "undefined") {
+                spinner.close();
+            }
+
+            if (isV2 === false) {
+                showFail(object, DappObject, pageIndex);
+            }
+            
+            // Clear interval
+            clearInterval(interval);
+        }
+    });
+}
+
+async function checkTxStake(hash, web32, spinner, DappObject) {
+    try {
         var i = 0;
         
         // Set interval to regularly check if we can get a receipt
@@ -539,22 +612,12 @@ async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2
             web32.eth.getTransactionReceipt(hash).then((receipt) => {
                 // If we've got a receipt, check status and log / change text accordingly
                 if (receipt) {
-                    if (typeof spinner !== "undefined") {
-                        spinner.close();
-                    }
+                    spinner.close();
                     
                     if (Number(receipt.status) === 1) {
-                        if (isV2 === false) {
-                            showConfirm(receipt.transactionHash, object, DappObject, pageIndex);
-                        }
-
-                        resolve("Success");
+                        showConfirmStake(DappObject, 3, [receipt.transactionHash]);
                     } else if (Number(receipt.status) === 0) {
-                        if (isV2 === false) {
-                            showFail(object, DappObject, pageIndex);
-                        }
-
-                        resolve("Fail");
+                        showFailStake(DappObject, 3);
                     }
 
                     // Clear interval
@@ -563,51 +626,17 @@ async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2
             });
             
             if (i === 20) {
-                if (typeof spinner !== "undefined") {
-                    spinner.close();
-                }
-
-                showFail(object, DappObject, pageIndex);
-                
-                // Clear interval
-                clearInterval(interval);
+                throw new Error("Transaction dropped.");
             }
         }, 6000)
-    });
-}
+    } catch (error) {
+        spinner.close();
 
-async function checkTxStake(hash, web32, spinner, DappObject) {
-    var i = 0;
-    
-    // Set interval to regularly check if we can get a receipt
-    let interval = setInterval(() => {
-        i += 1;
+        showFailStake(DappObject, 3);
         
-        web32.eth.getTransactionReceipt(hash).then((receipt) => {
-            // If we've got a receipt, check status and log / change text accordingly
-            if (receipt) {
-                spinner.close();
-                
-                if (Number(receipt.status) === 1) {
-                    showConfirmStake(DappObject, 3, [receipt.transactionHash]);
-                } else if (Number(receipt.status) === 0) {
-                    showFailStake(DappObject, 3);
-                }
-
-                // Clear interval
-                clearInterval(interval);
-            }
-        });
-        
-        if (i === 20) {
-            spinner.close();
-
-            showFailStake(DappObject, 3);
-            
-            // Clear interval
-            clearInterval(interval);
-        }
-    }, 6000)
+        // Clear interval
+        clearInterval(interval);
+    }
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -731,20 +760,6 @@ async function createSelectedNetwork(DappObject) {
             }
         }, 200);
     })
-}
-
-async function isWalletConnected(ProviderObject) {
-    if (ProviderObject instanceof MetaMaskSDK.MetaMaskSDK) {
-        const accounts = await ProviderObject.request({method: 'eth_accounts'});
-
-        if (accounts.length) {
-            // console.log(`You're connected to: ${accounts[0]}`);
-            return true;
-        } else {
-            // console.log("Metamask is not connected");
-            return false;
-        }
-    }
 }
 
 // Show the current token identifiers.
@@ -1039,7 +1054,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
 
@@ -1051,7 +1066,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
         }
@@ -1924,7 +1939,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
 
@@ -1939,7 +1954,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
             await setCurrentAppState("Connected");
 
-            await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
         }
@@ -2090,7 +2105,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
                 DappObject.isHandlingOperation = false;
             } else {
-                await showBindPAddress(AddressBinderContract, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
+                await showBindPAddress(AddressBinderContract, web32, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
             }
         } else {
             document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
@@ -2711,32 +2726,34 @@ async function populateValidators() {
 
                     for (var f = 0; f < FtsoInfo.length; f++) {
                         for (var i = 0; i < ftsoList.length; i++) {
-                            if (FtsoInfo[f].nodeId === ftsoList[i].nodeID) {
-                                indexNumber = f;
-
-                                //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
-                                if (FtsoInfo[indexNumber].name === "FTSOCAN") {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert[0] = {
-                                        id: 0,
-                                        title: FtsoInfo[indexNumber].name,
-                                        nodeid: ftsoList[i].nodeID,
-                                        img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
-                                        startdate: ftsoList[i].startTime,
-                                        enddate: ftsoList[i].endTime
-                                    }; 
-                                } else {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert[g] = {
-                                        id: g,
-                                        title: FtsoInfo[indexNumber].name,
-                                        nodeid: ftsoList[i].nodeID,
-                                        img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
-                                        startdate: ftsoList[i].startTime,
-                                        enddate: ftsoList[i].endTime
-                                    }; 
-
-                                    g += 1;
+                            if (FtsoInfo[f].lastStatus === "ONLINE") {
+                                if (FtsoInfo[f].nodeId === ftsoList[i].nodeID) {
+                                    indexNumber = f;
+    
+                                    //<img src="https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets/${delegatedFtsos[i]}.png" class="delegatedIcon" id="delegatedIcon"/>
+                                    if (FtsoInfo[indexNumber].name === "FTSOCAN") {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert[0] = {
+                                            id: 0,
+                                            title: FtsoInfo[indexNumber].name,
+                                            nodeid: ftsoList[i].nodeID,
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
+                                            startdate: ftsoList[i].startTime,
+                                            enddate: ftsoList[i].endTime
+                                        }; 
+                                    } else {
+                                        // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                        insert[g] = {
+                                            id: g,
+                                            title: FtsoInfo[indexNumber].name,
+                                            nodeid: ftsoList[i].nodeID,
+                                            img: dappUrlBaseAddr + "assets/" + FtsoInfo[indexNumber].nodeId + ".png",
+                                            startdate: ftsoList[i].startTime,
+                                            enddate: ftsoList[i].endTime
+                                        }; 
+    
+                                        g += 1;
+                                    }
                                 }
                             }
                         }
@@ -3055,6 +3072,8 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     const latestBlock = await ethersProvider.getBlock("latest");
 
+    let gasPrice;
+
     let maxFeePerGas;
 
     let chainId = 14;
@@ -3062,11 +3081,15 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
     // console.log(feeData);
@@ -3078,7 +3101,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             to: txPayload.to,
             maxPriorityFeePerGas: maxFeePerGas,
             maxFeePerGas: maxFeePerGas,
-            gasPrice: feeData.gasPrice,
+            gasPrice: gasPrice,
             gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
             nonce: nonce,
             chainId: chainId,
@@ -3090,7 +3113,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
             to: txPayload.to,
             maxPriorityFeePerGas: maxFeePerGas,
             maxFeePerGas: maxFeePerGas,
-            gasPrice: feeData.gasPrice,
+            gasPrice: gasPrice,
             gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
             nonce: nonce,
             chainId: chainId,
@@ -3099,6 +3122,8 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
     }
 
     // console.log(LedgerTxPayload);
+
+    // console.log(latestBlock);
 
     showSpinner(async () => {
         try {
@@ -3157,16 +3182,22 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     let maxFeePerGas;
 
+    let gasPrice;
+
     let chainId = 14;
 
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
 
-        maxFeePerGas = feeData.maxFeePerGas * 5n;
+        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
+
+        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
     // console.log(feeData);
@@ -3177,7 +3208,7 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         to: txPayload.to,
         maxPriorityFeePerGas: maxFeePerGas,
         maxFeePerGas: maxFeePerGas,
-        gasPrice: feeData.gasPrice,
+        gasPrice: gasPrice,
         gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
         nonce: nonce,
         chainId: chainId,
@@ -3188,7 +3219,7 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         to: txPayloadV2.to,
         maxPriorityFeePerGas: maxFeePerGas,
         maxFeePerGas: maxFeePerGas,
-        gasPrice: feeData.gasPrice,
+        gasPrice: gasPrice,
         gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
         nonce: nonce,
         chainId: chainId,
@@ -3283,6 +3314,20 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 async function handleTransportConnect(chosenNavigator, DappObject, option, stakingOption) {
     DappObject.isHandlingOperation = true;
 
+    if (option === 4 && stakingOption === 5) {
+        let continueButton = document.getElementById("ContinueAnyway");
+
+        let newButton = continueButton.cloneNode(true);
+
+        continueButton.parentNode.replaceChild(newButton, continueButton);
+
+        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+        
+        document.getElementById("ContinueAnyway")?.classList.add("claim-button");
+
+        DappObject.isHandlingOperation = false;
+    }
+
     clearTimeout(DappObject.latestPopupTimeoutId);
 
     let numberOfLedgers = await getNumberOfLedgers(chosenNavigator);
@@ -3292,7 +3337,7 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
 
         if (DappObject.walletIndex === 0) {
             requiredApp = "Ethereum";
-        } else if (DappObject.walletIndex === 1) {
+        } else if (DappObject.walletIndex === 1 || DappObject.walletIndex === -1) {
             requiredApp = "Avalanche";
         }
 
@@ -3326,9 +3371,36 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
                         await setCurrentPopup("Whoops! Looks like you do not have the " + requiredApp + " App installed on your Ledger device! Please install it and come back again later!", true);
                     }, 1000);
 
+                    if (option === 4 && stakingOption === 5) {
+                        let continueButton = document.getElementById("ContinueAnyway");
+
+                        let newButton = continueButton.cloneNode(true);
+
+                        continueButton.parentNode.replaceChild(newButton, continueButton);
+                        
+                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+                        
+                        document.getElementById("ContinueAnyway")?.classList.add("claim-button");
+
+                        DappObject.isHandlingOperation = false;
+                    }
+
                     throw new Error("Ledger " + requiredApp + " App not installed!");
                     break
                 case "Failed: User Rejected":
+                    if (option === 4 && stakingOption === 5) {
+                        let continueButton = document.getElementById("ContinueAnyway");
+
+                        let newButton = continueButton.cloneNode(true);
+
+                        continueButton.parentNode.replaceChild(newButton, continueButton);
+
+                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+                        
+                        document.getElementById("ContinueAnyway")?.classList.add("claim-button");
+
+                        DappObject.isHandlingOperation = false;
+                    }
             }
         });
     } else {
@@ -3456,7 +3528,10 @@ window.dappInit = async (option, stakingOption) => {
 
         chosenNavigator?.addEventListener('connect', async event => {
             // console.log("Connected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+            // console.log(dappOption + dappStakingOption);
+            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
+                
+            } else {
                 await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
             }
         });
@@ -3465,7 +3540,10 @@ window.dappInit = async (option, stakingOption) => {
             
         chosenNavigator?.addEventListener('disconnect', async event => {
             // console.log("Disconnected!");
-            if (DappObject.walletIndex !== -1 && DappObject.isHandlingOperation === false) {
+            // console.log(dappOption + dappStakingOption);
+            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
+                
+            } else {
                 await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
             }
         });
@@ -4168,7 +4246,6 @@ window.dappInit = async (option, stakingOption) => {
 
                 if (DappObject.walletIndex === 0) {
                     window.ethereum?.on("accountsChanged", async (accounts) => {
-                        remove(".wrap-box-ftso");
                         handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
                     });
 
@@ -4270,12 +4347,41 @@ window.dappInit = async (option, stakingOption) => {
 
                 await setCurrentPopup("Whoops! Your browser does not currently support Ledger Transport! You will need to use another wallet.", true);
             } else {
-                document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
-                    DappObject.walletIndex = 1;
-                    getDappPage(1);
-                });
+                await setCurrentAppState("Connecting");
 
-                await setCurrentPopup("Before continuing, you will need to open the Avalanche app on your Ledger Device.", true);
+                await getLedgerApp("Avalanche").then(async result => {
+                    switch (result) {
+                        case "Success":
+                            await wait(3000);
+    
+                            await setCurrentAppState("Connected");
+
+                            await setCurrentPopup("Connected!", false);
+
+                            document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
+
+                            document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
+    
+                            document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
+                                DappObject.walletIndex = 1;
+                                getDappPage(1);
+                            });
+                            break
+                        case "Failed: App not Installed":
+                            await setCurrentAppState("Alert");
+    
+                            clearTimeout(DappObject.latestPopupTimeoutId);
+    
+                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                            }, 1000);
+    
+                            throw new Error("Ledger Avalanche App not installed!");
+                            break
+                        case "Failed: User Rejected":
+                            break
+                    }
+                });
             }
 
             document.getElementById("GoBack")?.addEventListener("click", async () => {

@@ -5,7 +5,7 @@
             <div class="footer-content">
                 <div class="footer-social">
                     <ul>
-                        <li class="wow animated zoomIn"><a href="https://twitter.com/ftsocan" target="_blank"><i class="fa fa-twitter fa-3x"></i></a></li>
+                        <li class="wow animated zoomIn"><a href="https://x.com/ftsocan" target="_blank"><i class="fa fa-brands fa-x-twitter fa-3x"></i></a></li>
                     </ul>
                 </div>
 
