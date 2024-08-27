@@ -1,10 +1,19 @@
 # CHANGELOG
 
+## 1.0.1 (2024-08-27)
+
+- Fixes a few issues when connecting to the Avalanche app on Ledger.
+- Fixes an issue with transaction fees when using Ledger while networks are busy.
+- Fixes a few minor issues with Metamask.
+- Updates a few UI elements (X.com logos and links, FAQ page, UI messages, etc.).
+- Updates the project's dependencies.
+
 ## 1.0.0 (2024-08-20)
 
 - Adds the Staking feature.
 - Adds the V2 SGB claim feature.
 - Adds the Ledger Wallet feature.
+- Updates the project's dependencies.
 
 ## 0.9.8 (2024-06-17)
 
