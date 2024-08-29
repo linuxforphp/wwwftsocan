@@ -17,7 +17,7 @@
         <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
             <button class="stakeRewards selected-stake" type="button" id="StakeRewards" onclick="getDappPage(7)">
                 <a class="stake-text">
-                    <span id="StakeRewards">Rewards</span>
+                    <span id="StakeRewards">Claim</span>
                 </a>
             </button>
         </div>

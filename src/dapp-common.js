@@ -1270,7 +1270,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             DappObject.claimBool = false;
                         }
 
-                        await setCurrentPopup("This is the 'Claim' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
+                        await setCurrentPopup("This is the 'Rewards' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
 
                         clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -2088,7 +2088,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                         DappObject.claimBool = false;
                     }
 
-                    await setCurrentPopup("This is the 'Rewards' page, where you can claim the FLR tokens that you have earned by staking to a validator node.", true);
+                    await setCurrentPopup("This is the 'Claim' page, where you can claim the FLR tokens that you have earned by staking to a validator node.", true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
