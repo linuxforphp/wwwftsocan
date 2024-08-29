@@ -3668,7 +3668,7 @@ window.dappInit = async (option, stakingOption) => {
                 }
 
                 object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
-                object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
                 object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                 showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
                 setWrapButton(DappObject);
@@ -3690,7 +3690,7 @@ window.dappInit = async (option, stakingOption) => {
                         document.getElementById("layer3").innerHTML = DappObject.costonLogo;
                     }
 
-                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
                     object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                     showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
                     DappObject.wrapBool = false;
@@ -4205,7 +4205,7 @@ window.dappInit = async (option, stakingOption) => {
                         document.getElementById("layer3").innerHTML = DappObject.costonLogo;
                     }
                     
-                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
                     object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                     showTokenIdentifiers(null, object.wrappedTokenIdentifier);
 
