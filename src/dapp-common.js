@@ -1290,19 +1290,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
     } catch (error) {
         // console.log(error);
 
-        DappObject.isHandlingOperation = false;
-
         document.getElementById("ConnectWalletText").innerText = "Connect Wallet";
 
-        DappObject.signatureStaking = "";
-
-        DappObject.ledgerSelectedIndex = "";
-
-        DappObject.selectedAddress = "";
-
-        DappObject.unPrefixedAddr = "";
-
-        DappObject.ledgerAddrArray = [];
+        await resetDappObjectState(DappObject);
 
         var ClickHandler;
 
@@ -2119,19 +2109,9 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
     } catch (error) {
         // console.log(error);
 
-        DappObject.isHandlingOperation = false;
-
         document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
 
-        DappObject.signatureStaking = "";
-
-        DappObject.ledgerSelectedIndex = "";
-
-        DappObject.selectedAddress = "";
-
-        DappObject.unPrefixedAddr = "";
-
-        DappObject.ledgerAddrArray = [];
+        await resetDappObjectState(DappObject);
 
         var ClickHandler;
 
@@ -3481,6 +3461,20 @@ function closeCurrentPopup() {
     document.getElementById("currentWalletPopup").classList.remove("showing");
 }
 
+async function resetDappObjectState(DappObject) {
+    DappObject.isHandlingOperation = false;
+
+    DappObject.signatureStaking = "";
+
+    DappObject.ledgerSelectedIndex = "";
+
+    DappObject.selectedAddress = "";
+
+    DappObject.unPrefixedAddr = "";
+
+    DappObject.ledgerAddrArray = [];
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
@@ -4291,6 +4285,8 @@ window.dappInit = async (option, stakingOption) => {
 
         if (typeof stakingOption === 'undefined') {
             DappObject.isAccountConnected = true;
+
+            await resetDappObjectState(DappObject);
 
             DappObject.walletIndex = -1;
 
