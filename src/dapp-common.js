@@ -917,8 +917,6 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     case "Success":
                         await wait(3000);
 
-                        await setCurrentPopup("Connecting...", true);
-
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             let addresses;
 
@@ -1777,8 +1775,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                 switch (result) {
                     case "Success":
                         await wait(3000);
-
-                        await setCurrentPopup("Connecting...", true);
 
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             // console.log("Fetching Addresses... P-Chain");
