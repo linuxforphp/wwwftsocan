@@ -3072,27 +3072,21 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     const latestBlock = await ethersProvider.getBlock("latest");
 
-    let gasPrice;
+    let gasPrice = feeData.gasPrice > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.gasPrice : BigInt(latestBlock.baseFeePerGas._hex);
 
-    let maxFeePerGas;
+    let maxFeePerGas = feeData.maxFeePerGas > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.maxFeePerGas : BigInt(latestBlock.baseFeePerGas._hex);
 
     let chainId = 14;
 
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
-    // console.log(feeData);
+    console.log(feeData);
+
+    console.log(BigInt(latestBlock.baseFeePerGas._hex));
 
     let LedgerTxPayload;
 
@@ -3121,9 +3115,9 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         };
     }
 
-    // console.log(LedgerTxPayload);
+    console.log(LedgerTxPayload);
 
-    // console.log(latestBlock);
+    console.log(latestBlock);
 
     showSpinner(async () => {
         try {
@@ -3180,24 +3174,16 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     const feeData = await web32.eth.calculateFeeData();
 
-    let maxFeePerGas;
+    let gasPrice = feeData.gasPrice > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.gasPrice : BigInt(latestBlock.baseFeePerGas._hex);
 
-    let gasPrice;
+    let maxFeePerGas = feeData.maxFeePerGas > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.maxFeePerGas : BigInt(latestBlock.baseFeePerGas._hex);
 
     let chainId = 14;
 
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
     // console.log(feeData);
