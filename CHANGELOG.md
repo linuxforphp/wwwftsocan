@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.0.2 (2024-08-30)
+
+- Fixes an issue with transaction fees on the Stake claiming page when using Ledger.
+- Fixes a few minor issues with the Avalanche App on Ledger.
+- Updates a few UI elements.
+- Updates the project's dependencies.
+
 ## 1.0.1 (2024-08-27)
 
 - Fixes a few issues when connecting to the Avalanche app on Ledger.
