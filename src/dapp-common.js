@@ -3068,9 +3068,7 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         chainId = 19;
     }
 
-    console.log(feeData);
-
-    console.log(BigInt(latestBlock.baseFeePerGas._hex));
+    // console.log(feeData);
 
     let LedgerTxPayload;
 
@@ -3099,9 +3097,9 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         };
     }
 
-    console.log(LedgerTxPayload);
+    // console.log(LedgerTxPayload);
 
-    console.log(latestBlock);
+    // console.log(latestBlock);
 
     showSpinner(async () => {
         try {
