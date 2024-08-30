@@ -4,7 +4,7 @@ $baseConfig['env'] = 'development';
 
 $baseConfig['appName'] = 'The FTSO Canada DApp';
 
-$baseConfig['dappName'] = 'FTSOCAN DApp, version 1.0.1';
+$baseConfig['dappName'] = 'FTSOCAN DApp, version 1.0.2';
 
 $baseConfig['dappActive'] = true;
 

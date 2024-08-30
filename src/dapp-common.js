@@ -917,8 +917,6 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     case "Success":
                         await wait(3000);
 
-                        await setCurrentPopup("Connecting...", true);
-
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             let addresses;
 
@@ -1054,6 +1052,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             await setCurrentAppState("Connected");
 
+            closeCurrentPopup();
+
             // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
@@ -1065,6 +1065,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             }
 
             await setCurrentAppState("Connected");
+
+            closeCurrentPopup();
 
             // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
@@ -1268,7 +1270,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             DappObject.claimBool = false;
                         }
 
-                        await setCurrentPopup("This is the 'Claim' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
+                        await setCurrentPopup("This is the 'Rewards' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
 
                         clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -1288,19 +1290,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
     } catch (error) {
         // console.log(error);
 
-        DappObject.isHandlingOperation = false;
-
         document.getElementById("ConnectWalletText").innerText = "Connect Wallet";
 
-        DappObject.signatureStaking = "";
-
-        DappObject.ledgerSelectedIndex = "";
-
-        DappObject.selectedAddress = "";
-
-        DappObject.unPrefixedAddr = "";
-
-        DappObject.ledgerAddrArray = [];
+        await resetDappObjectState(DappObject);
 
         var ClickHandler;
 
@@ -1778,8 +1770,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                     case "Success":
                         await wait(3000);
 
-                        await setCurrentPopup("Connecting...", true);
-
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             // console.log("Fetching Addresses... P-Chain");
                             let addresses = await getLedgerAddresses("flare");
@@ -1939,6 +1929,8 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
             await setCurrentAppState("Connected");
 
+            closeCurrentPopup();
+
             // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
@@ -1953,6 +1945,8 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             }
 
             await setCurrentAppState("Connected");
+
+            closeCurrentPopup();
 
             // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
@@ -2094,7 +2088,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                         DappObject.claimBool = false;
                     }
 
-                    await setCurrentPopup("This is the 'Rewards' page, where you can claim the FLR tokens that you have earned by staking to a validator node.", true);
+                    await setCurrentPopup("This is the 'Claim' page, where you can claim the FLR tokens that you have earned by staking to a validator node.", true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -2115,19 +2109,9 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
     } catch (error) {
         // console.log(error);
 
-        DappObject.isHandlingOperation = false;
-
         document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
 
-        DappObject.signatureStaking = "";
-
-        DappObject.ledgerSelectedIndex = "";
-
-        DappObject.selectedAddress = "";
-
-        DappObject.unPrefixedAddr = "";
-
-        DappObject.ledgerAddrArray = [];
+        await resetDappObjectState(DappObject);
 
         var ClickHandler;
 
@@ -3072,24 +3056,16 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     const latestBlock = await ethersProvider.getBlock("latest");
 
-    let gasPrice;
+    let gasPrice = feeData.gasPrice > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.gasPrice : BigInt(latestBlock.baseFeePerGas._hex);
 
-    let maxFeePerGas;
+    let maxFeePerGas = feeData.maxFeePerGas > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.maxFeePerGas : BigInt(latestBlock.baseFeePerGas._hex);
 
     let chainId = 14;
 
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
     // console.log(feeData);
@@ -3180,24 +3156,16 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     const feeData = await web32.eth.calculateFeeData();
 
-    let maxFeePerGas;
+    let gasPrice = feeData.gasPrice > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.gasPrice : BigInt(latestBlock.baseFeePerGas._hex);
 
-    let gasPrice;
+    let maxFeePerGas = feeData.maxFeePerGas > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.maxFeePerGas : BigInt(latestBlock.baseFeePerGas._hex);
 
     let chainId = 14;
 
     if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
         chainId = 14;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
-
-        gasPrice = feeData.gasPrice > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.gasPrice : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
-
-        maxFeePerGas = feeData.maxFeePerGas > BigInt(Number(latestBlock.baseFeePerGas._hex)) ? feeData.maxFeePerGas : BigInt(Number(latestBlock.baseFeePerGas._hex)) * 2n;
     }
 
     // console.log(feeData);
@@ -3491,6 +3459,20 @@ function closeCurrentPopup() {
     document.getElementById("currentWalletPopup").classList.remove("showing");
 }
 
+async function resetDappObjectState(DappObject) {
+    DappObject.isHandlingOperation = false;
+
+    DappObject.signatureStaking = "";
+
+    DappObject.ledgerSelectedIndex = "";
+
+    DappObject.selectedAddress = "";
+
+    DappObject.unPrefixedAddr = "";
+
+    DappObject.ledgerAddrArray = [];
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
@@ -3684,7 +3666,7 @@ window.dappInit = async (option, stakingOption) => {
                 }
 
                 object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
-                object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
                 object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                 showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
                 setWrapButton(DappObject);
@@ -3706,7 +3688,7 @@ window.dappInit = async (option, stakingOption) => {
                         document.getElementById("layer3").innerHTML = DappObject.costonLogo;
                     }
 
-                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
                     object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                     showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
                     DappObject.wrapBool = false;
@@ -4221,7 +4203,7 @@ window.dappInit = async (option, stakingOption) => {
                         document.getElementById("layer3").innerHTML = DappObject.costonLogo;
                     }
                     
-                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex].innerHTML;
+                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
                     object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
                     showTokenIdentifiers(null, object.wrappedTokenIdentifier);
 
@@ -4301,6 +4283,8 @@ window.dappInit = async (option, stakingOption) => {
 
         if (typeof stakingOption === 'undefined') {
             DappObject.isAccountConnected = true;
+
+            await resetDappObjectState(DappObject);
 
             DappObject.walletIndex = -1;
 
