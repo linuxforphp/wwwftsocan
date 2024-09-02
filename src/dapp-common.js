@@ -736,7 +736,7 @@ async function createSelectedNetwork(DappObject) {
 
                                 if (error.code === 4902) {
                                     try {
-                                        await ethereum.request({
+                                        await window.ethereum.request({
                                             method: 'wallet_addEthereumChain',
                                             params: [
                                                 {
@@ -763,11 +763,88 @@ async function createSelectedNetwork(DappObject) {
                         resolve();
                     });        
                 }
-            } else {
+            } else if (DappObject.walletIndex === 1) {
                 networkSelectBox.options[0].setAttribute('selected', 'selected');
                 networkSelectBox.options[1].removeAttribute('selected');
                 networkSelectBox.options.selectedIndex = 0;
                 resolve();
+            } else if (DappObject.walletIndex === 2) {
+                if (DappObject.walletConnectEVMProvider === undefined) {
+                    DappObject.walletConnectEVMProvider = await walletConnectProvider.init({
+                        projectId: '89353513e21086611c5118bd063aae5b',
+                        metadata: {
+                            name: 'FTSOCAN DApp',
+                            description: "The FTSOCAN DApp allows you to manage your $FLR and $SGB tokens in a secure, lightweight, and intuitive way. Wrap, delegate and claim your token rewards, using the DApp's fully responsive, and mobile-friendly interface.",
+                            url: 'https://ftsocan.com/dapp/index', // origin must match your domain & subdomain
+                            icons: ['https://avatars.githubusercontent.com/u/37784886']
+                        },
+                        showQrModal: true,
+                        qrModalOptions: {
+                            themeMode: "light",
+                            explorerRecommendedWalletIds: [
+                                // Bifrost Wallet
+                                "37a686ab6223cd42e2886ed6e5477fce100a4fb565dcd57ed4f81f7c12e93053",
+                                // Metamask
+                                "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
+                                // Web3AUTH
+                                "78aaedfb74f2f4737134f2aaa78871f15ff0a2828ecb0ddc5b068a1f57bb4213",
+                                // Ledger
+                                '19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927',
+                            ],
+                            explorerExcludedWalletIds: [
+                                // Ledger
+                                //'19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927'
+                            ],
+                            themeVariables: {
+                                '--wcm-z-index': 9998,
+                                '--wcm-font-family': "'Poppins', sans-serif",
+                                '--wcm-accent-color': "rgba(255, 49, 32, 0.8)",
+                                '--wcm-background-color': "rgba(255, 49, 32, 0.8)",
+                                '--wcm-overlay-background-color': "rgba(0, 0, 0, 0.5)",
+                            },
+                        },
+                        chains: [14, 19],
+    
+                        /*Optional - Add custom RPCs for each supported chain*/
+                        rpcMap: {
+                            14: 'https://sbi.flr.ftsocan.com',
+                            19: 'https://sbi.sgb.ftsocan.com'
+                        }
+                    });
+                }
+
+                await DappObject.walletConnectEVMProvider.connect();
+
+                var chainIdHexPromise = await DappObject.walletConnectEVMProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                    var realChainId;
+
+                    realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
+
+                    for (var i = 0; i < networkSelectBox.options.length; i++) {
+                        if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
+                            networkSelectBox.options[i].setAttribute('selected', 'selected');
+                            networkSelectBox.options.selectedIndex = i;
+                            realChainId = chainIdHex;
+                        } else {
+                            networkSelectBox.options[i].removeAttribute('selected');
+                        }
+                    }
+
+                    try {
+                        await DappObject.walletConnectEVMProvider.request({
+                            method: "wallet_switchEthereumChain",
+                            params: [
+                                {
+                                "chainId": realChainId
+                                }
+                            ]
+                            }).catch((error) => console.error(error));
+                    } catch (error) {
+                        throw(error);
+                    }
+
+                    resolve();
+                });
             }
         }, 200);
     })
@@ -1069,6 +1146,19 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             DappObject.isAccountConnected = true;
 
+        } else if (DappObject.walletIndex === 2 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
+            const accounts = await DappObject.walletConnectEVMProvider.request({method: 'eth_requestAccounts'});
+            
+            account = accounts[0];
+
+            await setCurrentAppState("Connected");
+
+            closeCurrentPopup();
+
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+
+            DappObject.isAccountConnected = true;
+
         } else if (typeof addressIndex !== "undefined" && addressIndex !== "") {
             account = PassedEthAddr;
             if (typeof HandleClick !== "undefined") {
@@ -1086,7 +1176,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
         if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
             DappObject.isHandlingOperation = false;
-        } else if ((DappObject.walletIndex === 1 && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.walletIndex === 0) {
+        } else if ((DappObject.walletIndex === 1 && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.walletIndex === 0 || DappObject.walletIndex === 2) {
             DappObject.selectedAddress = account;
 
             try {
@@ -4266,7 +4356,7 @@ window.dappInit = async (option, stakingOption) => {
 
             if (error.code === 4902) {
                 try {
-                    await ethereum.request({
+                    await window.ethereum.request({
                         method: 'wallet_addEthereumChain',
                         params: [
                             {
@@ -4308,47 +4398,6 @@ window.dappInit = async (option, stakingOption) => {
             document.getElementById("ContinueWalletConnect")?.addEventListener("click", async () => {
                 DappObject.walletIndex = 2;
                 getDappPage(1);
-                // const WCProvider = await walletConnectProvider.init({
-                //     projectId: '89353513e21086611c5118bd063aae5b',
-                //     metadata: {
-                //         name: 'FTSOCAN DApp',
-                //         description: "The FTSOCAN DApp allows you to manage your $FLR and $SGB tokens in a secure, lightweight, and intuitive way. Wrap, delegate and claim your token rewards, using the DApp's fully responsive, and mobile-friendly interface.",
-                //         url: 'https://ftsocan.com/dapp/index', // origin must match your domain & subdomain
-                //         icons: ['https://avatars.githubusercontent.com/u/37784886']
-                //     },
-                //     showQrModal: true,
-                //     qrModalOptions: {
-                //         themeMode: "light",
-                //         explorerRecommendedWalletIds: [
-                //             // Bifrost Wallet
-                //             "37a686ab6223cd42e2886ed6e5477fce100a4fb565dcd57ed4f81f7c12e93053",
-                //             // Metamask
-                //             "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
-                //             // Web3AUTH
-                //             "78aaedfb74f2f4737134f2aaa78871f15ff0a2828ecb0ddc5b068a1f57bb4213"
-                //         ],
-                //         explorerExcludedWalletIds: [
-                //             // Ledger
-                //             '19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927'
-                //         ],
-                //         themeVariables: {
-                //             '--wcm-z-index': 9998,
-                //             '--wcm-font-family': "'Poppins', sans-serif",
-                //             '--wcm-accent-color': "rgba(255, 49, 32, 0.8)",
-                //             '--wcm-background-color': "rgba(255, 49, 32, 0.8)",
-                //             '--wcm-overlay-background-color': "rgba(0, 0, 0, 0.5)",
-                //         },
-                //     },
-                //     chains: [14, 19],
-
-                //     /*Optional - Add custom RPCs for each supported chain*/
-                //     rpcMap: {
-                //         14: 'https://sbi.flr.ftsocan.com',
-                //         19: 'https://sbi.sgb.ftsocan.com'
-                //     }
-                // });
-
-                // WCProvider.connect();
             });
 
             await setCurrentAppState("Null");
