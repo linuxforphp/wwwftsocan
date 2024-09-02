@@ -364,6 +364,15 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
                     }
                     ]
                 });
+            } else if (DappObject.walletIndex === 2) {
+                await DappObject.walletConnectEVMProvider.request({
+                    "method": "wallet_revokePermissions",
+                    "params": [
+                    {
+                        "eth_accounts": {}
+                    }
+                    ]
+                });
             }
         }
     } else if (pageIndex === 2 || pageIndex === '2') {
@@ -380,6 +389,15 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
 
             if (DappObject.walletIndex === 0) {  
                 await window.ethereum?.request({
+                    "method": "wallet_revokePermissions",
+                    "params": [
+                    {
+                        "eth_accounts": {}
+                    }
+                    ]
+                });
+            } else if (DappObject.walletIndex === 2) {
+                await DappObject.walletConnectEVMProvider.request({
                     "method": "wallet_revokePermissions",
                     "params": [
                     {
@@ -412,6 +430,15 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
                     }
                     ]
                 });
+            } else if (DappObject.walletIndex === 2) {
+                await DappObject.walletConnectEVMProvider.request({
+                    "method": "wallet_revokePermissions",
+                    "params": [
+                    {
+                        "eth_accounts": {}
+                    }
+                    ]
+                });
             }
         }
     } else if (pageIndex === 4 && stakingOption !== 5) {
@@ -427,6 +454,15 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
 
             if (DappObject.walletIndex === 0) {  
                 await window.ethereum?.request({
+                    "method": "wallet_revokePermissions",
+                    "params": [
+                    {
+                        "eth_accounts": {}
+                    }
+                    ]
+                });
+            } else if (DappObject.walletIndex === 2) {
+                await DappObject.walletConnectEVMProvider.request({
                     "method": "wallet_revokePermissions",
                     "params": [
                     {
@@ -454,38 +490,71 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
     }
 }
 
-async function handleChainChanged() {
+async function handleChainChanged(DappObject) {
     try {
-        var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
-            var realChainId;
-
-            var changeEvent = new Event("change");
-
-            var selectedNetwork = document.getElementById("SelectedNetwork");
-
-            realChainId = selectedNetwork.options[0].getAttribute('data-chainidhex');
-
-            for (var i = 0; i < selectedNetwork?.options.length; i++) {
-                if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chainIdHex)) {
-                    selectedNetwork.options[i].setAttribute('selected', 'selected');
-                    selectedNetwork.options.selectedIndex = i;
-                    realChainId = chainIdHex;
-                    selectedNetwork.dispatchEvent(changeEvent);
-                } else {
-                    selectedNetwork.options[i].removeAttribute('selected');
+        if (DappObject.walletIndex === 0) {
+            var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                var realChainId;
+    
+                var changeEvent = new Event("change");
+    
+                var selectedNetwork = document.getElementById("SelectedNetwork");
+    
+                realChainId = selectedNetwork.options[0].getAttribute('data-chainidhex');
+    
+                for (var i = 0; i < selectedNetwork?.options.length; i++) {
+                    if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chainIdHex)) {
+                        selectedNetwork.options[i].setAttribute('selected', 'selected');
+                        selectedNetwork.options.selectedIndex = i;
+                        realChainId = chainIdHex;
+                        selectedNetwork.dispatchEvent(changeEvent);
+                    } else {
+                        selectedNetwork.options[i].removeAttribute('selected');
+                    }
                 }
-            }
-            if (DappObject.walletIndex === 0) {
-                await window.ethereum?.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [
-                        {
-                        "chainId": realChainId
-                        }
-                    ]
-                    }).catch((error) => console.error(error));
-            }
-        });
+                if (DappObject.walletIndex === 0) {
+                    await window.ethereum?.request({
+                        method: "wallet_switchEthereumChain",
+                        params: [
+                            {
+                            "chainId": realChainId
+                            }
+                        ]
+                        }).catch((error) => console.error(error));
+                }
+            });
+        } else if (DappObject.walletIndex === 2) {
+            var chainIdHexPromise = await DappObject.walletConnectEVMProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                var realChainId;
+    
+                var changeEvent = new Event("change");
+    
+                var selectedNetwork = document.getElementById("SelectedNetwork");
+    
+                realChainId = selectedNetwork.options[0].getAttribute('data-chainidhex');
+    
+                for (var i = 0; i < selectedNetwork?.options.length; i++) {
+                    if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chainIdHex)) {
+                        selectedNetwork.options[i].setAttribute('selected', 'selected');
+                        selectedNetwork.options.selectedIndex = i;
+                        realChainId = chainIdHex;
+                        selectedNetwork.dispatchEvent(changeEvent);
+                    } else {
+                        selectedNetwork.options[i].removeAttribute('selected');
+                    }
+                }
+                if (DappObject.walletIndex === 0) {
+                    await DappObject.walletConnectEVMProvider.request({
+                        method: "wallet_switchEthereumChain",
+                        params: [
+                            {
+                            "chainId": realChainId
+                            }
+                        ]
+                        }).catch((error) => console.error(error));
+                }
+            });
+        }
 
         document.getElementById("ConnectWallet")?.click();
     } catch (error) {
@@ -496,6 +565,15 @@ async function handleChainChanged() {
 async function handleChainChangedStake(DappObject) {
     if (DappObject.walletIndex === 0) {
         await window.ethereum?.request({
+            method: "wallet_switchEthereumChain",
+            params: [
+                {
+                "chainId": "0xe"
+                }
+            ]
+            }).catch((error) => console.error(error));
+    } else if (DappObject.walletIndex === 2) {
+        await DappObject.walletConnectEVMProvider.request({
             method: "wallet_switchEthereumChain",
             params: [
                 {
@@ -3590,6 +3668,12 @@ async function resetDappObjectState(DappObject) {
     DappObject.unPrefixedAddr = "";
 
     DappObject.ledgerAddrArray = [];
+
+    if (DappObject.walletConnectEVMProvider !== undefined) {
+        DappObject.walletConnectEVMProvider.disconnect();
+    }
+
+    DappObject.walletConnectEVMProvider = undefined;
 }
 
 // INIT
@@ -3856,7 +3940,19 @@ window.dappInit = async (option, stakingOption) => {
                     });
 
                     window.ethereum?.on("chainChanged", async () => {
-                        handleChainChanged();
+                        handleChainChanged(DappObject);
+                    });
+                } else if (DappObject.walletIndex === 2) {
+                    DappObject.walletConnectEVMProvider.on("accountsChanged", async (accounts) => {
+                        handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
+                    });
+
+                    DappObject.walletConnectEVMProvider.on("chainChanged", async () => {
+                        handleChainChanged(DappObject);
+                    });
+
+                    DappObject.walletConnectEVMProvider.on("disconnect", async () => {
+                        getDappPage(4);
                     });
                 }
             });
@@ -3990,7 +4086,19 @@ window.dappInit = async (option, stakingOption) => {
                     });
 
                     window.ethereum?.on("chainChanged", async () => {
-                        handleChainChanged();
+                        handleChainChanged(DappObject);
+                    });
+                } else if (DappObject.walletIndex === 2) {
+                    DappObject.walletConnectEVMProvider.on("accountsChanged", async (accounts) => {
+                        handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
+                    });
+
+                    DappObject.walletConnectEVMProvider.on("chainChanged", async () => {
+                        handleChainChanged(DappObject);
+                    });
+
+                    DappObject.walletConnectEVMProvider.on("disconnect", async () => {
+                        getDappPage(4);
                     });
                 }
             });
@@ -4469,7 +4577,19 @@ window.dappInit = async (option, stakingOption) => {
                     });
 
                     window.ethereum?.on("chainChanged", async () => {
-                        handleChainChanged();
+                        handleChainChanged(DappObject);
+                    });
+                } else if (DappObject.walletIndex === 2) {
+                    DappObject.walletConnectEVMProvider.on("accountsChanged", async (accounts) => {
+                        handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
+                    });
+
+                    DappObject.walletConnectEVMProvider.on("chainChanged", async () => {
+                        handleChainChanged(DappObject);
+                    });
+
+                    DappObject.walletConnectEVMProvider.on("disconnect", async () => {
+                        getDappPage(4);
                     });
                 }
             });
@@ -4679,6 +4799,18 @@ window.dappInit = async (option, stakingOption) => {
 
             window.ethereum?.on("chainChanged", async () => {
                 handleChainChangedStake(DappObject);
+            });
+        } else if (DappObject.walletIndex === 2) {
+            DappObject.walletConnectEVMProvider.on("accountsChanged", async (accounts) => {
+                handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
+            });
+
+            DappObject.walletConnectEVMProvider.on("chainChanged", async () => {
+                handleChainChangedStake(DappObject);
+            });
+
+            DappObject.walletConnectEVMProvider.on("disconnect", async () => {
+                getDappPage(4);
             });
         }
     }
