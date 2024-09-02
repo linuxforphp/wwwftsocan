@@ -78,8 +78,8 @@
     var uriPath = <?= json_encode($view['path']); ?>;
 
     window.onload = () => {
-        if ((typeof uriPath[2] === 'undefined') || uriPath[2] === '' || uriPath[2] === 'index' || uriPath[2] === 'stake') {
-            $.get("stake", function(data) {
+        if ((typeof uriPath[2] === 'undefined') || uriPath[2] === '' || uriPath[2] === 'index' || uriPath[2] === 'wallet') {
+            $.get("wallet", function(data) {
                 $("#dapp-root").html(data);
                 window.dappInit(4);
             });
@@ -113,13 +113,13 @@
                 $("#dapp-root").html(data);
                 window.dappInit(4, 3);
             });
-        } else if (uriPath[2] === 'stakeMetamask') {
-            $.get("stakeMetamask", function(data) {
+        } else if (uriPath[2] === 'walletMetamask') {
+            $.get("walletMetamask", function(data) {
                 $("#dapp-root").html(data);
                 window.dappInit(4, 4);
             });
-        } else if (uriPath[2] === 'stakeLedger') {
-            $.get("stakeLedger", function(data) {
+        } else if (uriPath[2] === 'walletLedger') {
+            $.get("walletLedger", function(data) {
                 $("#dapp-root").html(data);
                 window.dappInit(4, 5);
             });

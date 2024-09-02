@@ -377,7 +377,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
         return $this->view;
     }
 
-    public function preStakeAction($vars = null)
+    public function preWalletAction($vars = null)
     {
         if (isset($vars['get']['id'])) {
             $networkArray['id'] = (string)$vars['get']['id'];
@@ -396,7 +396,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
         $this->eventDispatcher->dispatch($event);
     }
 
-    public function stakeAction($vars = null)
+    public function walletAction($vars = null)
     {
         if (isset($this->results) && !empty($this->results)) {
             $this->filteredResults = [];
@@ -429,7 +429,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_stake';
+        $this->view['templatefile'] = 'dapp_wallet';
 
         return $this->view;
     }
@@ -605,7 +605,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
         return $this->view;
     }
 
-    public function preStakeMetamaskAction($vars = null)
+    public function preWalletMetamaskAction($vars = null)
     {
         if (isset($vars['get']['id'])) {
             $networkArray['id'] = (string)$vars['get']['id'];
@@ -624,7 +624,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
         $this->eventDispatcher->dispatch($event);
     }
 
-    public function stakeMetamaskAction($vars = null)
+    public function walletMetamaskAction($vars = null)
     {
         if (isset($this->results) && !empty($this->results)) {
             $this->filteredResults = [];
@@ -657,12 +657,12 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_stake_metamask';
+        $this->view['templatefile'] = 'dapp_wallet_metamask';
 
         return $this->view;
     }
 
-    public function preStakeLedgerAction($vars = null)
+    public function preWalletLedgerAction($vars = null)
     {
         if (isset($vars['get']['id'])) {
             $networkArray['id'] = (string)$vars['get']['id'];
@@ -681,7 +681,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
         $this->eventDispatcher->dispatch($event);
     }
 
-    public function stakeLedgerAction($vars = null)
+    public function walletLedgerAction($vars = null)
     {
         if (isset($this->results) && !empty($this->results)) {
             $this->filteredResults = [];
@@ -714,7 +714,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_stake_ledger';
+        $this->view['templatefile'] = 'dapp_wallet_ledger';
 
         return $this->view;
     }

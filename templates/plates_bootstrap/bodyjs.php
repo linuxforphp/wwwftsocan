@@ -88,7 +88,7 @@
 
     function getDappPage(option, reconnect = true) {
             if (option === 4) {
-                $.get( "stake", function( data ) {
+                $.get( "wallet", function( data ) {
                     $( "#dapp-root" ).html( data );
 
                     if (reconnect === true) {
@@ -158,7 +158,7 @@
                     });
                 }
             } else if (option === 8) {
-                $.get( "stakeMetamask", function( data ) {
+                $.get( "walletMetamask", function( data ) {
                     $( "#dapp-root" ).html( data );
 
                     if (reconnect === true) {
@@ -166,7 +166,7 @@
                     }
                 });
             } else if (option === 9) {
-                $.get( "stakeLedger", function( data ) {
+                $.get( "walletLedger", function( data ) {
                     $( "#dapp-root" ).html( data );
 
                     if (reconnect === true) {
