@@ -156,7 +156,6 @@
             </div>
             <i class="connect-wallet-text">Metamask</i>
         </button>
-        <div class="addr-wrap"><strong>DApp + Staking</strong></div>
     </div>
     <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueLedger" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
@@ -204,7 +203,7 @@
             </div>
             <i class="connect-wallet-text">Ledger</i>
         </button>
-        <div class="addr-wrap"><strong>DApp + Staking</strong></div>
+        <input type="text" id="chosenApp" class="addr-wrap" value="0">
     </div>
     <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueWalletConnect" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
@@ -237,7 +236,6 @@
             </div>
             <i class="connect-wallet-text">WalletConnect</i>
         </button>
-        <div class="addr-wrap"><strong>DApp + Staking</strong></div>
     </div>
 </div>
 <div class="row">

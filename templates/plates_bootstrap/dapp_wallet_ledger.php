@@ -8,7 +8,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <span style="font-size: 12px;">Before accessing the <i style="font-style: italic;">FTSOCAN DApp</i> using your Ledger device, You must open the </br> <i style="font-style: italic;">Avalanche App</i>.</span>
+                    <span style="font-size: 12px;">Before accessing the <i style="font-style: italic;">FTSOCAN DApp</i> using your Ledger device, You must open the </br> <i id="appName" style="font-style: italic;">Flare Network App</i>.</span>
                 </div>
             </div>
         </div>

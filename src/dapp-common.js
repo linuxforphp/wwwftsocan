@@ -42,6 +42,7 @@ window.DappObject = {
     unPrefixedAddr: "",
     ledgerAddrArray: [],
     ledgerSelectedIndex: "",
+    isAvax: false,
     // WalletConnect Variables
     walletConnectEVMProvider: undefined,
     // Staking Variables
@@ -92,6 +93,22 @@ const walletConnectEVMParams = {
     rpcMap: {
         14: 'https://sbi.flr.ftsocan.com',
         19: 'https://sbi.sgb.ftsocan.com'
+    }
+}
+
+const ledgerAppList = [{
+    id: 0,
+    title: "Flare Network"
+},{
+    id: 1,
+    title: "Avalanche"
+}];
+
+var onLedgerInputChange = async (value) => {
+    if (value == 0) {
+        DappObject.isAvax = false;
+    } else if (value == 1) {
+        DappObject.isAvax = true;
     }
 }
 
@@ -1092,8 +1109,16 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
+        let requiredApp;
+
+        if (DappObject.isAvax === true) {
+            requiredApp = "Avalanche";
+        } else {
+            requiredApp = "Flare Network";
+        }
+
         if (DappObject.walletIndex === 1 && (typeof addressIndex === "undefined" || addressIndex === "")) {
-            await getLedgerApp("Avalanche").then(async result => {
+            await getLedgerApp(requiredApp).then(async result => {
                 switch (result) {
                     case "Success":
                         await wait(3000);
@@ -1104,9 +1129,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             // console.log("Fetching Addresses... ETH");
 
                             if (rpcUrl.includes("flr")) {
-                                addresses = await getLedgerAddresses("flare");
+                                addresses = await getLedgerAddresses("flare", DappObject.isAvax);
                             } else if (rpcUrl.includes("sgb")) {
-                                addresses = await getLedgerAddresses("songbird");
+                                addresses = await getLedgerAddresses("songbird", DappObject.isAvax);
                             }
 
                             let insert = [];
@@ -1984,15 +2009,23 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
+        let requiredApp;
+
+        if (DappObject.isAvax === true) {
+            requiredApp = "Avalanche";
+        } else {
+            requiredApp = "Flare Network";
+        }
+
         if (DappObject.walletIndex === 1 && typeof PassedPublicKey === "undefined") {
-            await getLedgerApp("Avalanche").then(async result => {
+            await getLedgerApp(requiredApp).then(async result => {
                 switch (result) {
                     case "Success":
                         await wait(3000);
 
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             // console.log("Fetching Addresses... P-Chain");
-                            let addresses = await getLedgerAddresses("flare");
+                            let addresses = await getLedgerAddresses("flare", DappObject.isAvax);
     
                             let insert = [];
     
@@ -3406,10 +3439,10 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         } catch (error) {
             if (isStake === true) {
                 showFailStake(DappObject, stakingOption);
-                // console.log(error);
+                console.log(error);
             } else {
                 showFail(object, DappObject, pageIndex);
-                // console.log(error);
+                console.log(error);
             }
         }
     });
@@ -3586,7 +3619,11 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
         if (DappObject.walletIndex === 0) {
             requiredApp = "Ethereum";
         } else if (DappObject.walletIndex === 1 || DappObject.walletIndex === -1) {
-            requiredApp = "Avalanche";
+            if (DappObject.isAvax === true) {
+                requiredApp = "Avalanche";
+            } else {
+                requiredApp = "Flare Network";
+            }
         }
 
         await setCurrentAppState("Connecting");
@@ -3685,7 +3722,11 @@ async function setCurrentAppState(state) {
             appLogo.innerHTML = '<svg class="btn-bell" fill="none" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 79.374998 79.375" version="1.1" id="svg1" xml:space="preserve" <g id="layer1"><path style="fill:#FFFFFF" d="m 31.704516,54.76963 c -4.375814,-6.160866 -7.922539,-11.247117 -7.881611,-11.30278 0.04093,-0.05566 3.593184,1.983209 7.893905,4.530827 5.047396,2.989926 8.022846,4.553998 8.393112,4.411913 0.315491,-0.121065 3.842011,-2.14287 7.83671,-4.492899 3.9947,-2.350029 7.406681,-4.354063 7.582181,-4.453409 0.185732,-0.105139 0.191732,0.02645 0.01436,0.31485 C 54.951014,44.74094 40.471667,65.093835 40.069032,65.529353 39.751451,65.87287 37.889917,63.47828 31.704516,54.76963 Z M 31.75,45.034923 c -5.211187,-3.083904 -7.897706,-4.869531 -7.821643,-5.198748 0.237348,-1.027294 15.739202,-26.414666 15.975582,-26.163196 0.135321,0.143959 3.814868,6.16979 8.176771,13.390737 l 7.930733,13.128993 -7.961961,4.686285 C 43.670403,47.45645 39.997516,49.60284 39.88751,49.648749 39.777505,49.694658 36.115625,47.618436 31.75,45.034923 Z" id="path5"/></g></svg>'
             break
         case 1:
-            appLogo.innerHTML = '<svg class="btn-bell" viewBox="0 0 1503 1504" fill="none" version="1.1" id="svg1" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M 538.688,1050.86 H 392.94 c -30.626,0 -45.754,0 -54.978,-5.9 -9.963,-6.46 -16.051,-17.16 -16.789,-28.97 -0.554,-10.88 7.011,-24.168 22.139,-50.735 l 359.87,-634.32 c 15.313,-26.936 23.061,-40.404 32.839,-45.385 10.516,-5.35 23.062,-5.35 33.578,0 9.778,4.981 17.527,18.449 32.839,45.385 l 73.982,129.144 0.377,0.659 c 16.539,28.897 24.926,43.551 28.588,58.931 4.058,16.789 4.058,34.5 0,51.289 -3.69,15.497 -11.992,30.257 -28.781,59.591 l -189.031,334.153 -0.489,0.856 c -16.648,29.135 -25.085,43.902 -36.778,55.042 -12.73,12.18 -28.043,21.03 -44.832,26.02 -15.313,4.24 -32.47,4.24 -66.786,4.24 z m 368.062,0 h 208.84 c 30.81,0 46.31,0 55.54,-6.08 9.96,-6.46 16.23,-17.35 16.79,-29.15 0.53,-10.53 -6.87,-23.3 -21.37,-48.323 -0.5,-0.852 -1,-1.719 -1.51,-2.601 l -104.61,-178.956 -1.19,-2.015 c -14.7,-24.858 -22.12,-37.411 -31.65,-42.263 -10.51,-5.351 -22.88,-5.351 -33.391,0 -9.594,4.981 -17.342,18.08 -32.655,44.462 l -104.238,178.957 -0.357,0.616 c -15.259,26.34 -22.885,39.503 -22.335,50.303 0.738,11.81 6.826,22.69 16.788,29.15 9.041,5.9 24.538,5.9 55.348,5.9 z" fill="#FFFFFF" id="path1"/></svg>'
+            if (DappObject.isAvax === true) {
+                appLogo.innerHTML = '<svg class="btn-bell" viewBox="0 0 1503 1504" fill="none" version="1.1" id="svg1" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M 538.688,1050.86 H 392.94 c -30.626,0 -45.754,0 -54.978,-5.9 -9.963,-6.46 -16.051,-17.16 -16.789,-28.97 -0.554,-10.88 7.011,-24.168 22.139,-50.735 l 359.87,-634.32 c 15.313,-26.936 23.061,-40.404 32.839,-45.385 10.516,-5.35 23.062,-5.35 33.578,0 9.778,4.981 17.527,18.449 32.839,45.385 l 73.982,129.144 0.377,0.659 c 16.539,28.897 24.926,43.551 28.588,58.931 4.058,16.789 4.058,34.5 0,51.289 -3.69,15.497 -11.992,30.257 -28.781,59.591 l -189.031,334.153 -0.489,0.856 c -16.648,29.135 -25.085,43.902 -36.778,55.042 -12.73,12.18 -28.043,21.03 -44.832,26.02 -15.313,4.24 -32.47,4.24 -66.786,4.24 z m 368.062,0 h 208.84 c 30.81,0 46.31,0 55.54,-6.08 9.96,-6.46 16.23,-17.35 16.79,-29.15 0.53,-10.53 -6.87,-23.3 -21.37,-48.323 -0.5,-0.852 -1,-1.719 -1.51,-2.601 l -104.61,-178.956 -1.19,-2.015 c -14.7,-24.858 -22.12,-37.411 -31.65,-42.263 -10.51,-5.351 -22.88,-5.351 -33.391,0 -9.594,4.981 -17.342,18.08 -32.655,44.462 l -104.238,178.957 -0.357,0.616 c -15.259,26.34 -22.885,39.503 -22.335,50.303 0.738,11.81 6.826,22.69 16.788,29.15 9.041,5.9 24.538,5.9 55.348,5.9 z" fill="#FFFFFF" id="path1"/></svg>';
+            } else {
+                appLogo.innerHTML = '<svg class="btn-bell" fill="none" version="1.1" viewbox="0 0 383.66 538.51" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(.80749 0 0 .80749 59.503 59.212)" stroke-width="2.1053"><path d="m1.54 44.88s-1.54-0.83693-1.54-1.57c0-14.016 13.306-43.31 44.83-43.31 7.0837 1e-14 178 0 178 0s1.55 0.837 1.54 1.57c-0.28292 20.783-17.203 43.31-44.86 43.31h-177.97z"/><path d="m-2.8371e-7 133.36c-0.01006 0.733 1.54 1.57 1.54 1.57h110.8c25.586 0 44.577-22.527 44.86-43.31 0.01-0.733-1.54-1.57-1.54-1.57h-110.78c-25.453 0-44.595 22.522-44.88 43.31z"/><path d="m45.069 202.56a22.648 22.301 0 0 1-22.648 22.301 22.648 22.301 0 0 1-22.648-22.301 22.648 22.301 0 0 1 22.648-22.301 22.648 22.301 0 0 1 22.648 22.301z"/></g></svg><svg class="btn-bell" fill="#FFFFFF" version="1.1" viewbox="-40 -100 300 400" xmlns="http://www.w3.org/2000/svg"><g stroke-width="2.1053"><path d="m1.54 44.88s-1.54-0.83693-1.54-1.57c0-14.016 13.306-43.31 44.83-43.31 7.0837 1e-14 178 0 178 0s1.55 0.837 1.54 1.57c-0.28292 20.783-17.203 43.31-44.86 43.31h-177.97z"/><path d="m-2.8371e-7 133.36c-0.01006 0.733 1.54 1.57 1.54 1.57h110.8c25.586 0 44.577-22.527 44.86-43.31 0.01-0.733-1.54-1.57-1.54-1.57h-110.78c-25.453 0-44.595 22.522-44.88 43.31z"/><path d="m45.069 202.56a22.648 22.301 0 0 1-22.648 22.301 22.648 22.301 0 0 1-22.648-22.301 22.648 22.301 0 0 1 22.648-22.301 22.648 22.301 0 0 1 22.648 22.301z"/></g></svg>';
+            }   
             break
     }
 
@@ -4724,6 +4765,40 @@ window.dappInit = async (option, stakingOption) => {
         if (typeof stakingOption === 'undefined') {
             DappObject.isAccountConnected = true;
 
+            var $select = $('#chosenApp').selectize({
+                maxItems: 1,
+                valueField: 'id',
+                labelField: 'title',
+                searchField: ["title"],
+                options: ledgerAppList,
+                render: {
+                    item: function (item, escape) {
+                        return (
+                        "<div>" +
+                        (item.title
+                            ? `<span class="addr-wrap">` + escape(item.title) + "</span>"
+                            : "") +
+                        "</div>"
+                        );
+                    },
+                    option: function (item, escape) {
+                        var label = item.title;
+                        return (
+                        "<div>" +
+                        '<span class="connect-wallet-text">' +
+                        escape(label) +
+                        "</span>" +
+                        "</div>"
+                        );
+                    },
+                },
+                onChange: function(value) {
+                    onLedgerInputChange(value);
+                },
+                create: false,
+                dropdownParent: "body",
+            });
+
             await resetDappObjectState(DappObject);
 
             DappObject.walletIndex = -1;
@@ -4776,9 +4851,21 @@ window.dappInit = async (option, stakingOption) => {
 
                 await setCurrentPopup("Whoops! Your browser does not currently support Ledger Transport! You will need to use another wallet.", true);
             } else {
+                let requiredApp;
+
+                if (DappObject.isAvax === true) {
+                    requiredApp = "Avalanche";
+
+                    document.getElementById("appName").innerText = "Avalanche App";
+                } else {
+                    requiredApp = "Flare Network";
+
+                    document.getElementById("appName").innerText = "Flare Network App";
+                }
+
                 await setCurrentAppState("Connecting");
 
-                await getLedgerApp("Avalanche").then(async result => {
+                await getLedgerApp(requiredApp).then(async result => {
                     switch (result) {
                         case "Success":
                             await wait(3000);
