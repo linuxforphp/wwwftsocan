@@ -42,7 +42,7 @@ window.DappObject = {
     unPrefixedAddr: "",
     ledgerAddrArray: [],
     ledgerSelectedIndex: "",
-    isAvax: false,
+    isAvax: true,
     // WalletConnect Variables
     walletConnectEVMProvider: undefined,
     // Staking Variables
@@ -98,10 +98,10 @@ const walletConnectEVMParams = {
 
 const ledgerAppList = [{
     id: 0,
-    title: "Flare Network"
+    title: "Flare App"
 },{
     id: 1,
-    title: "Avalanche"
+    title: "Avalanche App"
 }];
 
 var onLedgerInputChange = async (value) => {

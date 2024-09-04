@@ -203,7 +203,7 @@
             </div>
             <i class="connect-wallet-text">Ledger</i>
         </button>
-        <input type="text" id="chosenApp" class="addr-wrap" value="0">
+        <input type="text" id="chosenApp" class="addr-wrap" value="1">
     </div>
     <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueWalletConnect" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
