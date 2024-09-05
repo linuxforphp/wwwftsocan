@@ -92,7 +92,7 @@
                 <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
             </div>
             <div class="col-sm-6">
-                <button id="WrapButton" class="wrap-button"><i class="wrap-button-text" id="WrapButtonText">Enter Amount</i></button>
+                <button id="WrapButton" class="connect-wallet wrap-button"><i class="wrap-button-text" id="WrapButtonText">Enter Amount</i></button>
             </div>
         </div>
         <div class="row">

@@ -157,7 +157,7 @@
             <i class="connect-wallet-text">Metamask</i>
         </button>
     </div>
-    <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
+    <div id="ledgerOption" class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueLedger" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
             <div class="wallet-icon">
                 <svg

@@ -3768,9 +3768,11 @@ async function setCurrentPopup(message, open) {
     clearTimeout(DappObject.latestPopupTimeoutId);
 
     if (open === true) {
-        await wait(1000);
+        if ((navigator.maxTouchPoints & 0xFF) === 0) {
+            await wait(1000);
 
-        document.getElementById("currentWalletPopup").classList.add("showing");
+            document.getElementById("currentWalletPopup").classList.add("showing");
+        }
     }
 
     document.getElementById("currentWalletPopupText").innerText = message;
@@ -4765,39 +4767,43 @@ window.dappInit = async (option, stakingOption) => {
         if (typeof stakingOption === 'undefined') {
             DappObject.isAccountConnected = true;
 
-            var $select = $('#chosenApp').selectize({
-                maxItems: 1,
-                valueField: 'id',
-                labelField: 'title',
-                searchField: ["title"],
-                options: ledgerAppList,
-                render: {
-                    item: function (item, escape) {
-                        return (
-                        "<div>" +
-                        (item.title
-                            ? `<span class="addr-wrap">` + escape(item.title) + "</span>"
-                            : "") +
-                        "</div>"
-                        );
+            if ((navigator.maxTouchPoints & 0xFF) === 0) {
+                var $select = $('#chosenApp').selectize({
+                    maxItems: 1,
+                    valueField: 'id',
+                    labelField: 'title',
+                    searchField: ["title"],
+                    options: ledgerAppList,
+                    render: {
+                        item: function (item, escape) {
+                            return (
+                            "<div>" +
+                            (item.title
+                                ? `<span class="addr-wrap">` + escape(item.title) + "</span>"
+                                : "") +
+                            "</div>"
+                            );
+                        },
+                        option: function (item, escape) {
+                            var label = item.title;
+                            return (
+                            "<div>" +
+                            '<span class="connect-wallet-text">' +
+                            escape(label) +
+                            "</span>" +
+                            "</div>"
+                            );
+                        },
                     },
-                    option: function (item, escape) {
-                        var label = item.title;
-                        return (
-                        "<div>" +
-                        '<span class="connect-wallet-text">' +
-                        escape(label) +
-                        "</span>" +
-                        "</div>"
-                        );
+                    onChange: function(value) {
+                        onLedgerInputChange(value);
                     },
-                },
-                onChange: function(value) {
-                    onLedgerInputChange(value);
-                },
-                create: false,
-                dropdownParent: "body",
-            });
+                    create: false,
+                    dropdownParent: "body",
+                });
+            } else {
+                document.getElementById("ledgerOption").style.display = "none";
+            }
 
             await resetDappObjectState(DappObject);
 
