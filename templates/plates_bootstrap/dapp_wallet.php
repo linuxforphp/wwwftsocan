@@ -1,23 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1px" height="1px">
-    <filter id="filter1" x="0" y="0" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-        <feColorMatrix type="matrix" values=".33 .33 .33 0 0
-                .33 .33 .33 0 0
-                .33 .33 .33 0 0
-                0 0 0 1 0" in="SourceGraphic" result="colormatrix"/>
-        <feComponentTransfer in="colormatrix" result="componentTransfer">
-            <feFuncR type="table" tableValues="0 1"/>
-            <feFuncG type="table" tableValues="0 1"/>
-            <feFuncB type="table" tableValues="0 1"/>
-            <feFuncA type="table" tableValues="0 1"/>
-        </feComponentTransfer>
-        <feBlend mode="normal" in="componentTransfer" in2="SourceGraphic" result="blend"/>
-    </filter>
-
     <filter id="shadow">
-        <feDropShadow dx="-0.5" dy="-0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
-        <feDropShadow dx="0.5" dy="-0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
-        <feDropShadow dx="0.5" dy="0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
-        <feDropShadow dx="-0.5" dy="0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+        <feDropShadow dx="-0.1" dy="-0.1" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+        <feDropShadow dx="0.1" dy="-0.1" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+        <feDropShadow dx="0.1" dy="0.1" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+        <feDropShadow dx="-0.1" dy="0.1" stdDeviation="0" flood-color="#adadad"></feDropShadow>
     </filter>
 </svg>
 <div class="top">
@@ -33,150 +19,11 @@
     <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueMetamask" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
             <div id="injectedProviderIcon" class="wallet-icon">
-                <svg
-                version="1.1"
-                x="0px"
-                y="0px"
-                viewBox="0 0 204.8 192.4"
-                style="enable-background:new 0 0 204.8 192.4; width: 100%; height: 100%;"
-                xml:space="preserve"
-                id="svg29"
-                sodipodi:docname="SVG_MetaMask_Icon_Color.svg"
-                inkscape:version="1.3 (0e150ed, 2023-07-21)"
-                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-                xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:svg="http://www.w3.org/2000/svg"><defs
-                id="defs29">&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;		&#10;	</defs><sodipodi:namedview
-                id="namedview29"
-                pagecolor="#ffffff"
-                bordercolor="#666666"
-                borderopacity="1.0"
-                inkscape:showpageshadow="2"
-                inkscape:pageopacity="0.0"
-                inkscape:pagecheckerboard="0"
-                inkscape:deskcolor="#d1d1d1"
-                inkscape:zoom="1.40625"
-                inkscape:cx="76.08889"
-                inkscape:cy="140.8"
-                inkscape:window-width="1366"
-                inkscape:window-height="704"
-                inkscape:window-x="0"
-                inkscape:window-y="0"
-                inkscape:window-maximized="1"
-                inkscape:current-layer="svg29" />&#10;<style
-                type="text/css"
-                id="style1">&#10;	.st0{display:none;}&#10;	.st1{fill:#F5841F;}&#10;	.st2{fill:#E27625;}&#10;	.st3{fill:#D7C1B3;}&#10;	.st4{fill:#2F343B;}&#10;	.st5{fill:#CC6228;}&#10;	.st6{fill:#C0AD9E;}&#10;	.st7{fill:#763E1A;}&#10;</style>&#10;<g
-                id="bg_x28_do_not_export_x29_"
-                class="st0">&#10;</g>&#10;<g
-                id="MM_Head_background__x28_Do_not_edit_x29_">&#10;	&#10;</g>&#10;<g
-                id="Logos">&#10;	<polygon
-                class="st2"
-                points="122.7,43.7 171.5,25.6 111.6,69.7 "
-                id="polygon1"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="82,43.7 33.2,25.6 92.6,70.1 "
-                id="polygon2"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="168.2,161.5 178,128.4 150,127.9 134,152.1 "
-                id="polygon3"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="70.7,152.1 54.8,127.9 26.9,128.4 36.6,161.5 "
-                id="polygon4"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="68.9,86.9 59.4,101.2 93.2,102.7 92.1,66.5 "
-                id="polygon5"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="111.6,102.7 145.4,101.2 135.9,86.9 112.3,66.1 "
-                id="polygon6"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="73.5,128.7 70.7,152.1 91.2,142.3 "
-                id="polygon7"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="131.2,128.7 113.6,142.3 134,152.1 "
-                id="polygon8"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st3"
-                points="115.3,155.5 115.1,161.1 134,152.1 113.6,142.3 "
-                id="polygon9"
-                style="fill:#ffffff;fill-opacity:1" /><polygon
-                class="st3"
-                points="89.6,155.5 91.2,142.3 70.7,152.1 89.7,161.1 "
-                id="polygon10"
-                style="fill:#ffffff;fill-opacity:1" /><polygon
-                class="st5"
-                points="54.8,128.4 70.7,152.1 73.7,127.9 "
-                id="polygon13"
-                style="fill:#ffffff;fill-opacity:0.30000001" /><polygon
-                class="st5"
-                points="150,128.4 131.1,127.9 134,152.1 "
-                id="polygon14"
-                style="fill:#ffffff;fill-opacity:0.30000001" /><polygon
-                class="st5"
-                points="114.7,119.9 119.7,109.5 131.7,115 145.4,101.2 111.6,102.7 "
-                id="polygon15"
-                style="fill:#ffffff;fill-opacity:0.30000001" /><polygon
-                class="st5"
-                points="90,119.9 93.2,102.7 59.4,101.2 73.1,115 85.1,109.5 "
-                id="polygon16"
-                style="fill:#ffffff;fill-opacity:0.30000001" /><polygon
-                class="st2"
-                points="73.1,115 59.4,101.2 73.5,128.7 "
-                id="polygon17"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="145.4,101.2 131.7,115 131.2,128.7 "
-                id="polygon18"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="94,140.3 94.9,113.5 93.2,102.7 90,119.9 "
-                id="polygon19"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st2"
-                points="110.7,140.3 114.7,119.9 111.6,102.7 109.9,113.4 "
-                id="polygon20"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st1"
-                points="113.6,142.3 131.2,128.7 131.7,115 114.7,119.9 110.7,140.3 "
-                id="polygon21"
-                style="fill:#ffffff;fill-opacity:1" /><polygon
-                class="st1"
-                points="91.2,142.3 94,140.3 90,119.9 73.1,115 73.5,128.7 "
-                id="polygon22"
-                style="fill:#ffffff;fill-opacity:1" /><polygon
-                class="st6"
-                points="113.7,154.2 91,154.2 89.6,155.5 89.7,161.1 70.7,152.1 77.3,157.5 90.8,166.8 113.9,166.8 127.4,157.5 134,152.1 115.1,161.1 115.3,155.5 "
-                id="polygon23"
-                style="fill:#ffffff;fill-opacity:0.60000002" /><polygon
-                class="st7"
-                points="171.5,25.6 113.6,68.2 135.9,86.9 167.4,96.1 174.3,88 171.3,85.8 176.1,81.5 172.4,78.6 177.2,75 174.1,72.6 179.1,48.2 "
-                id="polygon25"
-                style="fill:#ffffff;fill-opacity:0.2" /><polygon
-                class="st7"
-                points="27.5,75 32.3,78.7 28.6,81.5 33.4,85.8 30.4,88 37.4,96.1 68.9,86.9 91.2,68.2 33.2,25.6 25.6,48.2 30.7,72.6 "
-                id="polygon26"
-                style="fill:#ffffff;fill-opacity:0.2" /><polygon
-                class="st1"
-                points="145.4,101.2 131.2,128.7 150,128.4 178,128.4 167.4,96.1 135.9,86.9 "
-                id="polygon27"
-                style="fill:#ffffff;fill-opacity:1" /><polygon
-                class="st1"
-                points="26.9,128.4 54.8,128.4 73.5,128.7 59.4,101.2 68.9,86.9 37.4,96.1 "
-                id="polygon28"
-                style="fill:#ffffff;fill-opacity:1" /><polygon
-                class="st1"
-                points="122.7,43.7 82,43.7 91.2,68.2 93.2,102.7 94,113.5 94,140.3 110.7,140.3 110.8,113.5 111.6,102.7 113.6,68.2 "
-                id="polygon29"
-                style="fill:#ffffff;fill-opacity:1" />&#10;</g>&#10;</svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-4 -1 32 32" stroke-width="1.1" stroke="white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
+                </svg>
             </div>
-            <i id="injectedProviderName" class="connect-wallet-text">Metamask</i>
+            <i id="injectedProviderName" class="connect-wallet-text">Browser Wallet</i>
         </button>
         <input type="text" id="chosenProvider" class="addr-wrap">
     </div>

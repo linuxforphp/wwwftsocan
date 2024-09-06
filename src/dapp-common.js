@@ -860,7 +860,9 @@ async function createSelectedNetwork(DappObject) {
                                             "chainId": realChainId
                                             }
                                         ]
-                                        }).catch((error) => console.error(error));
+                                        }).catch((error) => {
+                                            throw error
+                                        });
                                 }
                             } catch (error) {
                                 // console.log(error);
@@ -940,9 +942,36 @@ async function createSelectedNetwork(DappObject) {
                                 "chainId": realChainId
                                 }
                             ]
-                            }).catch((error) => console.error(error));
+                            }).catch((error) => {
+                                throw error
+                            });
                     } catch (error) {
-                        throw(error);
+                        // console.log(error);
+
+                        if (error.code === 4902) {
+                            try {
+                                await DappObject.walletConnectEVMProvider.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            "chainId": realChainId,
+                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                            "iconUrls": [
+                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                            ],
+                                            "nativeCurrency": {
+                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                "decimals": 18
+                                            }
+                                        },
+                                    ],
+                                });
+                            } catch (error) {
+                                throw(error);
+                            }
+                        }
                     }
 
                     resolve();
@@ -3720,6 +3749,9 @@ async function setCurrentAppState(state) {
                 appLogo.innerHTML = '<svg class="btn-bell" fill="none" version="1.1" viewbox="0 0 383.66 538.51" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(.80749 0 0 .80749 59.503 59.212)" stroke-width="2.1053"><path d="m1.54 44.88s-1.54-0.83693-1.54-1.57c0-14.016 13.306-43.31 44.83-43.31 7.0837 1e-14 178 0 178 0s1.55 0.837 1.54 1.57c-0.28292 20.783-17.203 43.31-44.86 43.31h-177.97z"/><path d="m-2.8371e-7 133.36c-0.01006 0.733 1.54 1.57 1.54 1.57h110.8c25.586 0 44.577-22.527 44.86-43.31 0.01-0.733-1.54-1.57-1.54-1.57h-110.78c-25.453 0-44.595 22.522-44.88 43.31z"/><path d="m45.069 202.56a22.648 22.301 0 0 1-22.648 22.301 22.648 22.301 0 0 1-22.648-22.301 22.648 22.301 0 0 1 22.648-22.301 22.648 22.301 0 0 1 22.648 22.301z"/></g></svg><svg class="btn-bell" fill="#FFFFFF" version="1.1" viewbox="-40 -100 300 400" xmlns="http://www.w3.org/2000/svg"><g stroke-width="2.1053"><path d="m1.54 44.88s-1.54-0.83693-1.54-1.57c0-14.016 13.306-43.31 44.83-43.31 7.0837 1e-14 178 0 178 0s1.55 0.837 1.54 1.57c-0.28292 20.783-17.203 43.31-44.86 43.31h-177.97z"/><path d="m-2.8371e-7 133.36c-0.01006 0.733 1.54 1.57 1.54 1.57h110.8c25.586 0 44.577-22.527 44.86-43.31 0.01-0.733-1.54-1.57-1.54-1.57h-110.78c-25.453 0-44.595 22.522-44.88 43.31z"/><path d="m45.069 202.56a22.648 22.301 0 0 1-22.648 22.301 22.648 22.301 0 0 1-22.648-22.301 22.648 22.301 0 0 1 22.648-22.301 22.648 22.301 0 0 1 22.648 22.301z"/></g></svg>';
             }   
             break
+        case 2:
+            appLogo.innerHTML = '<svg class="btn-bell" fill="none" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 79.374998 79.375" version="1.1" id="svg1" xml:space="preserve" <g id="layer1"><path style="fill:#FFFFFF" d="m 31.704516,54.76963 c -4.375814,-6.160866 -7.922539,-11.247117 -7.881611,-11.30278 0.04093,-0.05566 3.593184,1.983209 7.893905,4.530827 5.047396,2.989926 8.022846,4.553998 8.393112,4.411913 0.315491,-0.121065 3.842011,-2.14287 7.83671,-4.492899 3.9947,-2.350029 7.406681,-4.354063 7.582181,-4.453409 0.185732,-0.105139 0.191732,0.02645 0.01436,0.31485 C 54.951014,44.74094 40.471667,65.093835 40.069032,65.529353 39.751451,65.87287 37.889917,63.47828 31.704516,54.76963 Z M 31.75,45.034923 c -5.211187,-3.083904 -7.897706,-4.869531 -7.821643,-5.198748 0.237348,-1.027294 15.739202,-26.414666 15.975582,-26.163196 0.135321,0.143959 3.814868,6.16979 8.176771,13.390737 l 7.930733,13.128993 -7.961961,4.686285 C 43.670403,47.45645 39.997516,49.60284 39.88751,49.648749 39.777505,49.694658 36.115625,47.618436 31.75,45.034923 Z" id="path5"/></g></svg>'
+            break
     }
 
     switch (state) {
@@ -4148,7 +4180,66 @@ window.dappInit = async (option, stakingOption) => {
                                     "chainId": object.chainIdHex
                                     }
                                 ]
-                                }).catch((error) => console.error(error));
+                                }).catch(async (error) => {
+                                    if (error.code === 4902) {
+                                        try {
+                                            await injectedProvider.request({
+                                                method: 'wallet_addEthereumChain',
+                                                params: [
+                                                    {
+                                                        "chainId": realChainId,
+                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                        "iconUrls": [
+                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                        ],
+                                                        "nativeCurrency": {
+                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "decimals": 18
+                                                        }
+                                                    },
+                                                ],
+                                            });
+                                        } catch (error) {
+                                            throw(error);
+                                        }
+                                    }
+                                });
+                        } else if (DappObject.walletIndex === 2) {
+                            await DappObject.walletConnectEVMProvider.request({
+                                method: "wallet_switchEthereumChain",
+                                params: [
+                                    {
+                                    "chainId": object.chainIdHex
+                                    }
+                                ]
+                                }).catch(async (error) => {
+                                    if (error.code === 4902) {
+                                        try {
+                                            await DappObject.walletConnectEVMProvider.request({
+                                                method: 'wallet_addEthereumChain',
+                                                params: [
+                                                    {
+                                                        "chainId": realChainId,
+                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                        "iconUrls": [
+                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                        ],
+                                                        "nativeCurrency": {
+                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "decimals": 18
+                                                        }
+                                                    },
+                                                ],
+                                            });
+                                        } catch (error) {
+                                            throw(error);
+                                        }
+                                    }
+                                });
                         }
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
@@ -4297,7 +4388,66 @@ window.dappInit = async (option, stakingOption) => {
                                     "chainId": object.chainIdHex
                                     }
                                 ]
-                            }).catch((error) => console.error(error));
+                            }).catch(async (error) => {
+                                if (error.code === 4902) {
+                                    try {
+                                        await injectedProvider.request({
+                                            method: 'wallet_addEthereumChain',
+                                            params: [
+                                                {
+                                                    "chainId": realChainId,
+                                                    "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                    "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                    "iconUrls": [
+                                                        `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                    ],
+                                                    "nativeCurrency": {
+                                                        "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                        "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                        "decimals": 18
+                                                    }
+                                                },
+                                            ],
+                                        });
+                                    } catch (error) {
+                                        throw(error);
+                                    }
+                                }
+                            });
+                        } else if (DappObject.walletIndex === 2) {
+                            await DappObject.walletConnectEVMProvider.request({
+                                method: "wallet_switchEthereumChain",
+                                params: [
+                                    {
+                                    "chainId": object.chainIdHex
+                                    }
+                                ]
+                                }).catch(async (error) => {
+                                    if (error.code === 4902) {
+                                        try {
+                                            await DappObject.walletConnectEVMProvider.request({
+                                                method: 'wallet_addEthereumChain',
+                                                params: [
+                                                    {
+                                                        "chainId": realChainId,
+                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                        "iconUrls": [
+                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                        ],
+                                                        "nativeCurrency": {
+                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "decimals": 18
+                                                        }
+                                                    },
+                                                ],
+                                            });
+                                        } catch (error) {
+                                            throw(error);
+                                        }
+                                    }
+                                });
                         }
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
@@ -4787,7 +4937,66 @@ window.dappInit = async (option, stakingOption) => {
                                     "chainId": object.chainIdHex
                                     }
                                 ]
-                            }).catch((error) => console.error(error));
+                            }).catch(async (error) => {
+                                if (error.code === 4902) {
+                                    try {
+                                        await injectedProvider.request({
+                                            method: 'wallet_addEthereumChain',
+                                            params: [
+                                                {
+                                                    "chainId": realChainId,
+                                                    "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                    "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                    "iconUrls": [
+                                                        `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                    ],
+                                                    "nativeCurrency": {
+                                                        "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                        "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                        "decimals": 18
+                                                    }
+                                                },
+                                            ],
+                                        });
+                                    } catch (error) {
+                                        throw(error);
+                                    }
+                                }
+                            });
+                        } else if (DappObject.walletIndex === 2) {
+                            await DappObject.walletConnectEVMProvider.request({
+                                method: "wallet_switchEthereumChain",
+                                params: [
+                                    {
+                                    "chainId": object.chainIdHex
+                                    }
+                                ]
+                                }).catch(async (error) => {
+                                    if (error.code === 4902) {
+                                        try {
+                                            await DappObject.walletConnectEVMProvider.request({
+                                                method: 'wallet_addEthereumChain',
+                                                params: [
+                                                    {
+                                                        "chainId": realChainId,
+                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                        "iconUrls": [
+                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                        ],
+                                                        "nativeCurrency": {
+                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                            "decimals": 18
+                                                        }
+                                                    },
+                                                ],
+                                            });
+                                        } catch (error) {
+                                            throw(error);
+                                        }
+                                    }
+                                });
                         }
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
@@ -4830,7 +5039,9 @@ window.dappInit = async (option, stakingOption) => {
                         "chainId": "0xe"
                         }
                     ]
-                    }).catch((error) => console.error(error));
+                    }).catch((error) => {
+                        throw error
+                    });
             } catch (error) {
                 // console.log(error);
 
@@ -4870,35 +5081,97 @@ window.dappInit = async (option, stakingOption) => {
                     ]
                     }).catch((error) => console.error(error));
             } catch (error) {
-                getDappPage(1);
+                // console.log(error);
+
+                if (error.code === 4902) {
+                    try {
+                        await injectedProvider.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    "chainId": "0xe",
+                                    "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
+                                    "chainName": `Flare Mainnet`,
+                                    "iconUrls": [
+                                        `https://portal.flare.network/token-logos/FLR.svg`
+                                    ],
+                                    "nativeCurrency": {
+                                        "name": `FLR`,
+                                        "symbol": `FLR`,
+                                        "decimals": 18
+                                    }
+                                },
+                            ],
+                        });
+                    } catch (error) {
+                        getDappPage(1);
+                    }
+                }
             }
         }
 
         var handleClick;
 
         if (typeof stakingOption === 'undefined') {
+            // We say that the account is connected so that we can navigate from page to page.
             DappObject.isAccountConnected = true;
 
+            // Setup the Ledger App dropdown
             await setupLedgerOption();
 
-            await setupInjectedProviderOption().then(injectedProviderDropdown => {
-                window.addEventListener('eip6963:announceProvider', async (event) => {
-                    console.log(event.detail);
-    
-                    let count = DappObject.providerList.push(event.detail);
-    
+            // Reset the injected Provider settings
+            let injectedProviderDropdown;
+
+            DappObject.providerList = [];
+
+            injectedProvider = window.ethereum;
+
+            document.getElementById("chosenProvider").style.display = "none";
+
+            // listen for the EIP-6963 events emitted by Providers
+            window.addEventListener('eip6963:announceProvider', async (event) => {
+                // console.log(event.detail);
+
+                let count;
+
+                if (DappObject.providerList.length <= 0) {
+                    // if there is only 1 Provider, we do not show the dropdown
+                    count = DappObject.providerList.push(event.detail);
+
+                    onInjectedInputChange(0);
+                } else if (DappObject.providerList.length == 1) {
+                    // if there are 2 Providers, we inject both into the dropdown
+                    injectedProviderDropdown = await setupInjectedProviderOption();
+
+                    count = DappObject.providerList.push(event.detail);
+
+                    injectedProviderDropdown.addOption({
+                        id: count - 1,
+                        title: DappObject.providerList[count - 1].info.name,
+                    });
+
+                    injectedProviderDropdown.addOption({
+                        id: count - 2,
+                        title: DappObject.providerList[count - 2].info.name,
+                    });
+
+                    injectedProviderDropdown.setValue([count - 1]);
+                } else {
+                    // if there are > 2 Providers, we inject the new provider into the dropdown
+                    count = DappObject.providerList.push(event.detail);
+
                     injectedProviderDropdown.addOption({
                         id: count - 1,
                         title: DappObject.providerList[count - 1].info.name,
                     });
 
                     injectedProviderDropdown.setValue([count - 1]);
+                }
 
-                    console.log(DappObject.providerList);
-                });
-            
-                window.dispatchEvent(new CustomEvent('eip6963:requestProvider'));
+                // console.log(DappObject.providerList);
             });
+        
+            window.dispatchEvent(new CustomEvent('eip6963:requestProvider'));
 
             await resetDappObjectState(DappObject);
 
