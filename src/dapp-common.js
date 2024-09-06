@@ -54,6 +54,8 @@ window.DappObject = {
     StakeMinDate: "",
 }
 
+let injectedProviderDropdown;
+
 const walletConnectEVMParams = {
     projectId: '89353513e21086611c5118bd063aae5b',
     metadata: {
@@ -3933,6 +3935,46 @@ var onInjectedInputChange = async (value) => {
     }
 }
 
+async function eip6963Listener(event) {
+    DappObject.providerList = [...new Set(DappObject.providerList)];
+
+    let count;
+
+    if (DappObject.providerList.length <= 0) {
+        // if there is only 1 Provider, we do not show the dropdown
+        count = DappObject.providerList.push(event.detail);
+
+        onInjectedInputChange(0);
+    } else if (DappObject.providerList.length == 1) {
+        // if there are 2 Providers, we inject both into the dropdown
+        injectedProviderDropdown = await setupInjectedProviderOption();
+
+        count = DappObject.providerList.push(event.detail);
+
+        injectedProviderDropdown.addOption({
+            id: count - 1,
+            title: DappObject.providerList[count - 1].info.name,
+        });
+
+        injectedProviderDropdown.addOption({
+            id: count - 2,
+            title: DappObject.providerList[count - 2].info.name,
+        });
+
+        injectedProviderDropdown.setValue([count - 1]);
+    } else {
+        // if there are > 2 Providers, we inject the new provider into the dropdown
+        count = DappObject.providerList.push(event.detail);
+
+        injectedProviderDropdown.addOption({
+            id: count - 1,
+            title: DappObject.providerList[count - 1].info.name,
+        });
+
+        injectedProviderDropdown.setValue([count - 1]);
+    }
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
@@ -5120,7 +5162,7 @@ window.dappInit = async (option, stakingOption) => {
             await setupLedgerOption();
 
             // Reset the injected Provider settings
-            let injectedProviderDropdown;
+            injectedProviderDropdown = undefined;
 
             DappObject.providerList = [];
 
@@ -5128,48 +5170,10 @@ window.dappInit = async (option, stakingOption) => {
 
             document.getElementById("chosenProvider").style.display = "none";
 
+            window.removeEventListener('eip6963:announceProvider', eip6963Listener);
+
             // listen for the EIP-6963 events emitted by Providers
-            window.addEventListener('eip6963:announceProvider', async (event) => {
-                // console.log(event.detail);
-
-                let count;
-
-                if (DappObject.providerList.length <= 0) {
-                    // if there is only 1 Provider, we do not show the dropdown
-                    count = DappObject.providerList.push(event.detail);
-
-                    onInjectedInputChange(0);
-                } else if (DappObject.providerList.length == 1) {
-                    // if there are 2 Providers, we inject both into the dropdown
-                    injectedProviderDropdown = await setupInjectedProviderOption();
-
-                    count = DappObject.providerList.push(event.detail);
-
-                    injectedProviderDropdown.addOption({
-                        id: count - 1,
-                        title: DappObject.providerList[count - 1].info.name,
-                    });
-
-                    injectedProviderDropdown.addOption({
-                        id: count - 2,
-                        title: DappObject.providerList[count - 2].info.name,
-                    });
-
-                    injectedProviderDropdown.setValue([count - 1]);
-                } else {
-                    // if there are > 2 Providers, we inject the new provider into the dropdown
-                    count = DappObject.providerList.push(event.detail);
-
-                    injectedProviderDropdown.addOption({
-                        id: count - 1,
-                        title: DappObject.providerList[count - 1].info.name,
-                    });
-
-                    injectedProviderDropdown.setValue([count - 1]);
-                }
-
-                // console.log(DappObject.providerList);
-            });
+            window.addEventListener('eip6963:announceProvider', eip6963Listener);
         
             window.dispatchEvent(new CustomEvent('eip6963:requestProvider'));
 
