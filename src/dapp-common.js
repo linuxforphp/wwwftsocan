@@ -4722,8 +4722,8 @@ window.dappInit = async (option, stakingOption) => {
         });
     } else if (option === 4 || option === '4') {
         // switch to Flare
-        try {
-            if (DappObject.walletIndex === 0) {
+        if (DappObject.walletIndex === 0) {
+            try {
                 await window.ethereum?.request({
                     method: "wallet_switchEthereumChain",
                     params: [
@@ -4732,33 +4732,46 @@ window.dappInit = async (option, stakingOption) => {
                         }
                     ]
                     }).catch((error) => console.error(error));
-            }
-        } catch (error) {
-            // console.log(error);
+            } catch (error) {
+                // console.log(error);
 
-            if (error.code === 4902) {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                "chainId": "0xe",
-                                "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
-                                "chainName": `Flare Mainnet`,
-                                "iconUrls": [
-                                    `https://portal.flare.network/token-logos/FLR.svg`
-                                ],
-                                "nativeCurrency": {
-                                    "name": `FLR`,
-                                    "symbol": `FLR`,
-                                    "decimals": 18
-                                }
-                            },
-                        ],
-                    });
-                } catch (error) {
-                    throw(error);
+                if (error.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    "chainId": "0xe",
+                                    "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
+                                    "chainName": `Flare Mainnet`,
+                                    "iconUrls": [
+                                        `https://portal.flare.network/token-logos/FLR.svg`
+                                    ],
+                                    "nativeCurrency": {
+                                        "name": `FLR`,
+                                        "symbol": `FLR`,
+                                        "decimals": 18
+                                    }
+                                },
+                            ],
+                        });
+                    } catch (error) {
+                        getDappPage(1);
+                    }
                 }
+            }
+        } else if (DappObject.walletIndex === 2) {
+            try {
+                await DappObject.walletConnectEVMProvider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [
+                        {
+                        "chainId": "0xe"
+                        }
+                    ]
+                    }).catch((error) => console.error(error));
+            } catch (error) {
+                getDappPage(1);
             }
         }
 
