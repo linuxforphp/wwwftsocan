@@ -1,3 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1px" height="1px">
+    <filter id="filter1" x="0" y="0" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values=".33 .33 .33 0 0
+                .33 .33 .33 0 0
+                .33 .33 .33 0 0
+                0 0 0 1 0" in="SourceGraphic" result="colormatrix"/>
+        <feComponentTransfer in="colormatrix" result="componentTransfer">
+            <feFuncR type="table" tableValues="0 1"/>
+            <feFuncG type="table" tableValues="0 1"/>
+            <feFuncB type="table" tableValues="0 1"/>
+            <feFuncA type="table" tableValues="0 1"/>
+        </feComponentTransfer>
+        <feBlend mode="normal" in="componentTransfer" in2="SourceGraphic" result="blend"/>
+    </filter>
+
+    <filter id="shadow">
+        <feDropShadow dx="-0.5" dy="-0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+        <feDropShadow dx="0.5" dy="-0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+        <feDropShadow dx="0.5" dy="0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+        <feDropShadow dx="-0.5" dy="0.5" stdDeviation="0" flood-color="#adadad"></feDropShadow>
+    </filter>
+</svg>
 <div class="top">
     <div class="wrap-box" style="white-space: normal; text-align: center !important; padding: 5% !important;">
         <div class="row">
@@ -10,7 +32,7 @@
 <div class="row" style="padding: 0 20px;">
     <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueMetamask" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
-            <div class="wallet-icon">
+            <div id="injectedProviderIcon" class="wallet-icon">
                 <svg
                 version="1.1"
                 x="0px"
@@ -154,8 +176,9 @@
                 id="polygon29"
                 style="fill:#ffffff;fill-opacity:1" />&#10;</g>&#10;</svg>
             </div>
-            <i class="connect-wallet-text">Metamask</i>
+            <i id="injectedProviderName" class="connect-wallet-text">Metamask</i>
         </button>
+        <input type="text" id="chosenProvider" class="addr-wrap">
     </div>
     <div id="ledgerOption" class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueLedger" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">

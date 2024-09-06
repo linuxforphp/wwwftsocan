@@ -150,6 +150,14 @@ h1, h2 {
 
 .wallet-icon {
     height: 118px;
+    mix-blend-mode: screen;
+    filter: grayscale(100%) contrast(3.7) url(#filter1);
+}
+
+.wallet-icon img {
+    filter: url(#shadow);
+    margin-top: 19px;
+    width: 85px;
 }
 
 /* .connect-wallet-text::before {

@@ -38,6 +38,8 @@ window.DappObject = {
     walletIndex: -1,
     // Signature used for non-EVM transactions
     signatureStaking: "",
+    // Injected Providers
+    providerList: [],
     // Ledger Variables
     unPrefixedAddr: "",
     ledgerAddrArray: [],
@@ -104,15 +106,7 @@ const ledgerAppList = [{
     title: "Avalanche App"
 }];
 
-var onLedgerInputChange = async (value) => {
-    if (value == 0) {
-        DappObject.isAvax = false;
-    } else if (value == 1) {
-        DappObject.isAvax = true;
-    }
-}
-
-const provider = window.ethereum;
+let injectedProvider = window.ethereum;
 
 function wait(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -377,7 +371,7 @@ async function showBindPAddress(contract, web32, address, publicKey, addressPcha
                         await LedgerEVMSingleSign(transactionParameters, DappObject, stakingOption, true);
                     } else {
                         showSpinner(async () => {
-                            await provider.request({
+                            await injectedProvider.request({
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters],
                             })
@@ -417,7 +411,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             setCurrentAppState("Null");
 
             if (DappObject.walletIndex === 0) {   
-                await window.ethereum?.request({
+                await injectedProvider.request({
                     "method": "wallet_revokePermissions",
                     "params": [
                     {
@@ -449,7 +443,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             setCurrentAppState("Null");
 
             if (DappObject.walletIndex === 0) {  
-                await window.ethereum?.request({
+                await injectedProvider.request({
                     "method": "wallet_revokePermissions",
                     "params": [
                     {
@@ -483,7 +477,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             setCurrentAppState("Null");
 
             if (DappObject.walletIndex === 0) {  
-                await window.ethereum?.request({
+                await injectedProvider.request({
                     "method": "wallet_revokePermissions",
                     "params": [
                     {
@@ -514,7 +508,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             setCurrentAppState("Null");
 
             if (DappObject.walletIndex === 0) {  
-                await window.ethereum?.request({
+                await injectedProvider.request({
                     "method": "wallet_revokePermissions",
                     "params": [
                     {
@@ -554,7 +548,7 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
 async function handleChainChanged(DappObject) {
     try {
         if (DappObject.walletIndex === 0) {
-            var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+            var chainIdHexPromise = await injectedProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
                 var realChainId;
     
                 var changeEvent = new Event("change");
@@ -574,7 +568,7 @@ async function handleChainChanged(DappObject) {
                     }
                 }
                 if (DappObject.walletIndex === 0) {
-                    await window.ethereum?.request({
+                    await injectedProvider.request({
                         method: "wallet_switchEthereumChain",
                         params: [
                             {
@@ -625,7 +619,7 @@ async function handleChainChanged(DappObject) {
 
 async function handleChainChangedStake(DappObject) {
     if (DappObject.walletIndex === 0) {
-        await window.ethereum?.request({
+        await injectedProvider.request({
             method: "wallet_switchEthereumChain",
             params: [
                 {
@@ -835,15 +829,13 @@ async function createSelectedNetwork(DappObject) {
             networkSelectBox.options.selectedIndex = 0;
 
             if (DappObject.walletIndex === 0) {    
-                await MMSDK.init();
-
-                if (!provider) {
+                if (!injectedProvider) {
                     DappObject.metamaskInstalled = false;
                     downloadMetamask();
                 } else {
                     DappObject.metamaskInstalled = true;
                     
-                    var chainIdHexPromise = await provider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                    var chainIdHexPromise = await injectedProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
                         var realChainId;
 
                         realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
@@ -861,7 +853,7 @@ async function createSelectedNetwork(DappObject) {
                         if (DappObject.metamaskInstalled === true) {
                             try {
                                 if (DappObject.walletIndex === 0) {
-                                    await window.ethereum?.request({
+                                    await injectedProvider.request({
                                         method: "wallet_switchEthereumChain",
                                         params: [
                                             {
@@ -875,7 +867,7 @@ async function createSelectedNetwork(DappObject) {
 
                                 if (error.code === 4902) {
                                     try {
-                                        await window.ethereum.request({
+                                        await injectedProvider.request({
                                             method: 'wallet_addEthereumChain',
                                             params: [
                                                 {
@@ -1252,7 +1244,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                 }
             });
         } else if (DappObject.walletIndex === 0 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
-            const accounts = await provider.request({method: 'eth_requestAccounts'});
+            const accounts = await injectedProvider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
 
@@ -1872,7 +1864,7 @@ async function delegate(object, DappObject) {
                 await LedgerEVMSingleSign(transactionParameters2, DappObject, undefined, false, object, 1);
             } else if (DappObject.walletIndex === 0) {
                 showSpinner(async () => {
-                    await provider.request({
+                    await injectedProvider.request({
                         method: 'eth_sendTransaction',
                         params: [transactionParameters2],
                     })
@@ -1915,7 +1907,7 @@ async function undelegate(object, DappObject) {
             await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 1);
         } else if (DappObject.walletIndex === 0) {
             showSpinner(async () => {
-                await provider.request({
+                await injectedProvider.request({
                     method: 'eth_sendTransaction',
                     params: [transactionParameters],
                 })
@@ -1964,7 +1956,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
             } else {
                 this.setContentAppend(DelegatedFtsos[0] + ". <br />");
             }
-            this.setContentAppend("You MUST undelegate before you can delegate to another provider. <br />");
+            this.setContentAppend("You MUST undelegate before you can delegate to another injectedProvider. <br />");
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -2138,7 +2130,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                 }
             });
         } else if (DappObject.walletIndex === 0 && typeof PassedPublicKey === "undefined") {
-            const accounts = await provider.request({method: 'eth_requestAccounts'});
+            const accounts = await injectedProvider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
 
@@ -2163,7 +2155,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                     }
                 });
 
-                const signature = await provider.request({
+                const signature = await injectedProvider.request({
                     "method": "personal_sign",
                     "params": [
                     message,
@@ -3314,7 +3306,7 @@ async function claimStakingRewards(DappObject, stakingOption) {
                 await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, true);
             } else {
                 showSpinner(async () => {
-                    await provider.request({
+                    await injectedProvider.request({
                         method: 'eth_sendTransaction',
                         params: [transactionParameters],
                     })
@@ -3802,6 +3794,113 @@ async function resetDappObjectState(DappObject) {
     DappObject.walletConnectEVMProvider = undefined;
 }
 
+async function setupLedgerOption() {
+    if ((navigator.maxTouchPoints & 0xFF) === 0) {
+        var $select = $('#chosenApp').selectize({
+            maxItems: 1,
+            valueField: 'id',
+            labelField: 'title',
+            searchField: ["title"],
+            options: ledgerAppList,
+            render: {
+                item: function (item, escape) {
+                    return (
+                    "<div>" +
+                    (item.title
+                        ? `<span class="addr-wrap">` + escape(item.title) + "</span>"
+                        : "") +
+                    "</div>"
+                    );
+                },
+                option: function (item, escape) {
+                    var label = item.title;
+                    return (
+                    "<div>" +
+                    '<span class="connect-wallet-text">' +
+                    escape(label) +
+                    "</span>" +
+                    "</div>"
+                    );
+                },
+            },
+            onChange: function(value) {
+                onLedgerInputChange(value);
+            },
+            create: false,
+            dropdownParent: "body",
+        });
+    } else {
+        document.getElementById("ledgerOption").style.display = "none";
+    }
+}
+
+var onLedgerInputChange = async (value) => {
+    if (value == 0) {
+        DappObject.isAvax = false;
+    } else if (value == 1) {
+        DappObject.isAvax = true;
+    }
+}
+
+function setInjectedInfo(info, provider) {
+    if (!provider) {
+        return
+    } else {
+        document.getElementById("injectedProviderName").innerText = info.name;
+
+        document.getElementById("injectedProviderIcon").innerHTML = `<img src="${info.icon}" alt="${info.name}" />`;
+    }
+}
+
+async function setupInjectedProviderOption() {
+    var $select = $('#chosenProvider').selectize({
+        maxItems: 1,
+        valueField: 'id',
+        labelField: 'title',
+        searchField: ["title"],
+        render: {
+            item: function (item, escape) {
+                return (
+                "<div>" +
+                (item.title
+                    ? `<span class="addr-wrap">` + escape(item.title) + "</span>"
+                    : "") +
+                "</div>"
+                );
+            },
+            option: function (item, escape) {
+                var label = item.title;
+                return (
+                "<div>" +
+                '<span class="connect-wallet-text">' +
+                escape(label) +
+                "</span>" +
+                "</div>"
+                );
+            },
+        },
+        onChange: function(value) {
+            onInjectedInputChange(value);
+        },
+        create: false,
+        dropdownParent: "body",
+    });
+
+    var control = $select[0].selectize;
+
+    control.clearOptions();
+
+    return control;
+}
+
+var onInjectedInputChange = async (value) => {
+    if (DappObject.providerList.length > 0) {
+        injectedProvider = DappObject.providerList[value].provider;
+
+        setInjectedInfo(DappObject.providerList[value].info, DappObject.providerList[value].provider);
+    }
+}
+
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
@@ -3951,7 +4050,7 @@ window.dappInit = async (option, stakingOption) => {
                                         await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 0);
                                     } else if (DappObject.walletIndex === 0) {
                                         showSpinner(async () => {
-                                            await provider.request({
+                                            await injectedProvider.request({
                                                 method: 'eth_sendTransaction',
                                                 params: [transactionParameters],
                                             })
@@ -4042,7 +4141,7 @@ window.dappInit = async (option, stakingOption) => {
                     // Alert Metamask to switch.
                     try {
                         if (DappObject.walletIndex === 0) {
-                            await window.ethereum?.request({
+                            await injectedProvider.request({
                                 method: "wallet_switchEthereumChain",
                                 params: [
                                     {
@@ -4061,11 +4160,11 @@ window.dappInit = async (option, stakingOption) => {
                 }
 
                 if (DappObject.walletIndex === 0) {
-                    window.ethereum?.on("accountsChanged", async (accounts) => {
+                    injectedProvider.on("accountsChanged", async (accounts) => {
                         handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
                     });
 
-                    window.ethereum?.on("chainChanged", async () => {
+                    injectedProvider.on("chainChanged", async () => {
                         handleChainChanged(DappObject);
                     });
                 } else if (DappObject.walletIndex === 2) {
@@ -4191,7 +4290,7 @@ window.dappInit = async (option, stakingOption) => {
                     // Alert Metamask to switch.
                     try {
                         if (DappObject.walletIndex === 0) {
-                            await window.ethereum?.request({
+                            await injectedProvider.request({
                                 method: "wallet_switchEthereumChain",
                                 params: [
                                     {
@@ -4207,11 +4306,11 @@ window.dappInit = async (option, stakingOption) => {
                     }
                 };
                 if (DappObject.walletIndex === 0) {
-                    window.ethereum?.on("accountsChanged", async (accounts) => {
+                    injectedProvider.on("accountsChanged", async (accounts) => {
                         handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
                     });
 
-                    window.ethereum?.on("chainChanged", async () => {
+                    injectedProvider.on("chainChanged", async () => {
                         handleChainChanged(DappObject);
                     });
                 } else if (DappObject.walletIndex === 2) {
@@ -4324,7 +4423,7 @@ window.dappInit = async (option, stakingOption) => {
                                         await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
                                     } else if (DappObject.walletIndex === 0) {
                                         showSpinner(async () => {
-                                            await provider.request({
+                                            await injectedProvider.request({
                                                 method: 'eth_sendTransaction',
                                                 params: [transactionParameters],
                                             })
@@ -4348,7 +4447,7 @@ window.dappInit = async (option, stakingOption) => {
                                         await LedgerEVMSingleSign(transactionParametersV2, DappObject, undefined, false, object, 2);
                                     } else if (DappObject.walletIndex === 0) {
                                         showSpinner(async () => {
-                                            await provider.request({
+                                            await injectedProvider.request({
                                                 method: 'eth_sendTransaction',
                                                 params: [transactionParametersV2],
                                             })
@@ -4373,7 +4472,7 @@ window.dappInit = async (option, stakingOption) => {
                                     } else if (DappObject.walletIndex === 0) {
                                         showConfirmationSpinnerv2(async (v2Spinner) => {
                                             try {
-                                                await provider.request({
+                                                await injectedProvider.request({
                                                     method: 'eth_sendTransaction',
                                                     params: [transactionParameters],
                                                 })
@@ -4412,7 +4511,7 @@ window.dappInit = async (option, stakingOption) => {
                                                         });
                                                     }).then(async value => {
                                                         if (value === "Success" || value === "Unknown") {
-                                                            await provider.request({
+                                                            await injectedProvider.request({
                                                                 method: 'eth_sendTransaction',
                                                                 params: [transactionParametersV2],
                                                             }).then(txHashV2 => {
@@ -4611,7 +4710,7 @@ window.dappInit = async (option, stakingOption) => {
                                     await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
                                 } else if (DappObject.walletIndex === 0) {
                                     showSpinner(async () => {
-                                        await provider.request({
+                                        await injectedProvider.request({
                                             method: 'eth_sendTransaction',
                                             params: [transactionParameters],
                                         })
@@ -4681,7 +4780,7 @@ window.dappInit = async (option, stakingOption) => {
                     // Alert Metamask to switch.
                     try {
                         if (DappObject.walletIndex === 0) {
-                            await window.ethereum?.request({
+                            await injectedProvider.request({
                                 method: "wallet_switchEthereumChain",
                                 params: [
                                     {
@@ -4698,11 +4797,11 @@ window.dappInit = async (option, stakingOption) => {
                 };
 
                 if (DappObject.walletIndex === 0) {
-                    window.ethereum?.on("accountsChanged", async (accounts) => {
+                    injectedProvider.on("accountsChanged", async (accounts) => {
                         handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
                     });
 
-                    window.ethereum?.on("chainChanged", async () => {
+                    injectedProvider.on("chainChanged", async () => {
                         handleChainChanged(DappObject);
                     });
                 } else if (DappObject.walletIndex === 2) {
@@ -4724,7 +4823,7 @@ window.dappInit = async (option, stakingOption) => {
         // switch to Flare
         if (DappObject.walletIndex === 0) {
             try {
-                await window.ethereum?.request({
+                await injectedProvider.request({
                     method: "wallet_switchEthereumChain",
                     params: [
                         {
@@ -4737,7 +4836,7 @@ window.dappInit = async (option, stakingOption) => {
 
                 if (error.code === 4902) {
                     try {
-                        await window.ethereum.request({
+                        await injectedProvider.request({
                             method: 'wallet_addEthereumChain',
                             params: [
                                 {
@@ -4780,43 +4879,26 @@ window.dappInit = async (option, stakingOption) => {
         if (typeof stakingOption === 'undefined') {
             DappObject.isAccountConnected = true;
 
-            if ((navigator.maxTouchPoints & 0xFF) === 0) {
-                var $select = $('#chosenApp').selectize({
-                    maxItems: 1,
-                    valueField: 'id',
-                    labelField: 'title',
-                    searchField: ["title"],
-                    options: ledgerAppList,
-                    render: {
-                        item: function (item, escape) {
-                            return (
-                            "<div>" +
-                            (item.title
-                                ? `<span class="addr-wrap">` + escape(item.title) + "</span>"
-                                : "") +
-                            "</div>"
-                            );
-                        },
-                        option: function (item, escape) {
-                            var label = item.title;
-                            return (
-                            "<div>" +
-                            '<span class="connect-wallet-text">' +
-                            escape(label) +
-                            "</span>" +
-                            "</div>"
-                            );
-                        },
-                    },
-                    onChange: function(value) {
-                        onLedgerInputChange(value);
-                    },
-                    create: false,
-                    dropdownParent: "body",
+            await setupLedgerOption();
+
+            await setupInjectedProviderOption().then(injectedProviderDropdown => {
+                window.addEventListener('eip6963:announceProvider', async (event) => {
+                    console.log(event.detail);
+    
+                    let count = DappObject.providerList.push(event.detail);
+    
+                    injectedProviderDropdown.addOption({
+                        id: count - 1,
+                        title: DappObject.providerList[count - 1].info.name,
+                    });
+
+                    injectedProviderDropdown.setValue([count - 1]);
+
+                    console.log(DappObject.providerList);
                 });
-            } else {
-                document.getElementById("ledgerOption").style.display = "none";
-            }
+            
+                window.dispatchEvent(new CustomEvent('eip6963:requestProvider'));
+            });
 
             await resetDappObjectState(DappObject);
 
@@ -4983,11 +5065,11 @@ window.dappInit = async (option, stakingOption) => {
         }
 
         if (DappObject.walletIndex === 0) {
-            window.ethereum?.on("accountsChanged", async (accounts) => {
+            injectedProvider.on("accountsChanged", async (accounts) => {
                 handleAccountsChanged(accounts, DappObject, dappOption, stakingOption);
             });
 
-            window.ethereum?.on("chainChanged", async () => {
+            injectedProvider.on("chainChanged", async () => {
                 handleChainChangedStake(DappObject);
             });
         } else if (DappObject.walletIndex === 2) {
