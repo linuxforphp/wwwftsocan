@@ -2217,61 +2217,85 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                 DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
             }
 
+            console.log(DappObject.walletConnectEVMProvider.session.namespaces);
+
             if (!DappObject.walletConnectEVMProvider.session) {
                 await DappObject.walletConnectEVMProvider.connect();
             }
-            
-            const accounts = await DappObject.walletConnectEVMProvider.request({method: 'eth_requestAccounts'});
-            
-            account = accounts[0];
 
-            if (DappObject.signatureStaking === "") {
+            if (DappObject.walletConnectEVMProvider.session.namespaces.eip155.methods.includes("eth_sign")) {                       
+                const accounts = await DappObject.walletConnectEVMProvider.request({method: 'eth_requestAccounts'});
+                
+                account = accounts[0];
 
+                if (DappObject.signatureStaking === "") {
+                    let signSpinner = $.confirm({
+                        escapeKey: false,
+                        backgroundDismiss: false,
+                        icon: 'fa fa-spinner fa-spin',
+                        title: 'Loading...',
+                        content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
+                        theme: 'material',
+                        type: 'dark',
+                        typeAnimated: true,
+                        draggable: false,
+                        buttons: {
+                            ok: {
+                                isHidden: true, // hide the button
+                            },
+                        },
+                        onContentReady: async function () {
+                        }
+                    });
+
+                    const signature = await DappObject.walletConnectEVMProvider.request({
+                        "method": "personal_sign",
+                        "params": [
+                        message,
+                        account
+                        ]
+                    }).catch((error) => async function() {
+                        signSpinner.close();
+
+                        throw error;
+                    });
+
+                    DappObject.signatureStaking = signature;
+
+                    signSpinner.close();
+                }
+
+                await setCurrentAppState("Connected");
+
+                closeCurrentPopup();
+
+                // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+
+                DappObject.isAccountConnected = true;
+
+                flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
+            } else {
                 let signSpinner = $.confirm({
                     escapeKey: false,
                     backgroundDismiss: false,
                     icon: 'fa fa-spinner fa-spin',
                     title: 'Loading...',
-                    content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
+                    content: "Sorry!</br> Your wallet does not support 'eth_sign'!</br> You will not be able to stake using the FTSOCAN DApp.",
                     theme: 'material',
                     type: 'dark',
                     typeAnimated: true,
                     draggable: false,
                     buttons: {
                         ok: {
-                            isHidden: true, // hide the button
+                            action: function () {
+                                getDappPage(4);
+                            },
                         },
                     },
                     onContentReady: async function () {
                     }
                 });
-
-                const signature = await DappObject.walletConnectEVMProvider.request({
-                    "method": "personal_sign",
-                    "params": [
-                    message,
-                    account
-                    ]
-                }).catch((error) => async function() {
-                    signSpinner.close();
-
-                    throw error;
-                });
-
-                DappObject.signatureStaking = signature;
-
-                signSpinner.close();
             }
-
-            await setCurrentAppState("Connected");
-
-            closeCurrentPopup();
-
-            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
-
-            DappObject.isAccountConnected = true;
-
-            flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
         } else if (typeof PassedPublicKey !== "undefined") {
             account = PassedEthAddr;
             flrPublicKey = PassedPublicKey;
@@ -5159,6 +5183,8 @@ window.dappInit = async (option, stakingOption) => {
             DappObject.isAccountConnected = true;
 
             // Setup the Ledger App dropdown
+            DappObject.isAvax = true;
+
             await setupLedgerOption();
 
             // Reset the injected Provider settings
