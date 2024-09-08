@@ -536,8 +536,6 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
 
         document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
 
-        document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
-
         document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
             DappObject.walletIndex = 1;
             getDappPage(1);
@@ -3968,7 +3966,7 @@ async function eip6963Listener(event) {
         // if there is only 1 Provider, we do not show the dropdown
         count = DappObject.providerList.push(event.detail);
 
-        onInjectedInputChange(0);
+        // onInjectedInputChange(0);
     } else if (DappObject.providerList.length == 1) {
         // if there are 2 Providers, we inject both into the dropdown
         injectedProviderDropdown = await setupInjectedProviderOption();
@@ -5279,8 +5277,6 @@ window.dappInit = async (option, stakingOption) => {
                             await setCurrentPopup("Connected!", false);
 
                             document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
-
-                            document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
     
                             document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
                                 DappObject.walletIndex = 1;
@@ -5293,7 +5289,7 @@ window.dappInit = async (option, stakingOption) => {
                             clearTimeout(DappObject.latestPopupTimeoutId);
     
                             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                                await setCurrentPopup("Whoops! Looks like you do not have the " + requiredApp + " installed on your Ledger device! Please install it and come back again later!", true);
                             }, 1000);
     
                             throw new Error("Ledger Avalanche App not installed!");

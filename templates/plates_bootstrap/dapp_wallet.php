@@ -19,7 +19,7 @@
     <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueMetamask" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
             <div id="injectedProviderIcon" class="wallet-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-4 -1 32 32" stroke-width="1.1" stroke="white">
+                <svg width="155" height="118" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" stroke-width="1.1" stroke="white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
                 </svg>
             </div>

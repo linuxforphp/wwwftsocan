@@ -18,7 +18,7 @@
             <button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text">Go Back</i></button>
         </div>
         <div class="col-sm-6">
-            <button id="ContinueAnyway" class="claim-button" style="float: none; margin-left: auto; margin-right: auto; padding: 20px;"><i class="connect-wallet-text">Continue</i></button>
+            <button id="ContinueAnyway" class="connect-wallet claim-button" style="float: none; margin-left: auto; margin-right: auto; padding: 20px;"><i class="connect-wallet-text">Continue</i></button>
         </div>
     </div>
 </div>
