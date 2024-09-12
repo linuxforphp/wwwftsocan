@@ -46,7 +46,7 @@
         <button id="ConnectPChain" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Connect to P-Chain</i></button>
     </div>
     <div class="col-sm-6">
-        <button id="ClaimButton" class="claim-button" name="ClaimButton" style="margin: 20px;"><label for="ClaimButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim Rewards</label><br /><i class="claim-button-text" id="ClaimButtonText">0</i></button>
+        <button id="ClaimButton" class="connect-wallet claim-button" name="ClaimButton" style="margin: 10px;"><label for="ClaimButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim Rewards</label><br /><i class="claim-button-text" id="ClaimButtonText">0</i></button>
     </div>
 </div>
 <div class="row">

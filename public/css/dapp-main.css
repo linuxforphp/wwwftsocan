@@ -150,6 +150,14 @@ h1, h2 {
 
 .wallet-icon {
     height: 118px;
+    mix-blend-mode: screen;
+    filter: grayscale(100%) contrast(3.7) brightness(110%);
+}
+
+.wallet-icon img {
+    filter: url(#shadow);
+    margin-top: 19px;
+    width: 85px;
 }
 
 /* .connect-wallet-text::before {
@@ -192,6 +200,16 @@ h1, h2 {
     user-select: none;
     text-align: center;
     font-size: 13px;
+}
+
+.addr-wrap .selectize-input {
+    width: 100%;
+    margin: auto !important;
+    padding: 0px;
+    left: -10%;
+    bottom: -32px;
+    color: #383a3b !important;
+    font-weight: bold;
 }
 
 .network-label {
@@ -568,7 +586,7 @@ h1, h2 {
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
-        background-size: 350%;
+        background-size: 400%;
     }
 
     .wrap-box {
@@ -591,6 +609,10 @@ h1, h2 {
         width: 100%;
     }
 
+    .addr-wrap .selectize-input {
+        bottom: -20px;
+    }
+
     /*.dapp-buttons {*/
     /*    margin: 15px;*/
     /*    box-sizing: border-box;*/
@@ -606,7 +628,8 @@ h1, h2 {
 
     .connect-wallet {
         float: none;
-        height: auto;
+        height: 60px;
+        max-height: 80px;
         width: auto;
         min-width: 178px;
         max-width: 179px;
@@ -674,6 +697,10 @@ h1, h2 {
         width: auto;
     }
 
+    .addr-wrap .selectize-input {
+        bottom: -20px;
+    }
+
     /*.dapp-buttons {*/
     /*    margin: 15px;*/
     /*    box-sizing: border-box;*/
@@ -684,7 +711,8 @@ h1, h2 {
 
     .connect-wallet {
         float: none;
-        height: auto;
+        height: 60px;
+        max-height: 80px;
         width: auto;
         min-width: 178px;
         max-width: 179px;
@@ -734,11 +762,11 @@ h1, h2 {
 
 @media (min-width: 768px) and (max-width: 979px) {
     body {
-        padding: 9.5em 0 0 0 !important;
+        padding: 15em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
-        background-size: 170%;
+        background-size: 400%;
     }
 
     .wrap-box {
@@ -753,7 +781,7 @@ h1, h2 {
 
     .dapp-container {
         padding: 30px 24px 25px;
-        width: auto;
+        width: 90%;
     }
 
     /*.dapp-buttons {*/
@@ -767,9 +795,14 @@ h1, h2 {
 
     .connect-wallet {
         padding: 10px;
-        height: 45px;
-        width: auto;
+        height: 60px;
+        max-height: 80px;
+        width: 90%;
         margin: 10px;
+    }
+
+    .current-wallet {
+        bottom: -50%;
     }
 
     .dummytext {
@@ -778,8 +811,12 @@ h1, h2 {
 
     .addr-wrap {
         text-align: center;
-        font-size: 13px;
+        font-size: 12px;
         margin: 20px;
+    }
+
+    .addr-wrap .selectize-input {
+        bottom: -20px;
     }
 
     .dapp-box {

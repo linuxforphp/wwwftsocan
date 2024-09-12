@@ -1,24 +1,8 @@
-.delegate-button {
+.connect-wallet.delegate-button {
     float: right;
-    margin: 20px;
-    border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: auto;
-    border-left: none;
-    border-right: none;
-    width: 90%;
-    letter-spacing: normal;
-    transition: 0.5s;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .amount-delegate {
@@ -200,16 +184,6 @@
         width: 15% !important;
     }
 
-    .delegate-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        padding: 15px 20px;
-    }
-
     .selected-ftso {
         width: auto;
         padding: 25px 20px;
@@ -244,16 +218,6 @@
         margin: 10px 0 0;
     }
 
-    .delegate-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        padding: 15px 20px;
-    }
-
     .selected-ftso {
         width: auto;
         padding: 25px 20px;
@@ -282,14 +246,6 @@
 
     .amount-delegate {
         width: 15% !important;
-    }
-
-    .delegate-button {
-        float: right;
-        padding: 10px;
-        margin: 10px;
-        height: 45px;
-        width: 40%;
     }
 
     .selected-ftso {

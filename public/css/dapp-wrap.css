@@ -86,27 +86,11 @@
     align-items: left;
 }
 
-.wrap-button {
-    float: right;
-    margin: 20px;
-    border-radius: 30px;
+.connect-wallet.wrap-button {
+    float: right !important;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: auto;
-    border-left: none;
-    border-right: none;
-    width: 90%;
-    letter-spacing: normal;
-    transition: 0.5s;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .wrap-button-text {
@@ -153,16 +137,6 @@ a:hover, a:active, a:focus {
         margin: 15px 20px 0px 30px;
     }
 
-    .wrap-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        padding: 15px 20px;
-    }
-
     .wrapper-claim {
         margin-left: 35px;
     }
@@ -185,15 +159,6 @@ a:hover, a:active, a:focus {
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
-    .wrap-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        padding: 15px 20px;
-    }
 
     .wrap-unwrap {
         width: auto;
@@ -207,12 +172,6 @@ a:hover, a:active, a:focus {
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-    .wrap-button {
-        padding: 10px;
-        height: 45px;
-        width: auto;
-        margin: 10px;
-    }
 
     .wrap-unwrap {
         width: auto;

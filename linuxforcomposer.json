@@ -37,6 +37,7 @@
                     "echo '1 0 * * * /bin/bash /srv/tempo/wwwftsocan/scripts/crons-dapp.bash >/dev/null 2>&1' >> /etc/fcrontab",
                     "fcrontab /etc/fcrontab >/dev/null 2>&1",
                     "lfphp-get jq",
+                    "/bin/bash /srv/tempo/wwwftsocan/scripts/crons-dapp.bash >/dev/null 2>&1 &",
                     "lfphp --mysql --phpfpm --apache"
                 ],
                 "thread-safe": "false"

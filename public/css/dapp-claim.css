@@ -21,27 +21,14 @@
     padding: 20px;
 }
 
-.claim-button {
+.connect-wallet.claim-button {
     float: right;
     margin: 15px;
-    border-radius: 30px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     padding: 7px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: auto;
-    border-left: none;
-    border-right: none;
     width: 100%;
-    letter-spacing: normal;
-    transition: 0.5s;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .claim-button-text {
@@ -72,60 +59,6 @@
 }
 
 .claim-button:hover {
-    letter-spacing: 1.5px;
-}
-
-.claim-fd-button {
-    float: right;
-    margin: 15px 0 0 20px;
-    border-radius: 30px;
-    background-color: rgba(143, 143, 143, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    padding: 7px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: auto;
-    border-left: none;
-    border-right: none;
-    width: 100%;
-    letter-spacing: normal;
-    transition: 0.5s;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.claim-fd-button-text {
-    font-style: normal;
-}
-
-.claim-fd-button-text::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: auto;
-    height: auto;
-    /* background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
-    transform: skewX(45deg) translateX(0); */
-    transition: 0.5s;
-}
-
-.claim-fd-button:hover > .claim-fd-button-text::before {
-    /* transform: skewX(45deg) translateX(200%); */
-}
-
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .claim-fd-button {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-}
-
-.claim-fd-button:hover {
     letter-spacing: 1.5px;
 }
 
@@ -325,7 +258,7 @@
         margin-top: 30px!important;
     }
 
-    .connect-wallet {
+    .connect-wallet-claim {
         float: none;
         height: auto;
         width: auto;
@@ -335,28 +268,6 @@
         margin-top: 5px;
         margin-bottom: 10px;
         padding: 15px 20px;
-    }
-
-    .claim-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        margin-bottom: 10px;
-        padding: 5px 20px;
-    }
-
-    .claim-fd-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        margin-bottom: 10px;
-        padding: 5px 20px;
     }
 
     .rewards {
@@ -388,7 +299,7 @@
         margin: 5px;
     }
 
-    .connect-wallet {
+    .connect-wallet-claim {
         float: none;
         height: auto;
         width: auto;
@@ -398,28 +309,6 @@
         margin-top: 5px;
         margin-bottom: 10px;
         padding: 15px 20px;
-    }
-
-    .claim-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        margin-bottom: 10px;
-        padding: 5px 20px;
-    }
-
-    .claim-fd-button {
-        float: none;
-        height: auto;
-        width: auto;
-        min-width: 178px;
-        max-width: 179px;
-        margin: auto;
-        margin-bottom: 10px;
-        padding: 5px 20px;
     }
 
     .ftso-identifier {
@@ -454,32 +343,11 @@
         font-size: 2rem;
     }
 
-    .connect-wallet {
+    .connect-wallet-claim {
         margin-left: 30%;
         height: 45px;
         width: 40%;
         padding: 10px 20px;
-    }
-
-    .claim-button {
-        float: left;
-        margin-top: 0;
-        margin-bottom: 20px !important;
-        margin-left: 30px !important;
-        height: 45px !important;
-        width: 70% !important;
-        padding: 3px 20px !important;
-    }
-
-
-    .claim-fd-button {
-        float: left;
-        margin-top: 0;
-        margin-left: 30px !important;
-        margin-bottom: 20px !important;
-        height: 45px !important;
-        width: 70% !important;
-        padding: 3px 20px !important;
     }
 
     .rewards {
