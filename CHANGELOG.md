@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.1.0 (2024-09-12)
+
+- Adds support for Wallet Connect (Bifrost and many others).
+- Adds support for multiple browser wallets (Coinbase and many others).
+- Adds support for the Flare App on Ledger.
+- Updates responsive UI elements.
+- Updates the project's dependencies.
+
 ## 1.0.2 (2024-08-30)
 
 - Fixes an issue with transaction fees on the Stake claiming page when using Ledger.
