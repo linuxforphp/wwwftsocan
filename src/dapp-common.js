@@ -3886,6 +3886,12 @@ async function setupLedgerOption() {
             dropdownParent: "body",
         });
     } else {
+        document.getElementById("metamaskOption").classList.remove("col-md-4");
+        document.getElementById("metamaskOption").classList.add("col-md-6");
+
+        document.getElementById("walletConnectOption").classList.remove("col-md-4");
+        document.getElementById("walletConnectOption").classList.add("col-md-6");
+
         document.getElementById("ledgerOption").style.display = "none";
     }
 }
@@ -3966,7 +3972,7 @@ async function eip6963Listener(event) {
         // if there is only 1 Provider, we do not show the dropdown
         count = DappObject.providerList.push(event.detail);
 
-        // onInjectedInputChange(0);
+        onInjectedInputChange(0);
     } else if (DappObject.providerList.length == 1) {
         // if there are 2 Providers, we inject both into the dropdown
         injectedProviderDropdown = await setupInjectedProviderOption();

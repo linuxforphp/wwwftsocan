@@ -87,7 +87,7 @@
 }
 
 .connect-wallet.wrap-button {
-    float: right !important;
+    float: right;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
