@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.1.1 (2024-09-16)
+
+- Fixes a few UI elements, mostly on mobile screens.
+- Updates the project's dependencies.
+
 ## 1.1.0 (2024-09-12)
 
 - Adds support for Wallet Connect (Bifrost and many others).

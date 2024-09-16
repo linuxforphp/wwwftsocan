@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="row" style="padding: 0 20px;">
-    <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
+    <div id="metamaskOption" class="col-sm-6 col-md-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueMetamask" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
             <div id="injectedProviderIcon" class="wallet-icon">
                 <svg width="155" height="118" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" stroke-width="1.1" stroke="white">
@@ -27,7 +27,7 @@
         </button>
         <input type="text" id="chosenProvider" class="addr-wrap">
     </div>
-    <div id="ledgerOption" class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
+    <div id="ledgerOption" class="col-md-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueLedger" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
             <div class="wallet-icon">
                 <svg
@@ -75,10 +75,10 @@
         </button>
         <input type="text" id="chosenApp" class="addr-wrap" value="1">
     </div>
-    <div class="col-sm-4" style="padding: 0 5px !important; margin: auto;">
+    <div id="walletConnectOption" class="col-sm-6 col-md-4" style="padding: 0 5px !important; margin: auto;">
         <button id="ContinueWalletConnect" class="continue-wallet" style="float: none; margin-left: auto; margin-right: auto;">
             <div class="wallet-icon">
-            <svg
+                <svg
                 width="155"
                 height="118"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -115,4 +115,3 @@
         </div>
     </div>
 </div>
-

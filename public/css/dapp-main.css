@@ -3,6 +3,10 @@
     src: url(../fonts/fontawesome-webfont.woff);
 }
 
+.jconfirm-box-container {
+    max-width: none !important;
+}
+
 body {
     overflow-x: hidden;
     padding-top: 12.7em;
@@ -581,6 +585,10 @@ h1, h2 {
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
+    .jconfirm-box-container {
+        max-width: 420px !important;
+    }
+
     body {
         padding: 9.5em 0 0 0 !important;
         background-repeat: no-repeat;
@@ -590,7 +598,7 @@ h1, h2 {
     }
 
     .wrap-box {
-        height: 9rem;
+        height: 9.1rem;
         margin: 10px;
     }
 
@@ -627,7 +635,7 @@ h1, h2 {
     }
 
     .connect-wallet {
-        float: none;
+        float: none !important;
         height: 60px;
         max-height: 80px;
         width: auto;
@@ -669,6 +677,7 @@ h1, h2 {
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
+
     body {
         padding: 9.5em 0 0 0 !important;
         background-repeat: no-repeat;
@@ -678,7 +687,7 @@ h1, h2 {
     }
 
     .wrap-box {
-        height: 9rem;
+        height: 9.1rem;
         margin: 10px
     }
 
@@ -710,7 +719,7 @@ h1, h2 {
     /*}*/
 
     .connect-wallet {
-        float: none;
+        float: none !important;
         height: 60px;
         max-height: 80px;
         width: auto;
@@ -761,6 +770,7 @@ h1, h2 {
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
+
     body {
         padding: 15em 0 0 0 !important;
         background-repeat: no-repeat;
@@ -770,7 +780,7 @@ h1, h2 {
     }
 
     .wrap-box {
-        height: 9rem;
+        height: 9.1rem;
         margin: 10px;
     }
 
@@ -794,6 +804,7 @@ h1, h2 {
     /*}*/
 
     .connect-wallet {
+        float: none !important;
         padding: 10px;
         height: 60px;
         max-height: 80px;
