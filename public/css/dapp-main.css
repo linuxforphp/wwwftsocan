@@ -224,7 +224,7 @@ h1, h2 {
     position: relative;
     white-space: nowrap;
     overflow: hidden;
-    height: 9.5rem;
+    height: 100px;
     justify-content: right;
     align-items: center;
     text-align: right;
@@ -598,7 +598,6 @@ h1, h2 {
     }
 
     .wrap-box {
-        height: 9.1rem;
         margin: 10px;
     }
 
@@ -687,7 +686,6 @@ h1, h2 {
     }
 
     .wrap-box {
-        height: 9.1rem;
         margin: 10px
     }
 
@@ -780,7 +778,6 @@ h1, h2 {
     }
 
     .wrap-box {
-        height: 9.1rem;
         margin: 10px;
     }
 
