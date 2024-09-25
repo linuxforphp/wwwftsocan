@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.1.2 (2024-09-25)
+
+- Fixes issues concerning the Bifrost Wallet.
+- Updates the project's dependencies.
+
 ## 1.1.1 (2024-09-16)
 
 - Fixes a few UI elements, mostly on mobile screens.

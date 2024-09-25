@@ -567,7 +567,7 @@ async function handleChainChanged(DappObject) {
                         selectedNetwork.options[i].removeAttribute('selected');
                     }
                 }
-                if (DappObject.walletIndex === 0) {
+                if (DappObject.walletIndex === 0 && realChainId != chainIdHex) {
                     await injectedProvider.request({
                         method: "wallet_switchEthereumChain",
                         params: [
@@ -598,7 +598,7 @@ async function handleChainChanged(DappObject) {
                         selectedNetwork.options[i].removeAttribute('selected');
                     }
                 }
-                if (DappObject.walletIndex === 0) {
+                if (DappObject.walletIndex === 2 && realChainId != chainIdHex) {
                     await DappObject.walletConnectEVMProvider.request({
                         method: "wallet_switchEthereumChain",
                         params: [
@@ -852,7 +852,7 @@ async function createSelectedNetwork(DappObject) {
     
                         if (DappObject.metamaskInstalled === true) {
                             try {
-                                if (DappObject.walletIndex === 0) {
+                                if (DappObject.walletIndex === 0 && realChainId != chainIdHex) {
                                     await injectedProvider.request({
                                         method: "wallet_switchEthereumChain",
                                         params: [
@@ -4243,73 +4243,81 @@ window.dappInit = async (option, stakingOption) => {
                     // Alert Metamask to switch.
                     try {
                         if (DappObject.walletIndex === 0) {
-                            await injectedProvider.request({
-                                method: "wallet_switchEthereumChain",
-                                params: [
-                                    {
-                                    "chainId": object.chainIdHex
-                                    }
-                                ]
-                                }).catch(async (error) => {
-                                    if (error.code === 4902) {
-                                        try {
-                                            await injectedProvider.request({
-                                                method: 'wallet_addEthereumChain',
-                                                params: [
-                                                    {
-                                                        "chainId": realChainId,
-                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                        "iconUrls": [
-                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                        ],
-                                                        "nativeCurrency": {
-                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "decimals": 18
-                                                        }
-                                                    },
-                                                ],
-                                            });
-                                        } catch (error) {
-                                            throw(error);
+                            const realChainId = await injectedProvider.request({method: 'eth_chainId'});
+
+                            if (realChainId != object.chainIdHex) {
+                                await injectedProvider.request({
+                                    method: "wallet_switchEthereumChain",
+                                    params: [
+                                        {
+                                        "chainId": object.chainIdHex
                                         }
-                                    }
-                                });
+                                    ]
+                                    }).catch(async (error) => {
+                                        if (error.code === 4902) {
+                                            try {
+                                                await injectedProvider.request({
+                                                    method: 'wallet_addEthereumChain',
+                                                    params: [
+                                                        {
+                                                            "chainId": realChainId,
+                                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                            "iconUrls": [
+                                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                            ],
+                                                            "nativeCurrency": {
+                                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "decimals": 18
+                                                            }
+                                                        },
+                                                    ],
+                                                });
+                                            } catch (error) {
+                                                throw(error);
+                                            }
+                                        }
+                                    });
+                            }
                         } else if (DappObject.walletIndex === 2) {
-                            await DappObject.walletConnectEVMProvider.request({
-                                method: "wallet_switchEthereumChain",
-                                params: [
-                                    {
-                                    "chainId": object.chainIdHex
-                                    }
-                                ]
-                                }).catch(async (error) => {
-                                    if (error.code === 4902) {
-                                        try {
-                                            await DappObject.walletConnectEVMProvider.request({
-                                                method: 'wallet_addEthereumChain',
-                                                params: [
-                                                    {
-                                                        "chainId": realChainId,
-                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                        "iconUrls": [
-                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                        ],
-                                                        "nativeCurrency": {
-                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "decimals": 18
-                                                        }
-                                                    },
-                                                ],
-                                            });
-                                        } catch (error) {
-                                            throw(error);
+                            const realChainId = await DappObject.walletConnectEVMProvider.request({method: 'eth_chainId'});
+
+                            if (realChainId != object.chainIdHex) {
+                                await DappObject.walletConnectEVMProvider.request({
+                                    method: "wallet_switchEthereumChain",
+                                    params: [
+                                        {
+                                        "chainId": object.chainIdHex
                                         }
-                                    }
-                                });
+                                    ]
+                                    }).catch(async (error) => {
+                                        if (error.code === 4902) {
+                                            try {
+                                                await DappObject.walletConnectEVMProvider.request({
+                                                    method: 'wallet_addEthereumChain',
+                                                    params: [
+                                                        {
+                                                            "chainId": realChainId,
+                                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                            "iconUrls": [
+                                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                            ],
+                                                            "nativeCurrency": {
+                                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "decimals": 18
+                                                            }
+                                                        },
+                                                    ],
+                                                });
+                                            } catch (error) {
+                                                throw(error);
+                                            }
+                                        }
+                                    });
+                            }
                         }
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
@@ -4451,51 +4459,20 @@ window.dappInit = async (option, stakingOption) => {
                     // Alert Metamask to switch.
                     try {
                         if (DappObject.walletIndex === 0) {
-                            await injectedProvider.request({
-                                method: "wallet_switchEthereumChain",
-                                params: [
-                                    {
-                                    "chainId": object.chainIdHex
-                                    }
-                                ]
-                            }).catch(async (error) => {
-                                if (error.code === 4902) {
-                                    try {
-                                        await injectedProvider.request({
-                                            method: 'wallet_addEthereumChain',
-                                            params: [
-                                                {
-                                                    "chainId": realChainId,
-                                                    "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                    "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                    "iconUrls": [
-                                                        `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                    ],
-                                                    "nativeCurrency": {
-                                                        "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                        "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                        "decimals": 18
-                                                    }
-                                                },
-                                            ],
-                                        });
-                                    } catch (error) {
-                                        throw(error);
-                                    }
-                                }
-                            });
-                        } else if (DappObject.walletIndex === 2) {
-                            await DappObject.walletConnectEVMProvider.request({
-                                method: "wallet_switchEthereumChain",
-                                params: [
-                                    {
-                                    "chainId": object.chainIdHex
-                                    }
-                                ]
+                            const realChainId = await injectedProvider.request({method: 'eth_chainId'});
+
+                            if (realChainId != object.chainIdHex) {
+                                await injectedProvider.request({
+                                    method: "wallet_switchEthereumChain",
+                                    params: [
+                                        {
+                                        "chainId": object.chainIdHex
+                                        }
+                                    ]
                                 }).catch(async (error) => {
                                     if (error.code === 4902) {
                                         try {
-                                            await DappObject.walletConnectEVMProvider.request({
+                                            await injectedProvider.request({
                                                 method: 'wallet_addEthereumChain',
                                                 params: [
                                                     {
@@ -4518,6 +4495,46 @@ window.dappInit = async (option, stakingOption) => {
                                         }
                                     }
                                 });
+                            }                    
+                        } else if (DappObject.walletIndex === 2) {
+                            const realChainId = await DappObject.walletConnectEVMProvider.request({method: 'eth_chainId'});
+
+                            if (realChainId != object.chainIdHex) {
+
+                                await DappObject.walletConnectEVMProvider.request({
+                                    method: "wallet_switchEthereumChain",
+                                    params: [
+                                        {
+                                        "chainId": object.chainIdHex
+                                        }
+                                    ]
+                                    }).catch(async (error) => {
+                                        if (error.code === 4902) {
+                                            try {
+                                                await DappObject.walletConnectEVMProvider.request({
+                                                    method: 'wallet_addEthereumChain',
+                                                    params: [
+                                                        {
+                                                            "chainId": realChainId,
+                                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                            "iconUrls": [
+                                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                            ],
+                                                            "nativeCurrency": {
+                                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "decimals": 18
+                                                            }
+                                                        },
+                                                    ],
+                                                });
+                                            } catch (error) {
+                                                throw(error);
+                                            }
+                                        }
+                                    });
+                            }
                         }
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
@@ -5000,51 +5017,20 @@ window.dappInit = async (option, stakingOption) => {
                     // Alert Metamask to switch.
                     try {
                         if (DappObject.walletIndex === 0) {
-                            await injectedProvider.request({
-                                method: "wallet_switchEthereumChain",
-                                params: [
-                                    {
-                                    "chainId": object.chainIdHex
-                                    }
-                                ]
-                            }).catch(async (error) => {
-                                if (error.code === 4902) {
-                                    try {
-                                        await injectedProvider.request({
-                                            method: 'wallet_addEthereumChain',
-                                            params: [
-                                                {
-                                                    "chainId": realChainId,
-                                                    "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                    "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                    "iconUrls": [
-                                                        `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                    ],
-                                                    "nativeCurrency": {
-                                                        "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                        "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                        "decimals": 18
-                                                    }
-                                                },
-                                            ],
-                                        });
-                                    } catch (error) {
-                                        throw(error);
-                                    }
-                                }
-                            });
-                        } else if (DappObject.walletIndex === 2) {
-                            await DappObject.walletConnectEVMProvider.request({
-                                method: "wallet_switchEthereumChain",
-                                params: [
-                                    {
-                                    "chainId": object.chainIdHex
-                                    }
-                                ]
+                            const realChainId = await injectedProvider.request({method: 'eth_chainId'});
+
+                            if (realChainId != object.chainIdHex) {
+                                await injectedProvider.request({
+                                    method: "wallet_switchEthereumChain",
+                                    params: [
+                                        {
+                                        "chainId": object.chainIdHex
+                                        }
+                                    ]
                                 }).catch(async (error) => {
                                     if (error.code === 4902) {
                                         try {
-                                            await DappObject.walletConnectEVMProvider.request({
+                                            await injectedProvider.request({
                                                 method: 'wallet_addEthereumChain',
                                                 params: [
                                                     {
@@ -5067,6 +5053,45 @@ window.dappInit = async (option, stakingOption) => {
                                         }
                                     }
                                 });
+                            }
+                        } else if (DappObject.walletIndex === 2) {
+                            const realChainId = await DappObject.walletConnectEVMProvider.request({method: 'eth_chainId'});
+
+                            if (realChainId != object.chainIdHex) {
+                                await DappObject.walletConnectEVMProvider.request({
+                                    method: "wallet_switchEthereumChain",
+                                    params: [
+                                        {
+                                        "chainId": object.chainIdHex
+                                        }
+                                    ]
+                                    }).catch(async (error) => {
+                                        if (error.code === 4902) {
+                                            try {
+                                                await DappObject.walletConnectEVMProvider.request({
+                                                    method: 'wallet_addEthereumChain',
+                                                    params: [
+                                                        {
+                                                            "chainId": realChainId,
+                                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                            "iconUrls": [
+                                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                            ],
+                                                            "nativeCurrency": {
+                                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                                "decimals": 18
+                                                            }
+                                                        },
+                                                    ],
+                                                });
+                                            } catch (error) {
+                                                throw(error);
+                                            }
+                                        }
+                                    });
+                            }
                         }
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
