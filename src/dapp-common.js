@@ -1098,6 +1098,69 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
         );
 }
 
+async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManager) {
+    const [startRewardEpochId, endRewardEpochId] = await rewardManager.methods.getRewardEpochIdsWithClaimableRewards().call();
+    if (endRewardEpochId < startRewardEpochId) {
+      return null;
+    }
+    const claimableRewardEpochIds = [];
+    for (
+      let epochId = startRewardEpochId;
+      epochId <= endRewardEpochId;
+      epochId++
+  ) {
+      const rewardsHash = await flareSystemsManager.methods.rewardsHash(epochId).call();
+      const rewardHashSigned = Boolean(rewardsHash) && rewardsHash !== "0x0000000000000000000000000000000000000000000000000000000000000000";
+      if (rewardHashSigned) {
+        claimableRewardEpochIds.push(Number(epochId));
+      }
+    }
+    if (claimableRewardEpochIds.length === 0) {
+      return null;
+    }
+    return claimableRewardEpochIds;
+}
+
+async function getRewardClaimWithProofStructs(network, address, amountWei) {
+    const claimableRewardEpochIds = await getRewardEpochIdsWithClaimableRewards();
+    if (!claimableRewardEpochIds?.length) {
+      return;
+    }
+    const rewardClaimWithProofStructs = [];
+    for (const epochId of claimableRewardEpochIds) {
+      const rewardClaimData = await getRewardClaimData(epochId, network, address, amountWei);
+      if (!rewardClaimData) {
+        break;
+      }
+      rewardClaimWithProofStructs.push(rewardClaimData);
+    }
+    return rewardClaimWithProofStructs;
+}
+
+async function getRewardClaimData(rewardEpochId, network, address, amount) {
+    const rewardsData = fetch(`https://raw.githubusercontent.com/flare-foundation/FTSO-scaling/main/rewards-data/${network}/${rewardEpochId}/reward-distribution-data-tuples.json`).then(res => res.json());
+    if (!rewardsData) {
+      return null;
+    }
+    const rewardClaims = rewardsData.rewardClaims.find(([_, [id, address, sum, claimType]]) => address.toLowerCase() === address.toLowerCase() && claimType === 1);
+    if (!rewardClaims) {
+      return null;
+    }
+    const [merkleProof, [id, address, sum, claimType]] = rewardClaims;
+
+    amount += BigInt(sum);
+
+    return {
+        merkleProof, 
+        body: {
+            rewardEpochId: BigInt(id),
+            beneficiary: address,
+            amount: BigInt(sum),
+            claimType: BigInt(claimType)
+        }
+    };
+}
+
 // WRAP MODULE
 
 async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
