@@ -7,6 +7,8 @@ import { ethers } from "./ethers.js";
 // ALL MODULES.
 
 window.DappObject = {
+    // Network index (1 = flare, 2 = songbird, other = coston)
+    selectedNetworkIndex: 1,
     // Handling VA popups
     latestPopupTimeoutId: undefined,
     // Handling Accounts
@@ -827,8 +829,8 @@ async function createSelectedNetwork(DappObject) {
                 networkSelectBox.appendChild(option);
             }
 
-            networkSelectBox.options[0].setAttribute('selected', 'selected');
-            networkSelectBox.options.selectedIndex = 0;
+            networkSelectBox.options[DappObject.selectedNetworkIndex - 1].setAttribute('selected', 'selected');
+            networkSelectBox.options.selectedIndex = DappObject.selectedNetworkIndex - 1;
 
             if (DappObject.walletIndex === 0) {    
                 if (!injectedProvider) {
@@ -899,9 +901,6 @@ async function createSelectedNetwork(DappObject) {
                     });        
                 }
             } else if (DappObject.walletIndex === 1) {
-                networkSelectBox.options[0].setAttribute('selected', 'selected');
-                networkSelectBox.options[1].removeAttribute('selected');
-                networkSelectBox.options.selectedIndex = 0;
                 resolve();
             } else if (DappObject.walletIndex === 2) {
                 if (DappObject.walletConnectEVMProvider === undefined) {
@@ -4358,6 +4357,8 @@ window.dappInit = async (option, stakingOption) => {
                     object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
                     object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
 
+                    DappObject.selectedNetworkIndex = Number(object.networkValue);
+
                     if (object.networkValue === '1') {
                         document.getElementById("layer2").innerHTML = DappObject.flrLogo;
                         document.getElementById("layer3").innerHTML = DappObject.flrLogo;
@@ -4595,6 +4596,8 @@ window.dappInit = async (option, stakingOption) => {
                     object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
                     object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
                     object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
+
+                    DappObject.selectedNetworkIndex = Number(object.networkValue);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -5159,6 +5162,8 @@ window.dappInit = async (option, stakingOption) => {
                     object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
                     object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
 
+                    DappObject.selectedNetworkIndex = Number(object.networkValue);
+
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     if (object.networkValue === '1') {
@@ -5283,82 +5288,85 @@ window.dappInit = async (option, stakingOption) => {
             });
         });
     } else if (option === 4 || option === '4') {
-        // switch to Flare
-        if (DappObject.walletIndex === 0) {
-            try {
-                await injectedProvider.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [
-                        {
-                        "chainId": "0xe"
-                        }
-                    ]
-                    }).catch((error) => {
-                        throw error
-                    });
-            } catch (error) {
-                console.log(error);
 
-                if (error.code === 4902) {
-                    try {
-                        await injectedProvider.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                    "chainId": "0xe",
-                                    "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
-                                    "chainName": `Flare Mainnet`,
-                                    "iconUrls": [
-                                        `https://portal.flare.network/token-logos/FLR.svg`
-                                    ],
-                                    "nativeCurrency": {
-                                        "name": `FLR`,
-                                        "symbol": `FLR`,
-                                        "decimals": 18
-                                    }
-                                },
-                            ],
+        if (stakingOption !== undefined && stakingOption !== 4 && stakingOption !== 5) {
+            // switch to Flare
+            if (DappObject.walletIndex === 0) {
+                try {
+                    await injectedProvider.request({
+                        method: "wallet_switchEthereumChain",
+                        params: [
+                            {
+                            "chainId": "0xe"
+                            }
+                        ]
+                        }).catch((error) => {
+                            throw error
                         });
-                    } catch (error) {
-                        getDappPage(1);
+                } catch (error) {
+                    console.log(error);
+
+                    if (error.code === 4902) {
+                        try {
+                            await injectedProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        "chainId": "0xe",
+                                        "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
+                                        "chainName": `Flare Mainnet`,
+                                        "iconUrls": [
+                                            `https://portal.flare.network/token-logos/FLR.svg`
+                                        ],
+                                        "nativeCurrency": {
+                                            "name": `FLR`,
+                                            "symbol": `FLR`,
+                                            "decimals": 18
+                                        }
+                                    },
+                                ],
+                            });
+                        } catch (error) {
+                            getDappPage(1);
+                        }
                     }
                 }
-            }
-        } else if (DappObject.walletIndex === 2) {
-            try {
-                await DappObject.walletConnectEVMProvider.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [
-                        {
-                        "chainId": "0xe"
-                        }
-                    ]
-                    }).catch((error) => console.error(error));
-            } catch (error) {
-                console.log(error);
+            } else if (DappObject.walletIndex === 2) {
+                try {
+                    await DappObject.walletConnectEVMProvider.request({
+                        method: "wallet_switchEthereumChain",
+                        params: [
+                            {
+                            "chainId": "0xe"
+                            }
+                        ]
+                        }).catch((error) => console.error(error));
+                } catch (error) {
+                    console.log(error);
 
-                if (error.code === 4902) {
-                    try {
-                        await injectedProvider.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                    "chainId": "0xe",
-                                    "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
-                                    "chainName": `Flare Mainnet`,
-                                    "iconUrls": [
-                                        `https://portal.flare.network/token-logos/FLR.svg`
-                                    ],
-                                    "nativeCurrency": {
-                                        "name": `FLR`,
-                                        "symbol": `FLR`,
-                                        "decimals": 18
-                                    }
-                                },
-                            ],
-                        });
-                    } catch (error) {
-                        getDappPage(1);
+                    if (error.code === 4902) {
+                        try {
+                            await injectedProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        "chainId": "0xe",
+                                        "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
+                                        "chainName": `Flare Mainnet`,
+                                        "iconUrls": [
+                                            `https://portal.flare.network/token-logos/FLR.svg`
+                                        ],
+                                        "nativeCurrency": {
+                                            "name": `FLR`,
+                                            "symbol": `FLR`,
+                                            "decimals": 18
+                                        }
+                                    },
+                                ],
+                            });
+                        } catch (error) {
+                            getDappPage(1);
+                        }
                     }
                 }
             }
@@ -5368,11 +5376,14 @@ window.dappInit = async (option, stakingOption) => {
 
         if (typeof stakingOption === 'undefined') {
             try {
+                // Network is Flare by default.
+                DappObject.selectedNetworkIndex = 1;
+
                 // We say that the account is connected so that we can navigate from page to page.
                 DappObject.isAccountConnected = true;
 
                 // Setup the Ledger App dropdown
-                DappObject.isAvax = true;
+                DappObject.isAvax = false;
 
                 await setupLedgerOption();
 
