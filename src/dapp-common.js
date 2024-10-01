@@ -1102,7 +1102,11 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
 
 async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManager) {
     try {
-        const [startRewardEpochId, endRewardEpochId] = await rewardManager.methods.getRewardEpochIdsWithClaimableRewards().call();
+        const epochIds = await rewardManager.methods.getRewardEpochIdsWithClaimableRewards().call();
+
+        const startRewardEpochId = epochIds._startEpochId;
+        const endRewardEpochId = epochIds._endEpochId;
+
         if (endRewardEpochId < startRewardEpochId) {
             return null;
         }
@@ -1112,14 +1116,16 @@ async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, reward
             const rewardsHash = await flareSystemsManager.methods.rewardsHash(epochId).call();
             const rewardHashSigned = Boolean(rewardsHash) && rewardsHash !== "0x0000000000000000000000000000000000000000000000000000000000000000";
             if (rewardHashSigned) {
+                // console.log(epochId + " is claimable!");
                 claimableRewardEpochIds.push(Number(epochId));
             }
         }
         if (claimableRewardEpochIds.length === 0) {
-        return null;
+            return null;
         }
         return claimableRewardEpochIds;
     } catch (error) {
+        // console.log(error);
         return null;
     }
 }
@@ -1141,29 +1147,41 @@ async function getRewardClaimWithProofStructs(network, address, amountWei, flare
 }
 
 async function getRewardClaimData(rewardEpochId, network, account, amount) {
-    const rewardsData = fetch(`https://raw.githubusercontent.com/flare-foundation/FTSO-scaling/main/rewards-data/${network}/${rewardEpochId}/reward-distribution-data-tuples.json`).then(res => res.json());
-    if (!rewardsData) {
-      return null;
-    }
-    const rewardClaims = rewardsData.rewardClaims.find(([_, [id, address, sum, claimType]]) => address.toLowerCase() === account.toLowerCase() && claimType === 1);
-    if (!rewardClaims) {
-      return null;
-    }
-    const [merkleProof, [id, address, sum, claimType]] = rewardClaims;
+    fetch(`${fetchTupleConfig.url}/${network}/${rewardEpochId}/${fetchTupleConfig.jsonfile}`, { signal: AbortSignal.timeout(Number(fetchTupleConfig.timeout)) })
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
 
-    if (amount) {
-        amount += BigInt(sum);
-    }
+            throw new Error('Something went wrong');
+        })
+        .then(async rewardsData => {
+            if (!rewardsData) {
+                return null;
+            }
+            const rewardClaims = rewardsData.rewardClaims.find(([_, [id, address, sum, claimType]]) => address.toLowerCase() === account.toLowerCase() && claimType === 1);
+            if (!rewardClaims) {
+                return null;
+            }
+            const [merkleProof, [id, address, sum, claimType]] = rewardClaims;
 
-    return {
-        merkleProof, 
-        body: {
-            rewardEpochId: BigInt(id),
-            beneficiary: address,
-            amount: BigInt(sum),
-            claimType: BigInt(claimType)
-        }
-    };
+            if (amount) {
+                amount += BigInt(sum);
+            }
+
+            return {
+                merkleProof, 
+                body: {
+                    rewardEpochId: BigInt(id),
+                    beneficiary: address,
+                    amount: BigInt(sum),
+                    claimType: BigInt(claimType)
+                }
+            };
+        }).catch((error) => {
+            // console.log(error);
+            return null;
+        });
 }
 
 // WRAP MODULE
@@ -4686,7 +4704,7 @@ window.dappInit = async (option, stakingOption) => {
                             let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
                             const rewardManagerAddr = await GetContract("RewardManager", object.rpcUrl, object.flrAddr);
                             let rewardManagerContract;
-                            const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
+                            const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
                             let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
 
                             let unclaimedEpochsv2;

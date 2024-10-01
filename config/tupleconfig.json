@@ -1,0 +1,5 @@
+{
+    "timeout": "5000",
+    "url": "https://raw.githubusercontent.com/flare-foundation/FTSO-scaling/main/rewards-data",
+    "jsonfile": "reward-distribution-data-tuples.json"
+}

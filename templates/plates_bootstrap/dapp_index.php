@@ -64,6 +64,10 @@
     var dappUrlBaseAddr = <?= json_encode($view['urlbaseaddr']); ?>;
 </script>
 
+<script>
+    var fetchTupleConfig = <?= $view['js']['ftsov2']['fetchtupleconfig']; ?>;
+</script>
+
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
