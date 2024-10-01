@@ -1127,7 +1127,7 @@ async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, reward
 async function getRewardClaimWithProofStructs(network, address, amountWei, flareSystemsManager, rewardManager) {
     const claimableRewardEpochIds = await getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManager);
     if (!claimableRewardEpochIds?.length) {
-      return [];
+      return;
     }
     const rewardClaimWithProofStructs = [];
     for (const epochId of claimableRewardEpochIds) {
