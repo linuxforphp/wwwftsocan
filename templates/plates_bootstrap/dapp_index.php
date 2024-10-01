@@ -69,6 +69,7 @@
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso-reward-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/reward-manager-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/systems-manager-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/address-binder-abi.js"></script>
