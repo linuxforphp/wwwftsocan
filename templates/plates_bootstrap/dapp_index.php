@@ -65,7 +65,7 @@
 </script>
 
 <script>
-    var fetchTupleConfig = <?= $view['js']['ftsov2']['fetchtupleconfig']; ?>;
+    var fetchTupleConfig = <?= $view['jsconfig']['ftsov2']['fetchtupleconfig']; ?>;
 </script>
 
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>
