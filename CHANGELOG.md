@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.2.0 (2024-10-02)
+
+- Adds FTSO V2 reward type 1 claiming.
+- Fixes an issue with the Delegate page.
+- Fixes some Ledger issues.
+- Updates the project's dependencies.
+
 ## 1.1.2 (2024-09-25)
 
 - Fixes issues concerning the Bifrost Wallet.
