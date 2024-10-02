@@ -1005,11 +1005,7 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
     const ftsoJsonList = JSON.stringify(ftsoList);
     const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
     const delegatedFtsos = delegatesOfUser[0];
-    console.log("delegatedFtsos");
-    console.log(delegatedFtsos);
     const BipsJson = delegatesOfUser[1];
-    console.log("BipsJson");
-    console.log(BipsJson);
     let Bips = [];
 
     if (typeof BipsJson[0] !== 'undefined' && BipsJson[0] != 0) {
