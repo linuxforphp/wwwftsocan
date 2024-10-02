@@ -10,6 +10,7 @@ export const FlareAbis = {
     FlareRegistry: flareAbi,
     AddressBinder: addressBinderAbi,
     ValidatorRewardManager: validatorRewardAbi,
+    FlareSystemsManager: systemsManagerAbi,
 };
 
 export var selectedNetwork = document.getElementById("SelectedNetwork");

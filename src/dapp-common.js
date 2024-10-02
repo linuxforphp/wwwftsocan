@@ -7,6 +7,8 @@ import { ethers } from "./ethers.js";
 // ALL MODULES.
 
 window.DappObject = {
+    // Network index (1 = flare, 2 = songbird, other = coston)
+    selectedNetworkIndex: 1,
     // Handling VA popups
     latestPopupTimeoutId: undefined,
     // Handling Accounts
@@ -24,6 +26,7 @@ window.DappObject = {
     rewardManagerAbiLocal: FlareAbis.RewardManager,
     addressBinderAbiLocal: FlareAbis.AddressBinder,
     validatorRewardAbiLocal: FlareAbis.ValidatorRewardManager,
+    systemsManagerAbiLocal: FlareAbis.FlareSystemsManager,
     // Bools that determine whether or not we should let the user proceed
     wrapBool: true,
     claimBool: false,
@@ -33,6 +36,7 @@ window.DappObject = {
     transferBool: true,
     hasV1Rewards: false,
 	hasV2Rewards: false,
+    hasFtsoRewards: false,
     metamaskInstalled: false,
     // Chosen Wallet (-1 = null, 0 = Metamask, 1 = Ledger, 2 = WalletConnect)
     walletIndex: -1,
@@ -825,8 +829,8 @@ async function createSelectedNetwork(DappObject) {
                 networkSelectBox.appendChild(option);
             }
 
-            networkSelectBox.options[0].setAttribute('selected', 'selected');
-            networkSelectBox.options.selectedIndex = 0;
+            networkSelectBox.options[DappObject.selectedNetworkIndex - 1].setAttribute('selected', 'selected');
+            networkSelectBox.options.selectedIndex = DappObject.selectedNetworkIndex - 1;
 
             if (DappObject.walletIndex === 0) {    
                 if (!injectedProvider) {
@@ -897,9 +901,6 @@ async function createSelectedNetwork(DappObject) {
                     });        
                 }
             } else if (DappObject.walletIndex === 1) {
-                networkSelectBox.options[0].setAttribute('selected', 'selected');
-                networkSelectBox.options[1].removeAttribute('selected');
-                networkSelectBox.options.selectedIndex = 0;
                 resolve();
             } else if (DappObject.walletIndex === 2) {
                 if (DappObject.walletConnectEVMProvider === undefined) {
@@ -1014,7 +1015,8 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
     }
 
     let insert1 = '';
-    let insert2 = '';
+
+    let bipsText = "";
 
     // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
     fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
@@ -1030,49 +1032,27 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                     for (var i = 0; i < delegatedFtsos.length; i++) {
                         if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
                             if (ftsoJsonList.includes(delegatedFtsos[i])) {
-                                if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
-                                                    <div class="row">
-                                                        <div class="wrap-box-content">
-                                                            <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
-                                                            <div class="ftso-identifier">
-                                                                <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
-                                                            </div>
-                                                            <div class="wrapper-ftso">
-                                                                <span id="delegatedBips1">${Bips}%</span>
-                                                            </div>
+                                bipsText = "delegatedBips" + String(i + 1);
+                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                insert1 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
+                                                <div class="row">
+                                                    <div class="wrap-box-content">
+                                                        <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
+                                                        <div class="ftso-identifier">
+                                                            <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
+                                                        </div>
+                                                        <div class="wrapper-ftso">
+                                                            <span id=${bipsText}>${Bips}%</span>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="wrapper-claim">
-                                                            <span>Provider:</span>
-                                                            <span class="address-claim">${delegatedFtsos[i]}</span>
-                                                        </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="wrapper-claim">
+                                                        <span>Provider:</span>
+                                                        <span class="address-claim">${delegatedFtsos[i]}</span>
                                                     </div>
-                                                </div>`;
-                                } else {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
-                                                    <div class="row">
-                                                        <div class="wrap-box-content">
-                                                            <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
-                                                            <div class="ftso-identifier">
-                                                                <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
-                                                            </div>
-                                                            <div class="wrapper-ftso">
-                                                                <span id="delegatedBips2">${Bips}%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="wrapper-claim">
-                                                            <span>Provider:</span>
-                                                            <span class="address-claim">${delegatedFtsos[i]}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>`;
-                                }
+                                                </div>
+                                            </div>`;
                             } else {
                                 await setCurrentPopup('The FTSO that you have delegated to is invalid!', true);
 
@@ -1091,11 +1071,121 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                     delegatedFtsoElementChildren[0].parentNode.removeChild(delegatedFtsoElementChildren[0]);
                 }
 
-                delegatedFtsoElement.insertAdjacentHTML('afterbegin', insert1 + insert2);
+                delegatedFtsoElement.insertAdjacentHTML('afterbegin', insert1);
 
-                isDelegateInput1(DappObject);
+                if (dappOption === 2) {
+                    isDelegateInput1(DappObject);
+                }
             }
         );
+}
+
+async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManager, account) {
+    try {
+        const startRewardEpochId = await rewardManager.methods.getNextClaimableRewardEpochId(account).call();
+        const epochIds = await rewardManager.methods.getRewardEpochIdsWithClaimableRewards().call();
+
+        const endRewardEpochId = epochIds._endEpochId;
+
+        if (endRewardEpochId < startRewardEpochId) {
+            return null;
+        }
+        const claimableRewardEpochIds = [];
+
+        for ( let epochId = startRewardEpochId; epochId <= endRewardEpochId; epochId++ ) {
+            const rewardsHash = await flareSystemsManager.methods.rewardsHash(epochId).call();
+            const rewardHashSigned = Boolean(rewardsHash) && rewardsHash !== "0x0000000000000000000000000000000000000000000000000000000000000000";
+            if (rewardHashSigned) {
+                // console.log(epochId + " is claimable!");
+                claimableRewardEpochIds.push(Number(epochId));
+            }
+        }
+        if (claimableRewardEpochIds.length === 0) {
+            return null;
+        }
+        return claimableRewardEpochIds;
+    } catch (error) {
+        // console.log(error);
+        return null;
+    }
+}
+
+async function getRewardClaimWithProofStructs(network, address, amountWei, flareSystemsManager, rewardManager) {
+    const claimableRewardEpochIds = await getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManager, address);
+
+    if (!claimableRewardEpochIds?.length) {
+      return;
+    }
+
+    let hasFtsoRewards = false;
+
+    let rewardClaimWithProofStructs = [];
+
+    for (const epochId of claimableRewardEpochIds) {
+        const rewardClaimData = await getRewardClaimData(epochId, network, address);
+
+        if (amountWei !== undefined && typeof amountWei === "bigint" && rewardClaimData) {
+            hasFtsoRewards = true;
+
+            amountWei += rewardClaimData.body.amount;
+        }
+
+        if (!rewardClaimData) {
+            break;
+        }
+
+        rewardClaimWithProofStructs.push(rewardClaimData);
+    }
+
+    if (amountWei !== undefined) {
+        return {
+            amountWei,
+            hasFtsoRewards
+        };
+    } else {
+        return rewardClaimWithProofStructs;
+    }
+}
+
+async function getRewardClaimData(rewardEpochId, network, account) {
+
+    let merkleProof;
+    let id;
+    let address;
+    let sum;
+    let claimType;
+
+    return fetch(`${fetchTupleConfig.url}/${network}/${rewardEpochId}/${fetchTupleConfig.jsonfile}`, { signal: AbortSignal.timeout(Number(fetchTupleConfig.timeout)) })
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+
+            throw new Error('Something went wrong');
+        })
+        .then(async rewardsData => {
+            if (!rewardsData) {
+                return null;
+            }
+            const rewardClaims = rewardsData.rewardClaims.find(([_, [id, address, sum, claimType]]) => address.toLowerCase() === account.toLowerCase() && claimType === 1);
+            if (!rewardClaims) {
+                return null;
+            }
+            [merkleProof, [id, address, sum, claimType]] = rewardClaims;
+
+            return {
+                merkleProof, 
+                body: {
+                    rewardEpochId: BigInt(id),
+                    beneficiary: address,
+                    amount: BigInt(sum),
+                    claimType: BigInt(claimType)
+                }
+            };
+        }).catch((error) => {
+            // console.log(error);
+            return null;
+        });
 }
 
 // WRAP MODULE
@@ -1183,8 +1273,6 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                             DappObject.selectedAddress = account;
 
-                            // console.log("Value: " + value);
-
                             DappObject.ledgerSelectedIndex = value;
 
                             connectChainsAndKeys(flrPublicKey);
@@ -1239,11 +1327,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         selectize = $select[0].selectize;
 
                         if (typeof HandleClick !== "undefined") {
-                            // console.log("REMOVING LISTENER");
                             document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
                         }
-
-                        // console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
 
                         if (DappObject.ledgerSelectedIndex !== "") {
                             selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
@@ -1381,9 +1466,11 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
                         const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
                         const rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
+                        const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
                         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
                         let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
+                        let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
 
                         let rewardManagerContract;
 
@@ -1458,13 +1545,35 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                                 DappObject.hasV2Rewards = true;
                 
                                 for (var i = 0; i < unclaimedAmountv2.length; i++) {
-                                    unclaimedAmount += BigInt(unclaimedAmountv2[i][0].amount);
+                                    if (unclaimedAmountv2[i][0] !== undefined) {
+                                        unclaimedAmount += BigInt(unclaimedAmountv2[i][0].amount);
+                                    }
                                 }
                             } else {
                                 DappObject.hasV2Rewards = false;
                             }
+
+                            let network;
+
+                            if (rpcUrl.includes("flr")) {
+                                network = "flare";
+                            } else if (rpcUrl.includes("sgb")) {
+                                network = "songbird";
+                            }
+
+                            const ftsoRewardInfo = await getRewardClaimWithProofStructs(network, account, unclaimedAmount, flareSystemsManagerContract, rewardManagerContract);
+
+                            if (ftsoRewardInfo !== undefined && ftsoRewardInfo?.hasFtsoRewards === true) {
+                                unclaimedAmount += ftsoRewardInfo.amountWei;
+
+                                DappObject.hasFtsoRewards = true;
+                            } else {
+                                DappObject.hasFtsoRewards = false;
+                            }
                         } else {
                             DappObject.hasV2Rewards = false;
+
+                            DappObject.hasFtsoRewards = false;
                         }
                         
                         const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
@@ -1665,6 +1774,7 @@ async function isDelegateInput1(DappObject) {
             DappObject.isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Undelegate all";
         }
+
         await setCurrentPopup("It looks like you have already delegated 100% of your tokens! If you want to delegate to another FTSO, you will need to undelegate first!", true);
     } else {
         if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
@@ -1799,8 +1909,6 @@ async function populateFtsos(rpcUrl, flrAddr) {
                                 }
                             }
                         }
-
-                    // console.log(insert);
 
                     var control = $select[0].selectize;
 
@@ -1985,7 +2093,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
             } else {
                 this.setContentAppend(DelegatedFtsos[0] + ". <br />");
             }
-            this.setContentAppend("You MUST undelegate before you can delegate to another injectedProvider. <br />");
+            this.setContentAppend("You MUST undelegate before you can delegate to another provider. <br />");
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -2076,8 +2184,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
     
                             DappObject.selectedAddress = account;
     
-                            // console.log("Value: " + value);
-    
                             DappObject.ledgerSelectedIndex = value;
     
                             connectChainsAndKeys(flrPublicKey);
@@ -2128,8 +2234,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                         if (typeof HandleClick !== "undefined") {
                             document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
                         }
-    
-                        // console.log("LEDGER SELECTED INDEX: " + DappObject.ledgerSelectedIndex);
     
                         if (DappObject.ledgerSelectedIndex !== "") {
                             selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
@@ -2214,8 +2318,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             if (DappObject.walletConnectEVMProvider === undefined) {
                 DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
             }
-
-            console.log(DappObject.walletConnectEVMProvider.session.namespaces);
 
             if (!DappObject.walletConnectEVMProvider.session) {
                 await DappObject.walletConnectEVMProvider.connect();
@@ -2345,12 +2447,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
                 const balance = await web32.eth.getBalance(account);
 
-                // console.log(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
-
-                // console.log(PchainAddrEncoded);
-
-                // console.log(flrPublicKey);
-
                 let addressBox = document.querySelector("span.connect-wallet-text");
 
                 if (DappObject.walletIndex === 1) {          
@@ -2402,8 +2498,6 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                     const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
 
                     const StakeAmounts = await getStakeOf(DappObject.unPrefixedAddr);
-
-                    // console.log(StakeAmounts.staked);
 
                     showPchainBalance(round(web32.utils.fromWei(StakeAmounts.staked, "gwei")));
                     showStakeRewards(0);
@@ -2510,17 +2604,12 @@ function createCalendar(DappObject) {
 
     const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
 
-    // console.log(maximumDate);
-
     var prevMaxDate = $('#calendar').datepicker( "option", "maxDate" );
-
-    // console.log(prevMaxDate);
 
     var OnSelectCalendar = async (selectedDateTime) => {
         if (selectedDateTime !== '') {
             let dateArray = selectedDateTime.split(' ');
             DappObject.selectedDateTime = dateArray[0] + "T" + dateArray[1];
-            // console.log(DappObject.selectedDateTime);
             isStakeInput1(DappObject);
         }
     }
@@ -2717,8 +2806,6 @@ async function transferTokens(DappObject, stakingOption) {
             } else {
                 const amountFromValueInt = web32.utils.toWei(amountFromValue, "gwei");
 
-                // console.log(amountFromValueInt);
-
                 if (DappObject.transferBool === true) {
                     // C-chain to P-chain
 
@@ -2748,7 +2835,6 @@ async function transferTokens(DappObject, stakingOption) {
                                     
                                     try {
                                         let status = waitCchainAtomicTxStatus(result.txid).then(value => {
-                                            // console.log(value);
 
                                             switch (value) {
                                                 case "Accepted":
@@ -2794,7 +2880,6 @@ async function transferTokens(DappObject, stakingOption) {
                                     
                                         try {
                                             let status = waitPchainAtomicTxStatus(result.txid).then(value => {
-                                                // console.log(value);
         
                                                 switch (value) {
                                                     case "Committed":
@@ -2861,7 +2946,6 @@ async function transferTokens(DappObject, stakingOption) {
                                 
                                     try {
                                         let status = waitPchainAtomicTxStatus(result).then(value => {
-                                            // console.log(value);
 
                                             switch (value) {
                                                 case "Committed":
@@ -2907,7 +2991,6 @@ async function transferTokens(DappObject, stakingOption) {
                                         
                                         try {
                                             let status = waitCchainAtomicTxStatus(result).then(value => {
-                                                // console.log(value);
 
                                                 switch (value) {
                                                     case "Accepted":
@@ -2975,12 +3058,6 @@ function isStakeInput1(DappObject) {
 
     let amount1 = document.getElementById("Amount1");
 
-    // console.log("Select1: " + select1.value);
-
-    // console.log("Amount1: " + amount1.value);
-
-    // console.log("DappObject: " + DappObject.selectedDateTime);
-
     if (select1.value !== "" && amount1.value !== "" && DappObject.selectedDateTime !== "") {
         claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimButton.style.cursor = "pointer";
@@ -3002,8 +3079,6 @@ async function populateValidators() {
         try {
 
             const ftsoList = await getValidators();
-
-            // console.log(ftsoList);
 
             var onInputChange = async (value) => {
                 document.getElementById("calendar").title = "";
@@ -3101,8 +3176,6 @@ async function populateValidators() {
                         }
                     }
 
-                // console.log(insert);
-
                 var control = $select[0].selectize;
 
                 control.clearOptions();
@@ -3147,8 +3220,6 @@ async function customInput(Pbalance, DappObject) {
     btnUp.on("click", function() {
         var oldValue = input.value;
 
-        // console.log("oldValue: " + oldValue);
-
         var newVal;
 
         if (Number(oldValue.slice(0, -1)) == 0) {
@@ -3167,8 +3238,6 @@ async function customInput(Pbalance, DappObject) {
             }
         }
 
-        // console.log("newVal: " + newVal);
-
         input.value = newVal;
         spinner.find("input").trigger("change");
 
@@ -3177,8 +3246,6 @@ async function customInput(Pbalance, DappObject) {
 
     btnDown.on("click", function() {
         var oldValue = input.value;
-
-        // console.log("oldValue: " + oldValue);
 
         var newVal;
 
@@ -3197,8 +3264,6 @@ async function customInput(Pbalance, DappObject) {
                 }
             }
         }
-
-        // console.log("newVal: " + newVal);
 
         input.value = newVal;
         spinner.find("input").trigger("change");
@@ -3265,8 +3330,6 @@ async function stake(DappObject, stakingOption) {
 
         let pChainTransactionId;
 
-        // console.log(stakeAmount);
-
         try {
             showConfirmationSpinnerStake(async (spinner) => {
                 const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
@@ -3276,7 +3339,6 @@ async function stake(DappObject, stakingOption) {
                 
                     try {
                         let status = waitPchainAtomicTxStatus(result).then(value => {
-                            // console.log(value);
 
                             switch (value) {
                                 case "Committed":
@@ -3426,8 +3488,6 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         chainId = 19;
     }
 
-    // console.log(feeData);
-
     let LedgerTxPayload;
 
     if (txPayload.value) {
@@ -3455,10 +3515,6 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         };
     }
 
-    // console.log(LedgerTxPayload);
-
-    // console.log(latestBlock);
-
     showSpinner(async () => {
         try {
             await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
@@ -3467,8 +3523,6 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
                     try {
                         spinner.setContent("Waiting for network confirmation. <br />Please wait...");
                         ethersProvider.sendTransaction(signedTx).then(response => {
-                            // console.log("SignedTX: ");
-                            // console.log(response);
                             if (isStake === true) {
                                 checkTxStake(response.hash, web32, spinner, DappObject);
                             } else {
@@ -3484,10 +3538,10 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         } catch (error) {
             if (isStake === true) {
                 showFailStake(DappObject, stakingOption);
-                console.log(error);
+                // console.log(error);
             } else {
                 showFail(object, DappObject, pageIndex);
-                console.log(error);
+                // console.log(error);
             }
         }
     });
@@ -3526,8 +3580,6 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         chainId = 19;
     }
 
-    // console.log(feeData);
-
     const latestBlock = await ethersProvider.getBlock("latest");
 
     let LedgerTxPayload = {
@@ -3551,8 +3603,6 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         chainId: chainId,
         data: txPayloadV2.data,
     };
-
-    // console.log(LedgerTxPayload);
 
     showConfirmationSpinnerv2(async (v2Spinner) => {
         try {
@@ -4010,7 +4060,6 @@ window.dappInit = async (option, stakingOption) => {
     closeCurrentPopup();
 
     document.getElementById("currentWallet")?.addEventListener("click", (event) => {
-        // console.log(event.target);
 
         if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
             return;
@@ -4027,8 +4076,6 @@ window.dappInit = async (option, stakingOption) => {
 
     window.dappStakingOption = stakingOption;
 
-    // console.log("Is Ledger: " + DappObject.walletIndex);
-
     if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
         window.chosenNavigator = navigator.usb;
     } else if (("hid" in navigator) && !("usb" in navigator)) {
@@ -4040,7 +4087,6 @@ window.dappInit = async (option, stakingOption) => {
 
         chosenNavigator?.addEventListener('connect', async event => {
             // console.log("Connected!");
-            // console.log(dappOption + dappStakingOption);
             if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
                 
             } else {
@@ -4052,7 +4098,6 @@ window.dappInit = async (option, stakingOption) => {
             
         chosenNavigator?.addEventListener('disconnect', async event => {
             // console.log("Disconnected!");
-            // console.log(dappOption + dappStakingOption);
             if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
                 
             } else {
@@ -4215,6 +4260,8 @@ window.dappInit = async (option, stakingOption) => {
                     object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
                     object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
                     object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
+
+                    DappObject.selectedNetworkIndex = Number(object.networkValue);
 
                     if (object.networkValue === '1') {
                         document.getElementById("layer2").innerHTML = DappObject.flrLogo;
@@ -4437,7 +4484,7 @@ window.dappInit = async (option, stakingOption) => {
                     } catch(error) {
                         DappObject.isHandlingOperation = false;
 
-                        //// console.log(error);
+                        // console.log(error);
                     }
                 });
 
@@ -4453,6 +4500,8 @@ window.dappInit = async (option, stakingOption) => {
                     object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
                     object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
                     object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
+
+                    DappObject.selectedNetworkIndex = Number(object.networkValue);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -4598,12 +4647,29 @@ window.dappInit = async (option, stakingOption) => {
                             let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
                             const rewardManagerAddr = await GetContract("RewardManager", object.rpcUrl, object.flrAddr);
                             let rewardManagerContract;
-                            let unclaimedEpochsv2;
+                            const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
+                            let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
+
+                            let claimableEpochs;
+
+                            let rewardClaimWithProofStructs = [];
 
                             if (rewardManagerAddr) {
                                 rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddr);
 
-                                unclaimedEpochsv2 = await rewardManagerContract.methods.getStateOfRewards(account).call();
+                                claimableEpochs = await rewardManagerContract.methods.getRewardEpochIdsWithClaimableRewards().call();
+
+                                if (DappObject.hasFtsoRewards) {
+                                    let network;
+    
+                                    if (object.rpcUrl.includes("flr")) {
+                                        network = "flare";
+                                    } else if (object.rpcUrl.includes("sgb")) {
+                                        network = "songbird";
+                                    }
+    
+                                    rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, rewardManagerContract);
+                                }
                             }
 
                             const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
@@ -4627,7 +4693,7 @@ window.dappInit = async (option, stakingOption) => {
                                             txPayloadV2 = {
                                                 from: account,
                                                 to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(unclaimedEpochsv2.at(-1)[0].rewardEpochId), true, []).encodeABI(),
+                                                data: rewardManagerContract.methods.claim(account, account, String(claimableEpochs._endEpochId), true, rewardClaimWithProofStructs).encodeABI(),
                                             };
                                         }
                                     }
@@ -4645,7 +4711,7 @@ window.dappInit = async (option, stakingOption) => {
                                             txPayloadV2 = {
                                                 from: account,
                                                 to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(unclaimedEpochsv2.at(-1)[0].rewardEpochId), false, []).encodeABI(),
+                                                data: rewardManagerContract.methods.claim(account, account, String(claimableEpochs._endEpochId), false, rewardClaimWithProofStructs).encodeABI(),
                                             };
                                         }
                                     }
@@ -5000,6 +5066,8 @@ window.dappInit = async (option, stakingOption) => {
                     object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
                     object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
 
+                    DappObject.selectedNetworkIndex = Number(object.networkValue);
+
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     if (object.networkValue === '1') {
@@ -5124,82 +5192,85 @@ window.dappInit = async (option, stakingOption) => {
             });
         });
     } else if (option === 4 || option === '4') {
-        // switch to Flare
-        if (DappObject.walletIndex === 0) {
-            try {
-                await injectedProvider.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [
-                        {
-                        "chainId": "0xe"
-                        }
-                    ]
-                    }).catch((error) => {
-                        throw error
-                    });
-            } catch (error) {
-                // console.log(error);
 
-                if (error.code === 4902) {
-                    try {
-                        await injectedProvider.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                    "chainId": "0xe",
-                                    "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
-                                    "chainName": `Flare Mainnet`,
-                                    "iconUrls": [
-                                        `https://portal.flare.network/token-logos/FLR.svg`
-                                    ],
-                                    "nativeCurrency": {
-                                        "name": `FLR`,
-                                        "symbol": `FLR`,
-                                        "decimals": 18
-                                    }
-                                },
-                            ],
+        if (stakingOption !== undefined && stakingOption !== 4 && stakingOption !== 5) {
+            // switch to Flare
+            if (DappObject.walletIndex === 0) {
+                try {
+                    await injectedProvider.request({
+                        method: "wallet_switchEthereumChain",
+                        params: [
+                            {
+                            "chainId": "0xe"
+                            }
+                        ]
+                        }).catch((error) => {
+                            throw error
                         });
-                    } catch (error) {
-                        getDappPage(1);
+                } catch (error) {
+                    // console.log(error);
+
+                    if (error.code === 4902) {
+                        try {
+                            await injectedProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        "chainId": "0xe",
+                                        "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
+                                        "chainName": `Flare Mainnet`,
+                                        "iconUrls": [
+                                            `https://portal.flare.network/token-logos/FLR.svg`
+                                        ],
+                                        "nativeCurrency": {
+                                            "name": `FLR`,
+                                            "symbol": `FLR`,
+                                            "decimals": 18
+                                        }
+                                    },
+                                ],
+                            });
+                        } catch (error) {
+                            getDappPage(1);
+                        }
                     }
                 }
-            }
-        } else if (DappObject.walletIndex === 2) {
-            try {
-                await DappObject.walletConnectEVMProvider.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [
-                        {
-                        "chainId": "0xe"
-                        }
-                    ]
-                    }).catch((error) => console.error(error));
-            } catch (error) {
-                // console.log(error);
+            } else if (DappObject.walletIndex === 2) {
+                try {
+                    await DappObject.walletConnectEVMProvider.request({
+                        method: "wallet_switchEthereumChain",
+                        params: [
+                            {
+                            "chainId": "0xe"
+                            }
+                        ]
+                        }).catch((error) => console.error(error));
+                } catch (error) {
+                    // console.log(error);
 
-                if (error.code === 4902) {
-                    try {
-                        await injectedProvider.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                    "chainId": "0xe",
-                                    "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
-                                    "chainName": `Flare Mainnet`,
-                                    "iconUrls": [
-                                        `https://portal.flare.network/token-logos/FLR.svg`
-                                    ],
-                                    "nativeCurrency": {
-                                        "name": `FLR`,
-                                        "symbol": `FLR`,
-                                        "decimals": 18
-                                    }
-                                },
-                            ],
-                        });
-                    } catch (error) {
-                        getDappPage(1);
+                    if (error.code === 4902) {
+                        try {
+                            await injectedProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        "chainId": "0xe",
+                                        "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
+                                        "chainName": `Flare Mainnet`,
+                                        "iconUrls": [
+                                            `https://portal.flare.network/token-logos/FLR.svg`
+                                        ],
+                                        "nativeCurrency": {
+                                            "name": `FLR`,
+                                            "symbol": `FLR`,
+                                            "decimals": 18
+                                        }
+                                    },
+                                ],
+                            });
+                        } catch (error) {
+                            getDappPage(1);
+                        }
                     }
                 }
             }
@@ -5208,55 +5279,62 @@ window.dappInit = async (option, stakingOption) => {
         var handleClick;
 
         if (typeof stakingOption === 'undefined') {
-            // We say that the account is connected so that we can navigate from page to page.
-            DappObject.isAccountConnected = true;
+            try {
+                // Network is Flare by default.
+                DappObject.selectedNetworkIndex = 1;
 
-            // Setup the Ledger App dropdown
-            DappObject.isAvax = true;
+                // We say that the account is connected so that we can navigate from page to page.
+                DappObject.isAccountConnected = true;
 
-            await setupLedgerOption();
+                // Setup the Ledger App dropdown
+                DappObject.isAvax = false;
 
-            // Reset the injected Provider settings
-            injectedProviderDropdown = undefined;
+                await setupLedgerOption();
 
-            DappObject.providerList = [];
+                // Reset the injected Provider settings
+                injectedProviderDropdown = undefined;
 
-            injectedProvider = window.ethereum;
+                DappObject.providerList = [];
 
-            document.getElementById("chosenProvider").style.display = "none";
+                injectedProvider = window.ethereum;
 
-            window.removeEventListener('eip6963:announceProvider', eip6963Listener);
+                document.getElementById("chosenProvider").style.display = "none";
 
-            // listen for the EIP-6963 events emitted by Providers
-            window.addEventListener('eip6963:announceProvider', eip6963Listener);
-        
-            window.dispatchEvent(new CustomEvent('eip6963:requestProvider'));
+                window.removeEventListener('eip6963:announceProvider', eip6963Listener);
 
-            await resetDappObjectState(DappObject);
+                // listen for the EIP-6963 events emitted by Providers
+                window.addEventListener('eip6963:announceProvider', eip6963Listener);
+            
+                window.dispatchEvent(new CustomEvent('eip6963:requestProvider'));
 
-            DappObject.walletIndex = -1;
+                await resetDappObjectState(DappObject);
 
-            document.getElementById("ContinueMetamask")?.addEventListener("click", async () => {
-                getDappPage(8);
-            });
-            document.getElementById("ContinueLedger")?.addEventListener("click", async () => {
-                getDappPage(9);
-            });
-            document.getElementById("ContinueWalletConnect")?.addEventListener("click", async () => {
-                DappObject.walletIndex = 2;
-                DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
-                getDappPage(1);
-            });
+                DappObject.walletIndex = -1;
 
-            await setCurrentAppState("Null");
+                document.getElementById("ContinueMetamask")?.addEventListener("click", async () => {
+                    getDappPage(8);
+                });
+                document.getElementById("ContinueLedger")?.addEventListener("click", async () => {
+                    getDappPage(9);
+                });
+                document.getElementById("ContinueWalletConnect")?.addEventListener("click", async () => {
+                    DappObject.walletIndex = 2;
+                    DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
+                    getDappPage(1);
+                });
 
-            await setCurrentPopup("Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and to help you efficiently claim your FLR or SGB rewards!", true);
+                await setCurrentAppState("Null");
 
-            clearTimeout(DappObject.latestPopupTimeoutId);
+                await setCurrentPopup("Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and to help you efficiently claim your FLR or SGB rewards!", true);
 
-            DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                await setCurrentPopup("First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within Metamask, please choose the Metamask option. More coming soon!", true);
-            }, 9000);
+                clearTimeout(DappObject.latestPopupTimeoutId);
+
+                DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                    await setCurrentPopup("First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within Metamask, please choose the Metamask option. More coming soon!", true);
+                }, 9000);
+            } catch (error) {
+                // console.log(error);
+            }
         } else if (stakingOption === 4) {
             //Metamask
             DappObject.isAccountConnected = true;
