@@ -1005,7 +1005,11 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
     const ftsoJsonList = JSON.stringify(ftsoList);
     const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
     const delegatedFtsos = delegatesOfUser[0];
+    console.log("delegatedFtsos");
+    console.log(delegatedFtsos);
     const BipsJson = delegatesOfUser[1];
+    console.log("BipsJson");
+    console.log(BipsJson);
     let Bips = [];
 
     if (typeof BipsJson[0] !== 'undefined' && BipsJson[0] != 0) {
@@ -1015,7 +1019,8 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
     }
 
     let insert1 = '';
-    let insert2 = '';
+
+    let bipsText = "";
 
     // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
     fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
@@ -1031,49 +1036,27 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                     for (var i = 0; i < delegatedFtsos.length; i++) {
                         if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
                             if (ftsoJsonList.includes(delegatedFtsos[i])) {
-                                if (FtsoInfo.providers[indexNumber].name === "FTSOCAN") {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert1 = `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
-                                                    <div class="row">
-                                                        <div class="wrap-box-content">
-                                                            <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
-                                                            <div class="ftso-identifier">
-                                                                <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
-                                                            </div>
-                                                            <div class="wrapper-ftso">
-                                                                <span id="delegatedBips1">${Bips}%</span>
-                                                            </div>
+                                bipsText = "delegatedBips" + String(i + 1);
+                                // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                                insert1 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
+                                                <div class="row">
+                                                    <div class="wrap-box-content">
+                                                        <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
+                                                        <div class="ftso-identifier">
+                                                            <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
+                                                        </div>
+                                                        <div class="wrapper-ftso">
+                                                            <span id=${bipsText}>${Bips}%</span>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="wrapper-claim">
-                                                            <span>Provider:</span>
-                                                            <span class="address-claim">${delegatedFtsos[i]}</span>
-                                                        </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="wrapper-claim">
+                                                        <span>Provider:</span>
+                                                        <span class="address-claim">${delegatedFtsos[i]}</span>
                                                     </div>
-                                                </div>`;
-                                } else {
-                                    // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
-                                    insert2 += `<div class="wrap-box-ftso" data-addr="${delegatedFtsos[i]}">
-                                                    <div class="row">
-                                                        <div class="wrap-box-content">
-                                                            <img src="${dappUrlBaseAddr}assets/${delegatedFtsos[i]}.png" alt="${FtsoInfo.providers[indexNumber].name}" class="delegated-icon" id="delegatedIcon"/>
-                                                            <div class="ftso-identifier">
-                                                                <span id="delegatedName">${FtsoInfo.providers[indexNumber].name}</span>
-                                                            </div>
-                                                            <div class="wrapper-ftso">
-                                                                <span id="delegatedBips2">${Bips}%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="wrapper-claim">
-                                                            <span>Provider:</span>
-                                                            <span class="address-claim">${delegatedFtsos[i]}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>`;
-                                }
+                                                </div>
+                                            </div>`;
                             } else {
                                 await setCurrentPopup('The FTSO that you have delegated to is invalid!', true);
 
@@ -1092,9 +1075,11 @@ async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject
                     delegatedFtsoElementChildren[0].parentNode.removeChild(delegatedFtsoElementChildren[0]);
                 }
 
-                delegatedFtsoElement.insertAdjacentHTML('afterbegin', insert1 + insert2);
+                delegatedFtsoElement.insertAdjacentHTML('afterbegin', insert1);
 
-                isDelegateInput1(DappObject);
+                if (dappOption === 2) {
+                    isDelegateInput1(DappObject);
+                }
             }
         );
 }
@@ -1793,6 +1778,7 @@ async function isDelegateInput1(DappObject) {
             DappObject.isRealValue = true;
             document.getElementById("ClaimButtonText").innerText = "Undelegate all";
         }
+
         await setCurrentPopup("It looks like you have already delegated 100% of your tokens! If you want to delegate to another FTSO, you will need to undelegate first!", true);
     } else {
         if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
@@ -2111,7 +2097,7 @@ async function showAlreadyDelegated(DelegatedFtsos, object) {
             } else {
                 this.setContentAppend(DelegatedFtsos[0] + ". <br />");
             }
-            this.setContentAppend("You MUST undelegate before you can delegate to another injectedProvider. <br />");
+            this.setContentAppend("You MUST undelegate before you can delegate to another provider. <br />");
             this.showLoading(true);
             this.hideLoading(true);
         }
