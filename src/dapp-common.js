@@ -3568,6 +3568,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     const feeData = await web32.eth.calculateFeeData();
 
+    const latestBlock = await ethersProvider.getBlock("latest");
+
     let gasPrice = feeData.gasPrice > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.gasPrice : BigInt(latestBlock.baseFeePerGas._hex);
 
     let maxFeePerGas = feeData.maxFeePerGas > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.maxFeePerGas : BigInt(latestBlock.baseFeePerGas._hex);
@@ -3579,8 +3581,6 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
     }
-
-    const latestBlock = await ethersProvider.getBlock("latest");
 
     let LedgerTxPayload = {
         to: txPayload.to,
@@ -3599,7 +3599,7 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         maxFeePerGas: maxFeePerGas,
         gasPrice: gasPrice,
         gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
-        nonce: nonce,
+        nonce: nonce + 1,
         chainId: chainId,
         data: txPayloadV2.data,
     };
