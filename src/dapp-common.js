@@ -478,7 +478,9 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showTokenBalance(0);
             showConnectedAccountAddress('0x0');
             showFdRewards(0);
+            switchClaimFdButtonColorBack();
             showClaimRewards(0);
+            switchClaimButtonColorBack();
 
             setCurrentAppState("Null");
 
@@ -537,6 +539,8 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
         await setCurrentAppState("Connected");
 
         await setCurrentPopup("Connected!", false);
+
+        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
 
         document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
 
@@ -3790,11 +3794,7 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
             clearTimeout(DappObject.latestPopupTimeoutId);
 
             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                await setCurrentAppState("Alert");
-
-                await setCurrentPopup("Whoops! Looks like your Ledger device is not plugged in! Please plug in your Ledger device and click on Connect Wallet!", true);
-
-                throw new Error("Ledger not plugged in.");
+                getDappPage(4);
             }, 3000);
         }
 
@@ -5330,7 +5330,7 @@ window.dappInit = async (option, stakingOption) => {
                 clearTimeout(DappObject.latestPopupTimeoutId);
 
                 DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                    await setCurrentPopup("First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within Metamask, please choose the Metamask option. More coming soon!", true);
+                    await setCurrentPopup(`First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within ${DappObject.providerList[0].info.name}, please choose the ${DappObject.providerList[0].info.name} option. More coming soon!`, true);
                 }, 9000);
             } catch (error) {
                 // console.log(error);
@@ -5384,6 +5384,8 @@ window.dappInit = async (option, stakingOption) => {
                             await setCurrentAppState("Connected");
 
                             await setCurrentPopup("Connected!", false);
+
+                            document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
 
                             document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
     
