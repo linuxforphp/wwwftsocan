@@ -415,26 +415,6 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showTokenBalance(0);
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {   
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 2 || pageIndex === '2') {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
@@ -447,26 +427,6 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             DappObject.isRealValue = false;
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {  
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 3 || pageIndex === '3') {
         remove(".wrap-box-ftso");
@@ -483,26 +443,6 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             switchClaimButtonColorBack();
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {  
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 4 && stakingOption !== 5) {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
@@ -514,33 +454,13 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showTokenBalance(0);
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {  
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 4 && stakingOption === 5) {
         await setCurrentAppState("Connected");
 
         await setCurrentPopup("Connected!", false);
 
-        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+        document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
 
         document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
 
@@ -3700,8 +3620,6 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
         let newButton = continueButton.cloneNode(true);
 
         continueButton.parentNode.replaceChild(newButton, continueButton);
-
-        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
         
         document.getElementById("ContinueAnyway")?.classList.add("claim-button");
 
@@ -3762,8 +3680,6 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
 
                         continueButton.parentNode.replaceChild(newButton, continueButton);
                         
-                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
-                        
                         document.getElementById("ContinueAnyway")?.classList.add("claim-button");
 
                         DappObject.isHandlingOperation = false;
@@ -3778,8 +3694,6 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
                         let newButton = continueButton.cloneNode(true);
 
                         continueButton.parentNode.replaceChild(newButton, continueButton);
-
-                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
                         
                         document.getElementById("ContinueAnyway")?.classList.add("claim-button");
 
@@ -5385,7 +5299,7 @@ window.dappInit = async (option, stakingOption) => {
 
                             await setCurrentPopup("Connected!", false);
 
-                            document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
+                            document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
 
                             document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
     
