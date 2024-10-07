@@ -415,26 +415,6 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showTokenBalance(0);
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {   
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 2 || pageIndex === '2') {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
@@ -447,26 +427,6 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             DappObject.isRealValue = false;
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {  
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 3 || pageIndex === '3') {
         remove(".wrap-box-ftso");
@@ -478,29 +438,11 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showTokenBalance(0);
             showConnectedAccountAddress('0x0');
             showFdRewards(0);
+            switchClaimFdButtonColorBack();
             showClaimRewards(0);
+            switchClaimButtonColorBack();
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {  
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 4 && stakingOption !== 5) {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
@@ -512,31 +454,13 @@ async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakin
             showTokenBalance(0);
 
             setCurrentAppState("Null");
-
-            if (DappObject.walletIndex === 0) {  
-                await injectedProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            } else if (DappObject.walletIndex === 2) {
-                await DappObject.walletConnectEVMProvider.request({
-                    "method": "wallet_revokePermissions",
-                    "params": [
-                    {
-                        "eth_accounts": {}
-                    }
-                    ]
-                });
-            }
         }
     } else if (pageIndex === 4 && stakingOption === 5) {
         await setCurrentAppState("Connected");
 
         await setCurrentPopup("Connected!", false);
+
+        document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
 
         document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
 
@@ -3568,6 +3492,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     const feeData = await web32.eth.calculateFeeData();
 
+    const latestBlock = await ethersProvider.getBlock("latest");
+
     let gasPrice = feeData.gasPrice > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.gasPrice : BigInt(latestBlock.baseFeePerGas._hex);
 
     let maxFeePerGas = feeData.maxFeePerGas > BigInt(latestBlock.baseFeePerGas._hex) ? feeData.maxFeePerGas : BigInt(latestBlock.baseFeePerGas._hex);
@@ -3579,8 +3505,6 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
     } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
         chainId = 19;
     }
-
-    const latestBlock = await ethersProvider.getBlock("latest");
 
     let LedgerTxPayload = {
         to: txPayload.to,
@@ -3599,7 +3523,7 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         maxFeePerGas: maxFeePerGas,
         gasPrice: gasPrice,
         gasLimit: ethers.utils.hexlify(latestBlock.gasLimit),
-        nonce: nonce,
+        nonce: nonce + 1,
         chainId: chainId,
         data: txPayloadV2.data,
     };
@@ -3696,8 +3620,6 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
         let newButton = continueButton.cloneNode(true);
 
         continueButton.parentNode.replaceChild(newButton, continueButton);
-
-        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
         
         document.getElementById("ContinueAnyway")?.classList.add("claim-button");
 
@@ -3758,8 +3680,6 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
 
                         continueButton.parentNode.replaceChild(newButton, continueButton);
                         
-                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
-                        
                         document.getElementById("ContinueAnyway")?.classList.add("claim-button");
 
                         DappObject.isHandlingOperation = false;
@@ -3774,8 +3694,6 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
                         let newButton = continueButton.cloneNode(true);
 
                         continueButton.parentNode.replaceChild(newButton, continueButton);
-
-                        document.getElementById("ContinueAnyway")?.classList.remove("connect-wallet");
                         
                         document.getElementById("ContinueAnyway")?.classList.add("claim-button");
 
@@ -3790,11 +3708,7 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
             clearTimeout(DappObject.latestPopupTimeoutId);
 
             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                await setCurrentAppState("Alert");
-
-                await setCurrentPopup("Whoops! Looks like your Ledger device is not plugged in! Please plug in your Ledger device and click on Connect Wallet!", true);
-
-                throw new Error("Ledger not plugged in.");
+                getDappPage(4);
             }, 3000);
         }
 
@@ -5330,7 +5244,7 @@ window.dappInit = async (option, stakingOption) => {
                 clearTimeout(DappObject.latestPopupTimeoutId);
 
                 DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                    await setCurrentPopup("First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within Metamask, please choose the Metamask option. More coming soon!", true);
+                    await setCurrentPopup(`First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within ${DappObject.providerList[0].info.name}, please choose the ${DappObject.providerList[0].info.name} option. More coming soon!`, true);
                 }, 9000);
             } catch (error) {
                 // console.log(error);
@@ -5384,6 +5298,8 @@ window.dappInit = async (option, stakingOption) => {
                             await setCurrentAppState("Connected");
 
                             await setCurrentPopup("Connected!", false);
+
+                            document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
 
                             document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
     

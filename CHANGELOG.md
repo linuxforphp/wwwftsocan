@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.2.1 (2024-10-07)
+
+- Fixes an issue with FTSOV2 claiming on Ledger.
+- Fixes some issues with Wallet disconnect.
+- Fixes some messages and styling issues.
+
 ## 1.2.0 (2024-10-02)
 
 - Adds FTSO V2 reward type 1 claiming.
