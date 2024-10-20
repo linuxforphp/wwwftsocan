@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.2.2 (2024-10-19)
+
+- Fixes an issue with FTSOV2 claiming.
+- Updates the project's dependencies.
+
 ## 1.2.1 (2024-10-07)
 
 - Fixes an issue with FTSOV2 claiming on Ledger.
