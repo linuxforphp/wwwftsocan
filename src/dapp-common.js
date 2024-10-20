@@ -1389,7 +1389,13 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
                         const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
                         const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
-                        const rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
+                        let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
+
+                        // @TODO TO BE REMOVED - PATCH RewardManager address not updated in Registry Contract 2024-10-20.
+                        if (rpcUrl.includes("sgb")) {
+                            rewardManagerAddr = "0x8A80583BD5A5Cd8f68De585163259D61Ea8dc904"
+                        }
+
                         const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
                         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
@@ -4559,26 +4565,43 @@ window.dappInit = async (option, stakingOption) => {
                             let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                             const ftsoRewardAddr = await GetContract("FtsoRewardManager", object.rpcUrl, object.flrAddr);
                             let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
-                            const rewardManagerAddr = await GetContract("RewardManager", object.rpcUrl, object.flrAddr);
+
+                            let rewardManagerAddr = await GetContract("RewardManager", object.rpcUrl, object.flrAddr);
+
+                            // @TODO TO BE REMOVED - PATCH RewardManager address not updated in Registry Contract 2024-10-20.
+                            if (object.rpcUrl.includes("sgb")) {
+                                rewardManagerAddr = "0x8A80583BD5A5Cd8f68De585163259D61Ea8dc904"
+                            }
+                            
                             let rewardManagerContract;
                             const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
                             let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
 
                             let rewardClaimWithProofStructs = [];
 
-                            if (rewardManagerAddr) {
-                                rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddr);
+                            let v2RewardEpochId;
 
-                                if (DappObject.hasFtsoRewards) {
-                                    let network;
-    
-                                    if (object.rpcUrl.includes("flr")) {
-                                        network = "flare";
-                                    } else if (object.rpcUrl.includes("sgb")) {
-                                        network = "songbird";
+                            if (rewardManagerAddr) {
+                                try {
+                                    rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddr);
+
+                                    let v2RewardEpochArray = await rewardManagerContract.methods.getRewardEpochIdsWithClaimableRewards().call();
+
+                                    v2RewardEpochId = v2RewardEpochArray._endEpochId;
+
+                                    if (DappObject.hasFtsoRewards) {
+                                        let network;
+        
+                                        if (object.rpcUrl.includes("flr")) {
+                                            network = "flare";
+                                        } else if (object.rpcUrl.includes("sgb")) {
+                                            network = "songbird";
+                                        }
+        
+                                        rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, rewardManagerContract);
                                     }
-    
-                                    rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, rewardManagerContract);
+                                } catch (error) {
+                                    // console.log(error);
                                 }
                             }
 
@@ -4603,7 +4626,7 @@ window.dappInit = async (option, stakingOption) => {
                                             txPayloadV2 = {
                                                 from: account,
                                                 to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true, rewardClaimWithProofStructs).encodeABI(),
+                                                data: rewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), true, rewardClaimWithProofStructs).encodeABI(),
                                             };
                                         }
                                     }
@@ -4621,7 +4644,7 @@ window.dappInit = async (option, stakingOption) => {
                                             txPayloadV2 = {
                                                 from: account,
                                                 to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false, rewardClaimWithProofStructs).encodeABI(),
+                                                data: rewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), false, rewardClaimWithProofStructs).encodeABI(),
                                             };
                                         }
                                     }
