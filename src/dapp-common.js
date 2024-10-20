@@ -4564,14 +4564,10 @@ window.dappInit = async (option, stakingOption) => {
                             const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
                             let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
 
-                            let claimableEpochs;
-
                             let rewardClaimWithProofStructs = [];
 
                             if (rewardManagerAddr) {
                                 rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddr);
-
-                                claimableEpochs = await rewardManagerContract.methods.getRewardEpochIdsWithClaimableRewards().call();
 
                                 if (DappObject.hasFtsoRewards) {
                                     let network;
@@ -4607,7 +4603,7 @@ window.dappInit = async (option, stakingOption) => {
                                             txPayloadV2 = {
                                                 from: account,
                                                 to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(claimableEpochs._endEpochId), true, rewardClaimWithProofStructs).encodeABI(),
+                                                data: rewardManagerContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true, rewardClaimWithProofStructs).encodeABI(),
                                             };
                                         }
                                     }
@@ -4625,7 +4621,7 @@ window.dappInit = async (option, stakingOption) => {
                                             txPayloadV2 = {
                                                 from: account,
                                                 to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(claimableEpochs._endEpochId), false, rewardClaimWithProofStructs).encodeABI(),
+                                                data: rewardManagerContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false, rewardClaimWithProofStructs).encodeABI(),
                                             };
                                         }
                                     }
