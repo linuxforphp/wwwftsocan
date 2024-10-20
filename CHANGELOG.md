@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.3 (2024-10-20)
+
+- Fixes an issue with FTSOV2 claiming.
+
 ## 1.2.2 (2024-10-19)
 
 - Fixes an issue with FTSOV2 claiming.
