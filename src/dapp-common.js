@@ -541,7 +541,7 @@ async function handleChainChanged(DappObject) {
 
         document.getElementById("ConnectWallet")?.click();
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 
@@ -793,7 +793,7 @@ async function createSelectedNetwork(DappObject) {
                                         });
                                 }
                             } catch (error) {
-                                console.log(error);
+                                // console.log(error);
 
                                 if (error.code === 4902) {
                                     try {
@@ -871,7 +871,7 @@ async function createSelectedNetwork(DappObject) {
                                 throw error
                             });
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
 
                         if (error.code === 4902) {
                             try {
@@ -1020,7 +1020,7 @@ async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, reward
             const rewardsHash = await flareSystemsManager.methods.rewardsHash(epochId).call();
             const rewardHashSigned = Boolean(rewardsHash) && rewardsHash !== "0x0000000000000000000000000000000000000000000000000000000000000000";
             if (rewardHashSigned) {
-                console.log(epochId + " is claimable!");
+                // console.log(epochId + " is claimable!");
                 claimableRewardEpochIds.push(Number(epochId));
             }
         }
@@ -1029,7 +1029,7 @@ async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, reward
         }
         return claimableRewardEpochIds;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return null;
     }
 }
@@ -1107,7 +1107,7 @@ async function getRewardClaimData(rewardEpochId, network, account) {
                 }
             };
         }).catch((error) => {
-            console.log(error);
+            // console.log(error);
             return null;
         });
 }
@@ -1161,7 +1161,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                             let addresses;
 
-                            console.log("Fetching Addresses... ETH");
+                            // console.log("Fetching Addresses... ETH");
 
                             if (GetNetworkName(rpcUrl) === "flare") {
                                 addresses = await getLedgerAddresses("flare", DappObject.isAvax);
@@ -1182,7 +1182,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             DappObject.ledgerAddrArray = insert;
                         }
 
-                        console.log(DappObject.ledgerAddrArray);
+                        // console.log(DappObject.ledgerAddrArray);
 
                         document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
 
@@ -1461,10 +1461,10 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         if (rewardManagerContract) {
                             unclaimedAmountv2 = await rewardManagerContract.methods.getStateOfRewards(account).call();
                 
-                            console.log("unclaimedAmountv2: ");
-                            console.log(unclaimedAmountv2);
-                            console.log("unclaimedAmount: ");
-                            console.log(unclaimedAmount);
+                            // console.log("unclaimedAmountv2: ");
+                            // console.log(unclaimedAmountv2);
+                            // console.log("unclaimedAmount: ");
+                            // console.log(unclaimedAmount);
                 
                             if (unclaimedAmountv2.length > 0) {
                                 DappObject.hasV2Rewards = true;
@@ -1570,7 +1570,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
             }
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         document.getElementById("ConnectWalletText").innerText = "Connect Wallet";
 
@@ -1849,7 +1849,7 @@ async function populateFtsos(rpcUrl, flrAddr) {
                     }
                 });
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
 
             resolve();
@@ -1946,7 +1946,7 @@ async function delegate(object, DappObject) {
 
             await isDelegateInput1(DappObject);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 }
@@ -1987,7 +1987,7 @@ async function undelegate(object, DappObject) {
             });
         }
     } catch(error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 
@@ -2078,7 +2078,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                         await wait(3000);
 
                         if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                            console.log("Fetching Addresses... P-Chain");
+                            // console.log("Fetching Addresses... P-Chain");
                             let addresses = await getLedgerAddresses("flare", DappObject.isAvax);
     
                             let insert = [];
@@ -2094,7 +2094,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                             DappObject.ledgerAddrArray = insert;
                         }
     
-                        console.log(DappObject.ledgerAddrArray);
+                        // console.log(DappObject.ledgerAddrArray);
     
                         document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
     
@@ -2338,7 +2338,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             DappObject.isAccountConnected = true;
         }
 
-        console.log(flrPublicKey);
+        // console.log(flrPublicKey);
 
         if (typeof flrPublicKey !== 'undefined') {
 
@@ -2407,7 +2407,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                     
                         await populateValidators();
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
 
                     await setCurrentPopup("This is the 'Stake' page, where you can stake your FLR tokens (at least 50,000) to a validator node and earn passive income!", true);
@@ -2449,7 +2449,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
                     const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
 
-                    console.log(unclaimedAmount);
+                    // console.log(unclaimedAmount);
                     
                     // Changing the color of Claim button.
                     showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
@@ -2484,7 +2484,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             DappObject.isHandlingOperation = false;
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
 
@@ -2742,7 +2742,7 @@ async function transferTokens(DappObject, stakingOption) {
 
                     const nonce = await web32.eth.getTransactionCount(DappObject.selectedAddress);
 
-                    console.log(cKeychain);
+                    // console.log(cKeychain);
 
                     let cChainTransactionId;
 
@@ -2754,7 +2754,7 @@ async function transferTokens(DappObject, stakingOption) {
                         showConfirmationSpinnerTransfer(async (spinner) => {
                             const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, nonce, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
-                                    console.log("C Chain TX ID: " + result.txid);
+                                    // console.log("C Chain TX ID: " + result.txid);
 
                                     cChainTransactionId = result.txid;
                                     
@@ -2791,7 +2791,7 @@ async function transferTokens(DappObject, stakingOption) {
                                             }
                                         });
                                     } catch (error) {
-                                        console.log(error);
+                                        // console.log(error);
                                         throw error;
                                     }
                                 });
@@ -2799,7 +2799,7 @@ async function transferTokens(DappObject, stakingOption) {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
                                     const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
-                                        console.log("P Chain TX ID: " + result.txid);
+                                        // console.log("P Chain TX ID: " + result.txid);
         
                                         pChainTransactionId = result.txid;
                                     
@@ -2833,7 +2833,7 @@ async function transferTokens(DappObject, stakingOption) {
                                                 }
                                             });
                                         } catch (error) {
-                                            console.log(error);
+                                            // console.log(error);
                                             throw error;
                                         }
                                     });
@@ -2841,7 +2841,7 @@ async function transferTokens(DappObject, stakingOption) {
                             });
                         });
                     } catch (error) {
-                        console.log("ERROR C-chain to P-chain");
+                        // console.log("ERROR C-chain to P-chain");
                         throw error;
                     }
                 } else {
@@ -2853,7 +2853,7 @@ async function transferTokens(DappObject, stakingOption) {
 
                     const pKeychain = await keychainp();
 
-                    console.log(cKeychain);
+                    // console.log(cKeychain);
 
                     let cChainTransactionId;
 
@@ -2865,7 +2865,7 @@ async function transferTokens(DappObject, stakingOption) {
                         showConfirmationSpinnerTransfer(async (spinner) => {
                             const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
-                                    console.log("P Chain TX ID: " + result);
+                                    // console.log("P Chain TX ID: " + result);
 
                                     pChainTransactionId = result;
                                 
@@ -2902,7 +2902,7 @@ async function transferTokens(DappObject, stakingOption) {
                                             }
                                         });
                                     } catch (error) {
-                                        console.log(error);
+                                        // console.log(error);
                                         throw error;
                                     }
                                 });
@@ -2910,7 +2910,7 @@ async function transferTokens(DappObject, stakingOption) {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
                                     const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
-                                        console.log("C Chain TX ID: " + result);
+                                        // console.log("C Chain TX ID: " + result);
 
                                         cChainTransactionId = result;
                                         
@@ -2944,7 +2944,7 @@ async function transferTokens(DappObject, stakingOption) {
                                                 }
                                             });
                                         } catch (error) {
-                                            console.log(error);
+                                            // console.log(error);
                                             throw error;
                                         }   
                                     });
@@ -2952,7 +2952,7 @@ async function transferTokens(DappObject, stakingOption) {
                             });
                         });
                     } catch (error) {
-                        console.log("ERROR P-chain to C-chain");
+                        // console.log("ERROR P-chain to C-chain");
                         throw error;
                     }
                 }
@@ -2967,7 +2967,7 @@ async function transferTokens(DappObject, stakingOption) {
                 DappObject.isHandlingOperation = false;
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
 
             DappObject.isHandlingOperation = false;
 
@@ -3117,7 +3117,7 @@ async function populateValidators() {
                 }
             });
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
 
         resolve();
@@ -3258,7 +3258,7 @@ async function stake(DappObject, stakingOption) {
         try {
             showConfirmationSpinnerStake(async (spinner) => {
                 const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
-                    console.log("P Chain TX ID: " + result);
+                    // console.log("P Chain TX ID: " + result);
 
                     pChainTransactionId = result;
                 
@@ -3298,7 +3298,7 @@ async function stake(DappObject, stakingOption) {
         } catch (error) {
             DappObject.isHandlingOperation = false;
 
-            console.log(error);
+            // console.log(error);
         }
     }
 }
@@ -3372,7 +3372,7 @@ async function claimStakingRewards(DappObject, stakingOption) {
     } catch (error) {
         DappObject.isHandlingOperation = false;
 
-        console.log(error);
+        // console.log(error);
     }
 }
 
@@ -3463,10 +3463,10 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
         } catch (error) {
             if (isStake === true) {
                 showFailStake(DappObject, stakingOption);
-                console.log(error);
+                // console.log(error);
             } else {
                 showFail(object, DappObject, pageIndex);
-                console.log(error);
+                // console.log(error);
             }
         }
     });
@@ -3533,7 +3533,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         try {
             await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
                 ethersProvider.sendTransaction(signedTx).then(response => {
-                    
+                    v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
+
                     txHashes[0] = response.hash;
 
                     checkTx(response.hash, web32, undefined, object, DappObject, pageIndex, true).then(result => {
@@ -3571,6 +3572,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
                         if (value === "Success" || value === "Unknown") {
                             await ledgerSignEVM(LedgerTxPayloadV2, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTxV2 => {
                                 ethersProvider.sendTransaction(signedTxV2).then(answer => {
+                                    v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+
                                     txHashes[1] = answer.hash;
 
                                     checkTx(answer.hash, web32, undefined, object, DappObject, pageIndex, true).then(receipt => {
@@ -3713,7 +3716,7 @@ async function handleTransportConnect(chosenNavigator, DappObject, option, staki
             }, 3000);
         }
 
-        console.log("No Devices!");
+        // console.log("No Devices!");
     }
 }
 
@@ -4001,7 +4004,7 @@ window.dappInit = async (option, stakingOption) => {
         // USB Connect Event
 
         chosenNavigator?.addEventListener('connect', async event => {
-            console.log("Connected!");
+            // console.log("Connected!");
             if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
                 
             } else {
@@ -4012,7 +4015,7 @@ window.dappInit = async (option, stakingOption) => {
         // USB Disconnect Event
             
         chosenNavigator?.addEventListener('disconnect', async event => {
-            console.log("Disconnected!");
+            // console.log("Disconnected!");
             if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
                 
             } else {
@@ -4136,7 +4139,7 @@ window.dappInit = async (option, stakingOption) => {
                                 }
                             }
                         } catch (error) {
-                            console.log(error);
+                            // console.log(error);
 
                             DappObject.isHandlingOperation = false;
 
@@ -4284,7 +4287,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
                     
                     setWrapButton(DappObject);
@@ -4399,7 +4402,7 @@ window.dappInit = async (option, stakingOption) => {
                     } catch(error) {
                         DappObject.isHandlingOperation = false;
 
-                        console.log(error);
+                        // console.log(error);
                     }
                 });
 
@@ -4503,7 +4506,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
                 };
                 if (DappObject.walletIndex === 0) {
@@ -4570,7 +4573,7 @@ window.dappInit = async (option, stakingOption) => {
                                     rewardManagerAddrArray[i + 1] = oldRewardManagerAddr;
                                 }
                             } catch (error) {
-                                console.log(error);
+                                // console.log(error);
                             }
                         }
             
@@ -4608,7 +4611,7 @@ window.dappInit = async (option, stakingOption) => {
                                             rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, currentRewardManagerContract);
                                         }
                                     } catch (error) {
-                                        console.log(error);
+                                        // console.log(error);
                                     }
                                 }
 
@@ -4720,7 +4723,10 @@ window.dappInit = async (option, stakingOption) => {
                                                         params: [transactionParameters],
                                                     })
                                                     .then(txHash => {
+                                                        v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
+
                                                         txHashes[0] = txHash;
+
                                                         checkTx(txHash, web32, undefined, object, DappObject, 2, true).then(result => {
                                                             return new Promise((resolve, reject) => {
                                                                 switch (result) {
@@ -4758,7 +4764,10 @@ window.dappInit = async (option, stakingOption) => {
                                                                     method: 'eth_sendTransaction',
                                                                     params: [transactionParametersV2],
                                                                 }).then(txHashV2 => {
+                                                                    v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+
                                                                     txHashes[1] = txHashV2;
+
                                                                     checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
                                                                         switch (receipt) {
                                                                             case "Success":
@@ -4802,7 +4811,10 @@ window.dappInit = async (option, stakingOption) => {
                                                         params: [transactionParameters],
                                                     })
                                                     .then(txHash => {
+                                                        v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
+
                                                         txHashes[0] = txHash;
+
                                                         checkTx(txHash, web32, undefined, object, DappObject, 2, true).then(result => {
                                                             return new Promise((resolve, reject) => {
                                                                 switch (result) {
@@ -4840,7 +4852,10 @@ window.dappInit = async (option, stakingOption) => {
                                                                     method: 'eth_sendTransaction',
                                                                     params: [transactionParametersV2],
                                                                 }).then(txHashV2 => {
+                                                                    v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+
                                                                     txHashes[1] = txHashV2;
+
                                                                     checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
                                                                         switch (receipt) {
                                                                             case "Success":
@@ -4898,7 +4913,7 @@ window.dappInit = async (option, stakingOption) => {
                             } catch (error) {
                                 DappObject.isHandlingOperation = false;
 
-                                console.log(error);
+                                // console.log(error);
                             }
                         }
                     }
@@ -4983,7 +4998,7 @@ window.dappInit = async (option, stakingOption) => {
                         } catch (error) {
                             DappObject.isHandlingOperation = false;
 
-                            console.log(error);
+                            // console.log(error);
                         }
                     }
                 });
@@ -5105,7 +5120,7 @@ window.dappInit = async (option, stakingOption) => {
 
                         ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
                 };
 
@@ -5149,7 +5164,7 @@ window.dappInit = async (option, stakingOption) => {
                             throw error
                         });
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
 
                     if (error.code === 4902) {
                         try {
@@ -5187,7 +5202,7 @@ window.dappInit = async (option, stakingOption) => {
                         ]
                         }).catch((error) => console.error(error));
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
 
                     if (error.code === 4902) {
                         try {
@@ -5274,7 +5289,7 @@ window.dappInit = async (option, stakingOption) => {
                     await setCurrentPopup(`First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within ${DappObject.providerList[0].info.name}, please choose the ${DappObject.providerList[0].info.name} option. More coming soon!`, true);
                 }, 9000);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         } else if (stakingOption === 4) {
             //Metamask
