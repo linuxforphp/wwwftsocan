@@ -1,0 +1,24 @@
+{
+    "songbird": {
+        "AddressUpdater": "",
+        "FlareSystemsManager": "",
+        "VoterWhitelister": "",
+        "WNat": "",
+        "DistributionToDelegators": "",
+        "FtsoRewardManager": "",
+        "ValidatorRewardManager": "",
+        "AddressBinder": "",
+        "RewardManager": ""
+    },
+    "flare": {
+        "AddressUpdater": "",
+        "FlareSystemsManager": "",
+        "VoterWhitelister": "",
+        "WNat": "",
+        "DistributionToDelegators": "",
+        "FtsoRewardManager": "",
+        "ValidatorRewardManager": "",
+        "AddressBinder": "",
+        "RewardManager": ""
+    }
+}

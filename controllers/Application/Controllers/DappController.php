@@ -138,6 +138,15 @@ class DappController extends AggregateRootController implements AggregateEventLi
                 . 'tupleconfig.json'
             );
 
+        $this->view['jsconfig']['ftsov2']['contractoverrideconfig'] = 
+            file_get_contents(
+                $baseConfig['BASEDIR'] 
+                . DIRECTORY_SEPARATOR 
+                .'config' 
+                . DIRECTORY_SEPARATOR 
+                . 'contractoverrideconfig.json'
+            );
+
         // $this->view['jsdefer'][] = $baseConfig['URLBASEADDR'] . 'js/flare/avalanche.js';
         // $this->view['jsdefer'][] = $baseConfig['URLBASEADDR'] . 'js/flare/index.js';
     }
