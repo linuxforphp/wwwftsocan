@@ -1034,11 +1034,26 @@ async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, reward
     }
 }
 
-async function getRewardClaimWithProofStructs(network, address, amountWei, flareSystemsManager, rewardManager) {
-    const claimableRewardEpochIds = await getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManager, address);
+async function getRewardClaimWithProofStructs(network, address, amountWei, flareSystemsManager, rewardManagers) {
+
+    let claimableRewardEpochIds = [];
+
+    let rewardManagerEpochs;
+
+    for (let i = 0; i < rewardManagers.length; i++) {
+        rewardManagerEpochs = await getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManagers[i], address);
+
+        if (rewardManagerEpochs?.length) {
+            for (let j = 0; j < rewardManagerEpochs.length; j++) {
+                if (claimableRewardEpochIds.indexOf(rewardManagerEpochs[j]) === -1) {
+                    claimableRewardEpochIds.push(rewardManagerEpochs[j]);
+                }
+            }
+        }
+    }
 
     if (!claimableRewardEpochIds?.length) {
-      return;
+        return;
     }
 
     let hasFtsoRewards = false;
@@ -1384,24 +1399,43 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                     }
                 } else if (pageIndex === 2) {
                     var networkSelectBox = document.getElementById('SelectedNetwork');
+
+                    let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
+
+                    let oldRewardManagerAddr;
+
+                    let rewardManagerContract;
+
+                    let rewardManagerAddrArray = [rewardManagerAddr];
+
+                    let rewardManagerContractArray = [];
+
+                    for (let i = 0; i < rewardManagerAddrArray.length; i++) {
+                        try {
+                            rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
+
+                            rewardManagerContractArray[i] = rewardManagerContract;
+
+                            oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
+
+                            if (oldRewardManagerAddr !== "0x0000000000000000000000000000000000000000") {
+                                rewardManagerAddrArray[i + 1] = oldRewardManagerAddr;
+                            }
+                        } catch (error) {
+                            // console.log(error);
+                        }
+                    }
     
                     try {
                         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
                         const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
                         const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
-                        let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
 
                         const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
                         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
                         let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
                         let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
-
-                        let rewardManagerContract;
-
-                        if (rewardManagerAddr) {
-                            rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddr);
-                        }
 
                         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
     
@@ -1458,8 +1492,8 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                             DappObject.hasV1Rewards = false;
                         }
 
-                        if (rewardManagerContract) {
-                            unclaimedAmountv2 = await rewardManagerContract.methods.getStateOfRewards(account).call();
+                        if (rewardManagerContractArray?.length) {
+                            unclaimedAmountv2 = await rewardManagerContractArray[0].methods.getStateOfRewards(account).call();
                 
                             // console.log("unclaimedAmountv2: ");
                             // console.log(unclaimedAmountv2);
@@ -1486,7 +1520,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                                 network = "songbird";
                             }
 
-                            const ftsoRewardInfo = await getRewardClaimWithProofStructs(network, account, unclaimedAmount, flareSystemsManagerContract, rewardManagerContract);
+                            const ftsoRewardInfo = await getRewardClaimWithProofStructs(network, account, unclaimedAmount, flareSystemsManagerContract, rewardManagerContractArray);
 
                             if (ftsoRewardInfo !== undefined && ftsoRewardInfo?.hasFtsoRewards === true) {
                                 unclaimedAmount += ftsoRewardInfo.amountWei;
@@ -4563,9 +4597,13 @@ window.dappInit = async (option, stakingOption) => {
 
                         let rewardManagerAddrArray = [rewardManagerAddr];
 
+                        let rewardManagerContractArray = [];
+
                         for (let i = 0; i < rewardManagerAddrArray.length; i++) {
                             try {
                                 rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
+
+                                rewardManagerContractArray[i] = rewardManagerContract;
 
                                 oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
 
@@ -4586,10 +4624,7 @@ window.dappInit = async (option, stakingOption) => {
                                 let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                                 const ftsoRewardAddr = await GetContract("FtsoRewardManager", object.rpcUrl, object.flrAddr);
                                 let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
-
-                                let currentRewardManagerAddr = rewardManagerAddrArray[i];
                                 
-                                let currentRewardManagerContract;
                                 const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
                                 let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
 
@@ -4599,16 +4634,14 @@ window.dappInit = async (option, stakingOption) => {
 
                                 if (rewardManagerAddr) {
                                     try {
-                                        currentRewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, currentRewardManagerAddr);
-
-                                        let v2RewardEpochArray = await currentRewardManagerContract.methods.getRewardEpochIdsWithClaimableRewards().call();
+                                        let v2RewardEpochArray = await rewardManagerContractArray[0].methods.getRewardEpochIdsWithClaimableRewards().call();
 
                                         v2RewardEpochId = v2RewardEpochArray._endEpochId;
 
                                         if (DappObject.hasFtsoRewards) {
                                             let network = GetNetworkName(object.rpcUrl);
             
-                                            rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, currentRewardManagerContract);
+                                            rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, rewardManagerContractArray);
                                         }
                                     } catch (error) {
                                         // console.log(error);
@@ -4632,11 +4665,11 @@ window.dappInit = async (option, stakingOption) => {
                                         }
 
                                         if (DappObject.hasV2Rewards === true) {
-                                            if (currentRewardManagerContract) {
+                                            if (rewardManagerContractArray?.length) {
                                                 txPayloadV2 = {
                                                     from: account,
                                                     to: rewardManagerAddr,
-                                                    data: currentRewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), true, rewardClaimWithProofStructs).encodeABI(),
+                                                    data: rewardManagerContractArray[0].methods.claim(account, account, String(v2RewardEpochId), true, rewardClaimWithProofStructs).encodeABI(),
                                                 };
                                             }
                                         }
@@ -4650,11 +4683,11 @@ window.dappInit = async (option, stakingOption) => {
                                         }
 
                                         if (DappObject.hasV2Rewards === true) {
-                                            if (currentRewardManagerContract) {
+                                            if (rewardManagerContractArray?.length) {
                                                 txPayloadV2 = {
                                                     from: account,
                                                     to: rewardManagerAddr,
-                                                    data: currentRewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), false, rewardClaimWithProofStructs).encodeABI(),
+                                                    data: rewardManagerContractArray[0].methods.claim(account, account, String(v2RewardEpochId), false, rewardClaimWithProofStructs).encodeABI(),
                                                 };
                                             }
                                         }
@@ -4686,7 +4719,7 @@ window.dappInit = async (option, stakingOption) => {
                                                 .catch((error) => showFail(object, DappObject, 2));
                                             });
                                         }
-                                    } else if (DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true && typeof currentRewardManagerContract !== "undefined") {
+                                    } else if (DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true && typeof rewardManagerContractArray?.length !== "undefined") {
                                         const transactionParametersV2 = txPayloadV2;
 
                                         if (DappObject.walletIndex === 1) {
@@ -4710,7 +4743,7 @@ window.dappInit = async (option, stakingOption) => {
                                                 .catch((error) => showFail(object, DappObject, 2));
                                             });
                                         }
-                                    } else if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true && typeof currentRewardManagerContract !== "undefined") {
+                                    } else if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true && typeof rewardManagerContractArray?.length !== "undefined") {
                                         const transactionParametersV2 = txPayloadV2;
 
                                         if (DappObject.walletIndex === 1) {
