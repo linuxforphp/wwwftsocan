@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.2.4 (2024-10-26)
+
+- Fixes a UI issue with V1 and V2 claiming.
+- Fixes an issue with FTSOV2 claiming. 
+- Updates the project's dependencies.
+
 ## 1.2.3 (2024-10-20)
 
 - Fixes an issue with FTSOV2 claiming.

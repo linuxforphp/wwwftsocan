@@ -41,6 +41,12 @@ function getKeyByValue(object, value) {
 }
 
 export async function GetContract(ContractName, rpcurl, flrAddr) {
+    let networkName = GetNetworkName(rpcurl);
+
+    if (contractOverrideConfig[networkName][ContractName] !== "") {
+        return contractOverrideConfig[networkName][ContractName];
+    }
+
     let web3 = new Web3(rpcurl);
     let flareContract = new web3.eth.Contract(FlareAbis.FlareRegistry, flrAddr);
     const SmartContracts = await flareContract.methods.getAllContracts().call();
@@ -48,6 +54,14 @@ export async function GetContract(ContractName, rpcurl, flrAddr) {
     const wrappedTokenAddr = SmartContracts[1][wrappedTokenIndex];
 
     return wrappedTokenAddr;
+}
+
+export function GetNetworkName(rpcUrl) {
+    if (rpcUrl.includes("flr")) {
+        return "flare";
+    } else if (rpcUrl.includes("sgb")) {
+        return "songbird";
+    }
 }
 
 export function round(num) {

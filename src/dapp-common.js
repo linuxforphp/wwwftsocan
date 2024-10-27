@@ -1,7 +1,7 @@
 // Copyright 2024, Andrew Caya <andrewscaya@yahoo.ca>
 // Copyright 2024, Jean-Thomas Caya
 
-import {GetContract, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
+import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { ethers } from "./ethers.js";
 
 // ALL MODULES.
@@ -1163,9 +1163,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                             // console.log("Fetching Addresses... ETH");
 
-                            if (rpcUrl.includes("flr")) {
+                            if (GetNetworkName(rpcUrl) === "flare") {
                                 addresses = await getLedgerAddresses("flare", DappObject.isAvax);
-                            } else if (rpcUrl.includes("sgb")) {
+                            } else if (GetNetworkName(rpcUrl) === "songbird") {
                                 addresses = await getLedgerAddresses("songbird", DappObject.isAvax);
                             }
 
@@ -1203,9 +1203,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                             let unprefixed;
 
-                            if (rpcUrl.includes("flr")) {
+                            if (GetNetworkName(rpcUrl) === "flare") {
                                 unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-                            } else if (rpcUrl.includes("sgb")) {
+                            } else if (GetNetworkName(rpcUrl) === "songbird") {
                                 unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
                             }
 
@@ -1391,11 +1391,6 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
                         let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
 
-                        // @TODO TO BE REMOVED - PATCH RewardManager address not updated in Registry Contract 2024-10-20.
-                        if (rpcUrl.includes("sgb")) {
-                            rewardManagerAddr = "0x8A80583BD5A5Cd8f68De585163259D61Ea8dc904"
-                        }
-
                         const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
                         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
@@ -1485,9 +1480,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                             let network;
 
-                            if (rpcUrl.includes("flr")) {
+                            if (GetNetworkName(rpcUrl) === "flare") {
                                 network = "flare";
-                            } else if (rpcUrl.includes("sgb")) {
+                            } else if (GetNetworkName(rpcUrl) === "songbird") {
                                 network = "songbird";
                             }
 
@@ -3412,9 +3407,9 @@ async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake
 
     let chainId = 14;
 
-    if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
+    if (typeof object !== "undefined" && GetNetworkName(object.rpcUrl) === "flare") {
         chainId = 14;
-    } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
+    } else if (typeof object !== "undefined" && GetNetworkName(object.rpcUrl) === "songbird") {
         chainId = 19;
     }
 
@@ -3506,9 +3501,9 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
 
     let chainId = 14;
 
-    if (typeof object !== "undefined" && object.rpcUrl.includes("flr")) {
+    if (typeof object !== "undefined" && GetNetworkName(object.rpcUrl) === "flare") {
         chainId = 14;
-    } else if (typeof object !== "undefined" && object.rpcUrl.includes("sgb")) {
+    } else if (typeof object !== "undefined" && GetNetworkName(object.rpcUrl) === "songbird") {
         chainId = 19;
     }
 
@@ -3538,7 +3533,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
         try {
             await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
                 ethersProvider.sendTransaction(signedTx).then(response => {
-                    
+                    v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
+
                     txHashes[0] = response.hash;
 
                     checkTx(response.hash, web32, undefined, object, DappObject, pageIndex, true).then(result => {
@@ -3576,6 +3572,8 @@ async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, object, p
                         if (value === "Success" || value === "Unknown") {
                             await ledgerSignEVM(LedgerTxPayloadV2, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTxV2 => {
                                 ethersProvider.sendTransaction(signedTxV2).then(answer => {
+                                    v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+
                                     txHashes[1] = answer.hash;
 
                                     checkTx(answer.hash, web32, undefined, object, DappObject, pageIndex, true).then(receipt => {
@@ -4554,344 +4552,369 @@ window.dappInit = async (option, stakingOption) => {
             
                 document.getElementById("ClaimButton")?.addEventListener("click", async () => {
                     if (DappObject.claimBool === true) {
-                        DappObject.isHandlingOperation = true;
-
                         let web32 = new Web3(object.rpcUrl);
                         var checkBox = document.getElementById("RewardsCheck");
+
+                        let rewardManagerAddr = await GetContract("RewardManager", object.rpcUrl, object.flrAddr);
+
+                        let oldRewardManagerAddr;
+
+                        let rewardManagerContract;
+
+                        let rewardManagerAddrArray = [rewardManagerAddr];
+
+                        for (let i = 0; i < rewardManagerAddrArray.length; i++) {
+                            try {
+                                rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
+
+                                oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
+
+                                if (oldRewardManagerAddr !== "0x0000000000000000000000000000000000000000") {
+                                    rewardManagerAddrArray[i + 1] = oldRewardManagerAddr;
+                                }
+                            } catch (error) {
+                                // console.log(error);
+                            }
+                        }
             
-                        try {
-                            const account = DappObject.selectedAddress;
-                            const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
-                            let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-                            const ftsoRewardAddr = await GetContract("FtsoRewardManager", object.rpcUrl, object.flrAddr);
-                            let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
+                        for (let i = 0; i < rewardManagerAddrArray.length; i++) {
+                            try {
+                                DappObject.isHandlingOperation = true;
 
-                            let rewardManagerAddr = await GetContract("RewardManager", object.rpcUrl, object.flrAddr);
+                                const account = DappObject.selectedAddress;
+                                const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+                                let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+                                const ftsoRewardAddr = await GetContract("FtsoRewardManager", object.rpcUrl, object.flrAddr);
+                                let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
 
-                            // @TODO TO BE REMOVED - PATCH RewardManager address not updated in Registry Contract 2024-10-20.
-                            if (object.rpcUrl.includes("sgb")) {
-                                rewardManagerAddr = "0x8A80583BD5A5Cd8f68De585163259D61Ea8dc904"
-                            }
-                            
-                            let rewardManagerContract;
-                            const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
-                            let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
-
-                            let rewardClaimWithProofStructs = [];
-
-                            let v2RewardEpochId;
-
-                            if (rewardManagerAddr) {
-                                try {
-                                    rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddr);
-
-                                    let v2RewardEpochArray = await rewardManagerContract.methods.getRewardEpochIdsWithClaimableRewards().call();
-
-                                    v2RewardEpochId = v2RewardEpochArray._endEpochId;
-
-                                    if (DappObject.hasFtsoRewards) {
-                                        let network;
-        
-                                        if (object.rpcUrl.includes("flr")) {
-                                            network = "flare";
-                                        } else if (object.rpcUrl.includes("sgb")) {
-                                            network = "songbird";
-                                        }
-        
-                                        rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, rewardManagerContract);
-                                    }
-                                } catch (error) {
-                                    // console.log(error);
-                                }
-                            }
-
-                            const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-                            let txPayload = {};
-                            let txPayloadV2 = {};
-
-                            var bucketTotal = await web32.eth.getBalance(ftsoRewardAddr);
-
-                            if ((Number(document.getElementById('ClaimButtonText').innerText) > 0) && (Number(document.getElementById('ClaimButtonText').innerText) < bucketTotal)) {
-                                if (checkBox.checked) {
-                                    if (DappObject.hasV1Rewards === true) {
-                                        txPayload = {
-                                            from: account,
-                                            to: ftsoRewardAddr,
-                                            data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true).encodeABI(),
-                                        };
-                                    }
-
-                                    if (DappObject.hasV2Rewards === true) {
-                                        if (rewardManagerContract) {
-                                            txPayloadV2 = {
-                                                from: account,
-                                                to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), true, rewardClaimWithProofStructs).encodeABI(),
-                                            };
-                                        }
-                                    }
-                                } else {
-                                    if (DappObject.hasV1Rewards === true) {
-                                        txPayload = {
-                                            from: account,
-                                            to: ftsoRewardAddr,
-                                            data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false).encodeABI(),
-                                        };
-                                    }
-
-                                    if (DappObject.hasV2Rewards === true) {
-                                        if (rewardManagerContract) {
-                                            txPayloadV2 = {
-                                                from: account,
-                                                to: rewardManagerAddr,
-                                                data: rewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), false, rewardClaimWithProofStructs).encodeABI(),
-                                            };
-                                        }
-                                    }
-                                }
+                                let currentRewardManagerAddr = rewardManagerAddrArray[i];
                                 
-                                const transactionParameters = txPayload;
+                                let currentRewardManagerContract;
+                                const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
+                                let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
 
-                                let txHashes = [];
+                                let rewardClaimWithProofStructs = [];
 
-                                if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === false) {
-                                    if (DappObject.walletIndex === 1) {
-                                        await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
-                                    } else if (DappObject.walletIndex === 0) {
-                                        showSpinner(async () => {
-                                            await injectedProvider.request({
-                                                method: 'eth_sendTransaction',
-                                                params: [transactionParameters],
-                                            })
-                                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
-                                            .catch((error) => showFail(object, DappObject, 2));
-                                        });
-                                    } else if (DappObject.walletIndex === 2) {
-                                        showSpinner(async () => {
-                                            await DappObject.walletConnectEVMProvider.request({
-                                                method: 'eth_sendTransaction',
-                                                params: [transactionParameters],
-                                            })
-                                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
-                                            .catch((error) => showFail(object, DappObject, 2));
-                                        });
+                                let v2RewardEpochId;
+
+                                if (rewardManagerAddr) {
+                                    try {
+                                        currentRewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, currentRewardManagerAddr);
+
+                                        let v2RewardEpochArray = await currentRewardManagerContract.methods.getRewardEpochIdsWithClaimableRewards().call();
+
+                                        v2RewardEpochId = v2RewardEpochArray._endEpochId;
+
+                                        if (DappObject.hasFtsoRewards) {
+                                            let network = GetNetworkName(object.rpcUrl);
+            
+                                            rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, currentRewardManagerContract);
+                                        }
+                                    } catch (error) {
+                                        // console.log(error);
                                     }
-                                } else if (DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true && typeof rewardManagerContract !== "undefined") {
-                                    const transactionParametersV2 = txPayloadV2;
+                                }
 
-                                    if (DappObject.walletIndex === 1) {
-                                        await LedgerEVMSingleSign(transactionParametersV2, DappObject, undefined, false, object, 2);
-                                    } else if (DappObject.walletIndex === 0) {
-                                        showSpinner(async () => {
-                                            await injectedProvider.request({
-                                                method: 'eth_sendTransaction',
-                                                params: [transactionParametersV2],
-                                            })
-                                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
-                                            .catch((error) => showFail(object, DappObject, 2));
-                                        });
-                                    } else if (DappObject.walletIndex === 2) {
-                                        showSpinner(async () => {
-                                            await DappObject.walletConnectEVMProvider.request({
-                                                method: 'eth_sendTransaction',
-                                                params: [transactionParametersV2],
-                                            })
-                                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
-                                            .catch((error) => showFail(object, DappObject, 2));
-                                        });
+                                const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
+                                let txPayload = {};
+                                let txPayloadV2 = {};
+
+                                var bucketTotal = await web32.eth.getBalance(ftsoRewardAddr);
+
+                                if ((Number(document.getElementById('ClaimButtonText').innerText) > 0) && (Number(document.getElementById('ClaimButtonText').innerText) < bucketTotal)) {
+                                    if (checkBox.checked) {
+                                        if (DappObject.hasV1Rewards === true) {
+                                            txPayload = {
+                                                from: account,
+                                                to: ftsoRewardAddr,
+                                                data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), true).encodeABI(),
+                                            };
+                                        }
+
+                                        if (DappObject.hasV2Rewards === true) {
+                                            if (currentRewardManagerContract) {
+                                                txPayloadV2 = {
+                                                    from: account,
+                                                    to: rewardManagerAddr,
+                                                    data: currentRewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), true, rewardClaimWithProofStructs).encodeABI(),
+                                                };
+                                            }
+                                        }
+                                    } else {
+                                        if (DappObject.hasV1Rewards === true) {
+                                            txPayload = {
+                                                from: account,
+                                                to: ftsoRewardAddr,
+                                                data: ftsoRewardContract.methods.claim(account, account, String(epochsUnclaimed[epochsUnclaimed.length - 1]), false).encodeABI(),
+                                            };
+                                        }
+
+                                        if (DappObject.hasV2Rewards === true) {
+                                            if (currentRewardManagerContract) {
+                                                txPayloadV2 = {
+                                                    from: account,
+                                                    to: rewardManagerAddr,
+                                                    data: currentRewardManagerContract.methods.claim(account, account, String(v2RewardEpochId), false, rewardClaimWithProofStructs).encodeABI(),
+                                                };
+                                            }
+                                        }
                                     }
-                                } else if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true && typeof rewardManagerContract !== "undefined") {
-                                    const transactionParametersV2 = txPayloadV2;
+                                    
+                                    const transactionParameters = txPayload;
 
-                                    if (DappObject.walletIndex === 1) {
-                                        await LedgerEVMFtsoV2Sign(transactionParameters, transactionParametersV2, DappObject, object, 2, txHashes);
-                                    } else if (DappObject.walletIndex === 0) {
-                                        showConfirmationSpinnerv2(async (v2Spinner) => {
-                                            try {
+                                    let txHashes = [];
+
+                                    if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === false) {
+                                        if (DappObject.walletIndex === 1) {
+                                            await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
+                                        } else if (DappObject.walletIndex === 0) {
+                                            showSpinner(async () => {
                                                 await injectedProvider.request({
                                                     method: 'eth_sendTransaction',
                                                     params: [transactionParameters],
                                                 })
-                                                .then(txHash => {
-                                                    txHashes[0] = txHash;
-                                                    checkTx(txHash, web32, undefined, object, DappObject, 2, true).then(result => {
-                                                        return new Promise((resolve, reject) => {
-                                                            switch (result) {
-                                                                case "Success":
-                                                                    v2Spinner.$content.find('#v1TxStatus').html('Confirmed');
-                                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-solid fa-check");
-                                                                    v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
-                                                                    setTimeout(() => {
-                                                                        resolve("Success");
-                                                                    }, 1500);
-                                                                    break
-                                                                case "Fail":
-                                                                    v2Spinner.$content.find('#v1TxStatus').html('Failed');
-                                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
-                                                                    resolve("Failed");
-                                                                    v2Spinner.close();
-                                                                    showFail(object, DappObject, 2);
-                                                                    break
-                                                                case "Unknown":
-                                                                    v2Spinner.$content.find('#v1TxStatus').html('Unknown');
-                                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
-                                                                    v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
-                                                                    setTimeout(() => {
-                                                                        resolve("Unknown");
-                                                                    }, 1500);
-                                                                    break
-                                                            }
-                                                        });
-                                                    }).then(async value => {
-                                                        if (value === "Success" || value === "Unknown") {
-                                                            await injectedProvider.request({
-                                                                method: 'eth_sendTransaction',
-                                                                params: [transactionParametersV2],
-                                                            }).then(txHashV2 => {
-                                                                txHashes[1] = txHashV2;
-                                                                checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
-                                                                    switch (receipt) {
-                                                                        case "Success":
-                                                                            v2Spinner.$content.find('#v2TxStatus').html('Confirmed');
-                                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-solid fa-check");
-                                                                            v2Spinner.close();
-                                                                            showConfirm(txHashes[0] + "<br/>" + txHashes[1], object, DappObject, 2);
-                                                                            break
-                                                                        case "Fail":
-                                                                            v2Spinner.$content.find('#v2TxStatus').html('Failed');
-                                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
-                                                                            v2Spinner.close();
-                                                                            showFail(object, DappObject, 2);
-                                                                            break
-                                                                        case "Unknown":
-                                                                            v2Spinner.$content.find('#v2TxStatus').html('Unknown');
-                                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
-                                                                            v2Spinner.close();
-                                                                            showFail(object, DappObject, 2);
-                                                                            break
-                                                                    }
-                                                                });
-                                                            });
-                                                        }
-                                                    })
-                                                });
-                                            } catch (error) {
-                                                v2Spinner.close();
-
-                                                showFail(object, DappObject, 2);
-                                            }
-                                        });
-                                    } else if (DappObject.walletIndex === 2) {
-                                        showConfirmationSpinnerv2(async (v2Spinner) => {
-                                            try {
+                                                .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
+                                                .catch((error) => showFail(object, DappObject, 2));
+                                            });
+                                        } else if (DappObject.walletIndex === 2) {
+                                            showSpinner(async () => {
                                                 await DappObject.walletConnectEVMProvider.request({
                                                     method: 'eth_sendTransaction',
                                                     params: [transactionParameters],
                                                 })
-                                                .then(txHash => {
-                                                    txHashes[0] = txHash;
-                                                    checkTx(txHash, web32, undefined, object, DappObject, 2, true).then(result => {
-                                                        return new Promise((resolve, reject) => {
-                                                            switch (result) {
-                                                                case "Success":
-                                                                    v2Spinner.$content.find('#v1TxStatus').html('Confirmed');
-                                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-solid fa-check");
-                                                                    v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
-                                                                    setTimeout(() => {
-                                                                        resolve("Success");
-                                                                    }, 1500);
-                                                                    break
-                                                                case "Fail":
-                                                                    v2Spinner.$content.find('#v1TxStatus').html('Failed');
-                                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
-                                                                    resolve("Failed");
-                                                                    v2Spinner.close();
-                                                                    showFail(object, DappObject, 2);
-                                                                    break
-                                                                case "Unknown":
-                                                                    v2Spinner.$content.find('#v1TxStatus').html('Unknown');
-                                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
-                                                                    v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
-                                                                    setTimeout(() => {
-                                                                        resolve("Unknown");
-                                                                    }, 1500);
-                                                                    break
-                                                            }
-                                                        });
-                                                    }).then(async value => {
-                                                        if (value === "Success" || value === "Unknown") {
-                                                            await DappObject.walletConnectEVMProvider.request({
-                                                                method: 'eth_sendTransaction',
-                                                                params: [transactionParametersV2],
-                                                            }).then(txHashV2 => {
-                                                                txHashes[1] = txHashV2;
-                                                                checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
-                                                                    switch (receipt) {
-                                                                        case "Success":
-                                                                            v2Spinner.$content.find('#v2TxStatus').html('Confirmed');
-                                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-solid fa-check");
-                                                                            v2Spinner.close();
-                                                                            showConfirm(txHashes[0] + "<br/>" + txHashes[1], object, DappObject, 2);
-                                                                            break
-                                                                        case "Fail":
-                                                                            v2Spinner.$content.find('#v2TxStatus').html('Failed');
-                                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
-                                                                            v2Spinner.close();
-                                                                            showFail(object, DappObject, 2);
-                                                                            break
-                                                                        case "Unknown":
-                                                                            v2Spinner.$content.find('#v2TxStatus').html('Unknown');
-                                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
-                                                                            v2Spinner.close();
-                                                                            showFail(object, DappObject, 2);
-                                                                            break
-                                                                    }
-                                                                });
-                                                            });
-                                                        }
+                                                .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
+                                                .catch((error) => showFail(object, DappObject, 2));
+                                            });
+                                        }
+                                    } else if (DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true && typeof currentRewardManagerContract !== "undefined") {
+                                        const transactionParametersV2 = txPayloadV2;
+
+                                        if (DappObject.walletIndex === 1) {
+                                            await LedgerEVMSingleSign(transactionParametersV2, DappObject, undefined, false, object, 2);
+                                        } else if (DappObject.walletIndex === 0) {
+                                            showSpinner(async () => {
+                                                await injectedProvider.request({
+                                                    method: 'eth_sendTransaction',
+                                                    params: [transactionParametersV2],
+                                                })
+                                                .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
+                                                .catch((error) => showFail(object, DappObject, 2));
+                                            });
+                                        } else if (DappObject.walletIndex === 2) {
+                                            showSpinner(async () => {
+                                                await DappObject.walletConnectEVMProvider.request({
+                                                    method: 'eth_sendTransaction',
+                                                    params: [transactionParametersV2],
+                                                })
+                                                .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
+                                                .catch((error) => showFail(object, DappObject, 2));
+                                            });
+                                        }
+                                    } else if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true && typeof currentRewardManagerContract !== "undefined") {
+                                        const transactionParametersV2 = txPayloadV2;
+
+                                        if (DappObject.walletIndex === 1) {
+                                            await LedgerEVMFtsoV2Sign(transactionParameters, transactionParametersV2, DappObject, object, 2, txHashes);
+                                        } else if (DappObject.walletIndex === 0) {
+                                            showConfirmationSpinnerv2(async (v2Spinner) => {
+                                                try {
+                                                    await injectedProvider.request({
+                                                        method: 'eth_sendTransaction',
+                                                        params: [transactionParameters],
                                                     })
-                                                });
-                                            } catch (error) {
-                                                v2Spinner.close();
+                                                    .then(txHash => {
+                                                        v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
 
-                                                showFail(object, DappObject, 2);
-                                            }
-                                        });
+                                                        txHashes[0] = txHash;
+
+                                                        checkTx(txHash, web32, undefined, object, DappObject, 2, true).then(result => {
+                                                            return new Promise((resolve, reject) => {
+                                                                switch (result) {
+                                                                    case "Success":
+                                                                        v2Spinner.$content.find('#v1TxStatus').html('Confirmed');
+                                                                        v2Spinner.$content.find('#v1TxIcon').removeClass();
+                                                                        v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-solid fa-check");
+                                                                        v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
+                                                                        setTimeout(() => {
+                                                                            resolve("Success");
+                                                                        }, 1500);
+                                                                        break
+                                                                    case "Fail":
+                                                                        v2Spinner.$content.find('#v1TxStatus').html('Failed');
+                                                                        v2Spinner.$content.find('#v1TxIcon').removeClass();
+                                                                        v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
+                                                                        resolve("Failed");
+                                                                        v2Spinner.close();
+                                                                        showFail(object, DappObject, 2);
+                                                                        break
+                                                                    case "Unknown":
+                                                                        v2Spinner.$content.find('#v1TxStatus').html('Unknown');
+                                                                        v2Spinner.$content.find('#v1TxIcon').removeClass();
+                                                                        v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
+                                                                        v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
+                                                                        setTimeout(() => {
+                                                                            resolve("Unknown");
+                                                                        }, 1500);
+                                                                        break
+                                                                }
+                                                            });
+                                                        }).then(async value => {
+                                                            if (value === "Success" || value === "Unknown") {
+                                                                await injectedProvider.request({
+                                                                    method: 'eth_sendTransaction',
+                                                                    params: [transactionParametersV2],
+                                                                }).then(txHashV2 => {
+                                                                    v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+
+                                                                    txHashes[1] = txHashV2;
+
+                                                                    checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
+                                                                        switch (receipt) {
+                                                                            case "Success":
+                                                                                v2Spinner.$content.find('#v2TxStatus').html('Confirmed');
+                                                                                v2Spinner.$content.find('#v2TxIcon').removeClass();
+                                                                                v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-solid fa-check");
+                                                                                v2Spinner.close();
+                                                                                showConfirm(txHashes[0] + "<br/>" + txHashes[1], object, DappObject, 2);
+                                                                                break
+                                                                            case "Fail":
+                                                                                v2Spinner.$content.find('#v2TxStatus').html('Failed');
+                                                                                v2Spinner.$content.find('#v2TxIcon').removeClass();
+                                                                                v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
+                                                                                v2Spinner.close();
+                                                                                showFail(object, DappObject, 2);
+                                                                                break
+                                                                            case "Unknown":
+                                                                                v2Spinner.$content.find('#v2TxStatus').html('Unknown');
+                                                                                v2Spinner.$content.find('#v2TxIcon').removeClass();
+                                                                                v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
+                                                                                v2Spinner.close();
+                                                                                showFail(object, DappObject, 2);
+                                                                                break
+                                                                        }
+                                                                    });
+                                                                });
+                                                            }
+                                                        })
+                                                    });
+                                                } catch (error) {
+                                                    v2Spinner.close();
+
+                                                    showFail(object, DappObject, 2);
+                                                }
+                                            });
+                                        } else if (DappObject.walletIndex === 2) {
+                                            showConfirmationSpinnerv2(async (v2Spinner) => {
+                                                try {
+                                                    await DappObject.walletConnectEVMProvider.request({
+                                                        method: 'eth_sendTransaction',
+                                                        params: [transactionParameters],
+                                                    })
+                                                    .then(txHash => {
+                                                        v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
+
+                                                        txHashes[0] = txHash;
+
+                                                        checkTx(txHash, web32, undefined, object, DappObject, 2, true).then(result => {
+                                                            return new Promise((resolve, reject) => {
+                                                                switch (result) {
+                                                                    case "Success":
+                                                                        v2Spinner.$content.find('#v1TxStatus').html('Confirmed');
+                                                                        v2Spinner.$content.find('#v1TxIcon').removeClass();
+                                                                        v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-solid fa-check");
+                                                                        v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
+                                                                        setTimeout(() => {
+                                                                            resolve("Success");
+                                                                        }, 1500);
+                                                                        break
+                                                                    case "Fail":
+                                                                        v2Spinner.$content.find('#v1TxStatus').html('Failed');
+                                                                        v2Spinner.$content.find('#v1TxIcon').removeClass();
+                                                                        v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
+                                                                        resolve("Failed");
+                                                                        v2Spinner.close();
+                                                                        showFail(object, DappObject, 2);
+                                                                        break
+                                                                    case "Unknown":
+                                                                        v2Spinner.$content.find('#v1TxStatus').html('Unknown');
+                                                                        v2Spinner.$content.find('#v1TxIcon').removeClass();
+                                                                        v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
+                                                                        v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
+                                                                        setTimeout(() => {
+                                                                            resolve("Unknown");
+                                                                        }, 1500);
+                                                                        break
+                                                                }
+                                                            });
+                                                        }).then(async value => {
+                                                            if (value === "Success" || value === "Unknown") {
+                                                                await DappObject.walletConnectEVMProvider.request({
+                                                                    method: 'eth_sendTransaction',
+                                                                    params: [transactionParametersV2],
+                                                                }).then(txHashV2 => {
+                                                                    v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+
+                                                                    txHashes[1] = txHashV2;
+
+                                                                    checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
+                                                                        switch (receipt) {
+                                                                            case "Success":
+                                                                                v2Spinner.$content.find('#v2TxStatus').html('Confirmed');
+                                                                                v2Spinner.$content.find('#v2TxIcon').removeClass();
+                                                                                v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-solid fa-check");
+                                                                                v2Spinner.close();
+                                                                                showConfirm(txHashes[0] + "<br/>" + txHashes[1], object, DappObject, 2);
+                                                                                break
+                                                                            case "Fail":
+                                                                                v2Spinner.$content.find('#v2TxStatus').html('Failed');
+                                                                                v2Spinner.$content.find('#v2TxIcon').removeClass();
+                                                                                v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
+                                                                                v2Spinner.close();
+                                                                                showFail(object, DappObject, 2);
+                                                                                break
+                                                                            case "Unknown":
+                                                                                v2Spinner.$content.find('#v2TxStatus').html('Unknown');
+                                                                                v2Spinner.$content.find('#v2TxIcon').removeClass();
+                                                                                v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
+                                                                                v2Spinner.close();
+                                                                                showFail(object, DappObject, 2);
+                                                                                break
+                                                                        }
+                                                                    });
+                                                                });
+                                                            }
+                                                        })
+                                                    });
+                                                } catch (error) {
+                                                    v2Spinner.close();
+
+                                                    showFail(object, DappObject, 2);
+                                                }
+                                            });
+                                        }
                                     }
+
+                                    DappObject.hasV1Rewards = false;
+
+                                    DappObject.hasV2Rewards = false;
+
+                                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                                    
+                                    showClaimRewards(0);
+                                    switchClaimButtonColorBack(DappObject.claimBool);
+                                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+
+                                    DappObject.isHandlingOperation = false;
+                                } else {
+                                    DappObject.isHandlingOperation = false;
+
+                                    await setCurrentPopup('The Rewards Bucket is empty! Please try again later.', true);
                                 }
-
-                                DappObject.hasV1Rewards = false;
-
-                                DappObject.hasV2Rewards = false;
-
-                                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-                                
-                                showClaimRewards(0);
-                                switchClaimButtonColorBack(DappObject.claimBool);
-                                showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-
-                                DappObject.isHandlingOperation = false;
-                            } else {
+                            } catch (error) {
                                 DappObject.isHandlingOperation = false;
 
-                                await setCurrentPopup('The Rewards Bucket is empty! Please try again later.', true);
+                                // console.log(error);
                             }
-                        } catch (error) {
-                            DappObject.isHandlingOperation = false;
-
-                            // console.log(error);
                         }
                     }
                 });
