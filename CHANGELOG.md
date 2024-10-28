@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.2.6 (2024-10-27)
+
+- Fixes an issue with FTSOV2 type 2 reward claiming with multiple RewardManager contracts.
+- Adds proper error handling to the new reward claiming operations.
+
 ## 1.2.5 (2024-10-27)
 
 - Fixes an issue with FTSOV2 type 1 claiming.
