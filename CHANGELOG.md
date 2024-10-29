@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.2.7 (2024-10-29)
+
+- Fixes some UI issues.
+- Changes error handling for when rewards bucket is empty.
+- Fixes some staking interface issues.
+
 ## 1.2.6 (2024-10-27)
 
 - Fixes an issue with FTSOV2 type 2 reward claiming with multiple RewardManager contracts.
