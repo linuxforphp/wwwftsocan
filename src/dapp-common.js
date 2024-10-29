@@ -118,7 +118,7 @@ function wait(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
-function unPrefix0x (input) {
+function unPrefix0x(input) {
     return input.startsWith("0x") ? input.slice(2) : input;
 }
 
@@ -659,7 +659,7 @@ async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2
                 web32.eth.getTransactionReceipt(hash).then((receipt) => {
                     // If we've got a receipt, check status and log / change text accordingly
                     if (receipt) {
-                        if (typeof spinner !== "undefined") {
+                        if (spinner) {
                             spinner.close();
                         }
                         
@@ -687,7 +687,7 @@ async function checkTx(hash, web32, spinner, object, DappObject, pageIndex, isV2
                 }
             }, 6000)
         } catch (error) {
-            if (typeof spinner !== "undefined") {
+            if (spinner) {
                 spinner.close();
             }
 
@@ -1193,7 +1193,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
         let selectize;
 
-        if (typeof addressIndex !== "undefined" && addressIndex !== "") {
+        if (addressIndex && addressIndex !== "") {
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
@@ -1240,7 +1240,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
 
                         var onInputChange = async (value) => {
-                            let addressBox = document.querySelector("span.connect-wallet-text");
+                            let addressBox = document.querySelector("span.title.connect-wallet-text");
                             let ethaddr = addressBox.getAttribute('data-ethkey');
                             let pubKey = addressBox.getAttribute('data-pubkey');
                             
@@ -1303,7 +1303,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
                         selectize = $select[0].selectize;
 
-                        if (typeof HandleClick !== "undefined") {
+                        if (HandleClick) {
                             document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
                         }
 
@@ -1334,7 +1334,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
                         break
                 }
             });
-        } else if (DappObject.walletIndex === 0 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
+        } else if (DappObject.walletIndex === 0 && (!PassedPublicKey || PassedPublicKey === "")) {
             const accounts = await injectedProvider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
@@ -1347,7 +1347,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             DappObject.isAccountConnected = true;
 
-        } else if (DappObject.walletIndex === 2 && (typeof PassedPublicKey === "undefined" || PassedPublicKey === "")) {
+        } else if (DappObject.walletIndex === 2 && (!PassedPublicKey || PassedPublicKey === "")) {
             if (DappObject.walletConnectEVMProvider === undefined) {
                 DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
             }
@@ -1368,9 +1368,9 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
             DappObject.isAccountConnected = true;
 
-        } else if (typeof addressIndex !== "undefined" && addressIndex !== "") {
+        } else if (addressIndex && addressIndex !== "") {
             account = PassedEthAddr;
-            if (typeof HandleClick !== "undefined") {
+            if (HandleClick) {
                 document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
             }
 
@@ -1385,7 +1385,7 @@ async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, Handle
 
         if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
             DappObject.isHandlingOperation = false;
-        } else if ((DappObject.walletIndex === 1 && (typeof addressIndex !== "undefined" && addressIndex !== "")) || DappObject.walletIndex === 0 || DappObject.walletIndex === 2) {
+        } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex === 0 || DappObject.walletIndex === 2) {
             DappObject.selectedAddress = account;
 
             try {
@@ -2116,7 +2116,11 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
     DappObject.isAccountConnected = false;
 
-    if (typeof PassedPublicKey === "undefined") {
+    // console.log("PassedPublicKey:");
+    // console.log(PassedPublicKey);
+    // console.log(!PassedPublicKey);
+
+    if (!PassedPublicKey) {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     }
 
@@ -2135,7 +2139,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
         let selectize;
 
-        if (typeof addressIndex !== "undefined") {
+        if (addressIndex) {
             DappObject.ledgerSelectedIndex = addressIndex;
         }
 
@@ -2147,7 +2151,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             requiredApp = "Flare Network";
         }
 
-        if (DappObject.walletIndex === 1 && typeof PassedPublicKey === "undefined") {
+        if (DappObject.walletIndex === 1 && !PassedPublicKey) {
             await getLedgerApp(requiredApp).then(async result => {
                 switch (result) {
                     case "Success":
@@ -2172,80 +2176,86 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
     
                         // console.log(DappObject.ledgerAddrArray);
     
-                        document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
-    
-                        var onInputChange = async (value) => {
-                            let addressBox = document.querySelector("span.connect-wallet-text");
-                            let ethaddr = addressBox.getAttribute('data-ethkey');
-                            let pubKey = addressBox.getAttribute('data-pubkey');
-                            
-                            flrPublicKey = pubKey;
-    
-                            account = ethaddr;
-    
-                            DappObject.selectedAddress = account;
-    
-                            DappObject.ledgerSelectedIndex = value;
-    
-                            connectChainsAndKeys(flrPublicKey);
-    
-                            let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-    
-                            DappObject.unPrefixedAddr = unprefixed;
-     
-                            ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
-                        }
-    
-                        var $select = $('#select-account').selectize({
-                            maxItems: 1,
-                            valueField: 'id',
-                            labelField: 'title',
-                            searchField: ["title"],
-                            options: DappObject.ledgerAddrArray,
-                            render: {
-                                item: function (item, escape) {
-                                    return (
-                                    "<div>" +
-                                    (item.title
-                                        ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
-                                        : "") +
-                                    "</div>"
-                                    );
-                                },
-                                option: function (item, escape) {
-                                    var label = item.title;
-                                    return (
-                                    "<div>" +
-                                    '<span class="connect-wallet-text">' +
-                                    escape(label) +
-                                    "</span>" +
-                                    "</div>"
-                                    );
-                                },
-                            },
-                            onChange: function(value) {
-                                onInputChange(value);
-                            },
-                            create: false,
-                            dropdownParent: "body",
-                        });
-    
-                        selectize = $select[0].selectize;
+                        document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>';
 
-                        if (typeof HandleClick !== "undefined") {
-                            document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
-                        }
+                        if (!document.querySelector("span.title.connect-wallet-text")) {
+                            var onInputChange = async (value) => {
+                                let addressBox = document.querySelector("span.title.connect-wallet-text");
+                                let ethaddr = addressBox.getAttribute('data-ethkey');
+                                let pubKey = addressBox.getAttribute('data-pubkey');
+                                
+                                flrPublicKey = pubKey;
     
-                        if (DappObject.ledgerSelectedIndex !== "") {
-                            selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                                // console.log("flrPublicKey: ");
+                                // console.log(flrPublicKey);
+        
+                                account = ethaddr;
+        
+                                DappObject.selectedAddress = account;
+        
+                                DappObject.ledgerSelectedIndex = value;
+        
+                                connectChainsAndKeys(flrPublicKey);
+        
+                                let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+        
+                                DappObject.unPrefixedAddr = unprefixed;
+         
+                                ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
+                            }
+        
+                            var $select = $('#select-account').selectize({
+                                maxItems: 1,
+                                valueField: 'id',
+                                labelField: 'title',
+                                searchField: ["title"],
+                                options: DappObject.ledgerAddrArray,
+                                render: {
+                                    item: function (item, escape) {
+                                        return (
+                                        "<div>" +
+                                        (item.title
+                                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                            : "") +
+                                        "</div>"
+                                        );
+                                    },
+                                    option: function (item, escape) {
+                                        var label = item.title;
+                                        return (
+                                        "<div>" +
+                                        '<span class="connect-wallet-text">' +
+                                        escape(label) +
+                                        "</span>" +
+                                        "</div>"
+                                        );
+                                    },
+                                },
+                                onChange: function(value) {
+                                    onInputChange(value);
+                                },
+                                create: false,
+                                dropdownParent: "body",
+                            });
+        
+                            selectize = $select[0].selectize;
+    
+                            if (HandleClick) {
+                                document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
+                            }
+        
+                            if (DappObject.ledgerSelectedIndex !== "") {
+                                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                            } else {
+                                await setCurrentPopup("Please select an account.", true);
+                            }
                         } else {
-                            await setCurrentPopup("Please select an account.", true);
-                        }
-    
-                        let addressDropdown = document.querySelector(".selectize-input");
-                        let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                            let addressDropdown = document.querySelector("span.title.connect-wallet-text");
                             
-                        flrPublicKey = publicKey;
+                            let publicKey = addressDropdown?.getAttribute('data-pubkey');
+                                
+                            flrPublicKey = publicKey;
+                        }
                         break
                     case "Failed: App not Installed":
                         await setCurrentAppState("Alert");
@@ -2263,7 +2273,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                         break
                 }
             });
-        } else if (DappObject.walletIndex === 0 && typeof PassedPublicKey === "undefined") {
+        } else if (DappObject.walletIndex === 0 && !PassedPublicKey) {
             const accounts = await injectedProvider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
@@ -2315,7 +2325,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
             DappObject.isAccountConnected = true;
 
             flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
-        }  else if (DappObject.walletIndex === 2 && typeof PassedPublicKey === "undefined") {
+        }  else if (DappObject.walletIndex === 2 && !PassedPublicKey) {
             if (DappObject.walletConnectEVMProvider === undefined) {
                 DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
             }
@@ -2397,11 +2407,11 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
                     }
                 });
             }
-        } else if (typeof PassedPublicKey !== "undefined") {
+        } else if (PassedPublicKey) {
             account = PassedEthAddr;
             flrPublicKey = PassedPublicKey;
 
-            if (typeof HandleClick !== "undefined") {
+            if (HandleClick) {
                 document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
             }
 
@@ -2416,8 +2426,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
         // console.log(flrPublicKey);
 
-        if (typeof flrPublicKey !== 'undefined') {
-
+        if (flrPublicKey) {
             const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
 
             const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
@@ -2448,7 +2457,7 @@ async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey,
 
                 const balance = await web32.eth.getBalance(account);
 
-                let addressBox = document.querySelector("span.connect-wallet-text");
+                let addressBox = document.querySelector("span.title.connect-wallet-text");
 
                 if (DappObject.walletIndex === 1) {          
                     addressBox.innerText = prefixedPchainAddress;
@@ -2635,6 +2644,11 @@ function createCalendar(DappObject) {
             },
             beforeShow: function( inst ) {
                 setTodayCalendarButton(inst);
+
+                inst.selectedDay = maximumDate.getDate();
+                inst.drawMonth = inst.selectedMonth = maximumDate.getMonth();
+                inst.drawYear = inst.selectedYear = maximumDate.getFullYear();
+                $('#calendar').datepicker('setDate', maximumDate);
             },
             onChangeMonthYear: function( year, month, inst ) {
                 setTodayCalendarButton(inst);
@@ -2681,10 +2695,10 @@ async function connectChainsAndKeys(publicKey) {
     const pKeychain = await keychainp();
 
     cKeychain.importKey(
-      `PublicKey-${unPrefix0x(publicKey)}`
+      `PublicKey-${unPrefix0x(String(publicKey))}`
     );
     pKeychain.importKey(
-      `PublicKey-${unPrefix0x(publicKey)}`
+      `PublicKey-${unPrefix0x(String(publicKey))}`
     );
 }
 
@@ -3059,7 +3073,7 @@ function isStakeInput1(DappObject) {
 
     let amount1 = document.getElementById("Amount1");
 
-    if (select1.value !== "" && amount1.value !== "" && DappObject.selectedDateTime !== "") {
+    if (select1.value !== "" && amount1.value !== "" && amount1.value !== "0" && DappObject.selectedDateTime !== "") {
         claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimButton.style.cursor = "pointer";
         DappObject.isRealValue = true;
@@ -3285,6 +3299,8 @@ async function customInput(Pbalance, DappObject) {
 
         isStakeInput1(DappObject);
     });
+
+    btnMax.click();
 }
 
 // Staking function
@@ -3333,39 +3349,39 @@ async function stake(DappObject, stakingOption) {
 
         try {
             showConfirmationSpinnerStake(async (spinner) => {
-                const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
-                    // console.log("P Chain TX ID: " + result);
-
-                    pChainTransactionId = result;
-                
-                    try {
-                        let status = waitPchainAtomicTxStatus(result).then(value => {
-
-                            switch (value) {
-                                case "Committed":
-                                    spinner.close();
-                                    showConfirmStake(DappObject, stakingOption, [pChainTransactionId]);
-                                    break
-                                case "Dropped":
-                                    spinner.close();
-                                    showFailStake(DappObject, stakingOption);
-                                    break
-                                case "Unknown":
-                                    spinner.close();
-                                    showFailStake(DappObject, stakingOption);
-                                    break
-                                default:
-                                    break
-                            }
-                        });
-                    } catch (e) {
-                        spinner.close();
-                        
-                        showFailStake(DappObject, stakingOption);
-
-                        throw e;
-                    }
-                });
+                try {
+                    const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                        // console.log("P Chain TX ID: " + result);
+    
+                        pChainTransactionId = result;
+                    
+                        try {
+                            let status = waitPchainAtomicTxStatus(result).then(value => {
+    
+                                switch (value) {
+                                    case "Committed":
+                                        spinner.close();
+                                        showConfirmStake(DappObject, stakingOption, [pChainTransactionId]);
+                                        break
+                                    case "Dropped":
+                                        spinner.close();
+                                        showFailStake(DappObject, stakingOption);
+                                        break
+                                    case "Unknown":
+                                        spinner.close();
+                                        showFailStake(DappObject, stakingOption);
+                                        break
+                                    default:
+                                        break
+                                }
+                            });
+                        } catch (e) {
+                            throw e;
+                        }
+                    });
+                } catch (error) {
+                    throw error;
+                }
             });
 
             DappObject.isHandlingOperation = false;
@@ -3373,6 +3389,10 @@ async function stake(DappObject, stakingOption) {
             isStakeInput1(DappObject);
         } catch (error) {
             DappObject.isHandlingOperation = false;
+
+            spinner.close();
+                            
+            showFailStake(DappObject, stakingOption);
 
             // console.log(error);
         }
