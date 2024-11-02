@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.2.9 (2024-11-02)
+
+- Adds an override configuration for reward checking.
+- Fixes an issue with FTSOV1 reward claiming.
+
 ## 1.2.8 (2024-10-30)
 
 - Fixes an issue with FTSOV2 type 2 reward claiming with multiple RewardManager contracts.
