@@ -47,7 +47,7 @@ window.DappObject = {
     hasFtsoRewards: false,
     metamaskInstalled: false,
     // Array that stores the latest reward epoch on all RewardManager contracts with null padding on index 0.
-    rewardManagerData: [[0, "0x0000000000000000000000000000000000000000", undefined]],
+    rewardManagerData: [undefined],
     // Chosen Wallet (-1 = null, 0 = Metamask, 1 = Ledger, 2 = WalletConnect)
     walletIndex: -1,
     // Signature used for non-EVM transactions

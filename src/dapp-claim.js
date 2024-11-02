@@ -257,7 +257,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
         }
     }
 
-    for (let j = 1; j < DappObject.rewardManagerData.length; j++) {
+    for (let j = 0; j < DappObject.rewardManagerData.length; j++) {
         // console.log("DappObject.rewardManagerData:");
         // console.log(DappObject.rewardManagerData);
 
