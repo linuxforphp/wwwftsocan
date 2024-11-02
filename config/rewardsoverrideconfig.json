@@ -1,0 +1,10 @@
+{
+    "songbird": {
+        "V1Check": false,
+        "V2Check": true
+    },
+    "flare": {
+        "V1Check": true,
+        "V2Check": true
+    }
+}

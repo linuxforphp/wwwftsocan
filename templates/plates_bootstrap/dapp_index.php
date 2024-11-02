@@ -68,6 +68,8 @@
     var fetchTupleConfig = <?= $view['jsconfig']['ftsov2']['fetchtupleconfig']; ?>;
 
     var contractOverrideConfig = <?= $view['jsconfig']['ftsov2']['contractoverrideconfig']; ?>;
+
+    var rewardsOverrideConfig = <?= $view['jsconfig']['ftsov2']['rewardsoverrideconfig']; ?>;
 </script>
 
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>

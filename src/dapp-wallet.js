@@ -516,14 +516,24 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         let unclaimedAmount = BigInt(0);
                         let unclaimedAmountv2;
                         let l;
+
+                        let network;
+
+                        if (GetNetworkName(rpcUrl) === "flare") {
+                            network = "flare";
+                        } else if (GetNetworkName(rpcUrl) === "songbird") {
+                            network = "songbird";
+                        }
     
-                        for (var k = 0; k < epochsUnclaimed.length; k++) {
-                            l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
-                            
-                            if (typeof l[1][0] === "bigint") {
-                                unclaimedAmount += l[1][0];
-                            } else {
-                                unclaimedAmount += BigInt(l[1][0]);
+                        if (rewardsOverrideConfig[network].V1Check === true) {
+                            for (var k = 0; k < epochsUnclaimed.length; k++) {
+                                l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
+                                
+                                if (typeof l[1][0] === "bigint") {
+                                    unclaimedAmount += l[1][0];
+                                } else {
+                                    unclaimedAmount += BigInt(l[1][0]);
+                                }
                             }
                         }
 
@@ -533,7 +543,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                             DappObject.hasV1Rewards = false;
                         }
 
-                        if (rewardManagerContractArray?.length) {
+                        if (rewardsOverrideConfig[network].V2Check === true && rewardManagerContractArray?.length) {
                             for (let j = 0; j < rewardManagerContractArray.length; j++) {
                                 unclaimedAmountv2 = await rewardManagerContractArray[j].methods.getStateOfRewards(account).call();
                 
@@ -562,14 +572,6 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                             // console.log("DappObject.rewardManagerData");
 
                             // console.log(DappObject.rewardManagerData);
-
-                            let network;
-
-                            if (GetNetworkName(rpcUrl) === "flare") {
-                                network = "flare";
-                            } else if (GetNetworkName(rpcUrl) === "songbird") {
-                                network = "songbird";
-                            }
 
                             const ftsoRewardInfo = await getRewardClaimWithProofStructs(network, account, unclaimedAmount, flareSystemsManagerContract, rewardManagerContractArray);
 
