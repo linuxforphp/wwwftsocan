@@ -114,9 +114,11 @@ export async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager,
                 claimableRewardEpochIds.push(Number(epochId));
             }
         }
+
         if (claimableRewardEpochIds.length === 0) {
             return null;
         }
+
         return claimableRewardEpochIds;
     } catch (error) {
         // console.log(error);
@@ -148,12 +150,22 @@ export async function getClaimableRewardEpochIds(address, flareSystemsManager, r
     }
 }
 
-export async function getRewardClaimWithProofStructs(network, address, amountWei, flareSystemsManager, rewardManagers) {
+export async function getRewardClaimWithProofStructs(network, address, amountWei, flareSystemsManager, rewardManagers, rewardManagerConfig) {
 
     let claimableRewardEpochIds = await getClaimableRewardEpochIds(address, flareSystemsManager, rewardManagers);
 
     if (!claimableRewardEpochIds?.length) {
         return;
+    }
+
+    if (rewardManagerConfig) {
+        if (rewardManagerConfig[0] === 0) {
+            rewardManagerConfig[0] = Number(claimableRewardEpochIds.at(-1));
+        }
+
+        if (claimableRewardEpochIds.at(-1) > rewardManagerConfig[0]) {
+            return null;
+        }
     }
 
     let hasFtsoRewards = false;
@@ -163,14 +175,14 @@ export async function getRewardClaimWithProofStructs(network, address, amountWei
     for (const epochId of claimableRewardEpochIds) {
         const rewardClaimData = await getRewardClaimData(epochId, network, address);
 
+        if (!rewardClaimData) {
+            break;
+        }
+
         if (amountWei !== undefined && typeof amountWei === "bigint" && rewardClaimData) {
             hasFtsoRewards = true;
 
             amountWei += rewardClaimData.body.amount;
-        }
-
-        if (!rewardClaimData) {
-            break;
         }
 
         rewardClaimWithProofStructs.push(rewardClaimData);
@@ -257,11 +269,19 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
         }
     }
 
-    for (let j = 0; j < DappObject.rewardManagerData.length; j++) {
-        // console.log("DappObject.rewardManagerData:");
-        // console.log(DappObject.rewardManagerData);
+    let network = GetNetworkName(object.rpcUrl);
 
-        if (DappObject.rewardManagerData[j] || DappObject.hasV1Rewards === true) {
+    let rewardManagerConfig = DappObject.rewardManagerData;
+
+    if (DappObject.hasFtsoRewards === true) {
+        rewardManagerConfig = fetchTupleConfig.rewardManagerFtsoV2[network];
+    }
+
+    for (let j = 0; j < rewardManagerConfig.length; j++) {
+        // console.log("DappObject.rewardManagerData:");
+        // console.log(rewardManagerConfig);
+
+        if (rewardManagerConfig[j] || DappObject.hasV1Rewards === true || DappObject.hasFtsoRewards === true) {
             try {
                 DappObject.isHandlingOperation = true;
 
@@ -282,21 +302,27 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                 const systemsManagerAddr = await GetContract("FlareSystemsManager", object.rpcUrl, object.flrAddr);
                 let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
 
+                if (!rewardManagerConfig[j][2]) {
+                    rewardManagerConfig[j][2] = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerConfig[j][1]);
+                }
+
                 let rewardClaimWithProofStructs = [];
 
                 let v2RewardEpochId;
 
                 if (rewardManagerAddr) {
                     try {
-                        v2RewardEpochId = DappObject.rewardManagerData[j][0];
-
                         if (DappObject.hasFtsoRewards) {
-                            let network = GetNetworkName(object.rpcUrl);
+                            rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, rewardManagerContractArray, rewardManagerConfig[j]);
 
-                            rewardClaimWithProofStructs = await getRewardClaimWithProofStructs(network, account, undefined, flareSystemsManagerContract, rewardManagerContractArray);
+                            if (rewardClaimWithProofStructs == null) {
+                                throw new Error('Epoch is greater than RewardManager final epoch.');
+                            }
                         }
+
+                        v2RewardEpochId = rewardManagerConfig[j][0];
                     } catch (error) {
-                        // console.log(error);
+                        throw error;
                     }
                 }
 
@@ -321,12 +347,12 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                         };
                     }
 
-                    if (DappObject.hasV2Rewards === true) {
+                    if (DappObject.hasV2Rewards === true || DappObject.hasFtsoRewards === true) {
                         if (rewardManagerContractArray?.length) {
                             txPayloadV2 = {
                                 from: account,
-                                to: DappObject.rewardManagerData[j][1],
-                                data: DappObject.rewardManagerData[j][2].methods.claim(account, account, String(v2RewardEpochId), true, rewardClaimWithProofStructs).encodeABI(),
+                                to: rewardManagerConfig[j][1],
+                                data: rewardManagerConfig[j][2].methods.claim(account, account, String(v2RewardEpochId), true, rewardClaimWithProofStructs).encodeABI(),
                             };
                         }
                     }
@@ -339,21 +365,16 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                         };
                     }
 
-                    if (DappObject.hasV2Rewards === true) {
+                    if (DappObject.hasV2Rewards === true || DappObject.hasFtsoRewards === true) {
                         if (rewardManagerContractArray?.length) {
                             txPayloadV2 = {
                                 from: account,
-                                to: DappObject.rewardManagerData[j][1],
-                                data: DappObject.rewardManagerData[j][2].methods.claim(account, account, String(v2RewardEpochId), false, rewardClaimWithProofStructs).encodeABI(),
+                                to: rewardManagerConfig[j][1],
+                                data: rewardManagerConfig[j][2].methods.claim(account, account, String(v2RewardEpochId), false, rewardClaimWithProofStructs).encodeABI(),
                             };
                         }
                     }
                 }
-
-                // console.log("EPOCH ID: " + v2RewardEpochId);
-                // console.log("CONTRACT: ");
-                // console.log(DappObject.rewardManagerData[j][2]);
-                // console.log("CONTRACT ADDR: " + DappObject.rewardManagerData[j][1]);
                 
                 const transactionParameters = txPayload;
 
@@ -389,7 +410,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                             .catch((error) => showFail(object, DappObject, 2));
                         });
                     }
-                } else if (DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true && typeof rewardManagerContractArray?.length !== "undefined") {
+                } else if ((DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true) || (DappObject.hasV1Rewards === false && DappObject.hasFtsoRewards === true)) {
                     const transactionParametersV2 = txPayloadV2;
 
                     if (DappObject.walletIndex === 1) {
@@ -413,7 +434,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                             .catch((error) => showFail(object, DappObject, 2));
                         });
                     }
-                } else if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true && typeof rewardManagerContractArray?.length !== "undefined") {
+                } else if ((DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true) || (DappObject.hasV1Rewards === true && DappObject.hasFtsoRewards === true)) {
                     const transactionParametersV2 = txPayloadV2;
 
                     if (DappObject.walletIndex === 1) {

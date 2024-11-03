@@ -1,5 +1,23 @@
 {
     "timeout": "5000",
     "url": "https://raw.githubusercontent.com/flare-foundation/fsp-rewards/main",
-    "jsonfile": "reward-distribution-data-tuples.json"
+    "jsonfile": "reward-distribution-data-tuples.json",
+    "rewardManagerFtsoV2": {
+        "flare": [
+            [
+                0,
+                "0xC8f55c5aA2C752eE285Bd872855C749f4ee6239B"
+            ]
+        ],
+        "songbird": [
+            [
+                0,
+                "0xE26AD68b17224951b5740F33926Cc438764eB9a7"
+            ],
+            [
+                234,
+                "0x8A80583BD5A5Cd8f68De585163259D61Ea8dc904"
+            ]
+        ]
+    }
 }
