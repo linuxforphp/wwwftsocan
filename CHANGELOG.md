@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.2.11 (2024-11-12)
+
+- Fixes an issue with FTSOV2 type 2 reward claiming with multiple RewardManager contracts.
+- Updates the project's dependencies.
+
 ## 1.2.10 (2024-11-02)
 
 - Fixes an issue with FTSOV2 reward claiming.
