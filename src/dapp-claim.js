@@ -97,13 +97,37 @@ export async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, Dap
 export async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager, rewardManager, account) {
     try {
         const startRewardEpochId = await rewardManager.methods.getNextClaimableRewardEpochId(account).call();
+
         const epochIds = await rewardManager.methods.getRewardEpochIdsWithClaimableRewards().call();
 
         const endRewardEpochId = epochIds._endEpochId;
 
+        var rewardManagerIndex;
+
+        var currentNetwork;
+
+        for (const network in fetchTupleConfig.rewardManagerFtsoV2) {
+            fetchTupleConfig.rewardManagerFtsoV2[network].findIndex(function(sub) {
+                if (!rewardManagerIndex) {
+                    if (sub.indexOf(rewardManager._address) !== -1) {
+                        rewardManagerIndex = fetchTupleConfig.rewardManagerFtsoV2[network].indexOf(sub);
+
+                        currentNetwork = network;
+
+                        return true;
+                    }
+                }
+            });
+        }
+
+        if (fetchTupleConfig.rewardManagerFtsoV2[currentNetwork][rewardManagerIndex][0] !== 0) {
+            endRewardEpochId = BigInt(fetchTupleConfig.rewardManagerFtsoV2[currentNetwork][rewardManagerIndex][0]);
+        }
+
         if (endRewardEpochId < startRewardEpochId) {
             return null;
         }
+
         const claimableRewardEpochIds = [];
 
         for ( let epochId = startRewardEpochId; epochId <= endRewardEpochId; epochId++ ) {
