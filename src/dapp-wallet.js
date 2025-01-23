@@ -569,13 +569,12 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                                 }
                             }
 
-                            // console.log("DappObject.rewardManagerData");
-
-                            // console.log(DappObject.rewardManagerData);
-
                             const ftsoRewardInfo = await getRewardClaimWithProofStructs(network, account, unclaimedAmount, flareSystemsManagerContract, rewardManagerContractArray);
 
                             if (ftsoRewardInfo !== undefined && ftsoRewardInfo?.hasFtsoRewards === true) {
+                                // console.log("FTSO Rewards:");
+                                // console.log(web32.utils.fromWei(ftsoRewardInfo.amountWei, "ether"));
+
                                 unclaimedAmount += ftsoRewardInfo.amountWei;
 
                                 DappObject.hasFtsoRewards = true;
@@ -647,7 +646,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                             await setCurrentPopup("If you have any rewards, one of the bottom buttons will become red and contain the amount of rewards you have earned. You only need to click it to begin the claiming process!", true);
                         }, 15000);
                     } catch (error) {
-                        throw error;
+                        // console.log(error);
                     }
                 }
 
