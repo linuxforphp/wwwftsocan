@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Update provider list for delegation.
 cd || exit 1
 wget https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
 export jsonfile=`cat bifrost-wallet.providerlist.json`
@@ -17,6 +18,7 @@ if [[ -d ftso-signal-providers/assets ]]; then
 else
   echo "CRON - $( date ) : Failed to update FTSO provider assets." >> /srv/tempo/wwwftsocan/logs/log.txt
 fi
+# Update validator list for staking.
 cd || exit 1
 curl https://api-flare-validators.flare.network/api/v1/validator -o validatorlist.json
 export jsonfile=`cat validatorlist.json`
@@ -27,3 +29,6 @@ if jq -e . >/dev/null <<<"$jsonfile"; then
 else
   echo "CRON - $( date ) : Failed to update validatorlist.json." >> /srv/tempo/wwwftsocan/logs/log.txt
 fi
+# Update reward distribution data tuples.
+cd /srv/tempo/wwwftsocan/scripts || exit 1
+./json-cleaner.bash
