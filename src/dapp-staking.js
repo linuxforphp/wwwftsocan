@@ -1,7 +1,7 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { ethers } from "./ethers.js";
 import { wait, unPrefix0x, round, isNumber, checkConnection, checkTxStake, showConnectedAccountAddress, resetDappObjectState } from "./dapp-utils.js";
-import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup } from "./dapp-ui.js";
+import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid } from "./dapp-ui.js";
 import { walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
 import { switchClaimButtonColor, switchClaimButtonColorBack, showClaimRewards } from "./dapp-claim.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
@@ -996,6 +996,8 @@ export async function populateValidators() {
 
         try {
 
+            var control;
+
             const ftsoList = await getValidators();
 
             var onInputChange = async (value) => {
@@ -1006,9 +1008,16 @@ export async function populateValidators() {
                 let delegatedicon = document.getElementById("delegatedIcon1");
                 DappObject.StakeMinDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-startdate');
                 DappObject.StakeMaxDate = ftso1.childNodes[0].childNodes[0].getAttribute('data-enddate');
-                delegatedicon.src = img;
-                createCalendar(DappObject);
-                isStakeInput1(DappObject);
+
+                let StakeMaxDateBuffer = new Date((Number(DappObject.StakeMaxDate) * 1000) - ((24*60*60*1000) * 14));
+
+                if (Date.now() >= StakeMaxDateBuffer) {
+                    showValidatorInvalid(control, delegatedicon);
+                } else {
+                    delegatedicon.src = img;
+                    createCalendar(DappObject);
+                    isStakeInput1(DappObject);
+                }
             }
 
 
@@ -1049,18 +1058,12 @@ export async function populateValidators() {
                 dropdownParent: "body",
             });
 
+            control = $select[0].selectize;
+
             // Origin: https://api-flare-validators.flare.network/api/v1/validator
             fetch(dappUrlBaseAddr + 'validatorlist.json')
                 .then(res => res.json())
                 .then(FtsoInfo => {
-                    for (var i = 0; i < FtsoInfo.length; i++) {
-                        if (name in FtsoInfo[i]) {
-                            continue;
-                        } else {
-                            FtsoInfo[i].name = 'Unknown';
-                        }
-                    }
-
                     FtsoInfo.sort((a, b) => a.name > b.name ? 1 : -1);
 
                     let indexNumber;
@@ -1101,8 +1104,6 @@ export async function populateValidators() {
                             }
                         }
                     }
-
-                var control = $select[0].selectize;
 
                 control.clearOptions();
 
