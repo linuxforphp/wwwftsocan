@@ -15,6 +15,7 @@ data/cache/
 data/sessions/
 data/tmp/
 temp/
+public/fsp-rewards/
 
 #Doctrine 2
 data/DoctrineORMModule/Proxy/

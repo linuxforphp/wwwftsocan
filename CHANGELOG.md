@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1.3.0 (2025-01-23)
+
+- Adds validator form validation.
+- Adds type 0 rewards for Policy addresses.
+- Turns off V1 reward checking on the Flare blockchain.
+- Updates the VoterWhitelister contract address on SGB and FLR.
+- Updates the main cron script.
+- Updates the project's dependencies.
+
 ## 1.2.11 (2024-11-12)
 
 - Fixes an issue with FTSOV2 type 2 reward claiming with multiple RewardManager contracts.

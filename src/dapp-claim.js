@@ -100,7 +100,7 @@ export async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager,
 
         const epochIds = await rewardManager.methods.getRewardEpochIdsWithClaimableRewards().call();
 
-        const endRewardEpochId = epochIds._endEpochId;
+        let endRewardEpochId = epochIds._endEpochId;
 
         var rewardManagerIndex;
 
@@ -128,7 +128,7 @@ export async function getRewardEpochIdsWithClaimableRewards(flareSystemsManager,
             return null;
         }
 
-        const claimableRewardEpochIds = [];
+        let claimableRewardEpochIds = [];
 
         for ( let epochId = startRewardEpochId; epochId <= endRewardEpochId; epochId++ ) {
             const rewardsHash = await flareSystemsManager.methods.rewardsHash(epochId).call();
@@ -200,7 +200,7 @@ export async function getRewardClaimWithProofStructs(network, address, amountWei
         const rewardClaimData = await getRewardClaimData(epochId, network, address);
 
         if (!rewardClaimData) {
-            break;
+            continue;
         }
 
         if (amountWei !== undefined && typeof amountWei === "bigint" && rewardClaimData) {
@@ -231,9 +231,11 @@ export async function getRewardClaimData(rewardEpochId, network, account) {
     let claimType;
 
     return fetch(`${fetchTupleConfig.url}/${network}/${rewardEpochId}/${fetchTupleConfig.jsonfile}`, { signal: AbortSignal.timeout(Number(fetchTupleConfig.timeout)) })
-        .then((res) => {
+        .then(async (res) => {
             if (res.ok) {
-                return res.json();
+                let body = await res.text();
+
+                return body
             }
 
             throw new Error('Something went wrong');
@@ -242,10 +244,18 @@ export async function getRewardClaimData(rewardEpochId, network, account) {
             if (!rewardsData) {
                 return null;
             }
-            const rewardClaims = rewardsData.rewardClaims.find(([_, [id, address, sum, claimType]]) => address.toLowerCase() === account.toLowerCase() && claimType === 1);
+
+            let rewardsDataJson = JSON.parse(rewardsData);
+
+            // console.log("REWARD JSON");
+            // console.log(rewardsDataJson);
+
+            const rewardClaims = rewardsDataJson.rewardClaims.find(([_, [id, address, sum, claimType]]) => address.toLowerCase() === account.toLowerCase() && (claimType === "1" || claimType === "0"));
+            
             if (!rewardClaims) {
                 return null;
             }
+
             [merkleProof, [id, address, sum, claimType]] = rewardClaims;
 
             return {

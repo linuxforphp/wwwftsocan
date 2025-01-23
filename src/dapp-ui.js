@@ -337,6 +337,34 @@ export function downloadMetamask() {
     });
 }
 
+export async function showValidatorInvalid(control, delegatedicon) {
+    return new Promise(async (resolve, reject) => {
+        $.confirm({
+            escapeKey: false,
+            backgroundDismiss: false,
+            icon: 'fa fa-solid fa-flag red',
+            title: 'Loading...',
+            content: 'The validator you have selected is not currently stakeable. <br />Please select another validator.',
+            theme: 'material',
+            type: 'red',
+            typeAnimated: true,
+            draggable: false,
+            buttons: {
+                ok: {
+                    action: function () {
+                        control.clear();
+                        delegatedicon.src = dappUrlBaseAddr + "img/FLR.svg";
+                    },
+                },
+            },
+            onContentReady: async function () {
+                this.showLoading(true);
+                this.hideLoading(true);
+            }
+        });
+    });
+}
+
 export async function showAlreadyDelegated(DelegatedFtsos, object) {    
     $.confirm({
         escapeKey: false,
