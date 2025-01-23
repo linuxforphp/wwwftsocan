@@ -1,756 +1,762 @@
 [
-  {
-    "nodeId": "NodeID-CoNH4gyEwB9gTrEmozwh14Zr8hs6wokRS",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "4DadsFTSO"
-  },
-  {
-    "nodeId": "NodeID-6cnsMcUNTJwCcDuAyPwJqEaVa6yMrk8eq",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "A-FTSO"
-  },
-  {
-    "nodeId": "NodeID-A7jk7Z5GA2aVe5ecuupNXWtSLfVjLDWFC",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "A41"
-  },
-  {
-    "nodeId": "NodeID-EHMcsRfGdnBSuaZuKdoxu4W8AvtL1jg1F",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "A41"
-  },
-  {
-    "nodeId": "NodeID-JA63moobNNMLby4ENNUiJqVJA2cdpks5J",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "ACDTftso"
-  },
-  {
-    "nodeId": "NodeID-AFor3TgDtzsV8kK8sjqkneuUKpv8tbNwM",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "AFOracle"
-  },
-  {
-    "nodeId": "NodeID-AFor4y2SR55vTb8wtqrJ1gkxPiwdzFTEE",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "AFOracle"
-  },
-  {
-    "nodeId": "NodeID-EPLACd344ouymyJAQYXZBvbmU3NJ6ooeB",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "AFOracle"
-  },
-  {
-    "nodeId": "NodeID-FDR3CXdwP3H3Zz9QKfL61fk56zkPEgdFV",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "AFOracle"
-  },
-  {
-    "nodeId": "NodeID-Bo98cjoi5LvF6jXAMHZZLQYutyeGutBQ1",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "AU"
-  },
-  {
-    "nodeId": "NodeID-HZwFckGTbucqTtE7qcv6z85mnScUfAeW6",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "AU"
-  },
-  {
-    "nodeId": "NodeID-FLPF99Gi1c79NGHw7GYyhttWPVxpCq713",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "African Proofs"
-  },
-  {
-    "nodeId": "NodeID-DcUJTi6u5Xoutgr1A25iMu4Rp5JEbsEqr",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Aimlezz"
-  },
-  {
-    "nodeId": "NodeID-KRkND3cB1bYaWt71CSQdCUjRSR95d3cNz",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "AlphaOracle"
-  },
-  {
-    "nodeId": "NodeID-MfzBQ6MbriE31UWm9NjSnEgLiR1cAkEnN",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Ankr"
-  },
-  {
-    "nodeId": "NodeID-P4T4uKqveVxjZZXVdADHENdnCKnsCFvDE",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Aternety"
-  },
-  {
-    "nodeId": "NodeID-k4QG8eJ9bYu717nbj8Ki8VykK8g1VWK9",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Aternety"
-  },
-  {
-    "nodeId": "NodeID-MsF6Xc1PsMWtcxVudCepWb5kUeF1EF8RX",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Atlas TSO"
-  },
-  {
-    "nodeId": "NodeID-3phxSiKoYMj1dNSJysZhHYQKUbLX786jy",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Aureus Ox"
-  },
-  {
-    "nodeId": "NodeID-EgJba99Q5iDcL81A27E111WANn9eZNj4v",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Bifrost Wallet"
-  },
-  {
-    "nodeId": "NodeID-GZEWkCpn852hwKhbGNJgZvbjtvEfU6Ktg",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Bifrost Wallet"
-  },
-  {
-    "nodeId": "NodeID-9jaZDNBCn4AwMzRqFBhxfem2ZZtiArRm2",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Burst FTSO"
-  },
-  {
-    "nodeId": "NodeID-JHnfNSNgSThSJEFG8aq99FRAE4a7Ko7UP",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Bushido FTSO"
-  },
-  {
-    "nodeId": "NodeID-7HLcuEFt7c1qTggK8AkLim9ekhPu2NYLM",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Chainbase Staking"
-  },
-  {
-    "nodeId": "NodeID-FERvNWfCH4mjCSoFnjF4YouDBuYZCpfKm",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Comfy Nodes"
-  },
-  {
-    "nodeId": "NodeID-3qpQ3cVcU8UxvmCtkwGV4ZB3RYcKoDBRn",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "DataVector"
-  },
-  {
-    "nodeId": "NodeID-7joNh7X4xsHBSXCpLQig22nSqU6xp41k8",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "DataVector"
-  },
-  {
-    "nodeId": "NodeID-9WF8MvjNhmR45AdNjVfAWp27KKq7KCGpm",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Defi Oracles"
-  },
-  {
-    "nodeId": "NodeID-EqTrzH8b9ax2oYwrKFkXqWAZjuK8uHFxS",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "EDPFTSO"
-  },
-  {
-    "nodeId": "NodeID-9fsCXCFJ7hzgsGK4FVpuNt1FVjJ9ScfVU",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Encode Club"
-  },
-  {
-    "nodeId": "NodeID-DAVrAR2VCxe7rnmkDaVUbW8jWd9b86cS",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Envision"
-  },
-  {
-    "nodeId": "NodeID-FXJQRCN2nEqBYVsorBS5WHriwihjzv7G6",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "EvolveFTSO"
-  },
-  {
-    "nodeId": "NodeID-B9o4BTqdc1qkrAn5BxLHL7pimWf9UwBkd",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FTSO EU"
-  },
-  {
-    "nodeId": "NodeID-P6nNyHc4QwyKoVSS7c9XatGp4Sityq7rM",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FTSO London"
-  },
-  {
-    "nodeId": "NodeID-J4nyqo44xFUxhAi9gDJXAkYyxP5z2a7UG",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FTSO PARIS"
-  },
-  {
-    "nodeId": "NodeID-MN7sJduRdGUs3aWyYUmym2CFVsptzgKcJ",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FTSO Plus"
-  },
-  {
-    "nodeId": "NodeID-MZKzjLDRo9bwDjaDR5c4PALEibYyDe4A7",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FTSO UK"
-  },
-  {
-    "nodeId": "NodeID-KzPd2Vx5WomGtur91B9K9R7to3mYyYga",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FTSOCAN"
-  },
-  {
-    "nodeId": "NodeID-CrsvTSFLB8G3ziPaVjgH1pj8NQxSZkECD",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Flare Beacon"
-  },
-  {
-    "nodeId": "NodeID-5V2bQbryZTU4pAe59KNHNBru1BwEfcXqg",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Flare Dienst"
-  },
-  {
-    "nodeId": "NodeID-4hyFQEeDqpG9yyEnafTwqQQTTFex32KG2",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Flare Oracle"
-  },
-  {
-    "nodeId": "NodeID-J8Zbi3b3AjTEUmHdE4KSApEU1U36iaeDS",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Flare Oracle"
-  },
-  {
-    "nodeId": "NodeID-7vz3A92AkLi9YRYTauPgvkdiMmhnuDRzj",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Flare.Space"
-  },
-  {
-    "nodeId": "NodeID-ECqqsWu9jpUvZgPyf9yPZZcyWmJjWyN1T",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Flare.Space"
-  },
-  {
-    "nodeId": "NodeID-J9JZSkVJWCUYZ43n36q4fCixu7Tj4QR1P",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FlareFTSO"
-  },
-  {
-    "nodeId": "NodeID-8aGBxZssVWRvEr57YGRsWjZTHbnoWrfcc",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "FlareFi"
-  },
-  {
-    "nodeId": "NodeID-66rV9yEWSVGLC8fs9ynKptVf9f6bSbHC8",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Flaris"
-  },
-  {
-    "nodeId": "NodeID-Gy2c6Y1RNz2PZfAnTwHZMZ4RZ53nKPf1Q",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Google Cloud"
-  },
-  {
-    "nodeId": "NodeID-2hCHs6H4Vde8mdGGKidMvT4Fjit7goCBT",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "HEWG"
-  },
-  {
-    "nodeId": "NodeID-4h6PNpK5oo9pjmE8zKSbm31S2LStg4tyF",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "InGen.FTSO"
-  },
-  {
-    "nodeId": "NodeID-4zWvBNmsbaS9UKQf6wcWgWGWRfitcGAuV",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "InfStones"
-  },
-  {
-    "nodeId": "NodeID-5JkXthgpWVDq6utrtV1YVG7aspsHjhezM",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "InfStones"
-  },
-  {
-    "nodeId": "NodeID-5jV2rg4CGt6ewiDbB9QeWDEptVudskJeY",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Ivy Oracle"
-  },
-  {
-    "nodeId": "NodeID-FHPDnySFVqde5bGvEXsFnvZGhXwcyRfNY",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Kiln"
-  },
-  {
-    "nodeId": "NodeID-KB4zWTTeK5gHYKYmjftGGQ8nHy9NQbGax",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Kiln"
-  },
-  {
-    "nodeId": "NodeID-JFiAG1SiqUFh3EnkY8oXcXUg8RuT2guZp",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Knot Nodes"
-  },
-  {
-    "nodeId": "NodeID-GGnTyHtMF7b8CELtUgFGTEHjEcjNF7RZ",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Last Oracle"
-  },
-  {
-    "nodeId": "NodeID-K9g6YJEhWiN2TF1RsFTA8SEXFAJWvikhu",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Last Oracle"
-  },
-  {
-    "nodeId": "NodeID-KH2o8xGFLYtCwseWgRbpDAf1n4zAcMNfN",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Last Oracle"
-  },
-  {
-    "nodeId": "NodeID-Q3WJQcoixGGKnFs41B18rnJB9PS54M5oF",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Last Oracle"
-  },
-  {
-    "nodeId": "NodeID-4e5tHaeoLvpXjtY5uMXtuYJgEWZ2JiC4D",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "LightFTSO"
-  },
-  {
-    "nodeId": "NodeID-JGAJGcDbg1kqnfwCpDiJ5VeNGkSDRxGra",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Linden Services"
-  },
-  {
-    "nodeId": "NodeID-MWNqxgXd8itY143jaNyq8aMYTeV1RXJgS",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Luganodes"
-  },
-  {
-    "nodeId": "NodeID-NCBqn9P8oAEkYn6McyQjhF67WarSTttz5",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Mickey B Fresh"
-  },
-  {
-    "nodeId": "NodeID-3RJrjDMzeZQVDyHDjZ6u1X3Y3WCKY5nbb",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "NORTSO"
-  },
-  {
-    "nodeId": "NodeID-9so5xxbAxuoqz5MANESDbLEQKetKP7AiW",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "NORTSO"
-  },
-  {
-    "nodeId": "NodeID-2a7BPY7UeJv2njMuyUHfBSTeQCYZj6bwV",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Oracle Daemon"
-  },
-  {
-    "nodeId": "NodeID-2miZhA7JAnyf9s5rYzDeNciwg4448LKsP",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Oracle Daemon"
-  },
-  {
-    "nodeId": "NodeID-GEC63GVfeYLG5UUBPSgiiN4YMvT71jdP",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Oracle Daemon"
-  },
-  {
-    "nodeId": "NodeID-N3GDYNsVNMxYTW4ULzrfRZpy3tRnhxKSQ",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Oracle Daemon"
-  },
-  {
-    "nodeId": "NodeID-7niiMEHRfGLgT6VZ7bwb6Xa6vpGn8upVw",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "PRICEKRAKEN"
-  },
-  {
-    "nodeId": "NodeID-CtSfUZd8nvr4RDaQnKRiP9cae15Nrb1bX",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Poseidon FTSO"
-  },
-  {
-    "nodeId": "NodeID-EBcyABp9i2wEgZbhiwnyLaqBwFFTdZXyd",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Scintilla"
-  },
-  {
-    "nodeId": "NodeID-2q436GJKA5faTceNaAbu7CYxftv3K8fS4",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Solarius"
-  },
-  {
-    "nodeId": "NodeID-EJ7V3trSnp93txcLP3h4ULJvBhvUtP66c",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "SolidiFi Nexus"
-  },
-  {
-    "nodeId": "NodeID-LxpVHRQAYXPRf7q5oz1iT4N1z9XHz5rHU",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Stakeway"
-  },
-  {
-    "nodeId": "NodeID-Cg8PLmdZ9JmEtUBCZhq2jt2JDS5gDaSsQ",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Sun-Dara"
-  },
-  {
-    "nodeId": "NodeID-JF4XWnC9PjZVXQuqLcpQvxztdMez3CpkR",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Tailwind FTSO"
-  },
-  {
-    "nodeId": "NodeID-98RaC6gbJMhin1NXsBFUoicEqiF7VKWbL",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "TempestFTSO"
-  },
-  {
-    "nodeId": "NodeID-Ckyh9cpfkkXSo5PYNNFactcrKkY2XhkXR",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "True FTSO"
-  },
-  {
-    "nodeId": "NodeID-LcbbZYhBHn8HVjTzPASuHtFVAckcdctWS",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Ugly Kitty"
-  },
-  {
-    "nodeId": "NodeID-MzMscku8ayAd2pBEmH8xWiAXBwtPgS2S5",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Use Your Spark"
-  },
-  {
-    "nodeId": "NodeID-NbTToANYcdsreLC5PBcE9gsMBpBY7N7s1",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "WitterFTSO"
-  },
-  {
-    "nodeId": "NodeID-C3FRhsMBh3KNLKiVbc8xLY7gnVzmJ7EY9",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Wonderftso"
-  },
-  {
-    "nodeId": "NodeID-B6sAUBEYn2fvHMeUnsUkh1yNrvTzKu8gZ",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "Xdrops Oracle"
-  },
-  {
-    "nodeId": "NodeID-2xbUrUGcj9HuntjA4YPHQFWiMuQz428SL",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "sToadz FTSO"
-  },
-  {
-    "nodeId": "NodeID-F297gLgRxBndijAYvvvBGtQTwYCrScMQT",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "sToadz FTSO"
-  },
-  {
-    "nodeId": "NodeID-NV7ZpcJvqzmvvT4PaeHWbTELWKFT2Jqxw",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "sToadz FTSO"
-  },
-  {
-    "nodeId": "NodeID-KtTdea6FeDDy5pERrZKHkkhtJFCbJNv1a",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00",
-    "name": "uGaenn"
-  },
-  {
-    "nodeId": "NodeID-8qSyua2WVQ4uNRc1wwPKmSUWY421bifiq",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00"
-  },
-  {
-    "nodeId": "NodeID-C6i8mruq11VdxGQ7tiUBgrRqoLBot86df",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00"
-  },
-  {
-    "nodeId": "NodeID-D3QKd6XxLnrKowkziZJSG4RNLtffz8ESk",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00"
-  },
-  {
-    "nodeId": "NodeID-FUA8LX6gJhNmiJVT5eycNsd2jKBHL7FBY",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00"
-  },
-  {
-    "nodeId": "NodeID-KiAUisCU8UvXGnMRiUvoeyWneSdUm987",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00"
-  },
-  {
-    "nodeId": "NodeID-xi5DWBUKqBJUWvHiDEr9hpVNLGbxRtu2",
-    "version": "1.9.1",
-    "lastSeen": "2025-01-23T00:14:24.757Z",
-    "lastStatus": "ONLINE",
-    "uptime": "100.00"
-  }
+    {
+        "nodeId": "NodeID-CoNH4gyEwB9gTrEmozwh14Zr8hs6wokRS",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "4DadsFTSO"
+    },
+    {
+        "nodeId": "NodeID-6cnsMcUNTJwCcDuAyPwJqEaVa6yMrk8eq",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "A-FTSO"
+    },
+    {
+        "nodeId": "NodeID-A7jk7Z5GA2aVe5ecuupNXWtSLfVjLDWFC",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "A41"
+    },
+    {
+        "nodeId": "NodeID-EHMcsRfGdnBSuaZuKdoxu4W8AvtL1jg1F",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "A41"
+    },
+    {
+        "nodeId": "NodeID-JA63moobNNMLby4ENNUiJqVJA2cdpks5J",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "ACDTftso"
+    },
+    {
+        "nodeId": "NodeID-AFor3TgDtzsV8kK8sjqkneuUKpv8tbNwM",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "AFOracle"
+    },
+    {
+        "nodeId": "NodeID-AFor4y2SR55vTb8wtqrJ1gkxPiwdzFTEE",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "AFOracle"
+    },
+    {
+        "nodeId": "NodeID-EPLACd344ouymyJAQYXZBvbmU3NJ6ooeB",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "AFOracle"
+    },
+    {
+        "nodeId": "NodeID-FDR3CXdwP3H3Zz9QKfL61fk56zkPEgdFV",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "AFOracle"
+    },
+    {
+        "nodeId": "NodeID-Bo98cjoi5LvF6jXAMHZZLQYutyeGutBQ1",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "AU"
+    },
+    {
+        "nodeId": "NodeID-HZwFckGTbucqTtE7qcv6z85mnScUfAeW6",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "AU"
+    },
+    {
+        "nodeId": "NodeID-FLPF99Gi1c79NGHw7GYyhttWPVxpCq713",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "African Proofs"
+    },
+    {
+        "nodeId": "NodeID-DcUJTi6u5Xoutgr1A25iMu4Rp5JEbsEqr",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Aimlezz"
+    },
+    {
+        "nodeId": "NodeID-KRkND3cB1bYaWt71CSQdCUjRSR95d3cNz",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "AlphaOracle"
+    },
+    {
+        "nodeId": "NodeID-MfzBQ6MbriE31UWm9NjSnEgLiR1cAkEnN",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Ankr"
+    },
+    {
+        "nodeId": "NodeID-P4T4uKqveVxjZZXVdADHENdnCKnsCFvDE",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Aternety"
+    },
+    {
+        "nodeId": "NodeID-k4QG8eJ9bYu717nbj8Ki8VykK8g1VWK9",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Aternety"
+    },
+    {
+        "nodeId": "NodeID-MsF6Xc1PsMWtcxVudCepWb5kUeF1EF8RX",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Atlas TSO"
+    },
+    {
+        "nodeId": "NodeID-3phxSiKoYMj1dNSJysZhHYQKUbLX786jy",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Aureus Ox"
+    },
+    {
+        "nodeId": "NodeID-EgJba99Q5iDcL81A27E111WANn9eZNj4v",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Bifrost Wallet"
+    },
+    {
+        "nodeId": "NodeID-GZEWkCpn852hwKhbGNJgZvbjtvEfU6Ktg",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Bifrost Wallet"
+    },
+    {
+        "nodeId": "NodeID-9jaZDNBCn4AwMzRqFBhxfem2ZZtiArRm2",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Burst FTSO"
+    },
+    {
+        "nodeId": "NodeID-JHnfNSNgSThSJEFG8aq99FRAE4a7Ko7UP",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Bushido FTSO"
+    },
+    {
+        "nodeId": "NodeID-7HLcuEFt7c1qTggK8AkLim9ekhPu2NYLM",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Chainbase Staking"
+    },
+    {
+        "nodeId": "NodeID-FERvNWfCH4mjCSoFnjF4YouDBuYZCpfKm",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Comfy Nodes"
+    },
+    {
+        "nodeId": "NodeID-3qpQ3cVcU8UxvmCtkwGV4ZB3RYcKoDBRn",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "DataVector"
+    },
+    {
+        "nodeId": "NodeID-7joNh7X4xsHBSXCpLQig22nSqU6xp41k8",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "DataVector"
+    },
+    {
+        "nodeId": "NodeID-9WF8MvjNhmR45AdNjVfAWp27KKq7KCGpm",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Defi Oracles"
+    },
+    {
+        "nodeId": "NodeID-EqTrzH8b9ax2oYwrKFkXqWAZjuK8uHFxS",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "EDPFTSO"
+    },
+    {
+        "nodeId": "NodeID-9fsCXCFJ7hzgsGK4FVpuNt1FVjJ9ScfVU",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Encode Club"
+    },
+    {
+        "nodeId": "NodeID-DAVrAR2VCxe7rnmkDaVUbW8jWd9b86cS",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Envision"
+    },
+    {
+        "nodeId": "NodeID-FXJQRCN2nEqBYVsorBS5WHriwihjzv7G6",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "EvolveFTSO"
+    },
+    {
+        "nodeId": "NodeID-B9o4BTqdc1qkrAn5BxLHL7pimWf9UwBkd",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "FTSO EU"
+    },
+    {
+        "nodeId": "NodeID-P6nNyHc4QwyKoVSS7c9XatGp4Sityq7rM",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T01:50:37.937Z",
+        "lastStatus": "CATCHING_UP",
+        "uptime": "84.00",
+        "name": "FTSO London"
+    },
+    {
+        "nodeId": "NodeID-J4nyqo44xFUxhAi9gDJXAkYyxP5z2a7UG",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "FTSO PARIS"
+    },
+    {
+        "nodeId": "NodeID-MN7sJduRdGUs3aWyYUmym2CFVsptzgKcJ",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "FTSO Plus"
+    },
+    {
+        "nodeId": "NodeID-MZKzjLDRo9bwDjaDR5c4PALEibYyDe4A7",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "FTSO UK"
+    },
+    {
+        "nodeId": "NodeID-KzPd2Vx5WomGtur91B9K9R7to3mYyYga",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "FTSOCAN"
+    },
+    {
+        "nodeId": "NodeID-CrsvTSFLB8G3ziPaVjgH1pj8NQxSZkECD",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Flare Beacon"
+    },
+    {
+        "nodeId": "NodeID-5V2bQbryZTU4pAe59KNHNBru1BwEfcXqg",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Flare Dienst"
+    },
+    {
+        "nodeId": "NodeID-4hyFQEeDqpG9yyEnafTwqQQTTFex32KG2",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Flare Oracle"
+    },
+    {
+        "nodeId": "NodeID-J8Zbi3b3AjTEUmHdE4KSApEU1U36iaeDS",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Flare Oracle"
+    },
+    {
+        "nodeId": "NodeID-7vz3A92AkLi9YRYTauPgvkdiMmhnuDRzj",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Flare.Space"
+    },
+    {
+        "nodeId": "NodeID-ECqqsWu9jpUvZgPyf9yPZZcyWmJjWyN1T",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Flare.Space"
+    },
+    {
+        "nodeId": "NodeID-J9JZSkVJWCUYZ43n36q4fCixu7Tj4QR1P",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "FlareFTSO"
+    },
+    {
+        "nodeId": "NodeID-8aGBxZssVWRvEr57YGRsWjZTHbnoWrfcc",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "FlareFi"
+    },
+    {
+        "nodeId": "NodeID-66rV9yEWSVGLC8fs9ynKptVf9f6bSbHC8",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Flaris"
+    },
+    {
+        "nodeId": "NodeID-Gy2c6Y1RNz2PZfAnTwHZMZ4RZ53nKPf1Q",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Google Cloud"
+    },
+    {
+        "nodeId": "NodeID-2hCHs6H4Vde8mdGGKidMvT4Fjit7goCBT",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "HEWG"
+    },
+    {
+        "nodeId": "NodeID-4h6PNpK5oo9pjmE8zKSbm31S2LStg4tyF",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "InGen.FTSO"
+    },
+    {
+        "nodeId": "NodeID-4zWvBNmsbaS9UKQf6wcWgWGWRfitcGAuV",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "InfStones"
+    },
+    {
+        "nodeId": "NodeID-5JkXthgpWVDq6utrtV1YVG7aspsHjhezM",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "InfStones"
+    },
+    {
+        "nodeId": "NodeID-5jV2rg4CGt6ewiDbB9QeWDEptVudskJeY",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Ivy Oracle"
+    },
+    {
+        "nodeId": "NodeID-FHPDnySFVqde5bGvEXsFnvZGhXwcyRfNY",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Kiln"
+    },
+    {
+        "nodeId": "NodeID-KB4zWTTeK5gHYKYmjftGGQ8nHy9NQbGax",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Kiln"
+    },
+    {
+        "nodeId": "NodeID-JFiAG1SiqUFh3EnkY8oXcXUg8RuT2guZp",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Knot Nodes"
+    },
+    {
+        "nodeId": "NodeID-GGnTyHtMF7b8CELtUgFGTEHjEcjNF7RZ",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Last Oracle"
+    },
+    {
+        "nodeId": "NodeID-K9g6YJEhWiN2TF1RsFTA8SEXFAJWvikhu",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Last Oracle"
+    },
+    {
+        "nodeId": "NodeID-KH2o8xGFLYtCwseWgRbpDAf1n4zAcMNfN",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Last Oracle"
+    },
+    {
+        "nodeId": "NodeID-Q3WJQcoixGGKnFs41B18rnJB9PS54M5oF",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Last Oracle"
+    },
+    {
+        "nodeId": "NodeID-4e5tHaeoLvpXjtY5uMXtuYJgEWZ2JiC4D",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "LightFTSO"
+    },
+    {
+        "nodeId": "NodeID-JGAJGcDbg1kqnfwCpDiJ5VeNGkSDRxGra",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Linden Services"
+    },
+    {
+        "nodeId": "NodeID-MWNqxgXd8itY143jaNyq8aMYTeV1RXJgS",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Luganodes"
+    },
+    {
+        "nodeId": "NodeID-NCBqn9P8oAEkYn6McyQjhF67WarSTttz5",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Mickey B Fresh"
+    },
+    {
+        "nodeId": "NodeID-3RJrjDMzeZQVDyHDjZ6u1X3Y3WCKY5nbb",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "NORTSO"
+    },
+    {
+        "nodeId": "NodeID-9so5xxbAxuoqz5MANESDbLEQKetKP7AiW",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "NORTSO"
+    },
+    {
+        "nodeId": "NodeID-2a7BPY7UeJv2njMuyUHfBSTeQCYZj6bwV",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Oracle Daemon"
+    },
+    {
+        "nodeId": "NodeID-2miZhA7JAnyf9s5rYzDeNciwg4448LKsP",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Oracle Daemon"
+    },
+    {
+        "nodeId": "NodeID-GEC63GVfeYLG5UUBPSgiiN4YMvT71jdP",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Oracle Daemon"
+    },
+    {
+        "nodeId": "NodeID-N3GDYNsVNMxYTW4ULzrfRZpy3tRnhxKSQ",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Oracle Daemon"
+    },
+    {
+        "nodeId": "NodeID-7niiMEHRfGLgT6VZ7bwb6Xa6vpGn8upVw",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "PRICEKRAKEN"
+    },
+    {
+        "nodeId": "NodeID-CtSfUZd8nvr4RDaQnKRiP9cae15Nrb1bX",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Poseidon FTSO"
+    },
+    {
+        "nodeId": "NodeID-EBcyABp9i2wEgZbhiwnyLaqBwFFTdZXyd",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Scintilla"
+    },
+    {
+        "nodeId": "NodeID-2q436GJKA5faTceNaAbu7CYxftv3K8fS4",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Solarius"
+    },
+    {
+        "nodeId": "NodeID-EJ7V3trSnp93txcLP3h4ULJvBhvUtP66c",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "SolidiFi Nexus"
+    },
+    {
+        "nodeId": "NodeID-LxpVHRQAYXPRf7q5oz1iT4N1z9XHz5rHU",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Stakeway"
+    },
+    {
+        "nodeId": "NodeID-Cg8PLmdZ9JmEtUBCZhq2jt2JDS5gDaSsQ",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Sun-Dara"
+    },
+    {
+        "nodeId": "NodeID-JF4XWnC9PjZVXQuqLcpQvxztdMez3CpkR",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Tailwind FTSO"
+    },
+    {
+        "nodeId": "NodeID-98RaC6gbJMhin1NXsBFUoicEqiF7VKWbL",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "TempestFTSO"
+    },
+    {
+        "nodeId": "NodeID-Ckyh9cpfkkXSo5PYNNFactcrKkY2XhkXR",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "True FTSO"
+    },
+    {
+        "nodeId": "NodeID-LcbbZYhBHn8HVjTzPASuHtFVAckcdctWS",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Ugly Kitty"
+    },
+    {
+        "nodeId": "NodeID-MzMscku8ayAd2pBEmH8xWiAXBwtPgS2S5",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Use Your Spark"
+    },
+    {
+        "nodeId": "NodeID-NbTToANYcdsreLC5PBcE9gsMBpBY7N7s1",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "WitterFTSO"
+    },
+    {
+        "nodeId": "NodeID-C3FRhsMBh3KNLKiVbc8xLY7gnVzmJ7EY9",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Wonderftso"
+    },
+    {
+        "nodeId": "NodeID-B6sAUBEYn2fvHMeUnsUkh1yNrvTzKu8gZ",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Xdrops Oracle"
+    },
+    {
+        "nodeId": "NodeID-2xbUrUGcj9HuntjA4YPHQFWiMuQz428SL",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "sToadz FTSO"
+    },
+    {
+        "nodeId": "NodeID-F297gLgRxBndijAYvvvBGtQTwYCrScMQT",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "sToadz FTSO"
+    },
+    {
+        "nodeId": "NodeID-NV7ZpcJvqzmvvT4PaeHWbTELWKFT2Jqxw",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "sToadz FTSO"
+    },
+    {
+        "nodeId": "NodeID-KtTdea6FeDDy5pERrZKHkkhtJFCbJNv1a",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "uGaenn"
+    },
+    {
+        "nodeId": "NodeID-8qSyua2WVQ4uNRc1wwPKmSUWY421bifiq",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Unknown"
+    },
+    {
+        "nodeId": "NodeID-C6i8mruq11VdxGQ7tiUBgrRqoLBot86df",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Unknown"
+    },
+    {
+        "nodeId": "NodeID-D3QKd6XxLnrKowkziZJSG4RNLtffz8ESk",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Unknown"
+    },
+    {
+        "nodeId": "NodeID-FUA8LX6gJhNmiJVT5eycNsd2jKBHL7FBY",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Unknown"
+    },
+    {
+        "nodeId": "NodeID-KiAUisCU8UvXGnMRiUvoeyWneSdUm987",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Unknown"
+    },
+    {
+        "nodeId": "NodeID-xi5DWBUKqBJUWvHiDEr9hpVNLGbxRtu2",
+        "version": "1.9.1",
+        "lastSeen": "2025-01-23T02:01:50.888Z",
+        "lastStatus": "ONLINE",
+        "uptime": "100.00",
+        "name": "Unknown"
+    }
 ]

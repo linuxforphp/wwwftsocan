@@ -1049,10 +1049,18 @@ export async function populateValidators() {
                 dropdownParent: "body",
             });
 
-            // Origin: https://raw.githubusercontent.com/jtcaya/validator_list_json/master/validatorlist.json
+            // Origin: https://api-flare-validators.flare.network/api/v1/validator
             fetch(dappUrlBaseAddr + 'validatorlist.json')
                 .then(res => res.json())
                 .then(FtsoInfo => {
+                    for (var i = 0; i < FtsoInfo.length; i++) {
+                        if (name in FtsoInfo[i]) {
+                            continue;
+                        } else {
+                            FtsoInfo[i].name = 'Unknown';
+                        }
+                    }
+
                     FtsoInfo.sort((a, b) => a.name > b.name ? 1 : -1);
 
                     let indexNumber;
