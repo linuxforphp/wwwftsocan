@@ -513,7 +513,7 @@ export function createCalendar(DappObject) {
         minimumDate = validatorMinDate;
     }
 
-    minimumDate.setDate(minimumDate.getDate() + 14);
+    minimumDate.setDate(minimumDate.getDate() + 15);
 
     const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
 
