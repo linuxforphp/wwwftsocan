@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="sec-title text-center">
                     <img src="<?=$view['urlbaseaddr']?>/img/flare-black.svg" style="max-height: 300px;" />
-                    <a href="https://staking.flare.network" target="_blank" type="button" class="btn btn-red" >Launch FlareStake</a>
+                    <a href="https://portal.flare.network/staking" target="_blank" type="button" class="btn btn-red" >Launch FlareStake</a>
                     <hr />
                 </div>
             </div>

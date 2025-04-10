@@ -34,7 +34,7 @@
                     "/etc/init.d/mysql stop",
                     "sleep 5",
                     "lfphp-get fcron",
-                    "echo '1 0 * * * /bin/bash /srv/tempo/wwwftsocan/scripts/crons-dapp.bash >/dev/null 2>&1' >> /etc/fcrontab",
+                    "echo '0 */4 * * * /bin/bash /srv/tempo/wwwftsocan/scripts/crons-dapp.bash >/dev/null 2>&1' >> /etc/fcrontab",
                     "fcrontab /etc/fcrontab >/dev/null 2>&1",
                     "lfphp-get jq",
                     "/bin/bash /srv/tempo/wwwftsocan/scripts/crons-dapp.bash >/dev/null 2>&1 &",

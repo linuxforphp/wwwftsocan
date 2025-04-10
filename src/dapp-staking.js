@@ -513,7 +513,7 @@ export function createCalendar(DappObject) {
         minimumDate = validatorMinDate;
     }
 
-    minimumDate.setDate(minimumDate.getDate() + 14);
+    minimumDate.setDate(minimumDate.getDate() + 15);
 
     const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
 
@@ -551,13 +551,15 @@ export function createCalendar(DappObject) {
                 inst.selectedDay = maximumDate.getDate();
                 inst.drawMonth = inst.selectedMonth = maximumDate.getMonth();
                 inst.drawYear = inst.selectedYear = maximumDate.getFullYear();
-                $('#calendar').datepicker('setDate', maximumDate);
+                $('#calendar').datepicker('setDate', minimumDate);
             },
             onChangeMonthYear: function( year, month, inst ) {
                 setTodayCalendarButton(inst);
             }
         });
     }
+
+    $('#calendar').datepicker('setDate', minimumDate);
 }
 
 export function setTodayCalendarButton(inst) {

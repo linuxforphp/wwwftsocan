@@ -111,7 +111,7 @@ export async function showConfirmationSpinnerStake(doSomething) {
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
         title: 'Loading...',
-        content: 'To continue, you must approve the transaction. <br />Please check your Wallet...',
+        content: 'To continue, you must approve the transaction. <br /><div id="StakeTxStatus">Please check your Wallet...</div>',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
