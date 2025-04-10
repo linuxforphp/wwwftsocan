@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.3.1 (2025-04-10)
+
+- Fixes an issue with the DApp's staking calendar.
+- Fixes an issue with the staking confirmation popup.
+- Modifies the minimal date in the staking interface.
+- Fixes a broken link on the staking page.
+- Fixes an issue with the Metamask logo.
+- Updates the dapp's cron jobs.
+- Updates the project's dependencies.
+
 ## 1.3.0 (2025-01-23)
 
 - Adds validator form validation.
