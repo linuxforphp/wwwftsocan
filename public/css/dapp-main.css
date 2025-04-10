@@ -155,7 +155,7 @@ h1, h2 {
 .wallet-icon {
     height: 118px;
     mix-blend-mode: screen;
-    filter: grayscale(100%) contrast(3.7) brightness(110%);
+    filter: grayscale(100%) contrast(2.5) brightness(110%);
 }
 
 .wallet-icon img {
