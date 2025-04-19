@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.2 (2025-04-18)
+
+- Updates flare-js to version 1.3.2.
+
 ## 1.3.1 (2025-04-10)
 
 - Fixes an issue with the DApp's staking calendar.
