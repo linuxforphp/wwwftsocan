@@ -222,6 +222,106 @@ export async function getRewardClaimWithProofStructs(network, address, amountWei
     }
 }
 
+export async function getV1Rewards(epochsUnclaimed, network, account, ftsoRewardContract, l) {
+    let tokens = BigInt(0);
+
+    try {
+        if (rewardsOverrideConfig[network].V1Check === true) {
+            for (var k = 0; k < epochsUnclaimed.length; k++) {
+                l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
+                
+                if (typeof l[1][0] === "bigint") {
+                    tokens += l[1][0];
+                } else {
+                    tokens += BigInt(l[1][0]);
+                }
+            }
+        }
+
+        return tokens;
+    } catch (error) {
+        // console.log(error)
+    }
+}
+
+export async function getV2Rewards(unclaimedAmountv2, network, account, DappObject, flareSystemsManagerContract, rewardManagerContractArray) {
+    let tokens = BigInt(0);
+    
+    try {
+        for (let j = 0; j < rewardManagerContractArray.length; j++) {
+            unclaimedAmountv2 = await rewardManagerContractArray[j].methods.getStateOfRewards(account).call();
+    
+            // console.log("unclaimedAmountv2: ");
+            // console.log(unclaimedAmountv2);
+            // console.log("unclaimedAmount: ");
+            // console.log(unclaimedAmount);
+            // console.log(unclaimedAmountv2[0].length);
+    
+            if (unclaimedAmountv2.length > 0) {
+                for (var i = 0; i < unclaimedAmountv2.length; i++) {
+                    for (var k = 0; k < unclaimedAmountv2[i].length; k++) {
+                        if (unclaimedAmountv2[i][k] !== undefined) {
+                            if (unclaimedAmountv2[i][k].amount > 0n) {
+                                DappObject.rewardManagerData[j + 1] = [unclaimedAmountv2[i][k].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
+    
+                                DappObject.hasV2Rewards = true;
+                            }
+    
+                            tokens += BigInt(unclaimedAmountv2[i][k].amount);
+                        }
+                    }
+                }
+            } else {
+                DappObject.hasV2Rewards = false;
+            }
+        }
+    
+        const ftsoRewardInfo = await getRewardClaimWithProofStructs(network, account, tokens, flareSystemsManagerContract, rewardManagerContractArray);
+    
+        if (ftsoRewardInfo !== undefined && ftsoRewardInfo?.hasFtsoRewards === true) {
+            // console.log("FTSO Rewards:");
+            // console.log(web32.utils.fromWei(ftsoRewardInfo.amountWei, "ether"));
+    
+            tokens += ftsoRewardInfo.amountWei;
+    
+            DappObject.hasFtsoRewards = true;
+        } else {
+            DappObject.hasFtsoRewards = false;
+        }
+
+        return tokens;
+    } catch (error) {
+        // console.log(error)
+    }
+}
+
+export async function getFlareDropRewards(account, DistributionDelegatorsContract) {
+    let tokens = BigInt(0);
+
+    try {
+        let month;
+        const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
+
+        for (const property in claimableMonths) {
+            month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
+
+            if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
+                let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
+                
+                if (typeof claimableAmountMonth === "bigint") {
+                    tokens += claimableAmountMonth;
+                } else {
+                    tokens += BigInt(claimableAmountMonth);
+                }
+            }
+        }
+
+        return tokens;
+    } catch (error) {
+        // console.log(error)
+    }
+}
+
 export async function getRewardClaimData(rewardEpochId, network, account) {
 
     let merkleProof;
