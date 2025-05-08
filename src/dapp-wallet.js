@@ -547,22 +547,24 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                             for (let j = 0; j < rewardManagerContractArray.length; j++) {
                                 unclaimedAmountv2 = await rewardManagerContractArray[j].methods.getStateOfRewards(account).call();
                 
-                                // console.log("unclaimedAmountv2: ");
-                                // console.log(unclaimedAmountv2);
+                                //console.log("unclaimedAmountv2: ");
+                                //console.log(unclaimedAmountv2);
                                 // console.log("unclaimedAmount: ");
                                 // console.log(unclaimedAmount);
                                 // console.log(unclaimedAmountv2[0].length);
 
-                                if (unclaimedAmountv2[0].length > 0) {
-                                    for (var i = 0; i < unclaimedAmountv2[0].length; i++) {
-                                        if (unclaimedAmountv2[0][i] !== undefined) {
-                                            if (unclaimedAmountv2[0][i].amount > 0n) {
-                                                DappObject.rewardManagerData[j + 1] = [unclaimedAmountv2[0][i].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
+                                if (unclaimedAmountv2.length > 0) {
+                                    for (var i = 0; i < unclaimedAmountv2.length; i++) {
+                                        for (var k = 0; k < unclaimedAmountv2[i].length; k++) {
+                                            if (unclaimedAmountv2[i][k] !== undefined) {
+                                                if (unclaimedAmountv2[i][k].amount > 0n) {
+                                                    DappObject.rewardManagerData[j + 1] = [unclaimedAmountv2[i][k].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
 
-                                                DappObject.hasV2Rewards = true;
+                                                    DappObject.hasV2Rewards = true;
+                                                }
+
+                                                unclaimedAmount += BigInt(unclaimedAmountv2[i][k].amount);
                                             }
-
-                                            unclaimedAmount += BigInt(unclaimedAmountv2[0][i].amount);
                                         }
                                     }
                                 } else {
