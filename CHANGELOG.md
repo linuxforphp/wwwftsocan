@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.4 (2025-05-09)
+
+- Fixes an issue with claiming simultaneously multiple rewards.
+
 ## 1.3.3 (2025-04-22)
 
 - Fixes an issue with the calculation of delegation rewards.

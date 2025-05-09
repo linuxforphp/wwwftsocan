@@ -3,7 +3,7 @@ import { wait, round, isNumber, checkConnection, showConnectedAccountAddress, re
 import { setCurrentAppState, setCurrentPopup, closeCurrentPopup } from "./dapp-ui.js";
 import { walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
 import { populateFtsos, isDelegateInput1 } from "./dapp-delegate.js";
-import { getDelegatedProviders, getRewardClaimWithProofStructs, switchClaimButtonColor, switchClaimButtonColorBack, switchClaimFdButtonColor, switchClaimFdButtonColorBack, showClaimRewards, showFdRewards } from "./dapp-claim.js";
+import { getDelegatedProviders, getRewardClaimWithProofStructs, switchClaimButtonColor, switchClaimButtonColorBack, switchClaimFdButtonColor, switchClaimFdButtonColorBack, showClaimRewards, showFdRewards, getV1Rewards, getV2Rewards, getFlareDropRewards } from "./dapp-claim.js";
 import { RefreshStakingPage, connectChainsAndKeys } from "./dapp-staking.js";
 
 export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption, rpcUrl, flrAddr, autoRefresh) {
@@ -517,25 +517,9 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         let unclaimedAmountv2;
                         let l;
 
-                        let network;
+                        let network = GetNetworkName(rpcUrl);
 
-                        if (GetNetworkName(rpcUrl) === "flare") {
-                            network = "flare";
-                        } else if (GetNetworkName(rpcUrl) === "songbird") {
-                            network = "songbird";
-                        }
-    
-                        if (rewardsOverrideConfig[network].V1Check === true) {
-                            for (var k = 0; k < epochsUnclaimed.length; k++) {
-                                l = await ftsoRewardContract.methods.getStateOfRewards(account, epochsUnclaimed[k]).call();
-                                
-                                if (typeof l[1][0] === "bigint") {
-                                    unclaimedAmount += l[1][0];
-                                } else {
-                                    unclaimedAmount += BigInt(l[1][0]);
-                                }
-                            }
-                        }
+                        unclaimedAmount += await getV1Rewards(epochsUnclaimed, network, account, ftsoRewardContract, l);
 
                         if (unclaimedAmount > BigInt(0)) {
                             DappObject.hasV1Rewards = true;
@@ -544,44 +528,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         }
 
                         if (rewardsOverrideConfig[network].V2Check === true && rewardManagerContractArray?.length) {
-                            for (let j = 0; j < rewardManagerContractArray.length; j++) {
-                                unclaimedAmountv2 = await rewardManagerContractArray[j].methods.getStateOfRewards(account).call();
-                
-                                // console.log("unclaimedAmountv2: ");
-                                // console.log(unclaimedAmountv2);
-                                // console.log("unclaimedAmount: ");
-                                // console.log(unclaimedAmount);
-                                // console.log(unclaimedAmountv2[0].length);
-
-                                if (unclaimedAmountv2[0].length > 0) {
-                                    for (var i = 0; i < unclaimedAmountv2[0].length; i++) {
-                                        if (unclaimedAmountv2[0][i] !== undefined) {
-                                            if (unclaimedAmountv2[0][i].amount > 0n) {
-                                                DappObject.rewardManagerData[j + 1] = [unclaimedAmountv2[0][i].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
-
-                                                DappObject.hasV2Rewards = true;
-                                            }
-
-                                            unclaimedAmount += BigInt(unclaimedAmountv2[0][i].amount);
-                                        }
-                                    }
-                                } else {
-                                    DappObject.hasV2Rewards = false;
-                                }
-                            }
-
-                            const ftsoRewardInfo = await getRewardClaimWithProofStructs(network, account, unclaimedAmount, flareSystemsManagerContract, rewardManagerContractArray);
-
-                            if (ftsoRewardInfo !== undefined && ftsoRewardInfo?.hasFtsoRewards === true) {
-                                // console.log("FTSO Rewards:");
-                                // console.log(web32.utils.fromWei(ftsoRewardInfo.amountWei, "ether"));
-
-                                unclaimedAmount += ftsoRewardInfo.amountWei;
-
-                                DappObject.hasFtsoRewards = true;
-                            } else {
-                                DappObject.hasFtsoRewards = false;
-                            }
+                            unclaimedAmount += await getV2Rewards(unclaimedAmountv2, network, account, DappObject, flareSystemsManagerContract, rewardManagerContractArray);
                         } else {
                             DappObject.hasV2Rewards = false;
 
@@ -595,22 +542,8 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
     
                         if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
                             let claimableAmountFd = BigInt(0);
-                            let month;
-                            const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
-    
-                            for (const property in claimableMonths) {
-                                month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
-    
-                                if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
-                                    let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
-                                    
-                                    if (typeof claimableAmountMonth === "bigint") {
-                                        claimableAmountFd += claimableAmountMonth;
-                                    } else {
-                                        claimableAmountFd += BigInt(claimableAmountMonth);
-                                    }
-                                }
-                            }
+
+                            claimableAmountFd += await getFlareDropRewards(account, DistributionDelegatorsContract);
                             
                             const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
     
