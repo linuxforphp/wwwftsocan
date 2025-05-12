@@ -1,7 +1,6 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { round, isNumber, checkTx } from "./dapp-utils.js";
 import { showSpinner, showConfirmationSpinner, showConfirmationSpinnerv2, showConfirm, showEmptyBucket, showFail, setCurrentPopup } from "./dapp-ui.js";
-import { injectedProvider } from "./dapp-globals.js";
 import { isDelegateInput1 } from "./dapp-delegate.js";
 import { LedgerEVMSingleSign, LedgerEVMFtsoV2Sign } from "./dapp-ledger.js";
 
@@ -523,20 +522,12 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                 }
 
                 if (DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === false) {
+
                     if (DappObject.walletIndex === 1) {
                         await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
-                    } else if (DappObject.walletIndex === 0) {
+                    } else {
                         showSpinner(async () => {
-                            await injectedProvider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
-                            })
-                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
-                            .catch((error) => showFail(object, DappObject, 2));
-                        });
-                    } else if (DappObject.walletIndex === 2) {
-                        showSpinner(async () => {
-                            await DappObject.walletConnectEVMProvider.request({
+                            await DappObject.chosenEVMProvider.request({
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters],
                             })
@@ -544,23 +535,15 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                             .catch((error) => showFail(object, DappObject, 2));
                         });
                     }
+
                 } else if ((DappObject.hasV1Rewards === false && DappObject.hasV2Rewards === true) || (DappObject.hasV1Rewards === false && DappObject.hasFtsoRewards === true)) {
                     const transactionParametersV2 = txPayloadV2;
 
                     if (DappObject.walletIndex === 1) {
                         await LedgerEVMSingleSign(transactionParametersV2, DappObject, undefined, false, object, 2);
-                    } else if (DappObject.walletIndex === 0) {
+                    } else {
                         await showSpinner(async () => {
-                            await injectedProvider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParametersV2],
-                            })
-                            .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
-                            .catch((error) => showFail(object, DappObject, 2));
-                        });
-                    } else if (DappObject.walletIndex === 2) {
-                        await showSpinner(async () => {
-                            await DappObject.walletConnectEVMProvider.request({
+                            await DappObject.chosenEVMProvider.request({
                                 method: 'eth_sendTransaction',
                                 params: [transactionParametersV2],
                             })
@@ -568,15 +551,16 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                             .catch((error) => showFail(object, DappObject, 2));
                         });
                     }
+                    
                 } else if ((DappObject.hasV1Rewards === true && DappObject.hasV2Rewards === true) || (DappObject.hasV1Rewards === true && DappObject.hasFtsoRewards === true)) {
                     const transactionParametersV2 = txPayloadV2;
 
                     if (DappObject.walletIndex === 1) {
                         await LedgerEVMFtsoV2Sign(transactionParameters, transactionParametersV2, DappObject, object, 2, txHashes);
-                    } else if (DappObject.walletIndex === 0) {
+                    } else {
                         await showConfirmationSpinnerv2(async (v2Spinner) => {
                             try {
-                                await injectedProvider.request({
+                                await DappObject.chosenEVMProvider.request({
                                     method: 'eth_sendTransaction',
                                     params: [transactionParameters],
                                 })
@@ -619,104 +603,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                                         });
                                     }).then(async value => {
                                         if (value === "Success" || value === "Unknown") {
-                                            await injectedProvider.request({
-                                                method: 'eth_sendTransaction',
-                                                params: [transactionParametersV2],
-                                            }).then(txHashV2 => {
-                                                v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
-
-                                                txHashes[1] = txHashV2;
-
-                                                checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
-                                                    switch (receipt) {
-                                                        case "Success":
-                                                            v2Spinner.$content.find('#v2TxStatus').html('Confirmed');
-                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-solid fa-check");
-                                                            v2Spinner.close();
-                                                            showConfirm(txHashes[0] + "<br/>" + txHashes[1], object, DappObject, 2);
-                                                            break
-                                                        case "Fail":
-                                                            v2Spinner.$content.find('#v2TxStatus').html('Failed');
-                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
-                                                            v2Spinner.close();
-                                                            showFail(object, DappObject, 2);
-                                                            break
-                                                        case "Unknown":
-                                                            v2Spinner.$content.find('#v2TxStatus').html('Unknown');
-                                                            v2Spinner.$content.find('#v2TxIcon').removeClass();
-                                                            v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
-                                                            v2Spinner.close();
-                                                            showFail(object, DappObject, 2);
-                                                            break
-                                                    }
-                                                });
-                                            }).catch((error) => {
-                                                v2Spinner.close();
-
-                                                showFail(object, DappObject, 2)
-                                            });
-                                        }
-                                    })
-                                }).catch((error) => {
-                                    v2Spinner.close();
-
-                                    showFail(object, DappObject, 2)
-                                });
-                            } catch (error) {
-                                v2Spinner.close();
-
-                                showFail(object, DappObject, 2);
-                            }
-                        });
-                    } else if (DappObject.walletIndex === 2) {
-                        await showConfirmationSpinnerv2(async (v2Spinner) => {
-                            try {
-                                await DappObject.walletConnectEVMProvider.request({
-                                    method: 'eth_sendTransaction',
-                                    params: [transactionParameters],
-                                })
-                                .then(txHash => {
-                                    v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
-
-                                    txHashes[0] = txHash;
-
-                                    checkTx(txHash, web32, undefined, object, DappObject, 2, true).then(result => {
-                                        return new Promise((resolve, reject) => {
-                                            switch (result) {
-                                                case "Success":
-                                                    v2Spinner.$content.find('#v1TxStatus').html('Confirmed');
-                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-solid fa-check");
-                                                    v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
-                                                    setTimeout(() => {
-                                                        resolve("Success");
-                                                    }, 1500);
-                                                    break
-                                                case "Fail":
-                                                    v2Spinner.$content.find('#v1TxStatus').html('Failed');
-                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
-                                                    
-                                                    resolve("Failed");
-                                                    v2Spinner.close();
-                                                    showFail(object, DappObject, 2);
-                                                    break
-                                                case "Unknown":
-                                                    v2Spinner.$content.find('#v1TxStatus').html('Unknown');
-                                                    v2Spinner.$content.find('#v1TxIcon').removeClass();
-                                                    v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
-                                                    v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
-                                                    setTimeout(() => {
-                                                        resolve("Unknown");
-                                                    }, 1500);
-                                                    break
-                                            }
-                                        });
-                                    }).then(async value => {
-                                        if (value === "Success" || value === "Unknown") {
-                                            await DappObject.walletConnectEVMProvider.request({
+                                            await DappObject.chosenEVMProvider.request({
                                                 method: 'eth_sendTransaction',
                                                 params: [transactionParametersV2],
                                             }).then(txHashV2 => {
@@ -835,18 +722,9 @@ export async function claimFdRewards(object, DappObject) {
 
             if (DappObject.walletIndex === 1) {
                 await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 2);
-            } else if (DappObject.walletIndex === 0) {
+            } else {
                 showSpinner(async () => {
-                    await injectedProvider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters],
-                    })
-                    .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 2))
-                    .catch((error) => showFail(object, DappObject, 2));
-                });
-            } else if (DappObject.walletIndex === 2) {
-                showSpinner(async () => {
-                    await DappObject.walletConnectEVMProvider.request({
+                    await DappObject.chosenEVMProvider.request({
                         method: 'eth_sendTransaction',
                         params: [transactionParameters],
                     })

@@ -1,7 +1,7 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { wait, round, isNumber, checkConnection, showConnectedAccountAddress, remove, resetDappObjectState } from "./dapp-utils.js";
 import { setCurrentAppState, setCurrentPopup, closeCurrentPopup } from "./dapp-ui.js";
-import { walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
+import { walletConnectEVMParams } from "./dapp-globals.js";
 import { populateFtsos, isDelegateInput1 } from "./dapp-delegate.js";
 import { getDelegatedProviders, getRewardClaimWithProofStructs, switchClaimButtonColor, switchClaimButtonColorBack, switchClaimFdButtonColor, switchClaimFdButtonColorBack, showClaimRewards, showFdRewards, getV1Rewards, getV2Rewards, getFlareDropRewards } from "./dapp-claim.js";
 import { RefreshStakingPage, connectChainsAndKeys } from "./dapp-staking.js";
@@ -78,8 +78,8 @@ export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1,
 
 export async function handleChainChanged(DappObject) {
     try {
-        if (DappObject.walletIndex === 0) {
-            var chainIdHexPromise = await injectedProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+        if (DappObject.walletIndex !== 1 && DappObject.walletIndex !== -1) {
+            var chainIdHexPromise = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
                 var realChainId;
     
                 var changeEvent = new Event("change");
@@ -98,39 +98,9 @@ export async function handleChainChanged(DappObject) {
                         selectedNetwork.options[i].removeAttribute('selected');
                     }
                 }
-                if (DappObject.walletIndex === 0 && realChainId != chainIdHex) {
-                    await injectedProvider.request({
-                        method: "wallet_switchEthereumChain",
-                        params: [
-                            {
-                            "chainId": realChainId
-                            }
-                        ]
-                        }).catch((error) => console.error(error));
-                }
-            });
-        } else if (DappObject.walletIndex === 2) {
-            var chainIdHexPromise = await DappObject.walletConnectEVMProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
-                var realChainId;
-    
-                var changeEvent = new Event("change");
-    
-                var selectedNetwork = document.getElementById("SelectedNetwork");
-    
-                realChainId = selectedNetwork.options[0].getAttribute('data-chainidhex');
-    
-                for (var i = 0; i < selectedNetwork?.options.length; i++) {
-                    if (selectedNetwork?.options[i].getAttribute('data-chainidhex') === String(chainIdHex)) {
-                        selectedNetwork.options[i].setAttribute('selected', 'selected');
-                        selectedNetwork.options.selectedIndex = i;
-                        realChainId = chainIdHex;
-                        selectedNetwork.dispatchEvent(changeEvent);
-                    } else {
-                        selectedNetwork.options[i].removeAttribute('selected');
-                    }
-                }
-                if (DappObject.walletIndex === 2 && realChainId != chainIdHex) {
-                    await DappObject.walletConnectEVMProvider.request({
+
+                if (realChainId != chainIdHex) {
+                    await DappObject.chosenEVMProvider.request({
                         method: "wallet_switchEthereumChain",
                         params: [
                             {
@@ -149,17 +119,8 @@ export async function handleChainChanged(DappObject) {
 }
 
 export async function handleChainChangedStake(DappObject) {
-    if (DappObject.walletIndex === 0) {
-        await injectedProvider.request({
-            method: "wallet_switchEthereumChain",
-            params: [
-                {
-                "chainId": "0xe"
-                }
-            ]
-            }).catch((error) => console.error(error));
-    } else if (DappObject.walletIndex === 2) {
-        await DappObject.walletConnectEVMProvider.request({
+    if (DappObject.walletIndex !== 1) {
+        await DappObject.chosenEVMProvider.request({
             method: "wallet_switchEthereumChain",
             params: [
                 {
@@ -337,8 +298,18 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         break
                 }
             });
-        } else if (DappObject.walletIndex === 0 && (!PassedPublicKey || PassedPublicKey === "")) {
-            const accounts = await injectedProvider.request({method: 'eth_requestAccounts'});
+        } else if ((!PassedPublicKey || PassedPublicKey === "")) {
+            if (DappObject.walletIndex === 2) {
+                if (DappObject.chosenEVMProvider === undefined) {
+                    DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
+                }
+    
+                if (!DappObject.chosenEVMProvider.session) {
+                    await DappObject.chosenEVMProvider.connect();
+                }
+            }
+
+            const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
 
@@ -349,28 +320,6 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
 
             DappObject.isAccountConnected = true;
-
-        } else if (DappObject.walletIndex === 2 && (!PassedPublicKey || PassedPublicKey === "")) {
-            if (DappObject.walletConnectEVMProvider === undefined) {
-                DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
-            }
-
-            if (!DappObject.walletConnectEVMProvider.session) {
-                await DappObject.walletConnectEVMProvider.connect();
-            }
-
-            const accounts = await DappObject.walletConnectEVMProvider.request({method: 'eth_requestAccounts'});
-            
-            account = accounts[0];
-
-            await setCurrentAppState("Connected");
-
-            closeCurrentPopup();
-
-            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
-
-            DappObject.isAccountConnected = true;
-
         } else if (addressIndex && addressIndex !== "") {
             account = PassedEthAddr;
             if (HandleClick) {
@@ -388,7 +337,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
 
         if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
             DappObject.isHandlingOperation = false;
-        } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex === 0 || DappObject.walletIndex === 2) {
+        } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex !== -1) {
             DappObject.selectedAddress = account;
 
             try {
