@@ -156,9 +156,9 @@ export async function resetDappObjectState(DappObject) {
 
     DappObject.ledgerAddrArray = [];
 
-    if (DappObject.walletConnectEVMProvider !== undefined) {
-        DappObject.walletConnectEVMProvider.disconnect();
+    if (DappObject.walletIndex === 2 && DappObject.chosenEVMProvider !== undefined) {
+        DappObject.chosenEVMProvider.disconnect();
     }
 
-    DappObject.walletConnectEVMProvider = undefined;
+    DappObject.chosenEVMProvider = undefined;
 }
