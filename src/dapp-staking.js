@@ -211,6 +211,12 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
         
                         return
                     }
+                } else if (DappObject.walletIndex === 3) {
+                    if (DappObject.chosenEVMProvider === undefined) {
+                        await cryptoComConnector.activate();
+    
+                        DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
+                    }
                 }
 
                 const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});

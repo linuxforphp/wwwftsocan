@@ -160,5 +160,9 @@ export async function resetDappObjectState(DappObject) {
         DappObject.chosenEVMProvider.disconnect();
     }
 
+    if (DappObject.walletIndex === 3 && DappObject.chosenEVMProvider !== undefined) {
+        await cryptoComConnector.deactivate();
+    }
+
     DappObject.chosenEVMProvider = undefined;
 }
