@@ -142,6 +142,12 @@ async function createSelectedNetwork(DappObject) {
                         resolve();
                     }
                 }
+            } else if (DappObject.walletIndex === 3) {
+                if (DappObject.chosenEVMProvider === undefined) {
+                    await cryptoComConnector.activate();
+
+                    DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
+                }
             }
 
             var chainIdHexPromise = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
@@ -1016,7 +1022,7 @@ window.dappInit = async (option, stakingOption) => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
 
-            if (DappObject.walletIndex === 0 || DappObject.walletIndex === 2 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
                 document.getElementById("ConnectPChain")?.click();
             }
 
@@ -1044,7 +1050,7 @@ window.dappInit = async (option, stakingOption) => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
 
-            if (DappObject.walletIndex === 0 || DappObject.walletIndex === 2 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
                 document.getElementById("ConnectPChain")?.click();
             }
 
@@ -1060,7 +1066,7 @@ window.dappInit = async (option, stakingOption) => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
 
-            if (DappObject.walletIndex === 0 || DappObject.walletIndex === 2 || (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length)) {
+            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
                 document.getElementById("ConnectPChain")?.click();
             }
 
