@@ -926,6 +926,13 @@ window.dappInit = async (option, stakingOption) => {
                     getDappPage(1);
                 });
 
+                document.getElementById("ContinueCryptoCom")?.addEventListener("click", async () => {
+                    DappObject.walletIndex = 3;
+                    await cryptoComConnector.activate();
+                    DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
+                    getDappPage(1);
+                });
+
                 await setCurrentAppState("Null");
 
                 await setCurrentPopup("Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and to help you efficiently claim your FLR or SGB rewards!", true);
