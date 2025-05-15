@@ -23,7 +23,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="dummytext">
+    <div class="dummytext" style="margin-top: 20px">
         <div class="addr-wrap">
             <span><?=$view['dappName'] ?></span>
         </div>
