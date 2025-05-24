@@ -64,7 +64,7 @@
                     <strong>How Do I get "Flare" or "Songbird" installed in my browser? </strong><i class="fas fa-caret-down"></i>
                 </button>
                 <div class="faq-panel">
-                    <p>To be able to interact with Ethereum chains such as <strong>Flare</strong> , <strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</strong> , you must first download Metamask on your respective browser , such as Chrome , Firefox , Edge or Opera.<br></p>
+                    <p>To be able to interact with Ethereum chains such as <strong>Flare</strong> , <strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</strong> , you must first download Metamask, or any other EVM Wallet, on your respective browser, such as Chrome, Firefox, Edge, or Opera.<br></p>
                     <a href="#" class="shinyButton" onclick="getDocsPageNewTab(5)"><i class="shinyButtonText">Download Metamask</i></a><br>
                     <p>Then, once your account has been created, to make sure that you can see your tokens and wrapped tokens, you need to add the <strong>Flare</strong> ETH chain, and "WFLR" token.<i class="footnote asterisk">*</i><br></p>
                     <div class="row">
