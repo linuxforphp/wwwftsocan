@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1.3.5 (2025-05-24)
+
+- Adds the Crypto.com Provider.
+- Merges all EthereumProvider code together.
+- Adds Crypto.Com wallet UI, thus fixing some UI issues.
+- Removes Crypto.com Onchain from the Browser Wallet option.
+- Fixes the scale of the Browser Wallet icon.
+- Updates the FAQ.
+
 ## 1.3.4 (2025-05-09)
 
 - Fixes an issue with claiming simultaneously multiple rewards.
