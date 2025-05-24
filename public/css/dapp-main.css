@@ -75,8 +75,8 @@ h1, h2 {
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
     background: rgba(236, 236, 236, 0.7);
     display: inline-block;
-    margin-top: 0px;
-    padding: 30px 44px 25px;
+    margin-top: -15px;
+    padding: 30px 44px 15px;
     border-radius: 25px;
     width: max(50%, 675px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -84,6 +84,11 @@ h1, h2 {
 
 .whoops {
     padding: 30px 20% 25px;
+}
+
+.cryptoconnect-extension-modal {
+    z-index: 9999 !important;
+    line-height: 32px;
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
@@ -142,8 +147,8 @@ h1, h2 {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    margin: 20px 20px 10px 20px;
-    padding: 20px;
+    margin: 15px 20px 5px 20px;
+    padding: 10px;
     letter-spacing: normal;
     transition: 0.5s;
 }
@@ -153,15 +158,15 @@ h1, h2 {
 }
 
 .wallet-icon {
-    height: 118px;
+    height: 75px;
     mix-blend-mode: screen;
     filter: grayscale(100%) contrast(2.5) brightness(110%);
 }
 
 .wallet-icon img {
     filter: url(#shadow);
-    margin-top: 19px;
-    width: 85px;
+    margin-top: 15px;
+    width: 50px;
 }
 
 /* .connect-wallet-text::before {
@@ -192,7 +197,7 @@ h1, h2 {
 }
 
 .dummytext {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .addr-wrap {
@@ -214,6 +219,11 @@ h1, h2 {
     bottom: -32px;
     color: #383a3b !important;
     font-weight: bold;
+}
+
+#ledgerOption .selectize-input, #metamaskOption .selectize-input {
+    width: 60% !important;
+    left: 18% !important;
 }
 
 .network-label {

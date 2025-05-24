@@ -1,5 +1,5 @@
 import { wait, checkTx, checkTxStake } from "./dapp-utils.js";
-import { ledgerAppList, injectedProvider } from "./dapp-globals.js";
+import { ledgerAppList } from "./dapp-globals.js";
 import { ConnectWalletClick } from "./dapp-wallet.js";
 import { undelegate } from "./dapp-delegate.js";
 import { claimRewards } from "./dapp-claim.js";
@@ -285,7 +285,7 @@ export async function showBindPAddress(contract, web32, address, publicKey, addr
                         await LedgerEVMSingleSign(transactionParameters, DappObject, stakingOption, true);
                     } else {
                         showSpinner(async () => {
-                            await injectedProvider.request({
+                            await DappObject.chosenEVMProvider.request({
                                 method: 'eth_sendTransaction',
                                 params: [transactionParameters],
                             })

@@ -1,6 +1,5 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
 import { showSpinner, showConfirmationSpinner, showFail, setCurrentPopup } from "./dapp-ui.js";
-import { injectedProvider } from "./dapp-globals.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
 
 export function getDelegatedBips() {
@@ -227,18 +226,9 @@ export async function delegate(object, DappObject) {
 
             if (DappObject.walletIndex === 1) {
                 await LedgerEVMSingleSign(transactionParameters2, DappObject, undefined, false, object, 1);
-            } else if (DappObject.walletIndex === 0) {
+            } else {
                 showSpinner(async () => {
-                    await injectedProvider.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParameters2],
-                    })
-                    .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 1))
-                    .catch((error) => showFail(object, DappObject, 1));
-                });
-            } else if (DappObject.walletIndex === 2) {
-                showSpinner(async () => {
-                    await DappObject.walletConnectEVMProvider.request({
+                    await DappObject.chosenEVMProvider.request({
                         method: 'eth_sendTransaction',
                         params: [transactionParameters2],
                     })
@@ -270,18 +260,9 @@ export async function undelegate(object, DappObject) {
 
         if (DappObject.walletIndex === 1) {
             await LedgerEVMSingleSign(transactionParameters, DappObject, undefined, false, object, 1);
-        } else if (DappObject.walletIndex === 0) {
+        } else {
             showSpinner(async () => {
-                await injectedProvider.request({
-                    method: 'eth_sendTransaction',
-                    params: [transactionParameters],
-                })
-                .then(txHash => showConfirmationSpinner(txHash, web32, object, DappObject, 1))
-                .catch((error) => showFail(object, DappObject, 1));
-            });
-        } else if (DappObject.walletIndex === 2) {
-            showSpinner(async () => {
-                await DappObject.walletConnectEVMProvider.request({
+                await DappObject.chosenEVMProvider.request({
                     method: 'eth_sendTransaction',
                     params: [transactionParameters],
                 })
