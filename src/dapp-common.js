@@ -280,14 +280,26 @@ async function eip6963Listener(event) {
 
     if (DappObject.providerList.length <= 0) {
         // if there is only 1 Provider, we do not show the dropdown
-        count = DappObject.providerList.push(event.detail);
+        DappObject.providerList.push(event.detail);
+
+        if (DappObject.providerList[0].info.name.toLowerCase().includes("crypto.com")) {
+            DappObject.providerList = [];
+        }
+
+        count = DappObject.providerList.length;
 
         onInjectedInputChange(0);
     } else if (DappObject.providerList.length == 1) {
         // if there are 2 Providers, we inject both into the dropdown
         injectedProviderDropdown = await setupInjectedProviderOption();
 
-        count = DappObject.providerList.push(event.detail);
+        DappObject.providerList.push(event.detail);
+
+        DappObject.providerList = DappObject.providerList.filter(function (item) {
+            return !item.info.name.toLowerCase().includes("crypto.com");
+        });
+
+        count = DappObject.providerList.length;
 
         injectedProviderDropdown.addOption({
             id: count - 1,
@@ -302,7 +314,13 @@ async function eip6963Listener(event) {
         injectedProviderDropdown.setValue([count - 1]);
     } else {
         // if there are > 2 Providers, we inject the new provider into the dropdown
-        count = DappObject.providerList.push(event.detail);
+        DappObject.providerList.push(event.detail);
+
+        DappObject.providerList = DappObject.providerList.filter(function (item) {
+            return !item.info.name.toLowerCase().includes("crypto.com");
+        });
+
+        count = DappObject.providerList.length;
 
         injectedProviderDropdown.addOption({
             id: count - 1,
