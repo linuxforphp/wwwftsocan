@@ -2,7 +2,7 @@ import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, sh
 import { ethers } from "./ethers.js";
 import { wait, unPrefix0x, round, isNumber, checkConnection, checkTxStake, showConnectedAccountAddress, resetDappObjectState } from "./dapp-utils.js";
 import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid } from "./dapp-ui.js";
-import { walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
+import { walletConnectEVMParams } from "./dapp-globals.js";
 import { switchClaimButtonColor, switchClaimButtonColorBack, showClaimRewards } from "./dapp-claim.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
 
@@ -54,195 +54,177 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             requiredApp = "Flare Network";
         }
 
-        if (DappObject.walletIndex === 1 && !PassedPublicKey) {
-            await getLedgerApp(requiredApp).then(async result => {
-                switch (result) {
-                    case "Success":
-                        await wait(3000);
-
-                        if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                            // console.log("Fetching Addresses... P-Chain");
-                            let addresses = await getLedgerAddresses("flare", DappObject.isAvax);
+        if (!PassedPublicKey) {
+            if (DappObject.walletIndex === 1) {
+                await getLedgerApp(requiredApp).then(async result => {
+                    switch (result) {
+                        case "Success":
+                            await wait(3000);
     
-                            let insert = [];
-    
-                            for (let i = 0; i < addresses.length; i++) {
-                                insert[i] = {
-                                    id: i,
-                                    title: addresses[i].ethAddress,
-                                    pubkey: addresses[i].publicKey,
-                                };
-                            }
-    
-                            DappObject.ledgerAddrArray = insert;
-                        }
-    
-                        // console.log(DappObject.ledgerAddrArray);
-    
-                        document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>';
-
-                        if (!document.querySelector("span.title.connect-wallet-text")) {
-                            var onInputChange = async (value) => {
-                                let addressBox = document.querySelector("span.title.connect-wallet-text");
-                                let ethaddr = addressBox.getAttribute('data-ethkey');
-                                let pubKey = addressBox.getAttribute('data-pubkey');
-                                
-                                flrPublicKey = pubKey;
-    
-                                // console.log("flrPublicKey: ");
-                                // console.log(flrPublicKey);
+                            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                                // console.log("Fetching Addresses... P-Chain");
+                                let addresses = await getLedgerAddresses("flare", DappObject.isAvax);
         
-                                account = ethaddr;
+                                let insert = [];
         
-                                DappObject.selectedAddress = account;
+                                for (let i = 0; i < addresses.length; i++) {
+                                    insert[i] = {
+                                        id: i,
+                                        title: addresses[i].ethAddress,
+                                        pubkey: addresses[i].publicKey,
+                                    };
+                                }
         
-                                DappObject.ledgerSelectedIndex = value;
-        
-                                connectChainsAndKeys(flrPublicKey);
-        
-                                let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-        
-                                DappObject.unPrefixedAddr = unprefixed;
-         
-                                ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
+                                DappObject.ledgerAddrArray = insert;
                             }
         
-                            var $select = $('#select-account').selectize({
-                                maxItems: 1,
-                                valueField: 'id',
-                                labelField: 'title',
-                                searchField: ["title"],
-                                options: DappObject.ledgerAddrArray,
-                                render: {
-                                    item: function (item, escape) {
-                                        return (
-                                        "<div>" +
-                                        (item.title
-                                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
-                                            : "") +
-                                        "</div>"
-                                        );
-                                    },
-                                    option: function (item, escape) {
-                                        var label = item.title;
-                                        return (
-                                        "<div>" +
-                                        '<span class="connect-wallet-text">' +
-                                        escape(label) +
-                                        "</span>" +
-                                        "</div>"
-                                        );
-                                    },
-                                },
-                                onChange: function(value) {
-                                    onInputChange(value);
-                                },
-                                create: false,
-                                dropdownParent: "body",
-                            });
+                            // console.log(DappObject.ledgerAddrArray);
         
-                            selectize = $select[0].selectize;
+                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>';
     
-                            if (HandleClick) {
-                                document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
-                            }
+                            if (!document.querySelector("span.title.connect-wallet-text")) {
+                                var onInputChange = async (value) => {
+                                    let addressBox = document.querySelector("span.title.connect-wallet-text");
+                                    let ethaddr = addressBox.getAttribute('data-ethkey');
+                                    let pubKey = addressBox.getAttribute('data-pubkey');
+                                    
+                                    flrPublicKey = pubKey;
         
-                            if (DappObject.ledgerSelectedIndex !== "") {
-                                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
-                            } else {
-                                await setCurrentPopup("Please select an account.", true);
-                            }
-                        } else {
-                            let addressDropdown = document.querySelector("span.title.connect-wallet-text");
-                            
-                            let publicKey = addressDropdown?.getAttribute('data-pubkey');
-                                
-                            flrPublicKey = publicKey;
-                        }
-                        break
-                    case "Failed: App not Installed":
-                        await setCurrentAppState("Alert");
-
-                        clearTimeout(DappObject.latestPopupTimeoutId);
-
-                        DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                            await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
-                        }, 1000);
-
-                        throw new Error("Ledger Avalanche App not installed!");
-                        break
-                    case "Failed: User Rejected":
-                        ConnectPChainClickStake(DappObject, HandleClick);
-                        break
-                }
-            });
-        } else if (DappObject.walletIndex === 0 && !PassedPublicKey) {
-            const accounts = await injectedProvider.request({method: 'eth_requestAccounts'});
+                                    // console.log("flrPublicKey: ");
+                                    // console.log(flrPublicKey);
             
-            account = accounts[0];
-
-            if (DappObject.signatureStaking === "") {
-
-                let signSpinner = $.confirm({
-                    escapeKey: false,
-                    backgroundDismiss: false,
-                    icon: 'fa fa-spinner fa-spin',
-                    title: 'Loading...',
-                    content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
-                    theme: 'material',
-                    type: 'dark',
-                    typeAnimated: true,
-                    draggable: false,
-                    buttons: {
-                        ok: {
-                            isHidden: true, // hide the button
-                        },
-                    },
-                    onContentReady: async function () {
+                                    account = ethaddr;
+            
+                                    DappObject.selectedAddress = account;
+            
+                                    DappObject.ledgerSelectedIndex = value;
+            
+                                    connectChainsAndKeys(flrPublicKey);
+            
+                                    let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+            
+                                    DappObject.unPrefixedAddr = unprefixed;
+             
+                                    ConnectPChainClickStake(DappObject, HandleClick, flrPublicKey, ethaddr, value);
+                                }
+            
+                                var $select = $('#select-account').selectize({
+                                    maxItems: 1,
+                                    valueField: 'id',
+                                    labelField: 'title',
+                                    searchField: ["title"],
+                                    options: DappObject.ledgerAddrArray,
+                                    render: {
+                                        item: function (item, escape) {
+                                            return (
+                                            "<div>" +
+                                            (item.title
+                                                ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                                : "") +
+                                            "</div>"
+                                            );
+                                        },
+                                        option: function (item, escape) {
+                                            var label = item.title;
+                                            return (
+                                            "<div>" +
+                                            '<span class="connect-wallet-text">' +
+                                            escape(label) +
+                                            "</span>" +
+                                            "</div>"
+                                            );
+                                        },
+                                    },
+                                    onChange: function(value) {
+                                        onInputChange(value);
+                                    },
+                                    create: false,
+                                    dropdownParent: "body",
+                                });
+            
+                                selectize = $select[0].selectize;
+        
+                                if (HandleClick) {
+                                    document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
+                                }
+            
+                                if (DappObject.ledgerSelectedIndex !== "") {
+                                    selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                                } else {
+                                    await setCurrentPopup("Please select an account.", true);
+                                }
+                            } else {
+                                let addressDropdown = document.querySelector("span.title.connect-wallet-text");
+                                
+                                let publicKey = addressDropdown?.getAttribute('data-pubkey');
+                                    
+                                flrPublicKey = publicKey;
+                            }
+                            break
+                        case "Failed: App not Installed":
+                            await setCurrentAppState("Alert");
+    
+                            clearTimeout(DappObject.latestPopupTimeoutId);
+    
+                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                            }, 1000);
+    
+                            throw new Error("Ledger Avalanche App not installed!");
+                            break
+                        case "Failed: User Rejected":
+                            ConnectPChainClickStake(DappObject, HandleClick);
+                            break
                     }
                 });
+            } else {
+                if (DappObject.walletIndex === 2) {
+                    if (DappObject.chosenEVMProvider === undefined) {
+                        DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
+                    }
+        
+                    if (!DappObject.chosenEVMProvider.session) {
+                        await DappObject.chosenEVMProvider.connect();
+                    }
+        
+                    if (!DappObject.chosenEVMProvider.session.namespaces.eip155.methods.includes("eth_sign")) {                       
+                        let signSpinner = $.confirm({
+                            escapeKey: false,
+                            backgroundDismiss: false,
+                            icon: 'fa fa-spinner fa-spin',
+                            title: 'Loading...',
+                            content: "Sorry!<br /> Your wallet does not support 'eth_sign'!<br /> You will not be able to stake using the FTSOCAN DApp.",
+                            theme: 'material',
+                            type: 'dark',
+                            typeAnimated: true,
+                            draggable: false,
+                            buttons: {
+                                ok: {
+                                    action: function () {
+                                        getDappPage(4);
+                                    },
+                                },
+                            },
+                            onContentReady: async function () {
+                            }
+                        });
+        
+                        return
+                    }
+                } else if (DappObject.walletIndex === 3) {
+                    if (DappObject.chosenEVMProvider === undefined) {
+                        await cryptoComConnector.activate();
+    
+                        DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
+                    }
+                }
 
-                const signature = await injectedProvider.request({
-                    "method": "personal_sign",
-                    "params": [
-                    message,
-                    account
-                    ]
-                }).catch((error) => async function() {
-                    signSpinner.close();
-
-                    throw error;
-                });
-
-                DappObject.signatureStaking = signature;
-
-                signSpinner.close();
-            }
-
-            await setCurrentAppState("Connected");
-
-            closeCurrentPopup();
-
-            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
-
-            DappObject.isAccountConnected = true;
-
-            flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
-        }  else if (DappObject.walletIndex === 2 && !PassedPublicKey) {
-            if (DappObject.walletConnectEVMProvider === undefined) {
-                DappObject.walletConnectEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
-            }
-
-            if (!DappObject.walletConnectEVMProvider.session) {
-                await DappObject.walletConnectEVMProvider.connect();
-            }
-
-            if (DappObject.walletConnectEVMProvider.session.namespaces.eip155.methods.includes("eth_sign")) {                       
-                const accounts = await DappObject.walletConnectEVMProvider.request({method: 'eth_requestAccounts'});
-                
+                const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
+                    
                 account = accounts[0];
-
+    
                 if (DappObject.signatureStaking === "") {
+    
                     let signSpinner = $.confirm({
                         escapeKey: false,
                         backgroundDismiss: false,
@@ -261,56 +243,35 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                         onContentReady: async function () {
                         }
                     });
-
-                    const signature = await DappObject.walletConnectEVMProvider.request({
+    
+                    const signature = await DappObject.chosenEVMProvider.request({
                         "method": "personal_sign",
                         "params": [
-                        message,
-                        account
+                            message,
+                            account
                         ]
                     }).catch((error) => async function() {
                         signSpinner.close();
-
+    
                         throw error;
                     });
-
+    
                     DappObject.signatureStaking = signature;
-
+    
                     signSpinner.close();
                 }
-
+    
                 await setCurrentAppState("Connected");
-
+    
                 closeCurrentPopup();
-
+    
                 // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
-
+    
                 DappObject.isAccountConnected = true;
-
+    
                 flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
-            } else {
-                let signSpinner = $.confirm({
-                    escapeKey: false,
-                    backgroundDismiss: false,
-                    icon: 'fa fa-spinner fa-spin',
-                    title: 'Loading...',
-                    content: "Sorry!<br /> Your wallet does not support 'eth_sign'!<br /> You will not be able to stake using the FTSOCAN DApp.",
-                    theme: 'material',
-                    type: 'dark',
-                    typeAnimated: true,
-                    draggable: false,
-                    buttons: {
-                        ok: {
-                            action: function () {
-                                getDappPage(4);
-                            },
-                        },
-                    },
-                    onContentReady: async function () {
-                    }
-                });
             }
-        } else if (PassedPublicKey) {
+        } else {
             account = PassedEthAddr;
             flrPublicKey = PassedPublicKey;
 
@@ -1356,7 +1317,7 @@ export async function claimStakingRewards(DappObject, stakingOption) {
                 await LedgerEVMSingleSign(txPayload, DappObject, stakingOption, true);
             } else {
                 showSpinner(async () => {
-                    await injectedProvider.request({
+                    await DappObject.chosenEVMProvider.request({
                         method: 'eth_sendTransaction',
                         params: [transactionParameters],
                     })
