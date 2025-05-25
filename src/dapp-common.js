@@ -150,66 +150,68 @@ async function createSelectedNetwork(DappObject) {
                 }
             }
 
-            var chainIdHexPromise = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
-                var realChainId;
+            if (DappObject.walletIndex !== 1) {
+                var chainIdHexPromise = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'}).then(async function(chainIdHex) {
+                    var realChainId;
 
-                realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
+                    realChainId = networkSelectBox.options[0].getAttribute('data-chainidhex');
 
-                for (var i = 0; i < networkSelectBox.options.length; i++) {
-                    if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
-                        networkSelectBox.options[i].setAttribute('selected', 'selected');
-                        networkSelectBox.options.selectedIndex = i;
-                        realChainId = chainIdHex;
-                    } else {
-                        networkSelectBox.options[i].removeAttribute('selected');
-                    }
-                }
-
-                if (DappObject.metamaskInstalled === true) {
-                    try {
-                        if (DappObject.walletIndex === 0 && realChainId != chainIdHex) {
-                            await DappObject.chosenEVMProvider.request({
-                                method: "wallet_switchEthereumChain",
-                                params: [
-                                    {
-                                    "chainId": realChainId
-                                    }
-                                ]
-                                }).catch((error) => {
-                                    throw error
-                                });
+                    for (var i = 0; i < networkSelectBox.options.length; i++) {
+                        if (networkSelectBox.options[i].getAttribute('data-chainidhex') === chainIdHex) {
+                            networkSelectBox.options[i].setAttribute('selected', 'selected');
+                            networkSelectBox.options.selectedIndex = i;
+                            realChainId = chainIdHex;
+                        } else {
+                            networkSelectBox.options[i].removeAttribute('selected');
                         }
-                    } catch (error) {
-                        // console.log(error);
+                    }
 
-                        if (error.code === 4902) {
-                            try {
+                    if (DappObject.metamaskInstalled === true) {
+                        try {
+                            if (DappObject.walletIndex === 0 && realChainId != chainIdHex) {
                                 await DappObject.chosenEVMProvider.request({
-                                    method: 'wallet_addEthereumChain',
+                                    method: "wallet_switchEthereumChain",
                                     params: [
                                         {
-                                            "chainId": realChainId,
-                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                            "iconUrls": [
-                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                            ],
-                                            "nativeCurrency": {
-                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                "decimals": 18
-                                            }
-                                        },
-                                    ],
-                                });
-                            } catch (error) {
-                                throw(error);
+                                        "chainId": realChainId
+                                        }
+                                    ]
+                                    }).catch((error) => {
+                                        throw error
+                                    });
+                            }
+                        } catch (error) {
+                            // console.log(error);
+
+                            if (error.code === 4902) {
+                                try {
+                                    await DappObject.chosenEVMProvider.request({
+                                        method: 'wallet_addEthereumChain',
+                                        params: [
+                                            {
+                                                "chainId": realChainId,
+                                                "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
+                                                "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
+                                                "iconUrls": [
+                                                    `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                                ],
+                                                "nativeCurrency": {
+                                                    "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                    "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                                    "decimals": 18
+                                                }
+                                            },
+                                        ],
+                                    });
+                                } catch (error) {
+                                    throw(error);
+                                }
                             }
                         }
                     }
-                }
-                resolve();
-            });        
+                });        
+            }
+            resolve();
         }, 200);
     })
 }

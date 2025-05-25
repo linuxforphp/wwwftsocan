@@ -169,135 +169,151 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             requiredApp = "Flare Network";
         }
 
-        if (DappObject.walletIndex === 1 && (typeof addressIndex === "undefined" || addressIndex === "")) {
-            await getLedgerApp(requiredApp).then(async result => {
-                switch (result) {
-                    case "Success":
-                        await wait(3000);
-
-                        if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                            let addresses;
-
-                            // console.log("Fetching Addresses... ETH");
-
-                            if (GetNetworkName(rpcUrl) === "flare") {
-                                addresses = await getLedgerAddresses("flare", DappObject.isAvax);
-                            } else if (GetNetworkName(rpcUrl) === "songbird") {
-                                addresses = await getLedgerAddresses("songbird", DappObject.isAvax);
+        if (DappObject.walletIndex === 1) {
+            if (typeof addressIndex === "undefined" || addressIndex === "") {
+                await getLedgerApp(requiredApp).then(async result => {
+                    switch (result) {
+                        case "Success":
+                            await wait(3000);
+    
+                            if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                                let addresses;
+    
+                                // console.log("Fetching Addresses... ETH");
+    
+                                if (GetNetworkName(rpcUrl) === "flare") {
+                                    addresses = await getLedgerAddresses("flare", DappObject.isAvax);
+                                } else if (GetNetworkName(rpcUrl) === "songbird") {
+                                    addresses = await getLedgerAddresses("songbird", DappObject.isAvax);
+                                }
+    
+                                let insert = [];
+    
+                                for (let i = 0; i < addresses.length; i++) {
+                                    insert[i] = {
+                                        id: i,
+                                        title: addresses[i].ethAddress,
+                                        pubkey: addresses[i].publicKey,
+                                    };
+                                }
+    
+                                DappObject.ledgerAddrArray = insert;
                             }
-
-                            let insert = [];
-
-                            for (let i = 0; i < addresses.length; i++) {
-                                insert[i] = {
-                                    id: i,
-                                    title: addresses[i].ethAddress,
-                                    pubkey: addresses[i].publicKey,
-                                };
+    
+                            // console.log(DappObject.ledgerAddrArray);
+    
+                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
+    
+                            var onInputChange = async (value) => {
+                                let addressBox = document.querySelector("span.title.connect-wallet-text");
+                                let ethaddr = addressBox.getAttribute('data-ethkey');
+                                let pubKey = addressBox.getAttribute('data-pubkey');
+                                
+                                flrPublicKey = pubKey;
+    
+                                account = ethaddr;
+    
+                                DappObject.selectedAddress = account;
+    
+                                DappObject.ledgerSelectedIndex = value;
+    
+                                connectChainsAndKeys(flrPublicKey);
+    
+                                let unprefixed;
+    
+                                if (GetNetworkName(rpcUrl) === "flare") {
+                                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+                                } else if (GetNetworkName(rpcUrl) === "songbird") {
+                                    unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
+                                }
+    
+                                DappObject.unPrefixedAddr = unprefixed;
+    
+                                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
                             }
-
-                            DappObject.ledgerAddrArray = insert;
-                        }
-
-                        // console.log(DappObject.ledgerAddrArray);
-
-                        document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
-
-                        var onInputChange = async (value) => {
-                            let addressBox = document.querySelector("span.title.connect-wallet-text");
-                            let ethaddr = addressBox.getAttribute('data-ethkey');
-                            let pubKey = addressBox.getAttribute('data-pubkey');
-                            
-                            flrPublicKey = pubKey;
-
-                            account = ethaddr;
-
-                            DappObject.selectedAddress = account;
-
-                            DappObject.ledgerSelectedIndex = value;
-
-                            connectChainsAndKeys(flrPublicKey);
-
-                            let unprefixed;
-
-                            if (GetNetworkName(rpcUrl) === "flare") {
-                                unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-                            } else if (GetNetworkName(rpcUrl) === "songbird") {
-                                unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
-                            }
-
-                            DappObject.unPrefixedAddr = unprefixed;
-
-                            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
-                        }
-
-                        var $select = $('#select-account').selectize({
-                            maxItems: 1,
-                            valueField: 'id',
-                            labelField: 'title',
-                            searchField: ["title"],
-                            options: DappObject.ledgerAddrArray,
-                            render: {
-                                item: function (item, escape) {
-                                    return (
-                                    "<div>" +
-                                    (item.title
-                                        ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
-                                        : "") +
-                                    "</div>"
-                                    );
+    
+                            var $select = $('#select-account').selectize({
+                                maxItems: 1,
+                                valueField: 'id',
+                                labelField: 'title',
+                                searchField: ["title"],
+                                options: DappObject.ledgerAddrArray,
+                                render: {
+                                    item: function (item, escape) {
+                                        return (
+                                        "<div>" +
+                                        (item.title
+                                            ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                            : "") +
+                                        "</div>"
+                                        );
+                                    },
+                                    option: function (item, escape) {
+                                        var label = item.title;
+                                        return (
+                                        "<div>" +
+                                        '<span class="connect-wallet-text">' +
+                                        escape(label) +
+                                        "</span>" +
+                                        "</div>"
+                                        );
+                                    },
                                 },
-                                option: function (item, escape) {
-                                    var label = item.title;
-                                    return (
-                                    "<div>" +
-                                    '<span class="connect-wallet-text">' +
-                                    escape(label) +
-                                    "</span>" +
-                                    "</div>"
-                                    );
+                                onChange: function(value) {
+                                    onInputChange(value);
                                 },
-                            },
-                            onChange: function(value) {
-                                onInputChange(value);
-                            },
-                            create: false,
-                            dropdownParent: "body",
-                        });
-
-                        selectize = $select[0].selectize;
-
-                        if (HandleClick) {
-                            document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
-                        }
-
-                        if (DappObject.ledgerSelectedIndex !== "") {
-                            selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
-                        } else {
-                            await setCurrentPopup("Please select an account.", true);
-                        }
-
-                        let addressDropdown = document.querySelector(".selectize-input");
-                        let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
-                            
-                        flrPublicKey = publicKey;
-                        break
-                    case "Failed: App not Installed":
-                        await setCurrentAppState("Alert");
-
-                        clearTimeout(DappObject.latestPopupTimeoutId);
-
-                        DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                            await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
-                        }, 1000);
-
-                        throw new Error("Ledger Avalanche App not installed!");
-                        break
-                    case "Failed: User Rejected":
-                        ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
-                        break
+                                create: false,
+                                dropdownParent: "body",
+                            });
+    
+                            selectize = $select[0].selectize;
+    
+                            if (HandleClick) {
+                                document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+                            }
+    
+                            if (DappObject.ledgerSelectedIndex !== "") {
+                                selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                            } else {
+                                await setCurrentPopup("Please select an account.", true);
+                            }
+    
+                            let addressDropdown = document.querySelector(".selectize-input");
+                            let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                                
+                            flrPublicKey = publicKey;
+                            break
+                        case "Failed: App not Installed":
+                            await setCurrentAppState("Alert");
+    
+                            clearTimeout(DappObject.latestPopupTimeoutId);
+    
+                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                            }, 1000);
+    
+                            throw new Error("Ledger Avalanche App not installed!");
+                            break
+                        case "Failed: User Rejected":
+                            ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
+                            break
+                    }
+                });
+            } else {
+                account = PassedEthAddr;
+                
+                if (HandleClick) {
+                    document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
                 }
-            });
+
+                await setCurrentAppState("Connected");
+
+                closeCurrentPopup();
+
+                // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+
+                DappObject.isAccountConnected = true;
+            }
         } else if ((!PassedPublicKey || PassedPublicKey === "")) {
             if (DappObject.walletIndex === 2) {
                 if (DappObject.chosenEVMProvider === undefined) {
@@ -318,19 +334,6 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
             
             account = accounts[0];
-
-            await setCurrentAppState("Connected");
-
-            closeCurrentPopup();
-
-            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
-
-            DappObject.isAccountConnected = true;
-        } else if (addressIndex && addressIndex !== "") {
-            account = PassedEthAddr;
-            if (HandleClick) {
-                document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
-            }
 
             await setCurrentAppState("Connected");
 
