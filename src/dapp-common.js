@@ -11,6 +11,7 @@ import { getDelegatedBips, isDelegateInput1, delegate } from "./dapp-delegate.js
 import { claimRewards, claimFdRewards } from "./dapp-claim.js";
 import { ConnectPChainClickStake, toggleTransferButton, setTransferButton, setTransferButton2, copyTransferInput, transferTokens, stake, claimStakingRewards } from "./dapp-staking.js";
 import { handleTransportConnect } from "./dapp-ledger.js";
+import { ConnectWalletClickFassets } from "./dapp-fassets.js";
 
 // ALL MODULES.
 
@@ -35,6 +36,7 @@ window.DappObject = {
     addressBinderAbiLocal: FlareAbis.AddressBinder,
     validatorRewardAbiLocal: FlareAbis.ValidatorRewardManager,
     systemsManagerAbiLocal: FlareAbis.FlareSystemsManager,
+    fassetTokenAbi: FlareAbis.FAssetToken,
     // Bools that determine whether or not we should let the user proceed
     wrapBool: true,
     claimBool: false,
@@ -66,6 +68,8 @@ window.DappObject = {
     selectedDateTime: "",
     StakeMaxDate: "",
     StakeMinDate: "",
+    // FAssets Variables
+    chosenFAsset: "",
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -1112,6 +1116,48 @@ window.dappInit = async (option, stakingOption) => {
             DappObject.chosenEVMProvider.on("chainChanged", async () => {
                 handleChainChangedStake(DappObject);
             });
+        }
+    } else if (option === 5 || option === '5') {
+        var handleClick;
+
+        console.log(DappObject.chosenEVMProvider);
+
+        if (stakingOption === 1) {
+            DappObject.chosenFAsset = "";
+
+            const btns = document.querySelectorAll('.fasset-clickable');
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', event => {
+                    DappObject.chosenFAsset = btn.id;
+
+                    console.log(btn.id);
+
+                    getDappPage(11);
+                });
+             });             
+        } else if (stakingOption === 2) {
+            document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
+                ConnectWalletClickFassets(DappObject, 0, handleClick, undefined, undefined, undefined, DappObject.chosenFAsset);
+            });
+
+            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
+                document.getElementById("ConnectWallet")?.click();
+            }
+
+            // We check if the input is valid, then copy it to the wrapped tokens section.
+            // document.querySelector("#AmountTo")?.addEventListener("input", function () {
+            //     setTransferButton2(DappObject);
+            //     copyTransferInput();
+            // });
+
+            // document.getElementById("TransferIcon")?.addEventListener("click", async () => {
+            //     toggleTransferButton(DappObject, stakingOption);
+            // });
+
+            // document.getElementById("WrapButton")?.addEventListener("click", async () => {
+            //     transferTokens(DappObject, stakingOption);
+            // });
         }
     }
 };

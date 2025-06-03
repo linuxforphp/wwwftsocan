@@ -55,6 +55,10 @@
     position: relative;
 }
 
+.amount-fassets::placeholder {
+    color: #383a3b;
+}
+
 .dapp-header {
     position: relative;
     background-color: rgba(255, 255, 255, 0.6);
