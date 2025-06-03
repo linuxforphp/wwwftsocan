@@ -87,6 +87,7 @@
     }
 
     function getDappPage(option, reconnect = true) {
+            // Select-Wallet
             if (option === 4) {
                 $.get( "wallet", function( data ) {
                     $( "#dapp-root" ).html( data );
@@ -97,6 +98,7 @@
                 });
             }
         if (DappObject.isAccountConnected === true) {
+            // WRAP
             if (option === 1) {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "wrap", function( data ) {
@@ -107,6 +109,7 @@
                         }
                     });
                 }
+            // DELEGATE
             } else if (option === 2) {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "delegate", function( data ) {
@@ -117,6 +120,7 @@
                         }
                     });
                 }
+            // REWARDS
             } else if (option === 3) {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "claim", function( data ) {
@@ -126,7 +130,8 @@
                             window.dappInit(3);
                         }
                     });
-                } 
+                }
+            // STAKING TRANSFER 
             } else if (option === 5) {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "stakeTransfer", function( data ) {
@@ -137,6 +142,7 @@
                         }
                     });
                 }
+            // STAKING STAKE
             } else if (option === 6) {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "stakeStake", function( data ) {
@@ -147,6 +153,7 @@
                         }
                     });
                 }
+            // STAKING REWARDS
             } else if (option === 7) {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "stakeRewards", function( data ) {
@@ -157,6 +164,7 @@
                         }
                     });
                 }
+            // WALLET METAMASK ALERT
             } else if (option === 8) {
                 $.get( "walletMetamask", function( data ) {
                     $( "#dapp-root" ).html( data );
@@ -165,6 +173,7 @@
                         window.dappInit(4, 4);
                     }
                 });
+            // WALLET LEDGER ALERT
             } else if (option === 9) {
                 $.get( "walletLedger", function( data ) {
                     $( "#dapp-root" ).html( data );
@@ -173,7 +182,84 @@
                         window.dappInit(4, 5);
                     }
                 });
-            }
+            // FASSETS MINT HOME
+            } else if (option === 10) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsMint", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 1);
+                        }
+                    });
+                }
+            // FASSETS MINT MINT
+            } else if (option === 11) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsMintMint", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 2);
+                        }
+                    });
+                }
+            // FASSETS POOLS HOME
+            } else if (option === 12) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsPools", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 3);
+                        }
+                    });
+                }
+            // FASSETS POOLS LIST
+            } else if (option === 13) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsPoolsList", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 4);
+                        }
+                    });
+                }
+            // FASSETS POOLS DEPOSIT
+            } else if (option === 14) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsPoolsDeposit", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 5);
+                        }
+                    });
+                }
+            // FASSETS REWARDS
+            } else if (option === 15) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsRewards", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 6);
+                        }
+                    });
+                }
+            // METAMASK SELECT OTHER WALLET
+            } else if (option === 16) {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "secondaryWallet", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 7);
+                        }
+                    });
+                }
+            } 
         }
     }
 </script>
