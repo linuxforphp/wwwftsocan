@@ -132,6 +132,41 @@
                 $("#dapp-root").html(data);
                 window.dappInit(4, 5);
             });
+        } else if (uriPath[2] === 'fassetsMint') {
+            $.get("fassetsMint", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(5, 1);
+            });
+        } else if (uriPath[2] === 'fassetsMintMint') {
+            $.get("fassetsMintMint", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(5, 2);
+            });
+        } else if (uriPath[2] === 'fassetsPools') {
+            $.get("fassetsPools", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(5, 3);
+            });
+        } else if (uriPath[2] === 'fassetsPoolsList') {
+            $.get("fassetsPoolsList", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(5, 4);
+            });
+        } else if (uriPath[2] === 'fassetsPoolsDeposit') {
+            $.get("fassetsPoolsDeposit", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(5, 5);
+            });
+        } else if (uriPath[2] === 'fassetsRewards') {
+            $.get("fassetsRewards", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(5, 6);
+            });
+        } else if (uriPath[2] === 'secondaryWallet') {
+            $.get("secondaryWallet", function(data) {
+                $("#dapp-root").html(data);
+                window.dappInit(5, 7);
+            });
         }
     }
 </script>
