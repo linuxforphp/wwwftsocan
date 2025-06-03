@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="row" id="fasset-option-row" style="height: 100px; padding: 0px 10px;">
-        <div class="col-md-5 col-md-offset-1" id="FXRP" type="button" onclick="getDappPage(11)" style="padding: 0px 10px;">
+        <div class="col-md-5 col-md-offset-1 fasset-clickable" id="FXRP" type="button" style="padding: 0px 10px;">
             <div class="fasset-option col-md-12">
                 <div class="wrap-box-content" style="height:100% !important;">
                     <div class="row" style="height:100% !important;">
@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5" id="FDOGE" type="button" onclick="getDappPage(11)" style="padding: 0px 10px;">
+        <div class="col-md-5 fasset-clickable" id="FDOGE" type="button" style="padding: 0px 10px;">
             <div class="fasset-option col-md-12">
                 <div class="wrap-box-content" style="height:100% !important;">
                     <div class="row" style="height:100% !important;">
