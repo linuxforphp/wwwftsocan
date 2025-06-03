@@ -11,7 +11,7 @@ import { getDelegatedBips, isDelegateInput1, delegate } from "./dapp-delegate.js
 import { claimRewards, claimFdRewards } from "./dapp-claim.js";
 import { ConnectPChainClickStake, toggleTransferButton, setTransferButton, setTransferButton2, copyTransferInput, transferTokens, stake, claimStakingRewards } from "./dapp-staking.js";
 import { handleTransportConnect } from "./dapp-ledger.js";
-import { ConnectWalletClickFassets } from "./dapp-fassets.js";
+import { ConnectWalletClickFassets, FAssetInfo } from "./dapp-fassets.js";
 
 // ALL MODULES.
 
@@ -1120,9 +1120,16 @@ window.dappInit = async (option, stakingOption) => {
     } else if (option === 5 || option === '5') {
         var handleClick;
 
-        console.log(DappObject.chosenEVMProvider);
+        if (stakingOption === 7) {
+            document.getElementById("NativeName").innerHTML = FAssetInfo[DappObject.chosenFAsset].name;
 
-        if (stakingOption === 1) {
+            console.log(DappObject.chosenEVMProvider);
+
+            if (DappObject.walletIndex === 1 || DappObject.chosenEVMProvider.isMetaMask !== true) {
+                document.getElementById("metamaskOption").style.display = "none";
+                document.getElementById("walletConnectOption").classList.remove("col-md-6");
+            }
+        } else if (stakingOption === 1) {
             DappObject.chosenFAsset = "";
 
             const btns = document.querySelectorAll('.fasset-clickable');
@@ -1137,8 +1144,18 @@ window.dappInit = async (option, stakingOption) => {
                 });
              });             
         } else if (stakingOption === 2) {
+            document.getElementById("FAssetName").innerHTML = FAssetInfo[DappObject.chosenFAsset].fasset;
+            document.getElementById("NativeName").innerHTML = FAssetInfo[DappObject.chosenFAsset].name;
+            document.getElementById("FromIcon").innerHTML = FAssetInfo[DappObject.chosenFAsset].icon;
+            document.getElementById("ToIcon").innerHTML = FAssetInfo[DappObject.chosenFAsset].fassetIcon;
+            document.getElementById("NativeAddress").innerHTML = FAssetInfo[DappObject.chosenFAsset].dummyAddress;
+
             document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
                 ConnectWalletClickFassets(DappObject, 0, handleClick, undefined, undefined, undefined, DappObject.chosenFAsset);
+            });
+
+            document.getElementById("ConnectNative")?.addEventListener("click", async () => {
+                getDappPage(16);
             });
 
             if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {

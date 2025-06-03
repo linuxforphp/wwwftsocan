@@ -43,6 +43,7 @@
                     <div class="token-identifier">
                         <span id="tokenIdentifier"></span>
                     </div>
+                    <button id="ConnectNative" class="connect-wallet" style="margin: 10px 15px 0 0; width: 35%; padding: 17px; float: right;"><i class="connect-wallet-text" id="ConnectNativeText">Connect to <i class="connect-wallet-text" id="NativeName">XRP</i></i></button>
                     <input readonly id="NativeBalance" class="amount-fassets amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
                 </div>
                 <div class="row">
