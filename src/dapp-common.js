@@ -1045,6 +1045,11 @@ window.dappInit = async (option, stakingOption) => {
                 getDappPage(4);
             });
         } else if (stakingOption === 1) {
+            if (DappObject.walletIndex !== 1) {
+                getDappPage(4);
+                return
+            }
+
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
@@ -1072,6 +1077,10 @@ window.dappInit = async (option, stakingOption) => {
                 transferTokens(DappObject, stakingOption);
             });
         } else if (stakingOption === 2) {
+            if (DappObject.walletIndex !== 1) {
+                getDappPage(4);
+                return
+            }
 
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
@@ -1089,6 +1098,11 @@ window.dappInit = async (option, stakingOption) => {
                 }
             });
         } else if (stakingOption === 3) {
+            if (DappObject.walletIndex !== 1) {
+                getDappPage(4);
+                return
+            }
+            
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });

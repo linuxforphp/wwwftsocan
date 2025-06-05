@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <span style="font-size: 12px;"> To use the staking functionality of the <i style="font-style: italic;">FTSOCAN DApp</i>, you must enable <i style="font-style: italic;">"eth_sign"</i>  in your </br> Wallet. We highly recommend you turn it off IMMEDIATELY after you have </br> finished using the staking functionality of the <i style="font-style: italic;">FTSOCAN DApp</i>.<br></span>
+                <span style="font-size: 12px;"> The staking functionality of the <i style="font-style: italic;">FTSOCAN DApp</i> is currently disabled for Browser Wallets. Sorry for the inconvenience!<br></span>
             </div>
         </div>
     </div>
