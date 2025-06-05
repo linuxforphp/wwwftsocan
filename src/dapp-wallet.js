@@ -4,7 +4,7 @@ import { setCurrentAppState, setCurrentPopup, closeCurrentPopup } from "./dapp-u
 import { walletConnectEVMParams } from "./dapp-globals.js";
 import { populateFtsos, isDelegateInput1 } from "./dapp-delegate.js";
 import { getDelegatedProviders, getRewardClaimWithProofStructs, switchClaimButtonColor, switchClaimButtonColorBack, switchClaimFdButtonColor, switchClaimFdButtonColorBack, showClaimRewards, showFdRewards, getV1Rewards, getV2Rewards, getFlareDropRewards } from "./dapp-claim.js";
-import { RefreshStakingPage, connectChainsAndKeys } from "./dapp-staking.js";
+import { RefreshStakingPage } from "./dapp-staking.js";
 
 export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption, rpcUrl, flrAddr, autoRefresh) {
     DappObject.signatureStaking = "";
@@ -216,8 +216,6 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                                 DappObject.selectedAddress = account;
     
                                 DappObject.ledgerSelectedIndex = value;
-    
-                                connectChainsAndKeys(flrPublicKey);
     
                                 let unprefixed;
     

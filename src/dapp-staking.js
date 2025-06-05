@@ -99,8 +99,6 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             
                                     DappObject.ledgerSelectedIndex = value;
             
-                                    connectChainsAndKeys(flrPublicKey);
-            
                                     let unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
             
                                     DappObject.unPrefixedAddr = unprefixed;
@@ -294,8 +292,6 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
 
             const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
-
-            connectChainsAndKeys(flrPublicKey);
 
             const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
 
@@ -556,18 +552,6 @@ export async function RefreshStakingPage(DappObject, stakingOption) {
     ConnectPChainClickStake(DappObject);
 }
 
-export async function connectChainsAndKeys(publicKey) {
-    const cKeychain = await keychainc();
-    const pKeychain = await keychainp();
-
-    cKeychain.importKey(
-      `PublicKey-${unPrefix0x(String(publicKey))}`
-    );
-    pKeychain.importKey(
-      `PublicKey-${unPrefix0x(String(publicKey))}`
-    );
-}
-
 export async function GetPublicKey(address, message, signature) {
     const messageHash = ethers.utils.hashMessage(message);
     const recoveredPublicKey = ethers.utils.recoverPublicKey(messageHash, signature);
@@ -690,15 +674,7 @@ export async function transferTokens(DappObject, stakingOption) {
                 if (DappObject.transferBool === true) {
                     // C-chain to P-chain
 
-                    // getting C-Chain Keychain
-
-                    const cKeychain = await keychainc();
-
-                    const pKeychain = await keychainp();
-
                     const nonce = await web32.eth.getTransactionCount(DappObject.selectedAddress);
-
-                    // console.log(cKeychain);
 
                     let cChainTransactionId;
 
@@ -708,7 +684,7 @@ export async function transferTokens(DappObject, stakingOption) {
 
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
-                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, nonce, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                            const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, nonce, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     // console.log("C Chain TX ID: " + result.txid);
 
@@ -754,7 +730,7 @@ export async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                    const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                         // console.log("P Chain TX ID: " + result.txid);
         
                                         pChainTransactionId = result.txid;
@@ -803,14 +779,6 @@ export async function transferTokens(DappObject, stakingOption) {
                 } else {
                     // P-chain to C-chain
 
-                    // getting C-Chain Keychain
-
-                    const cKeychain = await keychainc();
-
-                    const pKeychain = await keychainp();
-
-                    // console.log(cKeychain);
-
                     let cChainTransactionId;
 
                     let pChainTransactionId;
@@ -819,7 +787,7 @@ export async function transferTokens(DappObject, stakingOption) {
 
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
-                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, pKeychain, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                            const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                 return new Promise((resolve, reject) => {
                                     // console.log("P Chain TX ID: " + result);
 
@@ -865,7 +833,7 @@ export async function transferTokens(DappObject, stakingOption) {
                             }).then(async result => {
                                 if (result == "Success" || result == "Unknown") {
                                     document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, cKeychain, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                    const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                         // console.log("C Chain TX ID: " + result);
 
                                         cChainTransactionId = result;
@@ -1214,18 +1182,13 @@ export async function stake(DappObject, stakingOption) {
     if (PchainBalanceBigInt < stakeAmount) {
         await setCurrentPopup('You have insufficient funds!', true);
     } else {
-        // Getting C-Chain Keychain
-
-        const cKeychain = await keychainc();
-
-        const pKeychain = await keychainp();
 
         let pChainTransactionId;
 
         try {
             showConfirmationSpinnerStake(async (spinner) => {
                 try {
-                    const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, cKeychain, pKeychain, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                    const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, undefined, undefined, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                         // console.log("P Chain TX ID: " + result);
     
                         pChainTransactionId = result;
