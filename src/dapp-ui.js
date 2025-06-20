@@ -99,7 +99,11 @@ export async function showConfirmationSpinnerTransfer(doSomething) {
             },
         },
         onContentReady: async function () {
-            await doSomething(this);
+            try {
+                await doSomething(this);
+            } catch (error) {
+                this.close()
+            }
         }
     });
 }
@@ -122,7 +126,11 @@ export async function showConfirmationSpinnerStake(doSomething) {
             },
         },
         onContentReady: async function () {
-            await doSomething(this);
+            try {
+                await doSomething(this);
+            } catch (error) {
+                this.close()
+            }
         }
     });
 }
