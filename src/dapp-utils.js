@@ -146,7 +146,7 @@ export const remove = (sel) => document.querySelectorAll(sel).forEach(el => el.r
 export async function resetDappObjectState(DappObject) {
     DappObject.isHandlingOperation = false;
 
-    DappObject.signatureStaking = "";
+    DappObject.pubKey = "";
 
     DappObject.ledgerSelectedIndex = "";
 

@@ -7,7 +7,7 @@ import { getDelegatedProviders, getRewardClaimWithProofStructs, switchClaimButto
 import { RefreshStakingPage } from "./dapp-staking.js";
 
 export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption, rpcUrl, flrAddr, autoRefresh) {
-    DappObject.signatureStaking = "";
+    DappObject.pubKey = "";
 
     if (pageIndex === 1 || pageIndex === '1') {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
@@ -546,7 +546,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             }
         }
     } catch (error) {
-        // console.log(error);
+        console.log(error);
 
         document.getElementById("ConnectWalletText").innerText = "Connect Wallet";
 

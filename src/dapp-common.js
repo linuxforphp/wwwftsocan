@@ -51,7 +51,8 @@ window.DappObject = {
     // Chosen Wallet (-1 = null, 0 = Metamask, 1 = Ledger, 2 = WalletConnect, 3 = Crypto.com)
     walletIndex: -1,
     // Signature used for non-EVM transactions
-    signatureStaking: "",
+    pubKey: "",
+    signature: "",
     // Injected Providers
     providerList: [],
     // Ledger Variables

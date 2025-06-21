@@ -220,8 +220,10 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                 const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
                     
                 account = accounts[0];
+
+                let sig;
     
-                if (DappObject.signatureStaking === "") {
+                if (DappObject.pubKey === "") {
     
                     let signSpinner = $.confirm({
                         escapeKey: false,
@@ -254,7 +256,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                         throw error;
                     });
     
-                    DappObject.signatureStaking = signature;
+                    DappObject.signature = signature;
     
                     signSpinner.close();
                 }
@@ -267,7 +269,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
     
                 DappObject.isAccountConnected = true;
     
-                flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
+                flrPublicKey = await GetPublicKey(account, message, DappObject.signature);
             }
         } else {
             account = PassedEthAddr;
@@ -302,6 +304,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             DappObject.unPrefixedAddr = PchainAddr;
 
             DappObject.selectedAddress = account;
+
+            DappObject.pubKey = flrPublicKey;
 
             const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
                 
@@ -560,7 +564,7 @@ export async function GetPublicKey(address, message, signature) {
     const recoveredAddress = ethers.utils.computeAddress(recoveredPublicKey);
   
     if (recoveredAddress.toLowerCase() === address.toLowerCase()) {
-        return recoveredPublicKey;
+        return ethers.utils.computePublicKey(recoveredPublicKey, true);
     } else {
         throw new Error("Failed to verify signer.");
     }
@@ -685,7 +689,7 @@ export async function transferTokens(DappObject, stakingOption) {
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
                             try {
-                                const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, nonce, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, nonce, amountFromValueInt, DappObject, DappObject.ledgerSelectedIndex).then(result => {
                                     return new Promise((resolve, reject) => {
                                         // console.log("C Chain TX ID: " + result.txid);
 
@@ -731,7 +735,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                 }).then(async result => {
                                     if (result == "Success" || result == "Unknown") {
                                         document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, 1, DappObject, DappObject.ledgerSelectedIndex).then(result => {
                                             // console.log("P Chain TX ID: " + result.txid);
             
                                             pChainTransactionId = result.txid;
@@ -841,7 +845,7 @@ export async function transferTokens(DappObject, stakingOption) {
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
                             try {
-                                const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, amountFromValueInt, DappObject, DappObject.ledgerSelectedIndex).then(result => {
                                     return new Promise((resolve, reject) => {
                                         // console.log("P Chain TX ID: " + result);
 
@@ -887,7 +891,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                 }).then(async result => {
                                     if (result == "Success" || result == "Unknown") {
                                         document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
-                                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, DappObject, DappObject.ledgerSelectedIndex).then(result => {
                                             // console.log("C Chain TX ID: " + result);
 
                                             cChainTransactionId = result;
@@ -1295,7 +1299,7 @@ export async function stake(DappObject, stakingOption) {
         try {
             showConfirmationSpinnerStake(async (spinner) => {
                 try {
-                    const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, undefined, undefined, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                    const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, undefined, undefined, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject, DappObject.ledgerSelectedIndex).then(result => {
                         // console.log("P Chain TX ID: " + result);
     
                         pChainTransactionId = result;
