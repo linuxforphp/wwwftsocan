@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.3.6 (2025-06-24)
+
+- Upgrades to flare-js version 4.0.5.
+- Adds better error handling for staking transactions.
+- Updates the project's dependencies.
+
 ## 1.3.5 (2025-05-24)
 
 - Adds the Crypto.com Provider.
