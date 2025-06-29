@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
-"POT-Creation-Date: 2025-06-28 18:58-0400\n"
-"PO-Revision-Date: 2025-06-29 18:55-0400\n"
+"POT-Creation-Date: 2025-06-29 19:30-0400\n"
+"PO-Revision-Date: 2025-06-29 19:34-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -16,63 +16,66 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: locale/src/strings.php:3
+#: strings.orig.php:3 strings.php:3
 msgid "title"
 msgstr "FTSOCAN"
 
-#: locale/src/strings.php:4
+#: strings.orig.php:4 strings.php:4
 msgid "author"
 msgstr "Flare Time Series Oracle Canada"
 
-#: locale/src/strings.php:5
+#: strings.orig.php:5 strings.php:5
 msgid "description"
-msgstr "Flare Time Series Oracle Canada (FTSOCAN) is one of the most reliable Flare signal providers in the World. FTSOCAN is your best partner when it comes to earning passive income on the Flare Network."
+msgstr ""
+"Flare Time Series Oracle Canada (FTSOCAN) is one of the most reliable Flare "
+"signal providers in the World. FTSOCAN is your best partner when it comes to "
+"earning passive income on the Flare Network."
 
-#: locale/src/strings.php:6
+#: strings.orig.php:6 strings.php:6
 msgid "home"
 msgstr "Home"
 
-#: locale/src/strings.php:7
+#: strings.orig.php:7 strings.php:7
 msgid "toggle"
 msgstr "Toggle navigation"
 
-#: locale/src/strings.php:8
+#: strings.orig.php:8 strings.php:8
 msgid "delegation_tools"
 msgstr "Delegation Tools"
 
-#: locale/src/strings.php:9
+#: strings.orig.php:9 strings.php:9
 msgid "dapp"
 msgstr "DApp"
 
-#: locale/src/strings.php:10
+#: strings.orig.php:10 strings.php:10
 msgid "new"
 msgstr "NEW!"
 
-#: locale/src/strings.php:11
+#: strings.orig.php:11 strings.php:11
 msgid "faq"
 msgstr "FAQ"
 
-#: locale/src/strings.php:12
+#: strings.orig.php:12 strings.php:12
 msgid "about"
 msgstr "About"
 
-#: locale/src/strings.php:13
+#: strings.orig.php:13 strings.php:13
 msgid "select_wallet"
 msgstr "Select Wallet"
 
-#: locale/src/strings.php:14
+#: strings.orig.php:14 strings.php:14
 msgid "wrap"
 msgstr "Wrap"
 
-#: locale/src/strings.php:15
+#: strings.orig.php:15 strings.php:15
 msgid "delegate"
 msgstr "Delegate"
 
-#: locale/src/strings.php:16
+#: strings.orig.php:16 strings.php:16
 msgid "rewards"
 msgstr "Rewards"
 
-#: locale/src/strings.php:17
+#: strings.orig.php:17 strings.php:17
 msgid "stake"
 msgstr "Stake"
 
@@ -98,7 +101,10 @@ msgstr "About FTSO Canada"
 
 #: strings.php:23
 msgid "index_slide1_body"
-msgstr "FTSO Canada is your partner to help you build your passive income on the Flare Network,<br /> by providing the Flare Network with a fast and efficient price provider."
+msgstr ""
+"FTSO Canada is your partner to help you build your passive income on the "
+"Flare Network,<br /> by providing the Flare Network with a fast and "
+"efficient price provider."
 
 #: strings.php:24
 msgid "index_slide2_title"
@@ -106,7 +112,10 @@ msgstr "Earn SGB and FLR"
 
 #: strings.php:25
 msgid "index_slide2_body1"
-msgstr "Passive income is at hand!<br /> You can earn $SGB and $FLR, without the risk of losing your tokens.<br /> Make your money work for you, and start claiming your tokens every week!<br /><br />"
+msgstr ""
+"Passive income is at hand!<br /> You can earn $SGB and $FLR, without the "
+"risk of losing your tokens.<br /> Make your money work for you, and start "
+"claiming your tokens every week!<br /><br />"
 
 #: strings.php:26
 msgid "index_slide2_body2"
@@ -114,7 +123,10 @@ msgstr "Delegate Now"
 
 #: strings.php:27
 msgid "index_slide3_body1"
-msgstr "Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is inaccessible to decentralised applications.<br /> That changes now.<br /><br /> Please visit the"
+msgstr ""
+"Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is "
+"inaccessible to decentralised applications.<br /> That changes now.<br /"
+"><br /> Please visit the"
 
 #: strings.php:28
 msgid "index_slide3_body2"
@@ -150,7 +162,9 @@ msgstr "Delegate the classic way with the Explorer!"
 
 #: strings.php:36
 msgid "delegate_featurette2_body"
-msgstr "Instead of using the Flare Portal to delegate your tokens, you might prefer to use the Flare or the Songbird Explorer:"
+msgstr ""
+"Instead of using the Flare Portal to delegate your tokens, you might prefer "
+"to use the Flare or the Songbird Explorer:"
 
 #: strings.php:37
 msgid "delegate_flr_explorer"
@@ -166,7 +180,9 @@ msgstr "Add the WFLR and WSGB tokens to your wallet!"
 
 #: strings.php:40
 msgid "delegate_featurette3_body"
-msgstr "Import your favorite tokens by pasting these addresses in the \"Import tokens\" section of your wallet:"
+msgstr ""
+"Import your favorite tokens by pasting these addresses in the \"Import tokens"
+"\" section of your wallet:"
 
 #: strings.php:41
 msgid "delegate_outro"
@@ -199,3 +215,125 @@ msgstr "Don't forget to claim your rewards every two weeks!"
 #: strings.php:48
 msgid "stake_outro"
 msgstr "Enjoy your passive income!"
+
+#: strings.php:49
+msgid "faq_title"
+msgstr "Frequently Asked Questions"
+
+#: strings.php:50
+msgid "faq_accordion1_title"
+msgstr "What is FTSO Canada?"
+
+#: strings.php:51
+msgid "faq_accordion1_body1"
+msgstr ""
+"<strong>FTSO Canada</strong> is one of the <strong>Flare</strong> Network's "
+"many FTSOs (Flare Time Series Oracle). <br> \n"
+"                    It provides applications on the <strong>Flare</strong> "
+"Network with highly accurate and decentralized data, such as cryptocurrency "
+"prices, and transaction validation. To learn more about FTSOs, you can visit "
+
+#: strings.php:52
+msgid "faq_accordion1_body2"
+msgstr "Flare's official post about FTSOs."
+
+#: strings.php:53
+msgid "faq_accordion2_title"
+msgstr "How Do I get \"Flare\" or \"Songbird\" installed in my browser?"
+
+#: strings.php:54
+msgid "faq_accordion2_body1"
+msgstr ""
+"To be able to interact with Ethereum chains such as <strong>Flare</strong> , "
+"<strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</"
+"strong> , you must first download Metamask, or any other EVM Wallet, on your "
+"respective browser, such as Chrome, Firefox, Edge, or Opera.<br>"
+
+#: strings.php:55
+msgid "faq_metamask"
+msgstr "Download Metamask"
+
+#: strings.php:56
+msgid "faq_accordion2_body3"
+msgstr ""
+"Then, once your account has been created, to make sure that you can see your "
+"tokens and wrapped tokens, you need to add the <strong>Flare</strong> ETH "
+"chain, and \"WFLR\" token."
+
+#: strings.php:57
+msgid "faq_accordion2_body4"
+msgstr "Add Flare"
+
+#: strings.php:58
+msgid "faq_accordion2_body5"
+msgstr "Add WFLR"
+
+#: strings.php:59
+msgid "faq_accordion2_body6"
+msgstr ""
+"You can also do the same for the <strong>Songbird</strong> ETH chain, and "
+"\"WSGB\" token."
+
+#: strings.php:60
+msgid "faq_accordion2_body7"
+msgstr "Add Songbird"
+
+#: strings.php:61
+msgid "faq_accordion2_body8"
+msgstr "Add WSGB"
+
+#: strings.php:62
+msgid "faq_accordion2_body9"
+msgstr ""
+"Please note that adding the tokens will only permit you to view them. To "
+"actually own WSGB or WFLR, you will need to buy some SGB or FLR from an "
+"exchange, and wrap them."
+
+#: strings.php:63
+msgid "faq_accordion3_title"
+msgstr "How do I connect my Ledger device to my browser?"
+
+#: strings.php:64
+msgid "faq_accordion3_body1"
+msgstr ""
+"Assuming you already have an Ethereum account assigned to your "
+"<strong>Ledger</strong> device, you must first download Metamask on your "
+"respective browser , such as Chrome , Firefox , Edge or Opera.<br>"
+
+#: strings.php:65
+msgid "faq_accordion3_body2"
+msgstr ""
+"Then, once the set up is completed, click on your account, and head down to "
+"\"Add Account or Hardware Wallet\". <br> Click on \"Hardware Wallet\", "
+"select Ledger from the given options, and make sure your <strong>Ledger</"
+"strong> device is connected to your computer. <br> Then, select the account "
+"that you want to connect amongst the ones on your <strong>Ledger</strong> "
+"device. Accept the request on your <strong>Ledger</strong> device, and you "
+"should now be connected."
+
+#: strings.php:66
+msgid "faq_accordion4_title"
+msgstr "How can I wrap, delegate, or claim my Flare or Songbird tokens?"
+
+#: strings.php:67
+msgid "faq_accordion4_body1"
+msgstr ""
+"There are multiple options for wrapping, delegating, or even claiming your "
+"<strong>Flare</strong> or <strong>Songbird</strong> tokens. You can use any "
+"trusted DApp made by the Flare community, like"
+
+#: strings.php:68
+msgid "faq_accordion4_body2"
+msgstr "the FTSOCAN Dapp"
+
+#: strings.php:69
+msgid "faq_accordion4_body3"
+msgstr "the Flare Portal"
+
+#: strings.php:70
+msgid "faq_accordion4_body4"
+msgstr ", which is Flare Networks's official DApp, or "
+
+#: strings.php:71
+msgid "faq_accordion4_body5"
+msgstr "the Flare Explorer"

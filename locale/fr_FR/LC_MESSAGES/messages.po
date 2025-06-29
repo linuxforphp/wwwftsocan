@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
-"POT-Creation-Date: 2025-06-28 18:58-0400\n"
-"PO-Revision-Date: 2025-06-29 18:54-0400\n"
+"POT-Creation-Date: 2025-06-29 19:30-0400\n"
+"PO-Revision-Date: 2025-06-29 19:34-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -16,63 +16,66 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: strings.php:3
+#: strings.orig.php:3 strings.php:3
 msgid "title"
 msgstr "FTSOCAN"
 
-#: strings.php:4
+#: strings.orig.php:4 strings.php:4
 msgid "author"
 msgstr "FTSO Canada"
 
-#: strings.php:5
+#: strings.orig.php:5 strings.php:5
 msgid "description"
-msgstr "FTSOCAN est un des fournisseurs de signaux Flare les plus fiables au monde. FTSOCAN est votre partenaire de choix lorsqu'il s'agit de gagner des revenus passifs sur les réseaux Flare."
+msgstr ""
+"FTSOCAN est un des fournisseurs de signaux Flare les plus fiables au monde. "
+"FTSOCAN est votre partenaire de choix lorsqu'il s'agit de gagner des revenus "
+"passifs sur les réseaux Flare."
 
-#: strings.php:6
+#: strings.orig.php:6 strings.php:6
 msgid "home"
 msgstr "Accueil"
 
-#: strings.php:7
+#: strings.orig.php:7 strings.php:7
 msgid "toggle"
 msgstr "Basculer"
 
-#: strings.php:8
+#: strings.orig.php:8 strings.php:8
 msgid "delegation_tools"
 msgstr "Outils de délégation"
 
-#: strings.php:9
+#: strings.orig.php:9 strings.php:9
 msgid "dapp"
 msgstr "DApp"
 
-#: strings.php:10
+#: strings.orig.php:10 strings.php:10
 msgid "new"
 msgstr "NOUVEAU!"
 
-#: strings.php:11
+#: strings.orig.php:11 strings.php:11
 msgid "faq"
 msgstr "FAQ"
 
-#: strings.php:12
+#: strings.orig.php:12 strings.php:12
 msgid "about"
 msgstr "À propos"
 
-#: strings.php:13
+#: strings.orig.php:13 strings.php:13
 msgid "select_wallet"
 msgstr "Choisir Wallet"
 
-#: strings.php:14
+#: strings.orig.php:14 strings.php:14
 msgid "wrap"
 msgstr "Wrapper"
 
-#: strings.php:15
+#: strings.orig.php:15 strings.php:15
 msgid "delegate"
 msgstr "Déléguer"
 
-#: strings.php:16
+#: strings.orig.php:16 strings.php:16
 msgid "rewards"
 msgstr "Récompenses"
 
-#: strings.php:17
+#: strings.orig.php:17 strings.php:17
 msgid "stake"
 msgstr "Jalonner"
 
@@ -198,4 +201,98 @@ msgstr ""
 
 #: strings.php:48
 msgid "stake_outro"
+msgstr ""
+
+#: strings.php:49
+#, fuzzy
+#| msgid "title"
+msgid "faq_title"
+msgstr "FTSOCAN"
+
+#: strings.php:50
+msgid "faq_accordion1_title"
+msgstr ""
+
+#: strings.php:51
+msgid "faq_accordion1_body1"
+msgstr ""
+
+#: strings.php:52
+msgid "faq_accordion1_body2"
+msgstr ""
+
+#: strings.php:53
+msgid "faq_accordion2_title"
+msgstr ""
+
+#: strings.php:54
+msgid "faq_accordion2_body1"
+msgstr ""
+
+#: strings.php:55
+msgid "faq_metamask"
+msgstr ""
+
+#: strings.php:56
+msgid "faq_accordion2_body3"
+msgstr ""
+
+#: strings.php:57
+msgid "faq_accordion2_body4"
+msgstr ""
+
+#: strings.php:58
+msgid "faq_accordion2_body5"
+msgstr ""
+
+#: strings.php:59
+msgid "faq_accordion2_body6"
+msgstr ""
+
+#: strings.php:60
+msgid "faq_accordion2_body7"
+msgstr ""
+
+#: strings.php:61
+msgid "faq_accordion2_body8"
+msgstr ""
+
+#: strings.php:62
+msgid "faq_accordion2_body9"
+msgstr ""
+
+#: strings.php:63
+msgid "faq_accordion3_title"
+msgstr ""
+
+#: strings.php:64
+msgid "faq_accordion3_body1"
+msgstr ""
+
+#: strings.php:65
+msgid "faq_accordion3_body2"
+msgstr ""
+
+#: strings.php:66
+msgid "faq_accordion4_title"
+msgstr ""
+
+#: strings.php:67
+msgid "faq_accordion4_body1"
+msgstr ""
+
+#: strings.php:68
+msgid "faq_accordion4_body2"
+msgstr ""
+
+#: strings.php:69
+msgid "faq_accordion4_body3"
+msgstr ""
+
+#: strings.php:70
+msgid "faq_accordion4_body4"
+msgstr ""
+
+#: strings.php:71
+msgid "faq_accordion4_body5"
 msgstr ""
