@@ -16,10 +16,10 @@ $baseConfig['view'] = [
     'lightmvc_logo_large' => $baseConfig['URLBASEADDR'] . 'img/logo-dark.svg',
     'favicon' => $baseConfig['URLBASEADDR'] . 'favicon.ico',
     'appname' => $baseConfig['appName'],
-    'title' => 'FTSOCAN Homepage',
-    'author' => 'Flare Time Series Oracle Canada',
     'email' => 'info@ftsocan.com',
-    'description' => 'Flare Time Series Oracle Canada (FTSOCAN) is one of the most reliable Flare signal providers in the World. FTSOCAN is your best partner when it comes to earning passive income on the Flare Network.',
+    'title' => '',
+    'author' => '',
+    'description' => '',
     'css' =>
         [
             /*$baseConfig['URLBASEADDR'] . 'css/tailwind.min.css',
@@ -49,7 +49,7 @@ $baseConfig['view'] = [
     'bodyjs' => 0,
     'links' =>
         [
-            'Home' => $baseConfig['URLBASEADDR'] . 'index',
+            _("home") => $baseConfig['URLBASEADDR'] . 'index',
             /*'Products' => $baseConfig['URLBASEADDR'] . 'products/index',
             'Documentation' => 'https://lightmvc-framework.readthedocs.io/en/latest/?badge=latest',
             'API Doc' => 'http://apidocs.lightmvcframework.net/',*/
@@ -57,7 +57,7 @@ $baseConfig['view'] = [
         ],
     'links-left' =>
         [
-            'Home' => $baseConfig['URLBASEADDR'] . 'index',
+            _("home") => $baseConfig['URLBASEADDR'] . 'index',
             /*'Products' => $baseConfig['URLBASEADDR'] . 'products/index',*/
 
         ],
@@ -69,7 +69,7 @@ $baseConfig['view'] = [
         ],
     'navMenu' =>
         [
-            'Home' => $baseConfig['URLBASEADDR'] . 'index',
+            _("home") => $baseConfig['URLBASEADDR'] . 'index',
 
         ],
 ];

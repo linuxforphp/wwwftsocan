@@ -9,8 +9,8 @@
                     </ul>
                 </div>
 
-                <p class="footer-links">Powered by the <a href="https://lightmvcframework.com" target="_blank">LightMVC Framework</a> and templates by <a href="https://themefisher.com" target="_blank">ThemeFisher</a>.</p>
-                <p class="footer-links">Copyright &copy; 2017-<?=date('Y') ?> <a href="https://etista.com" target="_blank"><?=$view['author'] ?></a>.</p>
+                <p class="footer-links"><?=_("powered_by")?> <a href="https://lightmvcframework.com" target="_blank">LightMVC Framework</a> <?=_("templates_by")?> <a href="https://themefisher.com" target="_blank">ThemeFisher</a>.</p>
+                <p class="footer-links"><?=_("copyright")?> &copy; 2017-<?=date('Y') ?> <a href="https://etista.com" target="_blank"><?=$view['author'] ?></a>.</p>
             </div>
         </div>
     </div>

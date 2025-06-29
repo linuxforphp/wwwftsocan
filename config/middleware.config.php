@@ -25,6 +25,36 @@ $baseConfig['middleware'] = [
 
         return $handler->handle($request);
     },
+    function ($request, $handler) {
+        //phpinfo() 
+
+        // $_SERVER['HTTP_ACCEPT_LANGUAGE']
+
+        $app = \Ascmvc\Mvc\App::getInstance();
+        $baseConfig = $app->getBaseConfig();
+
+        $locale = 'en_US.UTF-8';
+
+        putenv('LANG=' . $locale);
+        setlocale(LC_ALL,"");
+        setlocale(LC_MESSAGES, $locale);
+        setlocale(LC_CTYPE, $locale);
+
+        bindtextdomain("messages", $baseConfig['BASEDIR'] 
+            . DIRECTORY_SEPARATOR 
+            . 'locale'
+        );
+
+        textdomain("messages");
+
+        bind_textdomain_codeset("messages", 'UTF-8');
+
+        $app->baseConfig['view']['title'] = _("title");
+        $app->baseConfig['view']['author'] = _("author");
+        $app->baseConfig['view']['description'] = _("description");
+
+        return $handler->handle($request);
+    },
     /*'/foo' => function ($req, $handler) {
         $response = new \Laminas\Diactoros\Response();
         $response->getBody()->write('FOO!');
