@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-28 18:58-0400\n"
-"PO-Revision-Date: 2025-06-29 18:21-0400\n"
+"PO-Revision-Date: 2025-06-29 18:24-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -86,4 +86,44 @@ msgstr ""
 
 #: strings.php:20
 msgid "copyright"
+msgstr ""
+
+#: strings.php:21
+msgid "index_lead"
+msgstr ""
+
+#: strings.php:22
+msgid "index_about"
+msgstr ""
+
+#: strings.php:23
+msgid "index_slide1_body"
+msgstr ""
+
+#: strings.php:24
+msgid "index_slide2_title"
+msgstr ""
+
+#: strings.php:25
+msgid "index_slide2_body1"
+msgstr ""
+
+#: strings.php:26
+msgid "index_slide2_body2"
+msgstr ""
+
+#: strings.php:27
+msgid "index_slide3_body1"
+msgstr ""
+
+#: strings.php:28
+msgid "index_slide3_body2"
+msgstr ""
+
+#: strings.php:29
+msgid "index_followus"
+msgstr ""
+
+#: strings.php:30
+msgid "index_invitation"
 msgstr ""
