@@ -39,4 +39,11 @@ _("delegate_sgb_explorer");
 _("delegate_featurette3_title");
 _("delegate_featurette3_body");
 _("delegate_outro");
+_("stake_title1");
+_("stake_title2");
+_("stake_title3");
+_("stake_nodeid");
+_("stake_launch");
+_("stake_featurette");
+_("stake_outro");
 

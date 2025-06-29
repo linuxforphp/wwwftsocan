@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-28 18:58-0400\n"
-"PO-Revision-Date: 2025-06-29 18:42-0400\n"
+"PO-Revision-Date: 2025-06-29 18:54-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -170,4 +170,32 @@ msgstr ""
 
 #: strings.php:41
 msgid "delegate_outro"
+msgstr ""
+
+#: strings.php:42
+msgid "stake_title1"
+msgstr ""
+
+#: strings.php:43
+msgid "stake_title2"
+msgstr ""
+
+#: strings.php:44
+msgid "stake_title3"
+msgstr ""
+
+#: strings.php:45
+msgid "stake_nodeid"
+msgstr ""
+
+#: strings.php:46
+msgid "stake_launch"
+msgstr ""
+
+#: strings.php:47
+msgid "stake_featurette"
+msgstr ""
+
+#: strings.php:48
+msgid "stake_outro"
 msgstr ""

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-28 18:58-0400\n"
-"PO-Revision-Date: 2025-06-29 18:46-0400\n"
+"PO-Revision-Date: 2025-06-29 18:55-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -170,4 +170,32 @@ msgstr "Import your favorite tokens by pasting these addresses in the \"Import t
 
 #: strings.php:41
 msgid "delegate_outro"
+msgstr "Enjoy your passive income!"
+
+#: strings.php:42
+msgid "stake_title1"
+msgstr "You can stake to the"
+
+#: strings.php:43
+msgid "stake_title2"
+msgstr "FTSOCAN Validator Node"
+
+#: strings.php:44
+msgid "stake_title3"
+msgstr ",<br />by using the FlareStake Tool!"
+
+#: strings.php:45
+msgid "stake_nodeid"
+msgstr "FTSOCAN FLR Validator Node ID:"
+
+#: strings.php:46
+msgid "stake_launch"
+msgstr "Launch FlareStake"
+
+#: strings.php:47
+msgid "stake_featurette"
+msgstr "Don't forget to claim your rewards every two weeks!"
+
+#: strings.php:48
+msgid "stake_outro"
 msgstr "Enjoy your passive income!"
