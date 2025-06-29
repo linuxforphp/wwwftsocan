@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-28 18:58-0400\n"
-"PO-Revision-Date: 2025-06-29 18:24-0400\n"
+"PO-Revision-Date: 2025-06-29 18:42-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -126,4 +126,48 @@ msgstr ""
 
 #: strings.php:30
 msgid "index_invitation"
+msgstr ""
+
+#: strings.php:31
+msgid "delegate_title1"
+msgstr ""
+
+#: strings.php:32
+msgid "delegate_title2"
+msgstr ""
+
+#: strings.php:33
+msgid "delegate_launch"
+msgstr ""
+
+#: strings.php:34
+msgid "delegate_featurette1_title"
+msgstr ""
+
+#: strings.php:35
+msgid "delegate_featurette2_title"
+msgstr ""
+
+#: strings.php:36
+msgid "delegate_featurette2_body"
+msgstr ""
+
+#: strings.php:37
+msgid "delegate_flr_explorer"
+msgstr ""
+
+#: strings.php:38
+msgid "delegate_sgb_explorer"
+msgstr ""
+
+#: strings.php:39
+msgid "delegate_featurette3_title"
+msgstr ""
+
+#: strings.php:40
+msgid "delegate_featurette3_body"
+msgstr ""
+
+#: strings.php:41
+msgid "delegate_outro"
 msgstr ""

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-28 18:58-0400\n"
-"PO-Revision-Date: 2025-06-29 18:26-0400\n"
+"PO-Revision-Date: 2025-06-29 18:46-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -106,10 +106,7 @@ msgstr "Earn SGB and FLR"
 
 #: strings.php:25
 msgid "index_slide2_body1"
-msgstr ""
-"Passive income is at hand!<br />\n"
-"                    You can earn $SGB and $FLR, without the risk of losing your tokens.<br />\n"
-"                    Make your money work for you, and start claiming your tokens every week!<br /><br />"
+msgstr "Passive income is at hand!<br /> You can earn $SGB and $FLR, without the risk of losing your tokens.<br /> Make your money work for you, and start claiming your tokens every week!<br /><br />"
 
 #: strings.php:26
 msgid "index_slide2_body2"
@@ -117,11 +114,7 @@ msgstr "Delegate Now"
 
 #: strings.php:27
 msgid "index_slide3_body1"
-msgstr ""
-"Unleashing Value.<br />\n"
-"                    Around 65% of the value of Blockchain Tokens is inaccessible to decentralised applications.<br />\n"
-"                    That changes now.<br /><br />\n"
-"                    Please visit the "
+msgstr "Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is inaccessible to decentralised applications.<br /> That changes now.<br /><br /> Please visit the"
 
 #: strings.php:28
 msgid "index_slide3_body2"
@@ -134,3 +127,47 @@ msgstr "FOLLOW US"
 #: strings.php:30
 msgid "index_invitation"
 msgstr "Stay up to date with the latest information about FTSO Canada!"
+
+#: strings.php:31
+msgid "delegate_title1"
+msgstr "You can delegate to"
+
+#: strings.php:32
+msgid "delegate_title2"
+msgstr ",<br />by using the Flare Portal!"
+
+#: strings.php:33
+msgid "delegate_launch"
+msgstr "Launch Flare Portal"
+
+#: strings.php:34
+msgid "delegate_featurette1_title"
+msgstr "Don't forget to claim your rewards every week!"
+
+#: strings.php:35
+msgid "delegate_featurette2_title"
+msgstr "Delegate the classic way with the Explorer!"
+
+#: strings.php:36
+msgid "delegate_featurette2_body"
+msgstr "Instead of using the Flare Portal to delegate your tokens, you might prefer to use the Flare or the Songbird Explorer:"
+
+#: strings.php:37
+msgid "delegate_flr_explorer"
+msgstr "Flare Explorer"
+
+#: strings.php:38
+msgid "delegate_sgb_explorer"
+msgstr "Songbird Explorer"
+
+#: strings.php:39
+msgid "delegate_featurette3_title"
+msgstr "Add the WFLR and WSGB tokens to your wallet!"
+
+#: strings.php:40
+msgid "delegate_featurette3_body"
+msgstr "Import your favorite tokens by pasting these addresses in the \"Import tokens\" section of your wallet:"
+
+#: strings.php:41
+msgid "delegate_outro"
+msgstr "Enjoy your passive income!"

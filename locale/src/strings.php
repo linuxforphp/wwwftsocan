@@ -28,3 +28,15 @@ _("index_slide3_body1");
 _("index_slide3_body2");
 _("index_followus");
 _("index_invitation");
+_("delegate_title1");
+_("delegate_title2");
+_("delegate_launch");
+_("delegate_featurette1_title");
+_("delegate_featurette2_title");
+_("delegate_featurette2_body");
+_("delegate_flr_explorer");
+_("delegate_sgb_explorer");
+_("delegate_featurette3_title");
+_("delegate_featurette3_body");
+_("delegate_outro");
+
