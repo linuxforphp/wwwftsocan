@@ -4,6 +4,28 @@ use Laminas\I18n\Translator\Loader\Gettext;
 use Laminas\I18n\Translator\Translator;
 
 $baseConfig['middleware'] = [
+    '/en' => function ($req, $handler) {
+        $app = \Ascmvc\Mvc\App::getInstance();
+        $app->getSessionManager()->getSession()->set('locale', 'en_US');
+
+        $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
+        $response = new \Laminas\Diactoros\Response();
+        $response = $response->withStatus('302');
+        $response = $response->withHeader('Location', $previousUri);
+
+        return $response;
+    },
+    '/fr' => function ($req, $handler) {
+        $app = \Ascmvc\Mvc\App::getInstance();
+        $app->getSessionManager()->getSession()->set('locale', 'fr_FR');
+
+        $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
+        $response = new \Laminas\Diactoros\Response();
+        $response = $response->withStatus('302');
+        $response = $response->withHeader('Location', $previousUri);
+
+        return $response;
+    },
     function ($request, $handler) {
         if ((isset($request->getServerParams()['QUERY_STRING'])
                 && (strpos($request->getServerParams()['QUERY_STRING'], 'fbclid') !== false
@@ -24,6 +46,23 @@ $baseConfig['middleware'] = [
             $response = $response->withStatus('302');
             $response = $response->withHeader('Location', $requestUri);
             return $response;
+        }
+
+        return $handler->handle($request);
+    },
+    function ($request, $handler) {
+        $app = \Ascmvc\Mvc\App::getInstance();
+
+        $requestUriArray = explode('?', $request->getServerParams()['REQUEST_URI']);
+
+        if (empty($requestUriArray[0]) || $requestUriArray[0] === '/' || substr($requestUriArray[0], -1, 1) === '/') {
+            $requestUri = '/index';
+        } else {
+            $requestUri = $requestUriArray[0];
+        }
+
+        if ($requestUri !== '/en' && $requestUri !== '/fr') {
+            $app->getSessionManager()->getSession()->set('previousUri', $requestUri);
         }
 
         return $handler->handle($request);
