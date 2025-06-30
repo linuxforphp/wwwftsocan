@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-01 15:03-0400\n"
+"PO-Revision-Date: 2025-07-01 15:10-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -80,222 +80,320 @@ msgid "stake"
 msgstr "Jalonner"
 
 #: strings.php:18
+#, fuzzy
 msgid "powered_by"
-msgstr ""
+msgstr "Propulsé par le"
 
 #: strings.php:19
+#, fuzzy
 msgid "templates_by"
-msgstr ""
+msgstr "et modèles de page par"
 
 #: strings.php:20
+#, fuzzy
 msgid "copyright"
-msgstr ""
+msgstr "Tous droits réservés"
 
 #: strings.php:21
+#, fuzzy
 msgid "index_lead"
-msgstr ""
+msgstr "Créez un revenu passif aujourd'hui!"
 
 #: strings.php:22
+#, fuzzy
 msgid "index_about"
-msgstr ""
+msgstr "À propos de FTSO Canada"
 
+# FTSO Canada est votre ami pour vous aider (pour vous assiter) à créer votre revenu passif sur le Flare Network
 #: strings.php:23
+#, fuzzy
 msgid "index_slide1_body"
 msgstr ""
+"FTSO Canada est votre partenaire pour vous aider à créer votre revenu passif "
+"sur le Flare Network,<br /> en fournissant au Flare Network un fournisseur "
+"de prix rapide et efficace."
 
 #: strings.php:24
+#, fuzzy
 msgid "index_slide2_title"
-msgstr ""
+msgstr "Gagner des SGBs et des FLRs"
 
 #: strings.php:25
+#, fuzzy
 msgid "index_slide2_body1"
 msgstr ""
+"Revenu passif à porté de main!<br /> Vous pouvez obtenir des $SGB et des "
+"$FLR, sans le risque de perdre vos jetons.<br /> Faite travailler votre "
+"argent pour vous, et réclamer vos jetons à toutes les semaines!<br /><br />"
 
+# Déléguez tout de suite
 #: strings.php:26
+#, fuzzy
 msgid "index_slide2_body2"
-msgstr ""
+msgstr "Déléguer maintenant"
 
+# Valeur dévoilée--Envirron 65% de la valeur des jetons (noeuds-blockchain) est inacessible aux applaications décentralisées.--Celà-ceci-ça-change maintenant- aujourd'hui.--Veuiller visiter le
 #: strings.php:27
+#, fuzzy
 msgid "index_slide3_body1"
 msgstr ""
+"Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is "
+"inaccessible to decentralised applications.<br /> That changes now.<br /"
+"><br /> Please visit the"
 
 #: strings.php:28
+#, fuzzy
 msgid "index_slide3_body2"
-msgstr ""
+msgstr "Site Web Flare"
 
 #: strings.php:29
+#, fuzzy
 msgid "index_followus"
-msgstr ""
+msgstr "Suivez-nous"
 
+# Les dernières annonces-les dernières nouvelles
 #: strings.php:30
+#, fuzzy
 msgid "index_invitation"
-msgstr ""
+msgstr "Rester à jour avec les dernières informations de FTSO Canada!"
 
 #: strings.php:31
+#, fuzzy
 msgid "delegate_title1"
-msgstr ""
+msgstr "Vous pouvez déléguer à"
 
 #: strings.php:32
+#, fuzzy
 msgid "delegate_title2"
-msgstr ""
+msgstr ",<br />en utilisant le Flare Portal!"
 
 #: strings.php:33
+#, fuzzy
 msgid "delegate_launch"
-msgstr ""
+msgstr "Lancer Flare Portal"
 
 #: strings.php:34
+#, fuzzy
 msgid "delegate_featurette1_title"
-msgstr ""
+msgstr "N'oubliez pas de réclamer vos récompenses à toutes les semaines!"
 
+# -de façon traditionnelle
 #: strings.php:35
+#, fuzzy
 msgid "delegate_featurette2_title"
-msgstr ""
+msgstr "Déléguer de façon classique avec l'Explorateur!"
 
 #: strings.php:36
+#, fuzzy
 msgid "delegate_featurette2_body"
 msgstr ""
+"Plutôt que d'utiliser le Flare Portal pour déléguer vos jetons, peut-être "
+"préféreriez-vous l'Explorateur Flare ou Songbird:"
 
 #: strings.php:37
 msgid "delegate_flr_explorer"
-msgstr ""
+msgstr "Explorateur Flare"
 
 #: strings.php:38
 msgid "delegate_sgb_explorer"
-msgstr ""
+msgstr "Explorateur Songbird"
 
 #: strings.php:39
+#, fuzzy
 msgid "delegate_featurette3_title"
-msgstr ""
+msgstr "Ajouter les jetons WFLR et WSGB à votre wallet!"
 
+# Can't find the "Import Tokens" section
 #: strings.php:40
+#, fuzzy
 msgid "delegate_featurette3_body"
 msgstr ""
+"Importer vos jetons préférés en collant ces adresses dans la section "
+"\"Importer jetons\" de votre wallet:"
 
+# Profiter de
+# Jouissez de vos gains passifs!
 #: strings.php:41
+#, fuzzy
 msgid "delegate_outro"
-msgstr ""
+msgstr "Profiter de vos revenus passifs!"
 
 #: strings.php:42
+#, fuzzy
 msgid "stake_title1"
-msgstr ""
+msgstr "Vous pouvez jalonner au"
 
 #: strings.php:43
+#, fuzzy
 msgid "stake_title2"
-msgstr ""
+msgstr "Validateur de noeuds FTSOCAN"
 
 #: strings.php:44
+#, fuzzy
 msgid "stake_title3"
-msgstr ""
+msgstr ",<br />en utilisant l'outil FlareStake!"
 
 #: strings.php:45
+#, fuzzy
 msgid "stake_nodeid"
-msgstr ""
+msgstr "ID du validateur de noeuds FLR FTSOCAN:"
 
 #: strings.php:46
+#, fuzzy
 msgid "stake_launch"
-msgstr ""
+msgstr "Lancer FlareStake"
 
 #: strings.php:47
+#, fuzzy
 msgid "stake_featurette"
-msgstr ""
+msgstr "N'oubliez pas de réclamer vos récompenses à toutes les deux semaines!"
 
 #: strings.php:48
+#, fuzzy
 msgid "stake_outro"
-msgstr ""
+msgstr "Profiter de vos revenus passifs!"
 
 #: strings.php:49
 #, fuzzy
-#| msgid "title"
 msgid "faq_title"
-msgstr "FTSOCAN"
+msgstr "Foire aux questions"
 
 #: strings.php:50
+#, fuzzy
 msgid "faq_accordion1_title"
-msgstr ""
+msgstr "Qu'est-ce que FTSO Canada?"
 
 #: strings.php:51
+#, fuzzy
 msgid "faq_accordion1_body1"
 msgstr ""
+"<strong>FTSO Canada</strong> is one of the <strong>Flare</strong> Network's "
+"many FTSOs (Flare Time Series Oracle). <br> \n"
+"                    It provides applications on the <strong>Flare</strong> "
+"Network with highly accurate and decentralized data, such as cryptocurrency "
+"prices, and transaction validation. To learn more about FTSOs, you can visit "
 
+# -à propos des FTSOs.
 #: strings.php:52
+#, fuzzy
 msgid "faq_accordion1_body2"
-msgstr ""
+msgstr "Publications officielles de Flare sur les FTSOs."
 
 #: strings.php:53
+#, fuzzy
 msgid "faq_accordion2_title"
-msgstr ""
+msgstr "Comment installer \"Flare\" ou \"Songbird\" sur mon fureteur?"
 
 #: strings.php:54
+#, fuzzy
 msgid "faq_accordion2_body1"
 msgstr ""
+"Pour intéragir aves les chaînes Ethereum comme <strong>Flare</strong> , "
+"<strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</"
+"strong> , vous devez d'abord télécharger Metamask, ou n'importe quel autre "
+"EVM Walletyou must first download Metamask, or any other EVM Wallet, on your "
+"respective browser, such as Chrome, Firefox, Edge, or Opera.<br>"
 
 #: strings.php:55
 msgid "faq_metamask"
-msgstr ""
+msgstr "Télécharger Metamask"
 
 #: strings.php:56
+#, fuzzy
 msgid "faq_accordion2_body3"
 msgstr ""
+"Ensuite, lorsque votre compte a été créé, pour vous assurer de voir vos "
+"jetons et vos jetons wrappés, vous devez ajouter le <strong>Flare</strong> "
+"chaîne ETH, et le jeton \"WFLR\"."
 
 #: strings.php:57
 msgid "faq_accordion2_body4"
-msgstr ""
+msgstr "Ajouter Flare"
 
 #: strings.php:58
 msgid "faq_accordion2_body5"
-msgstr ""
+msgstr "Ajouter WFLR"
 
 #: strings.php:59
+#, fuzzy
 msgid "faq_accordion2_body6"
 msgstr ""
+"Vous pouvez également faire pareil pour le <strong>Songbird</strong> chaîne "
+"ETH, et jeton \"WSGB\"."
 
 #: strings.php:60
 msgid "faq_accordion2_body7"
-msgstr ""
+msgstr "Ajouter Songbird"
 
 #: strings.php:61
 msgid "faq_accordion2_body8"
-msgstr ""
+msgstr "Ajouter WSGB"
 
 #: strings.php:62
+#, fuzzy
 msgid "faq_accordion2_body9"
 msgstr ""
+"Veuillez noter qu'ajouter des jetons vous permettra seulement de les voir. "
+"Pour posséder des WSGB ou des WFLR, vous devez acheter des SGB ou des FLR "
+"d'un échange, et les wrappés."
 
+# dispositif: Élément, composant ou assemblage, associé à un appareil pour remplir une fonction donnée.
 #: strings.php:63
+#, fuzzy
 msgid "faq_accordion3_title"
-msgstr ""
+msgstr "Comment connecter mon dispositif Ledger à mon fureteur?"
 
 #: strings.php:64
+#, fuzzy
 msgid "faq_accordion3_body1"
 msgstr ""
+"Assumant que vous possédez déjà un compte Ethereum assigné à votre "
+"dispositif<strong>Ledger</strong>, vous devez d'abord télécharger Metamask "
+"sur votre fureteur respectif, tel que, Firefox , Edge ou Opera.<br>"
 
 #: strings.php:65
+#, fuzzy
 msgid "faq_accordion3_body2"
 msgstr ""
+"Ensuite, lorsque la création de votre compte sera complété, cliquez sur ce "
+"dernier, puis défiler vers le bas jusqu'à \" Ajouter un compte ou un Wallet "
+"matériel\". <br> Cliquez sur \"Wallet matériel\",sélectionnez Ledger,puis "
+"assurez-vous que votre dispositif <strong>Ledger</strong> est connecté à "
+"votre ordinateur. <br> Ensuite, sélectionnez le compte que vous souhaitez "
+"connecter parmi ceux sur votre dispositif <strong>Ledger</strong>. Acceptez "
+"la requête sur votre dispositif<strong>Ledger</strong> , et vous devriez "
+"être à présent connecté."
 
 #: strings.php:66
+#, fuzzy
 msgid "faq_accordion4_title"
-msgstr ""
+msgstr "Comment wrapper, déléguer, ou réclamer mes jetons Flare ou Songbird?"
 
+# Vous pouvez utiliser tout DApp de confiance ---
 #: strings.php:67
+#, fuzzy
 msgid "faq_accordion4_body1"
 msgstr ""
+"Il y a plusieurs options pour wrapper, déléguer, ou réclamer vos jetons "
+"<strong>Flare</strong> ou <strong>Songbird</strong> . Vous pouvez utiliser "
+"n'importe quel DApp de confiance créé par la communauté Flare, tel que"
 
 #: strings.php:68
 msgid "faq_accordion4_body2"
-msgstr ""
+msgstr "le DApp FTSOCAN"
 
 #: strings.php:69
 msgid "faq_accordion4_body3"
-msgstr ""
+msgstr "le Flare Portal"
 
 #: strings.php:70
+#, fuzzy
 msgid "faq_accordion4_body4"
-msgstr ""
+msgstr ", quel est le DApp officiel de Flare Network, ou"
 
 #: strings.php:71
 msgid "faq_accordion4_body5"
-msgstr ""
+msgstr "l'explorateur Flare"
 
 #: strings.php:72
 msgid "dapp_selectwallet_title"
