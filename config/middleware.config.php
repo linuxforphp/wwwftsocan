@@ -29,14 +29,22 @@ $baseConfig['middleware'] = [
         return $handler->handle($request);
     },
     function ($request, $handler) {
-        //phpinfo() 
-
-        // $_SERVER['HTTP_ACCEPT_LANGUAGE']
-
         $app = \Ascmvc\Mvc\App::getInstance();
         $baseConfig = $app->getBaseConfig();
 
-        $locale = 'en_US';
+        $sessionLocale = $app->getSessionManager()->getSession()->get('locale');
+
+        if ($sessionLocale === null) {
+            $locale = 'en_US';
+            
+            if (strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], 'fr-') !== false) {
+                $locale = 'fr_FR';
+            }
+
+            $app->getSessionManager()->getSession()->set('locale', $locale);
+        } else {
+            $locale = $sessionLocale;
+        }
 
         putenv('LANG=' . $locale);
         setlocale(LC_ALL,"");
