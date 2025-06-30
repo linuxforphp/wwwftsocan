@@ -1,5 +1,8 @@
 <?php
 
+use Laminas\I18n\Translator\Loader\Gettext;
+use Laminas\I18n\Translator\Translator;
+
 $baseConfig['middleware'] = [
     function ($request, $handler) {
         if ((isset($request->getServerParams()['QUERY_STRING'])
@@ -33,7 +36,7 @@ $baseConfig['middleware'] = [
         $app = \Ascmvc\Mvc\App::getInstance();
         $baseConfig = $app->getBaseConfig();
 
-        $locale = 'en_US.UTF-8';
+        $locale = 'en_US';
 
         putenv('LANG=' . $locale);
         setlocale(LC_ALL,"");
@@ -52,6 +55,40 @@ $baseConfig['middleware'] = [
         $app->baseConfig['view']['title'] = _("title");
         $app->baseConfig['view']['author'] = _("author");
         $app->baseConfig['view']['description'] = _("description");
+
+        $translator = new Translator();
+
+        //$type = Laminas\I18n\Translator\Loader\Gettext::class;
+
+        // $translator = Laminas\I18n\Translator\Translator::factory([
+        //     'translation_file_patterns' => [
+        //         [
+        //             'type'     => Laminas\I18n\Translator\Loader\Gettext::class,
+        //             'base_dir' => $baseConfig['BASEDIR'] . DIRECTORY_SEPARATOR . 'locale',
+        //             'pattern'  => '%s' . DIRECTORY_SEPARATOR . 'LC_MESSAGES' . DIRECTORY_SEPARATOR . 'messages.mo',
+        //             'text_domain' => 'messages',
+        //         ],
+        //     ],
+        //     'locale' => $locale,
+        // ]);
+
+        //$translator->addTranslationFile($type, $filename, $textDomain, $locale);
+
+        //$translator->translate("title", "messages", "fr_FR");
+
+        $loader = new Gettext();
+
+        $textDomain = $loader->load($locale, $baseConfig['BASEDIR'] . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . 'LC_MESSAGES' . DIRECTORY_SEPARATOR . 'messages.mo');
+
+        $textDomainSpecArray = [];
+
+        foreach ($textDomain as $key => $value) {
+            if (strpos($key, 'dapp_') !== false) { 
+                $textDomainSpecArray[$key] = $value; 
+            };
+        }
+
+        $app->baseConfig['view']['jstranslate'] = json_encode($textDomainSpecArray);
 
         return $handler->handle($request);
     },
