@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-01 15:10-0400\n"
+"PO-Revision-Date: 2025-07-01 19:58-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -80,115 +80,95 @@ msgid "stake"
 msgstr "Jalonner"
 
 #: strings.php:18
-#, fuzzy
 msgid "powered_by"
 msgstr "Propulsé par le"
 
 #: strings.php:19
-#, fuzzy
 msgid "templates_by"
 msgstr "et modèles de page par"
 
 #: strings.php:20
-#, fuzzy
 msgid "copyright"
 msgstr "Tous droits réservés"
 
 #: strings.php:21
-#, fuzzy
 msgid "index_lead"
-msgstr "Créez un revenu passif aujourd'hui!"
+msgstr "Développez votre revenu passif dès aujourd'hui!"
 
 #: strings.php:22
-#, fuzzy
 msgid "index_about"
 msgstr "À propos de FTSO Canada"
 
 # FTSO Canada est votre ami pour vous aider (pour vous assiter) à créer votre revenu passif sur le Flare Network
 #: strings.php:23
-#, fuzzy
 msgid "index_slide1_body"
 msgstr ""
-"FTSO Canada est votre partenaire pour vous aider à créer votre revenu passif "
-"sur le Flare Network,<br /> en fournissant au Flare Network un fournisseur "
-"de prix rapide et efficace."
+"FTSO Canada est votre partenaire pour vous aider à développer votre revenu "
+"passif sur le réseau Flare,<br /> en offrant un service de fournisseur de "
+"signal rapide et efficace à Flare Networks."
 
 #: strings.php:24
-#, fuzzy
 msgid "index_slide2_title"
-msgstr "Gagner des SGBs et des FLRs"
+msgstr "Gagnez des SGBs et des FLRs"
 
 #: strings.php:25
-#, fuzzy
 msgid "index_slide2_body1"
 msgstr ""
-"Revenu passif à porté de main!<br /> Vous pouvez obtenir des $SGB et des "
-"$FLR, sans le risque de perdre vos jetons.<br /> Faite travailler votre "
-"argent pour vous, et réclamer vos jetons à toutes les semaines!<br /><br />"
+"Un revenu passif à votre portée!<br /> Vous pouvez obtenir des $SGB et des "
+"$FLR, sans courir le risque de perdre vos jetons.<br /> Faites travailler "
+"votre argent pour vous, et réclamez vos jetons à chaque semaine!<br /><br />"
 
 # Déléguez tout de suite
 #: strings.php:26
-#, fuzzy
 msgid "index_slide2_body2"
-msgstr "Déléguer maintenant"
+msgstr "Déléguez dès maintenant"
 
-# Valeur dévoilée--Envirron 65% de la valeur des jetons (noeuds-blockchain) est inacessible aux applaications décentralisées.--Celà-ceci-ça-change maintenant- aujourd'hui.--Veuiller visiter le
 #: strings.php:27
-#, fuzzy
 msgid "index_slide3_body1"
 msgstr ""
-"Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is "
-"inaccessible to decentralised applications.<br /> That changes now.<br /"
-"><br /> Please visit the"
+"Mobiliser pleinement la valeur.<br /> Près de 65% de la valeur globale des "
+"jetons crypto demeure inaccessible aux applications décentralisées.<br /"
+">Cette réalité change maintenant.<br /><br /> Veuillez visiter le"
 
 #: strings.php:28
-#, fuzzy
 msgid "index_slide3_body2"
-msgstr "Site Web Flare"
+msgstr "site Web Flare"
 
 #: strings.php:29
-#, fuzzy
 msgid "index_followus"
-msgstr "Suivez-nous"
+msgstr "SUIVEZ-NOUS"
 
 # Les dernières annonces-les dernières nouvelles
 #: strings.php:30
-#, fuzzy
 msgid "index_invitation"
-msgstr "Rester à jour avec les dernières informations de FTSO Canada!"
+msgstr "Suivez les actualités concernant FTSO Canada!"
 
 #: strings.php:31
-#, fuzzy
 msgid "delegate_title1"
 msgstr "Vous pouvez déléguer à"
 
 #: strings.php:32
-#, fuzzy
 msgid "delegate_title2"
-msgstr ",<br />en utilisant le Flare Portal!"
+msgstr ",<br />en utilisant le portail de Flare!"
 
 #: strings.php:33
-#, fuzzy
 msgid "delegate_launch"
 msgstr "Lancer Flare Portal"
 
 #: strings.php:34
-#, fuzzy
 msgid "delegate_featurette1_title"
-msgstr "N'oubliez pas de réclamer vos récompenses à toutes les semaines!"
+msgstr "N'oubliez pas de réclamer vos récompenses à chaque semaine!"
 
 # -de façon traditionnelle
 #: strings.php:35
-#, fuzzy
 msgid "delegate_featurette2_title"
-msgstr "Déléguer de façon classique avec l'Explorateur!"
+msgstr "Déléguez de façon classique via l'Explorateur!"
 
 #: strings.php:36
-#, fuzzy
 msgid "delegate_featurette2_body"
 msgstr ""
-"Plutôt que d'utiliser le Flare Portal pour déléguer vos jetons, peut-être "
-"préféreriez-vous l'Explorateur Flare ou Songbird:"
+"Au lieu de déléguer vos jetons à l'aide du portail Flare, vous pouvez "
+"utiliser les explorateurs Flare ou Songbird :"
 
 #: strings.php:37
 msgid "delegate_flr_explorer"
@@ -199,112 +179,95 @@ msgid "delegate_sgb_explorer"
 msgstr "Explorateur Songbird"
 
 #: strings.php:39
-#, fuzzy
 msgid "delegate_featurette3_title"
-msgstr "Ajouter les jetons WFLR et WSGB à votre wallet!"
+msgstr "Ajoutez les jetons WFLR et WSGB à votre wallet!"
 
 # Can't find the "Import Tokens" section
 #: strings.php:40
-#, fuzzy
 msgid "delegate_featurette3_body"
 msgstr ""
-"Importer vos jetons préférés en collant ces adresses dans la section "
-"\"Importer jetons\" de votre wallet:"
+"Importez vos jetons préférés en copiant les adresses ci-contre dans la "
+"section \"Importer jetons\" de votre wallet :"
 
 # Profiter de
 # Jouissez de vos gains passifs!
 #: strings.php:41
-#, fuzzy
 msgid "delegate_outro"
-msgstr "Profiter de vos revenus passifs!"
+msgstr "Profitez de vos revenus passifs!"
 
 #: strings.php:42
-#, fuzzy
 msgid "stake_title1"
 msgstr "Vous pouvez jalonner au"
 
 #: strings.php:43
-#, fuzzy
 msgid "stake_title2"
-msgstr "Validateur de noeuds FTSOCAN"
+msgstr "Validateur FTSOCAN"
 
 #: strings.php:44
-#, fuzzy
 msgid "stake_title3"
 msgstr ",<br />en utilisant l'outil FlareStake!"
 
 #: strings.php:45
-#, fuzzy
 msgid "stake_nodeid"
-msgstr "ID du validateur de noeuds FLR FTSOCAN:"
+msgstr "ID du validateur FLR FTSOCAN :"
 
 #: strings.php:46
-#, fuzzy
 msgid "stake_launch"
 msgstr "Lancer FlareStake"
 
 #: strings.php:47
-#, fuzzy
 msgid "stake_featurette"
-msgstr "N'oubliez pas de réclamer vos récompenses à toutes les deux semaines!"
+msgstr "N'oubliez pas de réclamer vos récompenses à chaque semaine!"
 
 #: strings.php:48
-#, fuzzy
 msgid "stake_outro"
-msgstr "Profiter de vos revenus passifs!"
+msgstr "Profitez de vos revenus passifs!"
 
 #: strings.php:49
-#, fuzzy
 msgid "faq_title"
 msgstr "Foire aux questions"
 
 #: strings.php:50
-#, fuzzy
 msgid "faq_accordion1_title"
 msgstr "Qu'est-ce que FTSO Canada?"
 
 #: strings.php:51
-#, fuzzy
 msgid "faq_accordion1_body1"
 msgstr ""
-"<strong>FTSO Canada</strong> is one of the <strong>Flare</strong> Network's "
-"many FTSOs (Flare Time Series Oracle). <br> \n"
-"                    It provides applications on the <strong>Flare</strong> "
-"Network with highly accurate and decentralized data, such as cryptocurrency "
-"prices, and transaction validation. To learn more about FTSOs, you can visit "
+"<strong>FTSO Canada</strong> est un des fournisseurs de signaux de "
+"<strong>Flare Networks</strong>. <br>Nous offrons des services permettant "
+"aux applications décentralisées d'accéder à des données fiables et précises "
+"ainsi que des informations quantitatives validées. Pour en apprendre plus "
+"sur ce qu'est un FTSO, veuillez consulter "
 
 # -à propos des FTSOs.
 #: strings.php:52
-#, fuzzy
 msgid "faq_accordion1_body2"
-msgstr "Publications officielles de Flare sur les FTSOs."
+msgstr "L'article de Flare sur les FTSOs."
 
 #: strings.php:53
-#, fuzzy
 msgid "faq_accordion2_title"
-msgstr "Comment installer \"Flare\" ou \"Songbird\" sur mon fureteur?"
+msgstr "Comment installer \"Flare\" ou \"Songbird\" dans mon fureteur?"
 
 #: strings.php:54
-#, fuzzy
 msgid "faq_accordion2_body1"
 msgstr ""
-"Pour intéragir aves les chaînes Ethereum comme <strong>Flare</strong> , "
-"<strong>Songbird</strong> , <strong>Coston</strong> or <strong>Coston2</"
-"strong> , vous devez d'abord télécharger Metamask, ou n'importe quel autre "
-"EVM Walletyou must first download Metamask, or any other EVM Wallet, on your "
-"respective browser, such as Chrome, Firefox, Edge, or Opera.<br>"
+"Pour intéragir aves les chaînes Ethereum comme celles de <strong>Flare</"
+"strong>, <strong>Songbird</strong>, <strong>Coston</strong> ou "
+"<strong>Coston2</strong>, vous devez d'abord télécharger et installer "
+"Metamask, ou n'importe quel autre Wallet EVM, dans votre fureteur (Chrome, "
+"Firefox, Edge, ou Opera).<br>"
 
 #: strings.php:55
 msgid "faq_metamask"
 msgstr "Télécharger Metamask"
 
 #: strings.php:56
-#, fuzzy
 msgid "faq_accordion2_body3"
 msgstr ""
-"Ensuite, lorsque votre compte a été créé, pour vous assurer de voir vos "
-"jetons et vos jetons wrappés, vous devez ajouter le <strong>Flare</strong> "
-"chaîne ETH, et le jeton \"WFLR\"."
+"Une fois que votre compte est créé, vous devez y ajouter la chaîne ETH "
+"<strong>Flare</strong> et le jeton \"WFLR\", afin d'être en mesure de "
+"visualiser les soldes du compte."
 
 #: strings.php:57
 msgid "faq_accordion2_body4"
@@ -315,11 +278,10 @@ msgid "faq_accordion2_body5"
 msgstr "Ajouter WFLR"
 
 #: strings.php:59
-#, fuzzy
 msgid "faq_accordion2_body6"
 msgstr ""
-"Vous pouvez également faire pareil pour le <strong>Songbird</strong> chaîne "
-"ETH, et jeton \"WSGB\"."
+"Vous pouvez faire de même pour la chaîne ETH <strong>Songbird</strong> et le "
+"jeton \"WSGB\"."
 
 #: strings.php:60
 msgid "faq_accordion2_body7"
@@ -330,53 +292,48 @@ msgid "faq_accordion2_body8"
 msgstr "Ajouter WSGB"
 
 #: strings.php:62
-#, fuzzy
 msgid "faq_accordion2_body9"
 msgstr ""
-"Veuillez noter qu'ajouter des jetons vous permettra seulement de les voir. "
-"Pour posséder des WSGB ou des WFLR, vous devez acheter des SGB ou des FLR "
-"d'un échange, et les wrappés."
+"Veuillez noter qu'ajouter des jetons vous permettra seulement de les "
+"visualiser. Pour posséder des WSGBs ou des WFLRs, vous devez acheter des "
+"SGBs ou des FLRs auprès d'un échange, pour ensuite les wrapper."
 
 # dispositif: Élément, composant ou assemblage, associé à un appareil pour remplir une fonction donnée.
 #: strings.php:63
-#, fuzzy
 msgid "faq_accordion3_title"
 msgstr "Comment connecter mon dispositif Ledger à mon fureteur?"
 
 #: strings.php:64
-#, fuzzy
 msgid "faq_accordion3_body1"
 msgstr ""
-"Assumant que vous possédez déjà un compte Ethereum assigné à votre "
-"dispositif<strong>Ledger</strong>, vous devez d'abord télécharger Metamask "
-"sur votre fureteur respectif, tel que, Firefox , Edge ou Opera.<br>"
+"Présumant que vous possédez déjà un compte Ethereum assigné à votre "
+"dispositif <strong>Ledger</strong>, vous devez d'abord installer Metamask "
+"dans votre fureteur (Chrome, Firefox, Edge ou Opera).<br>"
 
 #: strings.php:65
-#, fuzzy
 msgid "faq_accordion3_body2"
 msgstr ""
-"Ensuite, lorsque la création de votre compte sera complété, cliquez sur ce "
-"dernier, puis défiler vers le bas jusqu'à \" Ajouter un compte ou un Wallet "
-"matériel\". <br> Cliquez sur \"Wallet matériel\",sélectionnez Ledger,puis "
-"assurez-vous que votre dispositif <strong>Ledger</strong> est connecté à "
-"votre ordinateur. <br> Ensuite, sélectionnez le compte que vous souhaitez "
-"connecter parmi ceux sur votre dispositif <strong>Ledger</strong>. Acceptez "
-"la requête sur votre dispositif<strong>Ledger</strong> , et vous devriez "
-"être à présent connecté."
+"Ensuite, lorsque l'installation sera complétée, cliquez sur votre compte, "
+"puis défilez vers le bas jusqu'à l'élément \"Ajouter un compte ou un Wallet "
+"matériel\". <br>Cliquez sur \"Wallet matériel\", sélectionnez l'option "
+"Ledger, puis assurez-vous que votre dispositif <strong>Ledger</strong> est "
+"connecté à votre ordinateur. <br>Ensuite, sélectionnez le compte que vous "
+"souhaitez connecter et acceptez la requête sur votre dispositif "
+"<strong>Ledger</strong>. Votre compte devrait être à présent connecté à "
+"Metamask."
 
 #: strings.php:66
-#, fuzzy
 msgid "faq_accordion4_title"
-msgstr "Comment wrapper, déléguer, ou réclamer mes jetons Flare ou Songbird?"
+msgstr "Comment wrapper, déléguer ou réclamer mes jetons Flare ou Songbird?"
 
 # Vous pouvez utiliser tout DApp de confiance ---
 #: strings.php:67
-#, fuzzy
 msgid "faq_accordion4_body1"
 msgstr ""
-"Il y a plusieurs options pour wrapper, déléguer, ou réclamer vos jetons "
-"<strong>Flare</strong> ou <strong>Songbird</strong> . Vous pouvez utiliser "
-"n'importe quel DApp de confiance créé par la communauté Flare, tel que"
+"Ce sont les applications décentralisées (DApps) qui vous permettront de "
+"wrapper, déléguer, ou réclamer vos jetons <strong>Flare</strong> ou "
+"<strong>Songbird</strong> . Plusieurs DApps sont disponibles au sein de la  "
+"communauté Flare, tels que"
 
 #: strings.php:68
 msgid "faq_accordion4_body2"
@@ -387,413 +344,474 @@ msgid "faq_accordion4_body3"
 msgstr "le Flare Portal"
 
 #: strings.php:70
-#, fuzzy
 msgid "faq_accordion4_body4"
-msgstr ", quel est le DApp officiel de Flare Network, ou"
+msgstr ", qui est le DApp officiel de Flare Networks, ou"
 
 #: strings.php:71
 msgid "faq_accordion4_body5"
-msgstr "l'explorateur Flare"
+msgstr "l'Explorateur Flare"
 
 #: strings.php:72
 msgid "dapp_selectwallet_title"
-msgstr ""
+msgstr "Comment souhaitez-vous accéder à votre Wallet?"
 
 #: strings.php:73
 msgid "dapp_browserwallet"
-msgstr ""
+msgstr "Wallet Fureteur"
 
 #: strings.php:74
 msgid "dapp_wallet_warning"
-msgstr ""
+msgstr "ATTENTION"
 
 #: strings.php:75
 msgid "dapp_metamask_title1"
-msgstr ""
+msgstr "La fonctionnalité de jalonnement du"
 
 #: strings.php:76
 msgid "dapp_metamask_title2"
 msgstr ""
+"n'est pas disponible actuellement pour les Wallets fureteurs. Nous vous "
+"remercions de votre compréhension!"
 
 #: strings.php:77
 msgid "dapp_wallet_back"
-msgstr ""
+msgstr "Retour"
 
 #: strings.php:78
 msgid "dapp_wallet_continue"
-msgstr ""
+msgstr "Continuer"
 
 #: strings.php:79
 msgid "dapp_ledger_title1"
-msgstr ""
+msgstr "Avant d'accéder à"
 
 #: strings.php:80
 msgid "dapp_ledger_title2"
-msgstr ""
+msgstr "au moyen de votre dispositif Ledger, vous devez ouvrir le"
 
 #: strings.php:81
 msgid "dapp_ledger_title3"
-msgstr ""
+msgstr "et activer le mode expert."
 
 #: strings.php:82
 msgid "dapp_connect"
-msgstr ""
+msgstr "Connecter"
 
 #: strings.php:83
 msgid "dapp_connectstake"
-msgstr ""
+msgstr "Connecter au P-Chain"
 
 #: strings.php:84
 msgid "dapp_wrap"
-msgstr ""
+msgstr "Wrapper"
 
 #: strings.php:85
 msgid "dapp_unwrap"
-msgstr ""
+msgstr "Dé-wrapper"
 
 #: strings.php:86
 msgid "dapp_balance"
-msgstr ""
+msgstr "Solde"
 
 #: strings.php:87
 msgid "dapp_account"
-msgstr ""
+msgstr "Compte"
 
 #: strings.php:88
 msgid "dapp_provider"
-msgstr ""
+msgstr "Fournisseur"
 
 #: strings.php:89
 msgid "dapp_enteramount"
-msgstr ""
+msgstr "Saisir montant"
 
 #: strings.php:90
 msgid "dapp_selectftso"
-msgstr ""
+msgstr "Choisir FTSO"
 
 #: strings.php:91
 msgid "dapp_delegate"
-msgstr ""
+msgstr "Déléguer"
 
 #: strings.php:92
 msgid "dapp_undelegate"
-msgstr ""
+msgstr "Récuser tout"
 
 #: strings.php:93
 msgid "dapp_claim_autowrap"
-msgstr ""
+msgstr "Wrap auto"
 
 #: strings.php:94
 msgid "dapp_claim_claimrewards"
-msgstr ""
+msgstr "Réclamer"
 
 #: strings.php:95
 msgid "dapp_claim_claimfd"
-msgstr ""
+msgstr "FlareDrop"
 
 #: strings.php:96
 msgid "dapp_transfer"
-msgstr ""
+msgstr "Transférer"
 
 #: strings.php:97
 msgid "dapp_transferfunds"
-msgstr ""
+msgstr "Transférer"
 
 #: strings.php:98
 msgid "dapp_validatorlist"
-msgstr ""
+msgstr "Choisir"
 
 #: strings.php:99
 msgid "dapp_maximum"
-msgstr ""
+msgstr "MAX"
 
 #: strings.php:100
 msgid "dapp_claim"
-msgstr ""
+msgstr "Réclamer"
 
 #: strings.php:101
 msgid "dapp_mabel_selectwallet1"
 msgstr ""
+"Bonjour! Je m'appelle Mabel. Je serai votre assistante virtuelle aujourd'hui "
+"et je vous guiderai dans toutes vos opérations entourant vos jetons FLR et "
+"SGB!"
 
 #: strings.php:102
 msgid "dapp_mabel_selectwallet2"
 msgstr ""
+"D'abord, choisissez un logiciel de wallet! Si vous avez un dispositif "
+"Ledger, veuillez sélectionner l'option Ledger. Si votre compte se trouve dans"
 
 #: strings.php:103
 msgid "dapp_mabel_selectwallet3"
-msgstr ""
+msgstr ", veuillez choisir l'option"
 
 #: strings.php:104
 msgid "dapp_mabel_selectwallet4"
-msgstr ""
+msgstr "D'autres s'ajouteront bientôt!"
 
 #: strings.php:105
 msgid "dapp_mabel_wrap1"
 msgstr ""
+"Cette page vous permet de wrapper, en convertissant vos jetons FLR ou SGB en "
+"jetons WFLR ou WSGB respectivement. Vous pourrez ensuite les déléguer à un "
+"FTSO afin de gagner des revenus passifs!"
 
 #: strings.php:106
 msgid "dapp_mabel_wrap2"
 msgstr ""
+"D'abord, choisissez entre l'action de wrapper ou dé-wrapper à l'aide du "
+"bouton dans le coin supérieur gauche de l'application. Ensuite, indiquez la "
+"quantité de jetons à convertir. N'oubliez surtout pas de conserver quelques "
+"jetons pour payer les frais d'opération."
 
 #: strings.php:107
 msgid "dapp_mabel_delegate1"
 msgstr ""
+"Cette page vous permet de déléguer en partie ou en totalité vos jetons "
+"wrappés à un FTSO de votre choix afin de gagner un revenu passif!"
 
 #: strings.php:108
 msgid "dapp_mabel_delegate2"
 msgstr ""
+"Tout d'abord, choisissez un FTSO à l'aide du menu déroulant. Ensuite, "
+"inscrivez le pourcentage du montant à déléguer, soit 50%, soit 100%!"
 
 #: strings.php:109
 msgid "dapp_mabel_claim1"
 msgstr ""
+"Cette page vous permet de réclamer les récompenses que vous avez gagnées en "
+"déléguant à un FTSO!"
 
 #: strings.php:110
 msgid "dapp_mabel_claim2"
 msgstr ""
+"Si vous avez des récompenses, un des boutons se trouvant au bas de "
+"l'application s'activera et affichera le montant à réclamer. Il suffit de "
+"cliquer le bouton pour réclamer vos récompenses!"
 
 #: strings.php:111
 msgid "dapp_mabel_transfer1"
 msgstr ""
+"Cette page vous permet de transférer des jetons FLR du C-Chain vers le P-"
+"Chain, afin de les jalonner auprès d'un validateur et gagner des récompenses "
+"supplémentaires!"
 
 #: strings.php:112
 msgid "dapp_mabel_transfer2"
 msgstr ""
+"Tout d'abord, choisissez la destination du transfert, soit vers le P-Chain, "
+"soit vers le C-Chain, en cliquant sur la flèche se trouvant au centre de la "
+"page. Ensuite, inscrivez la quantité de jetons à transférer. N'oubliez "
+"surtout pas de conserver quelques jetons pour payer les frais d'opération."
 
 #: strings.php:113
 msgid "dapp_mabel_stake1"
 msgstr ""
+"Cette page vous permet de jalonner vos jetons FLR (par tranche de 50 000) "
+"auprès d'un validateur de votre choix afin de gagner des récompenses "
+"supplémentaires!"
 
 #: strings.php:114
 msgid "dapp_mabel_stake2"
 msgstr ""
+"Tout d'abord, choisissez un validateur à l'aide du menu déroulant. Ensuite, "
+"inscrivez la durée du jalonnement à l'aide du calendrier. Il est à noter que "
+"ces jetons seront gelés au cours de cette période. Enfin, inscrivez la "
+"quantité de jetons à jalonner (au moins 50 000)."
 
 #: strings.php:115
 msgid "dapp_mabel_claimstake1"
 msgstr ""
+"Cette page vous permet de réclamer les récompenses que vous avez gagnées en "
+"jalonnant vos jetons auprès d'un validateur."
 
 #: strings.php:116
 msgid "dapp_mabel_claimstake2"
 msgstr ""
+"Si vous avez des récompenses, le bouton se trouvant au bas de l'application "
+"s'activera et affichera le montant à réclamer. Il suffit de cliquer sur le "
+"bouton pour réclamer vos récompenses!"
 
 #: strings.php:117
 msgid "dapp_mabel_metamask"
 msgstr ""
+"Pour utiliser les fonctionnalités de jalonnement du DApp de FTSOCAN, vous "
+"devez activer l'option eth_sign de Metamask."
 
 #: strings.php:118
 msgid "dapp_mabel_ledger1"
 msgstr ""
+"Dommage! Votre fureteur n'offre pas la fonctionnalité Ledger Transport! Vous "
+"devrez utiliser un autre wallet."
 
 #: strings.php:119
 msgid "dapp_mabel_ledger2"
-msgstr ""
+msgstr "Dommage! Il semble que le"
 
 #: strings.php:120
 msgid "dapp_mabel_ledger3"
 msgstr ""
+"n'est pas installé sur votre dispositif Ledger! Veuillez l'installer avant "
+"de poursuivre!"
 
 #: strings.php:121
 msgid "dapp_mabel_connecting"
-msgstr ""
+msgstr "En cours..."
 
 #: strings.php:122
 msgid "dapp_mabel_connected"
-msgstr ""
+msgstr "Connecté!"
 
 #: strings.php:123
 msgid "dapp_mabel_selectaccount"
-msgstr ""
+msgstr "Veuillez choisir un compte."
 
 #: strings.php:124
 msgid "dapp_mabel_stake_error1"
-msgstr ""
+msgstr "Veuillez saisir un montant valide (plus que 0)."
 
 #: strings.php:125
 msgid "dapp_mabel_stake_error2"
-msgstr ""
+msgstr "Les fonds ne sont pas suffisants!"
 
 #: strings.php:126
 msgid "dapp_mabel_transfer_error1"
-msgstr ""
+msgstr "Le montant n'est pas valide, car il excède votre solde."
 
 #: strings.php:127
 msgid "dapp_mabel_transfer_error2"
-msgstr ""
+msgstr "Le montant saisi n'est pas un nombre."
 
 #: strings.php:128
 msgid "dapp_mabel_wrap_error1"
-msgstr ""
+msgstr "Le montant n'est pas valide, car il excède votre solde."
 
 #: strings.php:129
 msgid "dapp_mabel_wrap_error2"
-msgstr ""
+msgstr "Le montant saisi n'est pas un nombre."
 
 #: strings.php:130
 msgid "dapp_mabel_wrap_error3"
-msgstr ""
+msgstr "Le solde n'est pas suffisant!"
 
 #: strings.php:131
 msgid "dapp_mabel_wrap_error4"
-msgstr ""
+msgstr "Le solde de jetons wrappés n'est pas suffisant!"
 
 #: strings.php:132
 msgid "dapp_mabel_delegate_error1"
 msgstr ""
+"Il semble que vous avez déjà délégué tous vos jetons! Si vous souhaitez "
+"déléguer vos jetons à un autre FTSO, vous devrez d'abord récuser vos "
+"délégations actuelles!"
 
 #: strings.php:133
 msgid "dapp_mabel_delegate_error2"
-msgstr ""
+msgstr "Le FTSO auquel vous avez délégué vos jetons est actuellement invalide!"
 
 #: strings.php:134
 msgid "dapp_mabel_delegate_error3"
-msgstr ""
+msgstr "Vous devez saisir une valeur, soit 50%, soit 100%."
 
 #: strings.php:135
 msgid "dapp_mabel_internet_error"
 msgstr ""
+"Votre connexion à Internet est actuellement instable! Veuillez vous assurer "
+"de la stabilité de votre connexion avant de poursuivre."
 
 #: strings.php:136
 msgid "dapp_popup_loading"
-msgstr ""
+msgstr "Chargement..."
 
 #: strings.php:137
 msgid "dapp_popup_checkwallet1"
-msgstr ""
+msgstr "Pour continuer, veuillez approuver la transaction."
 
 #: strings.php:138
 msgid "dapp_popup_checkwallet2"
-msgstr ""
+msgstr "Veuillez consulter votre Wallet..."
 
 #: strings.php:139
 msgid "dapp_popup_networkconfirm1"
-msgstr ""
+msgstr "En attente de la confirmation du réseau."
 
 #: strings.php:140
 msgid "dapp_popup_networkconfirm2"
-msgstr ""
+msgstr "Veuillez patienter..."
 
 #: strings.php:141
 msgid "dapp_popup_txsuccess"
-msgstr ""
+msgstr "Transaction confirmée!"
 
 #: strings.php:142
 msgid "dapp_popup_txfail"
-msgstr ""
+msgstr "Transaction refusée!"
 
 #: strings.php:143
 msgid "dapp_popup_txhash"
-msgstr ""
+msgstr "No de confirmation :"
 
 #: strings.php:144
 msgid "dapp_popup_v1status"
-msgstr ""
+msgstr "Statut de la réclamation V1 :"
 
 #: strings.php:145
 msgid "dapp_popup_v2status1"
-msgstr ""
+msgstr "Statut de la réclamation V2 :"
 
 #: strings.php:146
 msgid "dapp_popup_v2status2"
-msgstr ""
+msgstr "En attente de la réclamation V1..."
 
 #: strings.php:147
 msgid "dapp_popup_v1empty1"
-msgstr ""
+msgstr "Le Bucket V1 est vide!"
 
 #: strings.php:148
 msgid "dapp_popup_v1empty2"
 msgstr ""
+"Le Bucket V1 sera rempli sous peu.<br /> Seules les récompenses V2 seront "
+"réclamées pour l'instant."
 
 #: strings.php:149
 msgid "dapp_popup_exportstatus"
-msgstr ""
+msgstr "Statut d'exportation :"
 
 #: strings.php:150
 msgid "dapp_popup_importstatus1"
-msgstr ""
+msgstr "Statut d'importation :"
 
 #: strings.php:151
 msgid "dapp_popup_importstatus2"
-msgstr ""
+msgstr "En attente du statut d'exportation..."
 
 #: strings.php:152
 msgid "dapp_popup_exportsuccess"
-msgstr ""
+msgstr "Confirmée"
 
 #: strings.php:153
 msgid "dapp_popup_importsuccess"
-msgstr ""
+msgstr "Enregistrée"
 
 #: strings.php:154
 msgid "dapp_popup_transferfail"
-msgstr ""
+msgstr "Refusée"
 
 #: strings.php:155
 msgid "dapp_popup_transferunknown"
-msgstr ""
+msgstr "Inconnu"
 
 #: strings.php:156
 msgid "dapp_popup_success"
-msgstr ""
+msgstr "Confirmée"
 
 #: strings.php:157
 msgid "dapp_popup_failed"
-msgstr ""
+msgstr "Échouée"
 
 #: strings.php:158
 msgid "dapp_popup_bindpchain1"
-msgstr ""
+msgstr "P-Adresse invalide!"
 
 #: strings.php:159
 msgid "dapp_popup_bindpchain2"
 msgstr ""
+"Votre adresse P-Chain n'est pas liée à celle du C-Chain! <br />Si ces "
+"adresses ne sont pas liées, il sera impossible de jalonner vos jetons. <br /"
+">Voulez-vous les lier ensemble?"
 
 #: strings.php:160
 msgid "dapp_popup_metamask1"
-msgstr ""
+msgstr "Metamask n'est pas installé!"
 
 #: strings.php:161
 msgid "dapp_popup_metamask2"
-msgstr ""
+msgstr "Voulez-vous installer Metamask dans votre fureteur?"
 
 #: strings.php:162
 msgid "dapp_popup_validatorinvalid"
 msgstr ""
+"Le validateur sélectionné n'est pas disponible actuellement. <br />Veuillez "
+"en choisir un autre."
 
 #: strings.php:163
 msgid "dapp_popup_alreadydelegated1"
-msgstr ""
+msgstr "Tout délégué!"
 
 #: strings.php:164
 msgid "dapp_popup_alreadydelegated2"
-msgstr ""
+msgstr "Vous avez déjà délégué vos jetons à"
 
 #: strings.php:165
 msgid "dapp_popup_alreadydelegated3"
-msgstr ""
+msgstr "et"
 
 #: strings.php:166
 msgid "dapp_popup_alreadydelegated4"
 msgstr ""
+"Vous devez récuser vos délégations actuelles avant d'être en mesure de "
+"déléguer de nouveau."
 
 #: strings.php:167
 msgid "dapp_popup_alreadydelegated5"
-msgstr ""
+msgstr "récuser"
 
 #: strings.php:168
 msgid "dapp_popup_cancel"
-msgstr ""
+msgstr "annuler"
 
 #: strings.php:169
 msgid "dapp_popup_yes"
-msgstr ""
+msgstr "oui"
 
 #: strings.php:170
 msgid "dapp_popup_no"
-msgstr ""
+msgstr "non"
 
 #: strings.php:171
 msgid "dapp_popup_ok"
-msgstr ""
+msgstr "ok"
 
 #: strings.php:172
 msgid "dapp_stake"
@@ -801,24 +819,24 @@ msgstr "Jalonner"
 
 #: strings.php:173
 msgid "notfound"
-msgstr ""
+msgstr "Page non trouvée"
 
 #: strings.php:174
 msgid "notfound_lead"
-msgstr ""
+msgstr "Désolé, mais cette page n'est pas disponible!"
 
 #: strings.php:175
 msgid "notfound_backlink"
-msgstr ""
+msgstr "Veuillez retourner à l'"
 
 #: strings.php:176
 msgid "notallowed"
-msgstr ""
+msgstr "Méthode non permise"
 
 #: strings.php:177
 msgid "notallowed_lead1"
-msgstr ""
+msgstr "Désolé, mais cette méthode n'est pas disponible pour cette page!"
 
 #: strings.php:178
 msgid "notallowed_lead2"
-msgstr ""
+msgstr "Méthode(s) permise(s) :"
