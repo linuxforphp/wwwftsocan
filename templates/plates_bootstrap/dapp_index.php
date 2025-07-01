@@ -19,7 +19,7 @@
         <div class="dapp-container" id="dapp-root"></div>
         <div id="currentWallet" class="current-wallet paused">
             <div id="currentWalletPopup" class="current-wallet-popup">
-                <p id="currentWalletPopupText">Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and help efficiently claim your FLR or SGB rewards!</p>
+                <p id="currentWalletPopupText"><?=_("dapp_mabel_selectwallet1")?></p>
             </div>
             <div id="currentWalletIcon" class="current-wallet-icon">
                 <div class="current-wallet-icon-border"></div>

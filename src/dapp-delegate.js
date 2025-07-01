@@ -40,7 +40,7 @@ export async function isDelegateInput1(DappObject) {
             document.getElementById("ClaimButtonText").innerText = "Undelegate all";
         }
 
-        await setCurrentPopup("It looks like you have already delegated 100% of your tokens! If you want to delegate to another FTSO, you will need to undelegate first!", true);
+        await setCurrentPopup(dappStrings['dapp_mabel_delegate_error1'], true);
     } else {
         if (typeof wrapbox1 !== 'undefined' && wrapbox1 !== null) {
             wrapbox1.removeAttribute('style');
@@ -52,16 +52,16 @@ export async function isDelegateInput1(DappObject) {
             claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             claimButton.style.cursor = "pointer";
             DappObject.isRealValue = true;
-            document.getElementById("ClaimButtonText").innerText = "Delegate";
+            document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_delegate'];
         } else if (delegatedBips === 50 && Number(amount1.value.replace(/[^0-9]/g, '')) === 50) {
             claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             claimButton.style.cursor = "pointer";
             DappObject.isRealValue = true;
-            document.getElementById("ClaimButtonText").innerText = "Delegate";
+            document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_delegate'];
         } else {
             claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             claimButton.style.cursor = "auto";
-            document.getElementById("ClaimButtonText").innerText = "Enter Amount";
+            document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_enteramount'];
             DappObject.isRealValue = false;
         }
     }
@@ -167,7 +167,7 @@ export async function populateFtsos(rpcUrl, flrAddr) {
                                                 g += 1;
                                             }
                                         } else {
-                                            await setCurrentPopup('The FTSO that you have delegated to is invalid!', true);
+                                            await setCurrentPopup(dappStrings['dapp_mabel_delegate_error2'], true);
                                             break;
                                         }
                                     }
@@ -198,7 +198,7 @@ export async function populateFtsos(rpcUrl, flrAddr) {
 
 export async function delegate(object, DappObject) {
     if (DappObject.isRealValue === false) {
-        await setCurrentPopup('You need to enter a valid value, either 50% or 100%.', true);
+        await setCurrentPopup(dappStrings['dapp_mabel_delegate_error3'], true);
     } else {
         let amount1 = document.getElementById("Amount1");
         let ftso1 = document.querySelector(".selectize-input");

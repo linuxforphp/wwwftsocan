@@ -3,7 +3,7 @@
                 <div class="col-sm-6">
                     <button class="wrap-unwrap float-left" type="button" id="wrapUnwrap" value="true">
                         <a class="wrap-unwrap-text">
-                            <span id="Wrap" class="wrap">Wrap</span> / <span id="Unwrap" class="unwrap">Unwrap</span>
+                            <span id="Wrap" class="wrap"><?=_("dapp_wrap")?></span> / <span id="Unwrap" class="unwrap"><?=_("dapp_unwrap")?></span>
                         </a>
                     </button>
                 </div>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="row">
                         <div class="wrapper-wrap">
-                            <span>Balance:</span>
+                            <span><?=_("dapp_balance")?>:</span>
                             <span id="Balance">0</span>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="row">
                         <div class="wrapper-wrap">
-                            <span>Balance:</span>
+                            <span><?=_("dapp_balance")?>:</span>
                             <span id="TokenBalance">0</span>
                         </div>
                     </div>
@@ -89,10 +89,10 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText"><?=_("dapp_connect")?></i></button>
             </div>
             <div class="col-sm-6">
-                <button id="WrapButton" class="connect-wallet wrap-button"><i class="wrap-button-text" id="WrapButtonText">Enter Amount</i></button>
+                <button id="WrapButton" class="connect-wallet wrap-button"><i class="wrap-button-text" id="WrapButtonText"><?=_("dapp_enteramount")?></i></button>
             </div>
         </div>
         <div class="row">

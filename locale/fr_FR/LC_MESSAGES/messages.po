@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-06-29 19:34-0400\n"
+"PO-Revision-Date: 2025-07-01 14:46-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -296,3 +296,407 @@ msgstr ""
 #: strings.php:71
 msgid "faq_accordion4_body5"
 msgstr ""
+
+#: strings.php:72
+msgid "dapp_selectwallet_title"
+msgstr ""
+
+#: strings.php:73
+msgid "dapp_browserwallet"
+msgstr ""
+
+#: strings.php:74
+msgid "dapp_wallet_warning"
+msgstr ""
+
+#: strings.php:75
+msgid "dapp_metamask_title1"
+msgstr ""
+
+#: strings.php:76
+msgid "dapp_metamask_title2"
+msgstr ""
+
+#: strings.php:77
+msgid "dapp_wallet_back"
+msgstr ""
+
+#: strings.php:78
+msgid "dapp_wallet_continue"
+msgstr ""
+
+#: strings.php:79
+msgid "dapp_ledger_title1"
+msgstr ""
+
+#: strings.php:80
+msgid "dapp_ledger_title2"
+msgstr ""
+
+#: strings.php:81
+msgid "dapp_ledger_title3"
+msgstr ""
+
+#: strings.php:82
+msgid "dapp_connect"
+msgstr ""
+
+#: strings.php:83
+msgid "dapp_connectstake"
+msgstr ""
+
+#: strings.php:84
+msgid "dapp_wrap"
+msgstr ""
+
+#: strings.php:85
+msgid "dapp_unwrap"
+msgstr ""
+
+#: strings.php:86
+msgid "dapp_balance"
+msgstr ""
+
+#: strings.php:87
+msgid "dapp_account"
+msgstr ""
+
+#: strings.php:88
+msgid "dapp_provider"
+msgstr ""
+
+#: strings.php:89
+msgid "dapp_enteramount"
+msgstr ""
+
+#: strings.php:90
+msgid "dapp_selectftso"
+msgstr ""
+
+#: strings.php:91
+msgid "dapp_delegate"
+msgstr ""
+
+#: strings.php:92
+msgid "dapp_undelegate"
+msgstr ""
+
+#: strings.php:93
+msgid "dapp_claim_autowrap"
+msgstr ""
+
+#: strings.php:94
+msgid "dapp_claim_claimrewards"
+msgstr ""
+
+#: strings.php:95
+msgid "dapp_claim_claimfd"
+msgstr ""
+
+#: strings.php:96
+msgid "dapp_transfer"
+msgstr ""
+
+#: strings.php:97
+msgid "dapp_transferfunds"
+msgstr ""
+
+#: strings.php:98
+msgid "dapp_validatorlist"
+msgstr ""
+
+#: strings.php:99
+msgid "dapp_maximum"
+msgstr ""
+
+#: strings.php:100
+msgid "dapp_claim"
+msgstr ""
+
+#: strings.php:101
+msgid "dapp_mabel_selectwallet1"
+msgstr ""
+
+#: strings.php:102
+msgid "dapp_mabel_selectwallet2"
+msgstr ""
+
+#: strings.php:103
+msgid "dapp_mabel_selectwallet3"
+msgstr ""
+
+#: strings.php:104
+msgid "dapp_mabel_selectwallet4"
+msgstr ""
+
+#: strings.php:105
+msgid "dapp_mabel_wrap1"
+msgstr ""
+
+#: strings.php:106
+msgid "dapp_mabel_wrap2"
+msgstr ""
+
+#: strings.php:107
+msgid "dapp_mabel_delegate1"
+msgstr ""
+
+#: strings.php:108
+msgid "dapp_mabel_delegate2"
+msgstr ""
+
+#: strings.php:109
+msgid "dapp_mabel_claim1"
+msgstr ""
+
+#: strings.php:110
+msgid "dapp_mabel_claim2"
+msgstr ""
+
+#: strings.php:111
+msgid "dapp_mabel_transfer1"
+msgstr ""
+
+#: strings.php:112
+msgid "dapp_mabel_transfer2"
+msgstr ""
+
+#: strings.php:113
+msgid "dapp_mabel_stake1"
+msgstr ""
+
+#: strings.php:114
+msgid "dapp_mabel_stake2"
+msgstr ""
+
+#: strings.php:115
+msgid "dapp_mabel_claimstake1"
+msgstr ""
+
+#: strings.php:116
+msgid "dapp_mabel_claimstake2"
+msgstr ""
+
+#: strings.php:117
+msgid "dapp_mabel_metamask"
+msgstr ""
+
+#: strings.php:118
+msgid "dapp_mabel_ledger1"
+msgstr ""
+
+#: strings.php:119
+msgid "dapp_mabel_ledger2"
+msgstr ""
+
+#: strings.php:120
+msgid "dapp_mabel_ledger3"
+msgstr ""
+
+#: strings.php:121
+msgid "dapp_mabel_connecting"
+msgstr ""
+
+#: strings.php:122
+msgid "dapp_mabel_connected"
+msgstr ""
+
+#: strings.php:123
+msgid "dapp_mabel_selectaccount"
+msgstr ""
+
+#: strings.php:124
+msgid "dapp_mabel_stake_error1"
+msgstr ""
+
+#: strings.php:125
+msgid "dapp_mabel_stake_error2"
+msgstr ""
+
+#: strings.php:126
+msgid "dapp_mabel_transfer_error1"
+msgstr ""
+
+#: strings.php:127
+msgid "dapp_mabel_transfer_error2"
+msgstr ""
+
+#: strings.php:128
+msgid "dapp_mabel_wrap_error1"
+msgstr ""
+
+#: strings.php:129
+msgid "dapp_mabel_wrap_error2"
+msgstr ""
+
+#: strings.php:130
+msgid "dapp_mabel_wrap_error3"
+msgstr ""
+
+#: strings.php:131
+msgid "dapp_mabel_wrap_error4"
+msgstr ""
+
+#: strings.php:132
+msgid "dapp_mabel_delegate_error1"
+msgstr ""
+
+#: strings.php:133
+msgid "dapp_mabel_delegate_error2"
+msgstr ""
+
+#: strings.php:134
+msgid "dapp_mabel_delegate_error3"
+msgstr ""
+
+#: strings.php:135
+msgid "dapp_mabel_internet_error"
+msgstr ""
+
+#: strings.php:136
+msgid "dapp_popup_loading"
+msgstr ""
+
+#: strings.php:137
+msgid "dapp_popup_checkwallet1"
+msgstr ""
+
+#: strings.php:138
+msgid "dapp_popup_checkwallet2"
+msgstr ""
+
+#: strings.php:139
+msgid "dapp_popup_networkconfirm1"
+msgstr ""
+
+#: strings.php:140
+msgid "dapp_popup_networkconfirm2"
+msgstr ""
+
+#: strings.php:141
+msgid "dapp_popup_txsuccess"
+msgstr ""
+
+#: strings.php:142
+msgid "dapp_popup_txfail"
+msgstr ""
+
+#: strings.php:143
+msgid "dapp_popup_txhash"
+msgstr ""
+
+#: strings.php:144
+msgid "dapp_popup_v1status"
+msgstr ""
+
+#: strings.php:145
+msgid "dapp_popup_v2status1"
+msgstr ""
+
+#: strings.php:146
+msgid "dapp_popup_v2status2"
+msgstr ""
+
+#: strings.php:147
+msgid "dapp_popup_v1empty1"
+msgstr ""
+
+#: strings.php:148
+msgid "dapp_popup_v1empty2"
+msgstr ""
+
+#: strings.php:149
+msgid "dapp_popup_exportstatus"
+msgstr ""
+
+#: strings.php:150
+msgid "dapp_popup_importstatus1"
+msgstr ""
+
+#: strings.php:151
+msgid "dapp_popup_importstatus2"
+msgstr ""
+
+#: strings.php:152
+msgid "dapp_popup_exportsuccess"
+msgstr ""
+
+#: strings.php:153
+msgid "dapp_popup_importsuccess"
+msgstr ""
+
+#: strings.php:154
+msgid "dapp_popup_transferfail"
+msgstr ""
+
+#: strings.php:155
+msgid "dapp_popup_transferunknown"
+msgstr ""
+
+#: strings.php:156
+msgid "dapp_popup_success"
+msgstr ""
+
+#: strings.php:157
+msgid "dapp_popup_failed"
+msgstr ""
+
+#: strings.php:158
+msgid "dapp_popup_bindpchain1"
+msgstr ""
+
+#: strings.php:159
+msgid "dapp_popup_bindpchain2"
+msgstr ""
+
+#: strings.php:160
+msgid "dapp_popup_metamask1"
+msgstr ""
+
+#: strings.php:161
+msgid "dapp_popup_metamask2"
+msgstr ""
+
+#: strings.php:162
+msgid "dapp_popup_validatorinvalid"
+msgstr ""
+
+#: strings.php:163
+msgid "dapp_popup_alreadydelegated1"
+msgstr ""
+
+#: strings.php:164
+msgid "dapp_popup_alreadydelegated2"
+msgstr ""
+
+#: strings.php:165
+msgid "dapp_popup_alreadydelegated3"
+msgstr ""
+
+#: strings.php:166
+msgid "dapp_popup_alreadydelegated4"
+msgstr ""
+
+#: strings.php:167
+msgid "dapp_popup_alreadydelegated5"
+msgstr ""
+
+#: strings.php:168
+msgid "dapp_popup_cancel"
+msgstr ""
+
+#: strings.php:169
+msgid "dapp_popup_yes"
+msgstr ""
+
+#: strings.php:170
+msgid "dapp_popup_no"
+msgstr ""
+
+#: strings.php:171
+msgid "dapp_popup_ok"
+msgstr ""
+
+#: strings.php:172
+msgid "dapp_stake"
+msgstr "Jalonner"
