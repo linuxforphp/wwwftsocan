@@ -4,28 +4,6 @@ use Laminas\I18n\Translator\Loader\Gettext;
 use Laminas\I18n\Translator\Translator;
 
 $baseConfig['middleware'] = [
-    '/en' => function ($req, $handler) {
-        $app = \Ascmvc\Mvc\App::getInstance();
-        $app->getSessionManager()->getSession()->set('locale', 'en_US');
-
-        $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
-        $response = new \Laminas\Diactoros\Response();
-        $response = $response->withStatus('302');
-        $response = $response->withHeader('Location', $previousUri);
-
-        return $response;
-    },
-    '/fr' => function ($req, $handler) {
-        $app = \Ascmvc\Mvc\App::getInstance();
-        $app->getSessionManager()->getSession()->set('locale', 'fr_FR');
-
-        $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
-        $response = new \Laminas\Diactoros\Response();
-        $response = $response->withStatus('302');
-        $response = $response->withHeader('Location', $previousUri);
-
-        return $response;
-    },
     function ($request, $handler) {
         if ((isset($request->getServerParams()['QUERY_STRING'])
                 && (strpos($request->getServerParams()['QUERY_STRING'], 'fbclid') !== false
@@ -49,6 +27,28 @@ $baseConfig['middleware'] = [
         }
 
         return $handler->handle($request);
+    },
+    '/en' => function ($req, $handler) {
+        $app = \Ascmvc\Mvc\App::getInstance();
+        $app->getSessionManager()->getSession()->set('locale', 'en_US');
+
+        $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
+        $response = new \Laminas\Diactoros\Response();
+        $response = $response->withStatus('302');
+        $response = $response->withHeader('Location', $previousUri);
+
+        return $response;
+    },
+    '/fr' => function ($req, $handler) {
+        $app = \Ascmvc\Mvc\App::getInstance();
+        $app->getSessionManager()->getSession()->set('locale', 'fr_FR');
+
+        $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
+        $response = new \Laminas\Diactoros\Response();
+        $response = $response->withStatus('302');
+        $response = $response->withHeader('Location', $previousUri);
+
+        return $response;
     },
     function ($request, $handler) {
         $app = \Ascmvc\Mvc\App::getInstance();
