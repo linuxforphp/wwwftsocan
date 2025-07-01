@@ -65,6 +65,10 @@ $baseConfig['middleware'] = [
             $app->getSessionManager()->getSession()->set('previousUri', $requestUri);
         }
 
+        if (strpos($requestUri, '/dapp') !== false) {
+            $app->getSessionManager()->getSession()->set('previousUri', '/dapp/index');
+        }
+
         return $handler->handle($request);
     },
     function ($request, $handler) {
