@@ -135,15 +135,15 @@ $baseConfig['middleware'] = [
 
         $textDomain = $loader->load($locale, $baseConfig['BASEDIR'] . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . 'LC_MESSAGES' . DIRECTORY_SEPARATOR . 'messages.mo');
 
-        $textDomainSpecArray = [];
+        $textDomainFilteredArray = [];
 
         foreach ($textDomain as $key => $value) {
             if (strpos($key, 'dapp_') !== false) { 
-                $textDomainSpecArray[$key] = $value; 
+                $textDomainFilteredArray[$key] = $value; 
             };
         }
 
-        $app->baseConfig['view']['jstranslate'] = json_encode($textDomainSpecArray);
+        $app->baseConfig['view']['jstranslate'] = json_encode($textDomainFilteredArray);
 
         return $handler->handle($request);
     },
