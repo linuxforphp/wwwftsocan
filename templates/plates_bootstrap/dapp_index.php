@@ -62,6 +62,10 @@
 
 <script>
     var dappUrlBaseAddr = <?= json_encode($view['urlbaseaddr']); ?>;
+
+    var dappLanguage = "<?= $view['language']; ?>";
+
+    var dappStrings = <?= $view['jstranslate']; ?>;
 </script>
 
 <script>
