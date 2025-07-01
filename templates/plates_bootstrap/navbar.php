@@ -49,6 +49,17 @@ Fixed Navigation
                 </li>
                 <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>faq/index')"><?=_("faq")?></a></li>
                 <li><a href="#" onclick="getDocsPageNewTab(2)"><?=_("about")?></a></li>
+                <li id="language-dropdown">
+                    <a href="#" class="delegate-dropdown"><i class="fas fa fa-solid fa-globe"></i> <?= explode('_', $view['language'])[0]?> <i class="fas fa-caret-down"></i></a>
+                    <div class="dd-menu">
+                        <div class="dropdown-menu-dapp" style="left: 0px;">
+                            <ul>
+                                <li style="width: 70px !important;"><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>en')">EN <?php if ($view['language'] === "en_US"): ?> <i class="fas fa fa-solid fa-check"></i> <?php endif ?></a></li>
+                                <li style="width: 70px !important;"><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>fr')">FR <?php if ($view['language'] === "fr_FR"): ?> <i class="fas fa fa-solid fa-check"></i> <?php endif ?></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </nav>
         <!-- /main nav -->

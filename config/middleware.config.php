@@ -81,8 +81,12 @@ $baseConfig['middleware'] = [
             }
 
             $app->getSessionManager()->getSession()->set('locale', $locale);
+
+            $app->baseConfig['view']['language'] = $locale;
         } else {
             $locale = $sessionLocale;
+
+            $app->baseConfig['view']['language'] = $locale;
         }
 
         putenv('LANG=' . $locale);
