@@ -33,6 +33,11 @@ $baseConfig['middleware'] = [
         $app->getSessionManager()->getSession()->set('locale', 'en_US');
 
         $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
+
+        if (empty($previousUri)) {
+            $previousUri = '/index';
+        }
+        
         $response = new \Laminas\Diactoros\Response();
         $response = $response->withStatus('302');
         $response = $response->withHeader('Location', $previousUri);
@@ -44,6 +49,11 @@ $baseConfig['middleware'] = [
         $app->getSessionManager()->getSession()->set('locale', 'fr_FR');
 
         $previousUri = $app->getSessionManager()->getSession()->get('previousUri');
+
+        if (empty($previousUri)) {
+            $previousUri = '/index';
+        }
+
         $response = new \Laminas\Diactoros\Response();
         $response = $response->withStatus('302');
         $response = $response->withHeader('Location', $previousUri);
