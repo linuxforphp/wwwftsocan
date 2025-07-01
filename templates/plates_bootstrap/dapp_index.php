@@ -38,9 +38,9 @@
                 <div class="row">
                     <div class="sec-title text-center">
                         <h1 class="h1 xl:text-blue-darker">404</h1>
-                        <h2 class="h2 text-blue-darker">DApp Currently Inactive</h2>
-                        <p class="pt-2 font-bold text-blue">Sorry, but the FTSO Can DApp is currently offline!</p>
-                        <p class="pt-2 pb-10 text-lg-center">Let's go back <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index">HOME</a>!</p>
+                        <h2 class="h2 text-blue-darker"><?=_("notfound")?></h2>
+                        <p class="pt-2 font-bold text-blue"><?=_("notfound_lead")?></p>
+                        <p class="pt-2 pb-10 text-lg-center"><?=_("notfound_backlink")?> <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index"><?=strtoupper(_("home"))?></a>!</p>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-01 14:46-0400\n"
+"PO-Revision-Date: 2025-07-01 15:03-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -700,3 +700,27 @@ msgstr ""
 #: strings.php:172
 msgid "dapp_stake"
 msgstr "Jalonner"
+
+#: strings.php:173
+msgid "notfound"
+msgstr ""
+
+#: strings.php:174
+msgid "notfound_lead"
+msgstr ""
+
+#: strings.php:175
+msgid "notfound_backlink"
+msgstr ""
+
+#: strings.php:176
+msgid "notallowed"
+msgstr ""
+
+#: strings.php:177
+msgid "notallowed_lead1"
+msgstr ""
+
+#: strings.php:178
+msgid "notallowed_lead2"
+msgstr ""

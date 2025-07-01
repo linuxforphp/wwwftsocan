@@ -16,13 +16,13 @@
             <div class="row">
                 <div class="sec-title text-center">
                     <h1 class="h1 xl:text-blue-darker">405</h1>
-                    <h2 class="h2 text-blue-darker">Method Not Allowed</h2>
-                    <p class="pt-2 font-bold text-blue">Sorry, but this method is not allowed on this page!</p>
-                    <p class="pt-4">Allowed method(s):</p>
+                    <h2 class="h2 text-blue-darker"><?=_("notallowed")?></h2>
+                    <p class="pt-2 font-bold text-blue"><?=_("notallowed_lead1")?></p>
+                    <p class="pt-4"><?=_("notallowed_lead2")?></p>
                     <?php foreach($view['vars'] as $key => $value): ?>
                         <div class="row justify-content-center"><?=$value ?></div>
                     <?php endforeach; ?>
-                    <p class="pt-5 pb-10 text-lg-center">Let's go back <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index">HOME</a>!</p>
+                    <p class="pt-5 pb-10 text-lg-center"><?=_("notfound_backlink")?> <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index"><?=strtoupper(_("home"))?></a>!</p>
                 </div>
             </div>
         </div>

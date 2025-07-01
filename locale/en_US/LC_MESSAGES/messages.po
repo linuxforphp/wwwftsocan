@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-01 14:46-0400\n"
+"PO-Revision-Date: 2025-07-01 15:04-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -798,3 +798,27 @@ msgstr "ok"
 #: strings.php:172
 msgid "dapp_stake"
 msgstr "Stake"
+
+#: strings.php:173
+msgid "notfound"
+msgstr "Page Not Found"
+
+#: strings.php:174
+msgid "notfound_lead"
+msgstr "Sorry, but we did not find this page!"
+
+#: strings.php:175
+msgid "notfound_backlink"
+msgstr "Let's go back"
+
+#: strings.php:176
+msgid "notallowed"
+msgstr "Method Not Allowed"
+
+#: strings.php:177
+msgid "notallowed_lead1"
+msgstr "Sorry, but this method is not allowed on this page!"
+
+#: strings.php:178
+msgid "notallowed_lead2"
+msgstr "Allowed method(s):"
