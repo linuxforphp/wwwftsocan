@@ -127,6 +127,10 @@
 
 <script src="<?=$view['urlbaseaddr'] ?>js/faq.js"></script>
 
+<script>
+    var dappStrings = <?= $view['jstranslate']; ?>;
+</script>
+
 <!-- copyclip functions -->
 <script src="<?=$view['urlbaseaddr'] ?>js/copyclip-wflr-wsgb.js"></script>
 
