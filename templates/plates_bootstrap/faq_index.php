@@ -42,7 +42,7 @@
     <!-- FAQ Section -->
     <section id="FAQ" class="main-section-padding">
         <div class="container">
-            <h2 class="sec-title text-center"><strong>Frequently Asked Questions</strong></h2>
+            <h2 class="sec-title text-center"><strong><?=_("faq_title")?></strong></h2>
 
             <div id="FtsoCanada" class="faq-anchor"></div>
 
