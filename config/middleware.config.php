@@ -1,7 +1,7 @@
 <?php
 
 use Laminas\I18n\Translator\Loader\Gettext;
-use Laminas\I18n\Translator\Translator;
+//use Laminas\I18n\Translator\Translator;
 
 $baseConfig['middleware'] = [
     function ($request, $handler) {
@@ -121,7 +121,7 @@ $baseConfig['middleware'] = [
         $app->baseConfig['view']['author'] = _("author");
         $app->baseConfig['view']['description'] = _("description");
 
-        $translator = new Translator();
+        //$translator = new Translator();
 
         //$type = Laminas\I18n\Translator\Loader\Gettext::class;
 
