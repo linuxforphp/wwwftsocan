@@ -13,7 +13,7 @@ export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1,
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 0);
         } else {
-            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connect"];
             showBalance(0);
             showTokenBalance(0);
 
@@ -23,10 +23,10 @@ export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1,
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 1);
         } else {
-            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connect"];
             document.getElementById("ClaimButton").style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             document.getElementById("ClaimButton").style.cursor = "auto";
-            document.getElementById("ClaimButtonText").innerText = "Enter Amount";
+            document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_enteramount'];
             DappObject.isRealValue = false;
 
             setCurrentAppState("Null");
@@ -37,7 +37,7 @@ export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1,
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             ConnectWalletClick(rpcUrl, flrAddr, DappObject, 2);
         } else {
-            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connect"];
             showTokenBalance(0);
             showConnectedAccountAddress('0x0');
             showFdRewards(0);
@@ -51,7 +51,7 @@ export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1,
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
             RefreshStakingPage(DappObject);
         } else {
-            document.getElementById("ConnectWalletText").innerText = 'Connect Wallet';
+            document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connect"];
 
             showBalance(0);
             showTokenBalance(0);
@@ -61,7 +61,7 @@ export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1,
     } else if (pageIndex === 4 && stakingOption === 5) {
         await setCurrentAppState("Connected");
 
-        await setCurrentPopup("Connected!", false);
+        await setCurrentPopup(dappStrings['dapp_mabel_connected'], false);
 
         document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
 
@@ -140,7 +140,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
 
     await setCurrentAppState("Connecting");
 
-    await setCurrentPopup("Connecting...", true);
+    await setCurrentPopup(dappStrings['dapp_mabel_connecting'], true);
 
     DappObject.isAccountConnected = false;
 
@@ -202,7 +202,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
     
                             // console.log(DappObject.ledgerAddrArray);
     
-                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
+                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="' + dappStrings['dapp_select_wallet'] + '"></select>'
     
                             var onInputChange = async (value) => {
                                 let addressBox = document.querySelector("span.title.connect-wallet-text");
@@ -273,7 +273,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                             if (DappObject.ledgerSelectedIndex !== "") {
                                 selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
                             } else {
-                                await setCurrentPopup("Please select an account.", true);
+                                await setCurrentPopup(dappStrings['dapp_mabel_selectaccount'], true);
                             }
     
                             let addressDropdown = document.querySelector(".selectize-input");
@@ -287,7 +287,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                             clearTimeout(DappObject.latestPopupTimeoutId);
     
                             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                                await setCurrentPopup(dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], true);
                             }, 1000);
     
                             throw new Error("Ledger Avalanche App not installed!");
@@ -365,12 +365,12 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
                     }
 
-                    await setCurrentPopup("This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB respectively. This will allow you to delegate to an FTSO and earn passive income!", true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_wrap1'], true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose if you would like to Wrap, or Unwrap your tokens by clicking on the top left button. Then, input the amount of tokens you would like to transfer. Don't forget to keep some FLR or SGB for gas fees!", true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_wrap2'], true);
                     }, 15000);
                 } else if (pageIndex === 1) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
@@ -380,12 +380,12 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
     
                     await populateFtsos(rpcUrl, flrAddr);
 
-                    await setCurrentPopup("This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an FTSO and earn passive income!", true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_delegate1'], true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose an FTSO from the dropdown list. Then, enter the percentage you would like to delegate to that FTSO, either 50% or 100%!", true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_delegate2'], true);
                     }, 15000);
     
                     try {
@@ -528,12 +528,12 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                             DappObject.claimBool = false;
                         }
 
-                        await setCurrentPopup("This is the 'Rewards' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_claim1'], true);
 
                         clearTimeout(DappObject.latestPopupTimeoutId);
 
                         DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                            await setCurrentPopup("If you have any rewards, one of the bottom buttons will become red and contain the amount of rewards you have earned. You only need to click it to begin the claiming process!", true);
+                            await setCurrentPopup(dappStrings['dapp_mabel_claim2'], true);
                         }, 15000);
                     } catch (error) {
                         // console.log(error);
@@ -548,7 +548,9 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
     } catch (error) {
         // console.log(error);
 
-        document.getElementById("ConnectWalletText").innerText = "Connect Wallet";
+        console.log(dappStrings);
+
+        document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connect"];
 
         await resetDappObjectState(DappObject);
 

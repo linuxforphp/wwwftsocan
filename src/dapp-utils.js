@@ -28,7 +28,7 @@ export function checkConnection() {
     if (!navigator.onLine) {
         setCurrentAppState("Alert");
 
-        setCurrentPopup('Your Internet connection is unstable! Please make sure you can access the Internet.', true);
+        setCurrentPopup(dappStrings['dapp_mabel_internet_error'], true);
 
         throw new Error("No Internet!");
     }

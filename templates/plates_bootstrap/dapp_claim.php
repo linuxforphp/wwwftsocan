@@ -4,7 +4,7 @@
                     <div class="rewards">
                         <div class="rewards-text">
                             <input type="checkbox" id="RewardsCheck" class="rewards-check" name="RewardsCheck" checked="checked" />
-                            <span class="rewards-check-label">Auto Wrap</span>
+                            <span class="rewards-check-label"><?=_("dapp_claim_autowrap")?></span>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="row">
                         <div class="wrapper-claim">
-                            <span>Account:</span>
+                            <span><?=_("dapp_account")?>:</span>
                             <span id="AccountAddress" class="address-claim">0x0</span>
                         </div>
                     </div>
@@ -60,15 +60,15 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <button id="ConnectWallet" class="connect-wallet connect-wallet-claim"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ConnectWallet" class="connect-wallet connect-wallet-claim"><i class="connect-wallet-text" id="ConnectWalletText"><?=_("dapp_connect")?></i></button>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <button id="ClaimButton" class="connect-wallet claim-button" name="ClaimButton"><label for="ClaimButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim Rewards</label><br /><i class="claim-button-text" id="ClaimButtonText">0</i></button>
+                <button id="ClaimButton" class="connect-wallet claim-button" name="ClaimButton"><label for="ClaimButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;"><?=_("dapp_claim_claimrewards")?></label><br /><i class="claim-button-text" id="ClaimButtonText">0</i></button>
             </div>
             <div class="col-sm-6">
-                <button id="ClaimFdButton" class="connect-wallet claim-button" name="ClaimFdButton"><label for="ClaimFdButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;">Claim FlareDrop</label><br /><i class="claim-button-text" id="ClaimFdButtonText">0</i></button>
+                <button id="ClaimFdButton" class="connect-wallet claim-button" name="ClaimFdButton"><label for="ClaimFdButton" style="margin-bottom: 0; font-size: 12px; font-weight: 400;"><?=_("dapp_claim_claimfd")?></label><br /><i class="claim-button-text" id="ClaimFdButtonText">0</i></button>
             </div>
         </div>
         <div class="row">

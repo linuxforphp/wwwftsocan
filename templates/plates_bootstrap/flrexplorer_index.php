@@ -75,6 +75,10 @@
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
 
+<script>
+    var dappStrings = <?= $view['jstranslate']; ?>;
+</script>
+
 <!-- copyclip functions -->
 <script src="<?=$view['urlbaseaddr'] ?>js/copyclip-flr.js"></script>
 

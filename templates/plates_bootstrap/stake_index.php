@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="sec-title text-center wow animated fadeInDown">You can stake to the <strong>FTSOCAN Validator Node</strong>,<br />by using the FlareStake Tool!</h2>
+                    <h2 class="sec-title text-center wow animated fadeInDown"><?=_("stake_title1")?> <strong><?=_("stake_title2")?></strong><?=_("stake_title3")?></h2>
                     <hr />
                 </div>
             </div>
@@ -31,7 +31,7 @@
                     <img src="<?=$view['urlbaseaddr']?>/img/FLR.svg" style="max-height: 40px;" />
                 </div>
                 <div class="col-sm-8">
-                    <pre><code class="pre-code-custom">FTSOCAN FLR Validator Node ID: KzPd2Vx5WomGtur91B9K9R7to3mYyYga</code></pre>
+                    <pre><code class="pre-code-custom"><?=_("stake_nodeid")?> KzPd2Vx5WomGtur91B9K9R7to3mYyYga</code></pre>
                 </div>
                 <div class="col-sm-2">
                     <button id="myCopyCommandVNodeButton"><span data-feather="copy" /></button>
@@ -41,19 +41,19 @@
             <div class="row">
                 <div class="sec-title text-center">
                     <img src="<?=$view['urlbaseaddr']?>/img/flare-black.svg" style="max-height: 300px;" />
-                    <a href="https://portal.flare.network/staking" target="_blank" type="button" class="btn btn-red" >Launch FlareStake</a>
+                    <a href="https://portal.flare.network/staking" target="_blank" type="button" class="btn btn-red" ><?=_("stake_launch")?></a>
                     <hr />
                 </div>
             </div>
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated fadeInDown">Don't forget to claim your rewards every two weeks!</h2>
+                    <h2 class="wow animated fadeInDown"><?=_("stake_featurette")?></h2>
                 </div>
             </div>
             <hr />
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated fadeInDown">Enjoy your passive income!</h2>
+                    <h2 class="wow animated fadeInDown"><?=_("stake_outro")?></h2>
                     <img src="<?=$view['urlbaseaddr'] ?>img/logo-signal.png" style="max-height: 250px;"/>
                 </div>
             </div>
@@ -70,6 +70,10 @@
 <?php if ($view['bodyjs'] === 1): ?>
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
+
+<script>
+    var dappStrings = <?= $view['jstranslate']; ?>;
+</script>
 
 <!-- copyclip functions -->
 <script src="<?=$view['urlbaseaddr'] ?>js/copyclip-flr-validator.js"></script>

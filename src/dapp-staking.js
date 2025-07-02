@@ -15,7 +15,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
     await setCurrentAppState("Connecting");
 
-    await setCurrentPopup("Connecting...", true);
+    await setCurrentPopup(dappStrings['dapp_mabel_connecting'], true);
 
     DappObject.isAccountConnected = false;
 
@@ -80,7 +80,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
         
                             // console.log(DappObject.ledgerAddrArray);
         
-                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>';
+                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="' + dappStrings['dapp_select_wallet'] + '"></select>';
     
                             if (!document.querySelector("span.title.connect-wallet-text")) {
                                 var onInputChange = async (value) => {
@@ -149,7 +149,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                                 if (DappObject.ledgerSelectedIndex !== "") {
                                     selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
                                 } else {
-                                    await setCurrentPopup("Please select an account.", true);
+                                    await setCurrentPopup(dappStrings['dapp_mabel_selectaccount'], true);
                                 }
                             } else {
                                 let addressDropdown = document.querySelector("span.title.connect-wallet-text");
@@ -165,7 +165,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                             clearTimeout(DappObject.latestPopupTimeoutId);
     
                             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
+                                await setCurrentPopup(dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], true);
                             }, 1000);
     
                             throw new Error("Ledger Avalanche App not installed!");
@@ -190,7 +190,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                             escapeKey: false,
                             backgroundDismiss: false,
                             icon: 'fa fa-spinner fa-spin',
-                            title: 'Loading...',
+                            title: dappStrings['dapp_popup_loading'],
                             content: "Sorry!<br /> Your wallet does not support 'eth_sign'!<br /> You will not be able to stake using the FTSOCAN DApp.",
                             theme: 'material',
                             type: 'dark',
@@ -227,7 +227,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                         escapeKey: false,
                         backgroundDismiss: false,
                         icon: 'fa fa-spinner fa-spin',
-                        title: 'Loading...',
+                        title: dappStrings['dapp_popup_loading'],
                         content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
                         theme: 'material',
                         type: 'dark',
@@ -336,12 +336,12 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                         showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
                     }
 
-                    await setCurrentPopup("This is the 'Transfer' page, where you can transfer your FLR tokens from the C-Chain to the P-Chain, to enable you to stake to a validator node and earn passive income!", true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_transfer1'], true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose if you would like to send your tokens from, or to the P-Chain by clicking on the arrow button. Then, input the amount of tokens you would like to transfer. Don't forget to keep some FLR for gas fees!", true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_transfer2'], true);
                     }, 15000);
                 } else if (dappStakingOption === 2) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
@@ -355,12 +355,12 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                         // console.log(error);
                     }
 
-                    await setCurrentPopup("This is the 'Stake' page, where you can stake your FLR tokens (at least 50,000) to a validator node and earn passive income!", true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_stake1'], true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("First, choose a validator from the dropdown list. Then, enter for how many days you would like to stake in the calendar, because your FLR will be locked until that date. Finally, enter the amount you would like to stake to that validator (at least 50,000).", true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_stake2'], true);
                     }, 15000);
                 } else if (dappStakingOption === 3) {
                     const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
@@ -410,12 +410,12 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                         DappObject.claimBool = false;
                     }
 
-                    await setCurrentPopup("This is the 'Claim' page, where you can claim the FLR tokens that you have earned by staking to a validator node.", true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_claimstake1'], true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("If you have any rewards, the bottom button will become red and contain the amount of rewards you have earned. You only need to click it to begin the claiming process!", true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_claimstake2'], true);
                     }, 15000);
                 }
 
@@ -431,7 +431,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
     } catch (error) {
         // console.log(error);
 
-        document.getElementById("ConnectWalletText").innerText = "Connect to P-Chain";
+        document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connectstake"];
 
         await resetDappObjectState(DappObject);
 
@@ -498,7 +498,7 @@ export function createCalendar(DappObject) {
             oneLine: true,
             dateFormat: 'yy-mm-dd',
             timeFormat: 'HH:mm',
-            currentText: "MAX",
+            currentText: dappStrings['dapp_maximum'],
             onClose: function (selectedDateTime, inst) {
                 OnSelectCalendar(selectedDateTime);
             },
@@ -525,7 +525,7 @@ export function setTodayCalendarButton(inst) {
 
         const maximumDate = new Date(Number(DappObject.StakeMaxDate) * 1000);
         
-        var btn = $("<button id='calendarMax' type='button' class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all'>MAX</button>");
+        var btn = $(`<button id='calendarMax' type='button' class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all'>${dappStrings['dapp_maximum']}</button>`);
         
         btn.off("click").on("click", function () {
             inst.selectedDay = maximumDate.getDate();
@@ -547,7 +547,7 @@ export async function RefreshStakingPage(DappObject, stakingOption) {
 
     setCurrentAppState("Connecting");
 
-    setCurrentPopup("Connecting...", true);
+    setCurrentPopup(dappStrings['dapp_mabel_connecting'], true);
 
     ConnectPChainClickStake(DappObject);
 }
@@ -607,14 +607,14 @@ export function setTransferButton(DappObject) {
     if (Number(document.getElementById("AmountFrom").value.replace(/[^0-9]/g, '')) < 1) {
         wrapButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         wrapButton.style.cursor = "auto";
-        wrapButtonText.innerText = "Enter Amount";
+        wrapButtonText.innerText = dappStrings['dapp_enteramount'];
         DappObject.isRealValue = false;
     } else {
         wrapButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         wrapButton.style.cursor = "pointer";
         DappObject.isRealValue = true;
 
-        wrapButtonText.innerText = "Transfer Funds";
+        wrapButtonText.innerText = dappStrings['dapp_transferfunds'];
     }
 }
 
@@ -625,14 +625,14 @@ export function setTransferButton2(DappObject) {
     if (Number(document.getElementById("AmountTo").value.replace(/[^0-9]/g, '')) < 1) {
         wrapButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         wrapButton.style.cursor = "auto";
-        wrapButtonText.innerText = "Enter Amount";
+        wrapButtonText.innerText = dappStrings['dapp_enteramount'];
         DappObject.isRealValue = false;
     } else {
         wrapButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         wrapButton.style.cursor = "pointer";
         DappObject.isRealValue = true;
 
-        wrapButtonText.innerText = "Transfer Funds";
+        wrapButtonText.innerText = dappStrings['dapp_transferfunds'];
     }
 }
 
@@ -653,7 +653,7 @@ export function copyTransferInput() {
 
 export async function transferTokens(DappObject, stakingOption) {
     if (DappObject.isRealValue === false) {
-        await setCurrentPopup('You need to enter a valid amount of tokens: a number that is not greater than your balance.', true);
+        await setCurrentPopup(dappStrings['dapp_mabel_transfer_error1'], true);
     } else {
         DappObject.isHandlingOperation = true;
 
@@ -667,7 +667,7 @@ export async function transferTokens(DappObject, stakingOption) {
             const amountFromValue = amountFrom.value;
 
             if (!isNumber(amountFromValue)) {
-                await setCurrentPopup('The amount you have entered is not a number!', true);
+                await setCurrentPopup(dappStrings['dapp_mabel_transfer_error2'], true);
             } else {
                 const amountFromValueInt = web32.utils.toWei(amountFromValue, "gwei");
 
@@ -696,7 +696,7 @@ export async function transferTokens(DappObject, stakingOption) {
     
                                                 switch (value) {
                                                     case "Accepted":
-                                                        spinner.$content.find('#ExportTxStatus').html('Accepted');
+                                                        spinner.$content.find('#ExportTxStatus').html(dappStrings['dapp_popup_exportsuccess']);
                                                         spinner.$content.find('#ExportTxIcon').removeClass();
                                                         spinner.$content.find('#ExportTxIcon').addClass("fa fa-solid fa-check");
                                                         setTimeout(() => {
@@ -704,7 +704,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                                         }, 1500);
                                                         break
                                                     case "Dropped":
-                                                        spinner.$content.find('#ExportTxStatus').html('Dropped');
+                                                        spinner.$content.find('#ExportTxStatus').html(dappStrings['dapp_popup_transferfail']);
                                                         spinner.$content.find('#ExportTxIcon').removeClass();
                                                         spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
                                                         resolve("Failed");
@@ -712,7 +712,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                                         showFailStake(DappObject, stakingOption);
                                                         break
                                                     case "Unknown":
-                                                        spinner.$content.find('#ExportTxStatus').html('Unknown');
+                                                        spinner.$content.find('#ExportTxStatus').html(dappStrings['dapp_popup_transferunknown']);
                                                         spinner.$content.find('#ExportTxIcon').removeClass();
                                                         spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
                                                         setTimeout(() => {
@@ -730,7 +730,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                     });
                                 }).then(async result => {
                                     if (result == "Success" || result == "Unknown") {
-                                        document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
+                                        document.getElementById('ImportTxStatus').innerText = dappStrings['dapp_popup_checkwallet2'];
                                         const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                             // console.log("P Chain TX ID: " + result.txid);
             
@@ -741,21 +741,21 @@ export async function transferTokens(DappObject, stakingOption) {
             
                                                     switch (value) {
                                                         case "Committed":
-                                                            spinner.$content.find('#ImportTxStatus').html('Committed');
+                                                            spinner.$content.find('#ImportTxStatus').html(dappStrings['dapp_popup_importsuccess']);
                                                             spinner.$content.find('#ImportTxIcon').removeClass();
                                                             spinner.$content.find('#ImportTxIcon').addClass("fa fa-solid fa-check");
                                                             spinner.close();
                                                             showConfirmStake(DappObject, stakingOption, [cChainTransactionId,pChainTransactionId]);
                                                             break
                                                         case "Dropped":
-                                                            spinner.$content.find('#ImportTxStatus').html('Dropped');
+                                                            spinner.$content.find('#ImportTxStatus').html(dappStrings['dapp_popup_transferfail']);
                                                             spinner.$content.find('#ImportTxIcon').removeClass();
                                                             spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                             spinner.close();
                                                             showFailStake(DappObject, stakingOption);
                                                             break
                                                         case "Unknown":
-                                                            spinner.$content.find('#ImportTxStatus').html('Unknown');
+                                                            spinner.$content.find('#ImportTxStatus').html(dappStrings['dapp_popup_transferunknown']);
                                                             spinner.$content.find('#ImportTxIcon').removeClass();
                                                             spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                             spinner.close();
@@ -807,7 +807,7 @@ export async function transferTokens(DappObject, stakingOption) {
     
                                                 switch (value) {
                                                     case "Committed":
-                                                        spinner.$content.find('#ExportTxStatus').html('Committed');
+                                                        spinner.$content.find('#ExportTxStatus').html(dappStrings['dapp_popup_importsuccess']);
                                                         spinner.$content.find('#ExportTxIcon').removeClass();
                                                         spinner.$content.find('#ExportTxIcon').addClass("fa fa-solid fa-check");
                                                         setTimeout(() => {
@@ -815,7 +815,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                                         }, 1500);
                                                         break
                                                     case "Dropped":
-                                                        spinner.$content.find('#ExportTxStatus').html('Dropped');
+                                                        spinner.$content.find('#ExportTxStatus').html(dappStrings['dapp_popup_transferfail']);
                                                         spinner.$content.find('#ExportTxIcon').removeClass();
                                                         spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
                                                         resolve("Failed");
@@ -823,7 +823,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                                         showFailStake(DappObject, stakingOption);
                                                         break
                                                     case "Unknown":
-                                                        spinner.$content.find('#ExportTxStatus').html('Unknown');
+                                                        spinner.$content.find('#ExportTxStatus').html(dappStrings['dapp_popup_transferunknown']);
                                                         spinner.$content.find('#ExportTxIcon').removeClass();
                                                         spinner.$content.find('#ExportTxIcon').addClass("fa fa-warning");
                                                         setTimeout(() => {
@@ -841,7 +841,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                     });
                                 }).then(async result => {
                                     if (result == "Success" || result == "Unknown") {
-                                        document.getElementById('ImportTxStatus').innerText = 'Please check your Wallet...';
+                                        document.getElementById('ImportTxStatus').innerText = dappStrings['dapp_popup_checkwallet2'];
                                         const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                             // console.log("C Chain TX ID: " + result);
     
@@ -852,21 +852,21 @@ export async function transferTokens(DappObject, stakingOption) {
     
                                                     switch (value) {
                                                         case "Accepted":
-                                                            spinner.$content.find('#ImportTxStatus').html('Accepted');
+                                                            spinner.$content.find('#ImportTxStatus').html(dappStrings['dapp_popup_exportsuccess']);
                                                             spinner.$content.find('#ImportTxIcon').removeClass();
                                                             spinner.$content.find('#ImportTxIcon').addClass("fa fa-solid fa-check");
                                                             spinner.close();
                                                             showConfirmStake(DappObject, stakingOption, [pChainTransactionId,cChainTransactionId]);
                                                             break
                                                         case "Dropped":
-                                                            spinner.$content.find('#ImportTxStatus').html('Dropped');
+                                                            spinner.$content.find('#ImportTxStatus').html(dappStrings['dapp_popup_transferfail']);
                                                             spinner.$content.find('#ImportTxIcon').removeClass();
                                                             spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                             spinner.close();
                                                             showFailStake(DappObject, stakingOption);
                                                             break
                                                         case "Unknown":
-                                                            spinner.$content.find('#ImportTxStatus').html('Unknown');
+                                                            spinner.$content.find('#ImportTxStatus').html(dappStrings['dapp_popup_transferunknown']);
                                                             spinner.$content.find('#ImportTxIcon').removeClass();
                                                             spinner.$content.find('#ImportTxIcon').addClass("fa fa-warning");
                                                             spinner.close();
@@ -927,11 +927,11 @@ export function isStakeInput1(DappObject) {
         claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
         claimButton.style.cursor = "pointer";
         DappObject.isRealValue = true;
-        document.getElementById("WrapButtonText").innerText = "Stake";
+        document.getElementById("WrapButtonText").innerText = dappStrings['dapp_stake'];
     } else {
         claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         claimButton.style.cursor = "auto";
-        document.getElementById("WrapButtonText").innerText = "Enter Amount";
+        document.getElementById("WrapButtonText").innerText = dappStrings['dapp_enteramount'];
         DappObject.isRealValue = false;
     }
 }
@@ -1076,7 +1076,7 @@ export async function populateValidators() {
 //Custom Input 
 
 export async function customInput(Pbalance, DappObject) {
-    $('<div class="stake-amount-nav"><div id="stakeAmountUp" class="stake-amount-button stake-amount-button-up fa fa-solid fa-angle-up"></div><div id="stakeAmountDown" class="stake-amount-button stake-amount-button-down fa fa-solid fa-angle-down"></div><div id="stakeAmountMax" class="stake-amount-button stake-amount-button-max">MAX</div></div>').insertAfter("#stakeAmount input");
+    $(`<div class="stake-amount-nav"><div id="stakeAmountUp" class="stake-amount-button stake-amount-button-up fa fa-solid fa-angle-up"></div><div id="stakeAmountDown" class="stake-amount-button stake-amount-button-down fa fa-solid fa-angle-down"></div><div id="stakeAmountMax" class="stake-amount-button stake-amount-button-max">${dappStrings['dapp_maximum']}</div></div>`).insertAfter("#stakeAmount input");
 
     let spinner = $("#stakeAmount");
 
@@ -1196,7 +1196,7 @@ export async function stake(DappObject, stakingOption) {
     amount1.value = "0";
 
     if (PchainBalanceBigInt < stakeAmount) {
-        await setCurrentPopup('You have insufficient funds!', true);
+        await setCurrentPopup(dappStrings['dapp_mabel_transfer_error3'], true);
     } else {
 
         let pChainTransactionId;

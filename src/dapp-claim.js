@@ -61,18 +61,18 @@ export async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, Dap
                                                 </div>
                                                 <div class="row">
                                                     <div class="wrapper-claim">
-                                                        <span>Provider:</span>
+                                                        <span>${dappStrings['dapp_provider']}:</span>
                                                         <span class="address-claim">${delegatedFtsos[i]}</span>
                                                     </div>
                                                 </div>
                                             </div>`;
                             } else {
-                                await setCurrentPopup('The FTSO that you have delegated to is invalid!', true);
+                                await setCurrentPopup(dappStrings["dapp_mabel_delegate_error2"], true);
 
                                 document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                                 document.getElementById("ClaimButton").style.cursor = "pointer";
                                 DappObject.isRealValue = true;
-                                document.getElementById("ClaimButtonText").innerText = "Undelegate all";
+                                document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_undelegate'];
                             }
                         }
                     }
@@ -565,7 +565,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                                     params: [transactionParameters],
                                 })
                                 .then(txHash => {
-                                    v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
+                                    v2Spinner.$content.find('#v1TxStatus').html(dappStrings['dapp_popup_networkconfirm1']);
 
                                     txHashes[0] = txHash;
 
@@ -573,7 +573,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                                         return new Promise((resolve, reject) => {
                                             switch (result) {
                                                 case "Success":
-                                                    v2Spinner.$content.find('#v1TxStatus').html('Confirmed');
+                                                    v2Spinner.$content.find('#v1TxStatus').html(dappStrings['dapp_popup_success']);
                                                     v2Spinner.$content.find('#v1TxIcon').removeClass();
                                                     v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-solid fa-check");
                                                     v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
@@ -582,7 +582,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                                                     }, 1500);
                                                     break
                                                 case "Fail":
-                                                    v2Spinner.$content.find('#v1TxStatus').html('Failed');
+                                                    v2Spinner.$content.find('#v1TxStatus').html(dappStrings['dapp_popup_failed']);
                                                     v2Spinner.$content.find('#v1TxIcon').removeClass();
                                                     v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
                                                     
@@ -607,21 +607,21 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                                                 method: 'eth_sendTransaction',
                                                 params: [transactionParametersV2],
                                             }).then(txHashV2 => {
-                                                v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+                                                v2Spinner.$content.find('#v2TxStatus').html(dappStrings['dapp_popup_networkconfirm1']);
 
                                                 txHashes[1] = txHashV2;
 
                                                 checkTx(txHashV2, web32, undefined, object, DappObject, 2, true).then(receipt => {
                                                     switch (receipt) {
                                                         case "Success":
-                                                            v2Spinner.$content.find('#v2TxStatus').html('Confirmed');
+                                                            v2Spinner.$content.find('#v2TxStatus').html(dappStrings['dapp_popup_success']);
                                                             v2Spinner.$content.find('#v2TxIcon').removeClass();
                                                             v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-solid fa-check");
                                                             v2Spinner.close();
                                                             showConfirm(txHashes[0] + "<br/>" + txHashes[1], object, DappObject, 2);
                                                             break
                                                         case "Fail":
-                                                            v2Spinner.$content.find('#v2TxStatus').html('Failed');
+                                                            v2Spinner.$content.find('#v2TxStatus').html(dappStrings['dapp_popup_failed']);
                                                             v2Spinner.$content.find('#v2TxIcon').removeClass();
                                                             v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
                                                             v2Spinner.close();

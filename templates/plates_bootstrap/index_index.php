@@ -25,7 +25,7 @@
                     <img src="<?=$view['urlbaseaddr']?>img/logo-dark-2.svg"/>
                     <div class="h1">
                         FTSO Canada<br />
-                        <span class="lead">Start building passive income today!</span>
+                        <span class="lead"><?=_("index_lead")?></span>
                     </div>
                 </div>
             </div>
@@ -41,26 +41,24 @@
             <div class="container">
                 <div class="row">
                     <div class="sec-title text-center white wow animated fadeInDown">
-                        <h2>About FTSO Canada</h2>
+                        <h2><?=_("index_about")?></h2>
                     </div>
                     <div class="owl-carousel owl-theme wow animated fadeInUp">
                         <div class="item testimonial-item text-center">
                             <img src="<?=$view['urlbaseaddr'] ?>img/Logo-Corporate-Light.svg" alt="About FTSO Canada">
                             <div class="clearfix">
-                                <span>Flare Time Series Oracle Canada</span>
-                                <p>FTSO Canada is your partner to help you build your passive income on the Flare Network,<br />
-                                    by providing the Flare Network with a fast and efficient price provider.
+                                <span><?=_("author")?></span>
+                                <p>
+                                    <?=_("index_slide1_body")?>
                                 </p>
                             </div>
                         </div>
                         <div class="item testimonial-item text-center">
                             <img src="<?=$view['urlbaseaddr'] ?>img/sgb-red.svg" alt="About Flare Networks">
                             <div class="clearfix">
-                                <span>Earn SGB and FLR</span>
-                                <p>Passive income is at hand!<br />
-                                    You can earn $SGB and $FLR, without the risk of losing your tokens.<br />
-                                    Make your money work for you, and start claiming your tokens every week!<br /><br />
-                                    <a class="light-link" href="<?=$view['urlbaseaddr'] ?>delegate/index" target="_blank">Delegate now</a>!
+                                <span><?=_("index_slide2_title")?></span>
+                                <p>
+                                    <?=_("index_slide2_body1")?> <a class="light-link" href="<?=$view['urlbaseaddr'] ?>delegate/index" target="_blank"><?=_("index_slide2_body2")?></a>!
                                 </p>
                             </div>
                         </div>
@@ -68,10 +66,9 @@
                             <img src="<?=$view['urlbaseaddr'] ?>img/flare.svg" alt="About XRPL">
                             <div class="clearfix">
                                 <span>Flare Networks</span>
-                                <p>Unleashing Value.<br />
-                                    Around 65% of the value of Blockchain Tokens is inaccessible to decentralised applications.<br />
-                                    That changes now.<br /><br />
-                                    Please visit the <a class="light-link" href="https://flare.xyz" target="_blank">Flare website</a>.</p>
+                                <p>
+                                    <?=_("index_slide3_body1")?> <a class="light-link" href="https://flare.xyz" target="_blank"><?=_("index_slide3_body2")?></a>.
+                                </p>
 
                             </div>
                         </div>
@@ -89,8 +86,8 @@
                 <div class="row">
 
                     <div class="sec-title text-center dark wow animated fadeInDown">
-                        <h2>FOLLOW US</h2>
-                        <p>Stay up to date with the latest information about FTSO Canada!</p>
+                        <h2><?=_("index_followus")?></h2>
+                        <p><?=_("index_invitation")?></p>
                     </div>
 
                     <ul class="social-button">

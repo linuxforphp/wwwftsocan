@@ -20,22 +20,22 @@
         <div class="container">
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="sec-title text-center wow animated fadeInDown">You can delegate to <strong>FTSOCAN</strong>,<br />by using the Flare Portal!</h2>
+                    <h2 class="sec-title text-center wow animated fadeInDown"><?=_("delegate_title1")?> <strong>FTSOCAN</strong><?=_("delegate_title2")?></h2>
                     <img src="<?=$view['urlbaseaddr']?>/img/flare-black.svg" style="max-height: 300px;" />
-                    <a href="https://portal.flare.network" target="_blank" type="button" class="btn btn-red" >Launch Flare Portal</a>
+                    <a href="https://portal.flare.network" target="_blank" type="button" class="btn btn-red" ><?=_("delegate_launch")?></a>
                     <hr />
                 </div>
             </div>
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated fadeInDown">Don't forget to claim your rewards every week!</h2>
+                    <h2 class="wow animated fadeInDown"><?=_("delegate_featurette1_title")?></h2>
                 </div>
             </div>
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated fadeInDown">Delegate the classic way with the Explorer!</h2>
+                    <h2 class="wow animated fadeInDown"><?=_("delegate_featurette2_title")?></h2>
                     <ul class="text-md delegation">
-                        <li class="wow animated fadeInDown">Instead of using the Flare Portal to delegate your tokens, you might prefer to use the Flare or the Songbird Explorer:</li>
+                        <li class="wow animated fadeInDown"><?=_("delegate_featurette2_body")?></li>
                     </ul>
                 </div>
             </div>
@@ -46,13 +46,13 @@
                     <a href="<?=$view['urlbaseaddr']?>flrexplorer/index">
                         <img src="<?=$view['urlbaseaddr']?>/img/FLR.svg" style="max-height: 100px;" /><br />
                     </a>
-                    <div class="text-center">Flare Explorer</div>
+                    <div class="text-center"><?=_("delegate_flr_explorer")?></div>
                 </div>
                 <div class="col-lg-4">
                     <a href="<?=$view['urlbaseaddr']?>sgbexplorer/index">
                         <img src="<?=$view['urlbaseaddr']?>/img/SGB.svg" style="max-height: 100px;" /><br />
                     </a>
-                    <div class="text-center">Songbird Explorer</div>
+                    <div class="text-center"><?=_("delegate_sgb_explorer")?></div>
                 </div>
                 <div class="col-lg-2">
                 </div>
@@ -60,9 +60,9 @@
             <hr />
             <div class="row">
                 <div class="sec-title text-center mt-2">
-                    <h2 class="sec-title text-center wow animated fadeInDown">Add the WFLR and WSGB tokens to your wallet!</h2>
+                    <h2 class="sec-title text-center wow animated fadeInDown"><?=_("delegate_featurette3_title")?></h2>
                     <ul class="text-md delegation">
-                        <li class="wow animated fadeInDown">Import your favorite tokens by pasting these addresses in the "Import tokens" section of your wallet:</li>
+                        <li class="wow animated fadeInDown"><?=_("delegate_featurette3_body")?></li>
                     </ul>
                 </div>
             </div>
@@ -98,7 +98,7 @@
             <hr />
             <div class="row">
                 <div class="sec-title text-center">
-                    <h2 class="wow animated fadeInDown">Enjoy your passive income!</h2>
+                    <h2 class="wow animated fadeInDown"><?=_("delegate_outro")?></h2>
                     <img src="<?=$view['urlbaseaddr'] ?>img/logo-signal.png" style="max-height: 250px;"/>
                 </div>
             </div>
@@ -115,6 +115,10 @@
 <?php if ($view['bodyjs'] === 1): ?>
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
+
+<script>
+    var dappStrings = <?= $view['jstranslate']; ?>;
+</script>
 
 <!-- copyclip functions -->
 <script src="<?=$view['urlbaseaddr'] ?>js/copyclip-wflr-wsgb.js"></script>

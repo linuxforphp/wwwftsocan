@@ -19,7 +19,7 @@
         <div class="dapp-container" id="dapp-root"></div>
         <div id="currentWallet" class="current-wallet paused">
             <div id="currentWalletPopup" class="current-wallet-popup">
-                <p id="currentWalletPopupText">Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and help efficiently claim your FLR or SGB rewards!</p>
+                <p id="currentWalletPopupText"><?=_("dapp_mabel_selectwallet1")?></p>
             </div>
             <div id="currentWalletIcon" class="current-wallet-icon">
                 <div class="current-wallet-icon-border"></div>
@@ -38,9 +38,9 @@
                 <div class="row">
                     <div class="sec-title text-center">
                         <h1 class="h1 xl:text-blue-darker">404</h1>
-                        <h2 class="h2 text-blue-darker">DApp Currently Inactive</h2>
-                        <p class="pt-2 font-bold text-blue">Sorry, but the FTSO Can DApp is currently offline!</p>
-                        <p class="pt-2 pb-10 text-lg-center">Let's go back <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index">HOME</a>!</p>
+                        <h2 class="h2 text-blue-darker"><?=_("notfound")?></h2>
+                        <p class="pt-2 font-bold text-blue"><?=_("notfound_lead")?></p>
+                        <p class="pt-2 pb-10 text-lg-center"><?=_("notfound_backlink")?> <a class="dark-link" href="<?=$view['urlbaseaddr'] ?>index"><?=strtoupper(_("home"))?></a>!</p>
                     </div>
                 </div>
             </div>
@@ -62,6 +62,10 @@
 
 <script>
     var dappUrlBaseAddr = <?= json_encode($view['urlbaseaddr']); ?>;
+
+    var dappLanguage = "<?= $view['language']; ?>";
+
+    var dappStrings = <?= $view['jstranslate']; ?>;
 </script>
 
 <script>

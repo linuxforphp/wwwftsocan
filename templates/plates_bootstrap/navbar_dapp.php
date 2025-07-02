@@ -14,7 +14,7 @@ Fixed Navigation
         <div class="navbar-header">
             <!-- responsive nav button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only"><?=_("toggle")?></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -34,21 +34,32 @@ Fixed Navigation
         <!-- main nav -->
         <nav class="collapse navbar-collapse navbar-right" role="navigation">
             <ul id="nav" class="nav navbar-nav">
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>index')">Home</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>index')"><?=_("home")?></a></li>
                 <li id="delegate-dropdown">
-                    <a href="#" class="delegate-dropdown">Delegation Tools <i class="fas fa-caret-down"></i></a>
+                    <a href="#" class="delegate-dropdown"><?=_("delegation_tools")?> <i class="fas fa-caret-down"></i></a>
                     <div class="dd-menu" style="top: 37px; left: 15px;">
                         <div class="dropdown-menu-dapp" style="left: 0px;">
                             <ul>
-                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')">DApp<sup><strong> NEW!</strong></sup></a></li>
+                                <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')"><?=_("dapp")?><sup><strong> <?=_("new")?></strong></sup></a></li>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>delegate/index')">Flare Portal</a></li>
                                 <li><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>stake/index')">FlareStake Tool</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
-                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>faq/index')">FAQ</a></li>
-                <li><a href="#" onclick="getDocsPageNewTab(2)">About</a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>faq/index')"><?=_("faq")?></a></li>
+                <li><a href="#" onclick="getDocsPageNewTab(2)"><?=_("about")?></a></li>
+                <li id="language-dropdown">
+                    <a href="#" class="delegate-dropdown"><i class="fas fa fa-solid fa-globe"></i> <?= explode('_', $view['language'])[0]?> <i class="fas fa-caret-down"></i></a>
+                    <div class="dd-menu" style="top: 37px; left: 10px;">
+                        <div class="dropdown-menu-dapp" style="left: 0px;">
+                            <ul>
+                                <li style="text-align: left; width: 70px !important;"><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>en')">EN <?php if ($view['language'] === "en_US"): ?> <i class="fas fa fa-solid fa-check"></i> <?php endif ?></a></li>
+                                <li style="text-align: left; width: 70px !important;"><a href="#" class="navbar-list-item" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>fr')">FR <?php if ($view['language'] === "fr_FR"): ?> <i class="fas fa fa-solid fa-check"></i> <?php endif ?></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </nav>
         <!-- /main nav -->
@@ -58,11 +69,11 @@ Fixed Navigation
         <div class="container">
             <div class="collapse navbar-collapse static-top navbar-right" role="navigation" style="border: none; box-shadow: none; -webkit-box-shadow: none;">
                 <ul class="nav navbar-nav navbar-nav-dapp nav-item">
-                    <li><a href="#" class="nav-link" onclick="getDappPage(4)">Select Wallet</a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(1)">Wrap</a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(2)">Delegate</a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(3)">Rewards</a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(5)">Stake</a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(4)"><?=_("select_wallet")?></a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(1)"><?=_("wrap")?></a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(2)"><?=_("delegate")?></a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(3)"><?=_("rewards")?></a></li>
+                    <li><a href="#" class="nav-link" onclick="getDappPage(5)"><?=_("stake")?></a></li>
                 </ul>
             </div>
         </div>

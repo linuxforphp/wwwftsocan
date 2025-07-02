@@ -1,7 +1,7 @@
         <div class="top">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="delegate"><div class="delegate-text">Delegate</div></div>
+                    <div class="delegate"><div class="delegate-text"><?=_("dapp_delegate")?></div></div>
                 </div>
                 <div class="col-sm-6">
                     <div class="select-container">
@@ -23,7 +23,7 @@
                 <span class="wrap-box-content">
                     <div class="row">
                         <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
-                        <select id="select-ftso" placeholder="Select FTSO"></select>
+                        <select id="select-ftso" placeholder="<?=_("dapp_selectftso")?>"></select>
                         <input id="Amount1" class="amount-delegate"  type="text" inputmode="decimal" min="1" minlength="1" maxlength="4" max="79" placeholder="0%">
                     </div>
                 </span>
@@ -31,10 +31,10 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText">Connect Wallet</i></button>
+                <button id="ConnectWallet" class="connect-wallet"><i class="connect-wallet-text" id="ConnectWalletText"><?=_("dapp_connect")?></i></button>
             </div>
             <div class="col-sm-6">
-                <button id="ClaimButton" class="connect-wallet delegate-button"><i class="delegate-button-text" id="ClaimButtonText">Enter Amount</i></button>
+                <button id="ClaimButton" class="connect-wallet delegate-button"><i class="delegate-button-text" id="ClaimButtonText"><?=_("dapp_enteramount")?></i></button>
             </div>
         </div>
         <div class="row">

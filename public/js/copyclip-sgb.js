@@ -6,7 +6,7 @@ function copyClip(button, value) {
     document.execCommand("copy");
     document.body.removeChild(tempInput);
     let copyButton = document.getElementById(button);
-    copyButton.innerHTML = "Copied!";
+    copyButton.innerHTML = dappStrings['dapp_copied'];
 }
 
 document.querySelector('#myCopyCommand1Button').onclick = function() {

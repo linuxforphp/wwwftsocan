@@ -72,7 +72,7 @@ export async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, 
 
                 showConfirmationSpinnerStake(async (spinner) => {
                     try {
-                        spinner.setContent("Waiting for network confirmation. <br />Please wait...");
+                        spinner.setContent(dappStrings['dapp_popup_networkconfirm1'] + '<br />' + dappStrings['dapp_popup_networkconfirm2']);
                         ethersProvider.sendTransaction(signedTx).then(response => {
                             if (isStake === true) {
                                 checkTxStake(response.hash, web32, spinner, DappObject);
@@ -159,7 +159,7 @@ export async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, ob
         try {
             await ledgerSignEVM(LedgerTxPayload, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTx => {
                 ethersProvider.sendTransaction(signedTx).then(response => {
-                    v2Spinner.$content.find('#v1TxStatus').html('Waiting for network confirmation...');
+                    v2Spinner.$content.find('#v1TxStatus').html(dappStrings['dapp_popup_networkconfirm1']);
 
                     txHashes[0] = response.hash;
 
@@ -167,7 +167,7 @@ export async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, ob
                         return new Promise((resolve, reject) => {
                             switch (result) {
                                 case "Success":
-                                    v2Spinner.$content.find('#v1TxStatus').html('Confirmed');
+                                    v2Spinner.$content.find('#v1TxStatus').html(dappStrings['dapp_popup_success']);
                                     v2Spinner.$content.find('#v1TxIcon').removeClass();
                                     v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-solid fa-check");
                                     v2Spinner.$content.find('#v2TxStatus').html('Please check your Wallet...');
@@ -176,7 +176,7 @@ export async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, ob
                                     }, 1500);
                                     break
                                 case "Fail":
-                                    v2Spinner.$content.find('#v1TxStatus').html('Failed');
+                                    v2Spinner.$content.find('#v1TxStatus').html(dappStrings['dapp_popup_failed']);
                                     v2Spinner.$content.find('#v1TxIcon').removeClass();
                                     v2Spinner.$content.find('#v1TxIcon').addClass("fa fa-warning");
                                     resolve("Failed");
@@ -198,21 +198,21 @@ export async function LedgerEVMFtsoV2Sign(txPayload, txPayloadV2, DappObject, ob
                         if (value === "Success" || value === "Unknown") {
                             await ledgerSignEVM(LedgerTxPayloadV2, DappObject.ledgerSelectedIndex, ethersProvider).then(async signedTxV2 => {
                                 ethersProvider.sendTransaction(signedTxV2).then(answer => {
-                                    v2Spinner.$content.find('#v2TxStatus').html('Waiting for network confirmation...');
+                                    v2Spinner.$content.find('#v2TxStatus').html(dappStrings['dapp_popup_networkconfirm1']);
 
                                     txHashes[1] = answer.hash;
 
                                     checkTx(answer.hash, web32, undefined, object, DappObject, pageIndex, true).then(receipt => {
                                         switch (receipt) {
                                             case "Success":
-                                                v2Spinner.$content.find('#v2TxStatus').html('Confirmed');
+                                                v2Spinner.$content.find('#v2TxStatus').html(dappStrings['dapp_popup_success']);
                                                 v2Spinner.$content.find('#v2TxIcon').removeClass();
                                                 v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-solid fa-check");
                                                 v2Spinner.close();
                                                 showConfirm(txHashes[0] + "<br/>" + txHashes[1], object, DappObject, 2);
                                                 break
                                             case "Fail":
-                                                v2Spinner.$content.find('#v2TxStatus').html('Failed');
+                                                v2Spinner.$content.find('#v2TxStatus').html(dappStrings['dapp_popup_failed']);
                                                 v2Spinner.$content.find('#v2TxIcon').removeClass();
                                                 v2Spinner.$content.find('#v2TxIcon').addClass("fa fa-warning");
                                                 v2Spinner.close();
@@ -300,7 +300,7 @@ export async function handleTransportConnect(chosenNavigator, DappObject, option
                     clearTimeout(DappObject.latestPopupTimeoutId);
 
                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup("Whoops! Looks like you do not have the " + requiredApp + " App installed on your Ledger device! Please install it and come back again later!", true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], true);
                     }, 1000);
 
                     if (option === 4 && stakingOption === 5) {

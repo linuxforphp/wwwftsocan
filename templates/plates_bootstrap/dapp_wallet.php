@@ -10,7 +10,9 @@
     <div class="wrap-box" style="white-space: normal; text-align: center !important; padding: 4% !important; margin-top: -25px; height: 75px;">
         <div class="row">
             <div class="col-md-12">
-                <span style="margin: auto; font-weight: bold; color: #383a3b; font-size: 23px;">How would you like to access your Wallet?</span>
+                <span style="margin: auto; font-weight: bold; color: #383a3b; font-size: 23px;">
+                    <?=_("dapp_selectwallet_title")?>
+                </span>
             </div>
         </div>
     </div>
@@ -23,7 +25,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
                 </svg>
             </div>
-            <i id="injectedProviderName" class="connect-wallet-text">Browser Wallet</i>
+            <i id="injectedProviderName" class="connect-wallet-text"><?=_("dapp_browserwallet")?></i>
         </button>
         <input type="text" id="chosenProvider" class="addr-wrap">
     </div>

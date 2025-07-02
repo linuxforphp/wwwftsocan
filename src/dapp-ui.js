@@ -12,8 +12,8 @@ export async function showSpinner(doSomething) {
             escapeKey: false,
             backgroundDismiss: false,
             icon: 'fa fa-spinner fa-spin',
-            title: 'Loading...',
-            content: 'To continue, you must approve the transaction. <br />Please check your Wallet...',
+            title: dappStrings['dapp_popup_loading'],
+            content: dappStrings['dapp_popup_checkwallet1'] + ' ' + '<br />' + dappStrings['dapp_popup_checkwallet2'],
             theme: 'material',
             type: 'dark',
             typeAnimated: true,
@@ -24,6 +24,7 @@ export async function showSpinner(doSomething) {
                 },
             },
             onContentReady: async function () {
+                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 await doSomething();
                 resolve("Success");
                 this.close();
@@ -38,8 +39,8 @@ export async function showConfirmationSpinner(txHash, web32, object, DappObject,
         escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
-        title: 'Loading...',
-        content: 'Waiting for network confirmation. <br />Please wait...',
+        title: dappStrings['dapp_popup_loading'],
+        content: dappStrings['dapp_popup_networkconfirm1'] + '<br />' + dappStrings['dapp_popup_networkconfirm2'],
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
@@ -50,6 +51,7 @@ export async function showConfirmationSpinner(txHash, web32, object, DappObject,
             },
         },
         onContentReady: async function () {
+            this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             await checkTx(txHash, web32, this, object, DappObject, pageIndex);
         }
     });
@@ -62,8 +64,8 @@ export async function showConfirmationSpinnerv2(doSomething) {
             escapeKey: false,
             backgroundDismiss: false,
             icon: 'fa fa-spinner fa-spin',
-            title: 'Loading...',
-            content: '<div id="v1Tx"><div id="v1TxIcon" class="fa fa-spinner fa-spin"></div> V1 rewards claim status: <div id="v1TxStatus">Please check your Wallet...</div></div><br />' + '<div id="v2Tx"><div id="v2TxIcon" class="fa fa-spinner fa-spin"></div> V2 rewards claim status: <div id="v2TxStatus">Waiting for V1 reward status...</div></div>',
+            title: dappStrings['dapp_popup_loading'],
+            content: '<div id="v1Tx"><div id="v1TxIcon" class="fa fa-spinner fa-spin"></div> ' + dappStrings['dapp_popup_v1status'] + '<div id="v1TxStatus">' + dappStrings['dapp_popup_checkwallet2'] + '</div></div><br />' + '<div id="v2Tx"><div id="v2TxIcon" class="fa fa-spinner fa-spin"></div> ' + dappStrings['dapp_popup_v2status1'] + '<div id="v2TxStatus">' + dappStrings['dapp_popup_v2status2'] + '</div></div>',
             theme: 'material',
             type: 'orange',
             typeAnimated: true,
@@ -74,6 +76,7 @@ export async function showConfirmationSpinnerv2(doSomething) {
                 },
             },
             onContentReady: async function () {
+                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 await doSomething(this);
                 resolve("Success");
             }
@@ -87,8 +90,8 @@ export async function showConfirmationSpinnerTransfer(doSomething) {
         escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
-        title: 'Loading...',
-        content: '<div id="ExportTx"><div id="ExportTxIcon" class="fa fa-spinner fa-spin"></div> Export Transaction status: <div id="ExportTxStatus">Please check your Wallet...</div></div><br />' + '<div id="ImportTx"><div id="ImportTxIcon" class="fa fa-spinner fa-spin"></div> Import Transaction status: <div id="ImportTxStatus">Waiting for Export status...</div></div>',
+        title: dappStrings['dapp_popup_loading'],
+        content: '<div id="ExportTx"><div id="ExportTxIcon" class="fa fa-spinner fa-spin"></div> ' + dappStrings['dapp_popup_exportstatus'] + '<div id="ExportTxStatus">' + dappStrings['dapp_popup_checkwallet2'] + '</div></div><br />' + '<div id="ImportTx"><div id="ImportTxIcon" class="fa fa-spinner fa-spin"></div> ' + dappStrings['dapp_popup_importstatus1'] + '<div id="ImportTxStatus">' + dappStrings['dapp_popup_importstatus2'] + '</div></div>',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
@@ -100,6 +103,7 @@ export async function showConfirmationSpinnerTransfer(doSomething) {
         },
         onContentReady: async function () {
             try {
+                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 await doSomething(this);
             } catch (error) {
                 this.close()
@@ -114,8 +118,8 @@ export async function showConfirmationSpinnerStake(doSomething) {
         escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-spinner fa-spin',
-        title: 'Loading...',
-        content: 'To continue, you must approve the transaction. <br /><div id="StakeTxStatus">Please check your Wallet...</div>',
+        title: dappStrings['dapp_popup_loading'],
+        content: dappStrings['dapp_popup_checkwallet1'] + '<br /><div id="StakeTxStatus">' + dappStrings['dapp_popup_checkwallet2'] + '</div>',
         theme: 'material',
         type: 'orange',
         typeAnimated: true,
@@ -127,6 +131,7 @@ export async function showConfirmationSpinnerStake(doSomething) {
         },
         onContentReady: async function () {
             try {
+                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 await doSomething(this);
             } catch (error) {
                 this.close()
@@ -140,8 +145,8 @@ export async function showConfirm(txHash, object, DappObject, pageIndex) {
         escapeKey: true,
         backgroundDismiss: true,
         icon: 'fa fa-solid fa-check green',
-        title: 'Transaction confirmed!',
-        content: 'Transaction hash: <br />',
+        title: dappStrings['dapp_popup_txsuccess'],
+        content: dappStrings['dapp_popup_txhash'] + ' <br />',
         type: 'green',
         theme: 'material',
         typeAnimated: true,
@@ -154,6 +159,7 @@ export async function showConfirm(txHash, object, DappObject, pageIndex) {
             }
         },
         onContentReady: async function () {
+            this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             this.setContentAppend(txHash);
             this.showLoading(true);
             this.hideLoading(true);
@@ -166,7 +172,7 @@ export async function showConfirmStake(DappObject, stakingOption, txHashes) {
         escapeKey: true,
         backgroundDismiss: true,
         icon: 'fa fa-solid fa-check green',
-        title: 'Transaction confirmed!',
+        title: dappStrings['dapp_popup_txsuccess'],
         content: '',
         type: 'green',
         theme: 'material',
@@ -180,6 +186,7 @@ export async function showConfirmStake(DappObject, stakingOption, txHashes) {
             }
         },
         onContentReady: async function () {
+            this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             for (let i = 0; i < txHashes.length; i++) {
                 this.setContentAppend(txHashes[i] + "<br />");
             }
@@ -195,8 +202,8 @@ export function showEmptyBucket(object, DappObject, claimAmount) {
         escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-warning',
-        title: 'V1 Bucket is Empty!',
-        content: 'The V1 rewards bucket will be replenished shortly.<br /> Only V2 rewards will be claimed for now.',
+        title: dappStrings['dapp_popup_v1empty1'],
+        content: dappStrings['dapp_popup_v1empty2'],
         type: 'dark',
         theme: 'material',
         typeAnimated: true,
@@ -209,6 +216,7 @@ export function showEmptyBucket(object, DappObject, claimAmount) {
             },
         },
         onContentReady: function () {
+            this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -220,7 +228,7 @@ export function showFail(object, DappObject, pageIndex, revertReason) {
         escapeKey: true,
         backgroundDismiss: true,
         icon: 'fa fa-warning red',
-        title: 'Transaction declined!',
+        title: dappStrings['dapp_popup_txfail'],
         content: '<div id="revertReason"></div>',
         type: 'red',
         theme: 'material',
@@ -234,6 +242,7 @@ export function showFail(object, DappObject, pageIndex, revertReason) {
             },
         },
         onContentReady: function () {
+            this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             this.showLoading(true);
             this.hideLoading(true);
 
@@ -249,7 +258,7 @@ export function showFailStake(DappObject, stakingOption) {
         escapeKey: true,
         backgroundDismiss: true,
         icon: 'fa fa-warning red',
-        title: 'Transaction declined!',
+        title: dappStrings['dapp_popup_txfail'],
         content: '',
         type: 'red',
         theme: 'material',
@@ -263,6 +272,7 @@ export function showFailStake(DappObject, stakingOption) {
             },
         },
         onContentReady: function () {
+            this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -274,8 +284,8 @@ export async function showBindPAddress(contract, web32, address, publicKey, addr
         escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-warning',
-        title: 'P-Address Invalid!',
-        content: 'Your P-Chain address is not bound to your C-Chain address! <br /> If you do not bind them, you will not be able to stake. <br /> Do you wish to bind them?',
+        title: dappStrings['dapp_popup_bindpchain1'],
+        content: dappStrings['dapp_popup_bindpchain2'],
         type: 'orange',
         theme: 'material',
         typeAnimated: true,
@@ -313,6 +323,8 @@ export async function showBindPAddress(contract, web32, address, publicKey, addr
             }
         },
         onContentReady: async function () {
+            this.buttons.yes.setText(dappStrings['dapp_popup_yes']);
+            this.buttons.no.setText(dappStrings['dapp_popup_no']);
             this.showLoading(true);
             this.hideLoading(true);
         }
@@ -324,8 +336,8 @@ export function downloadMetamask() {
         escapeKey: true,
         backgroundDismiss: false,
         icon: 'fa fa-warning red',
-        title: 'Metamask is not installed!',
-        content: 'Would you like to install Metamask in your browser?',
+        title: dappStrings['dapp_popup_metamask1'],
+        content: dappStrings['dapp_popup_metamask2'],
         type: 'red',
         theme: 'material',
         typeAnimated: true,
@@ -341,6 +353,12 @@ export function downloadMetamask() {
                 },
             },
             no: {}
+        },
+        onContentReady: async function () {
+            this.buttons.yes.setText(dappStrings['dapp_popup_yes']);
+            this.buttons.no.setText(dappStrings['dapp_popup_no']);
+            this.showLoading(true);
+            this.hideLoading(true);
         }
     });
 }
@@ -351,8 +369,8 @@ export async function showValidatorInvalid(control, delegatedicon) {
             escapeKey: false,
             backgroundDismiss: false,
             icon: 'fa fa-solid fa-flag red',
-            title: 'Loading...',
-            content: 'The validator you have selected is not currently stakeable. <br />Please select another validator.',
+            title: dappStrings['dapp_popup_loading'],
+            content: dappStrings['dapp_popup_validatorinvalid'],
             theme: 'material',
             type: 'red',
             typeAnimated: true,
@@ -366,6 +384,7 @@ export async function showValidatorInvalid(control, delegatedicon) {
                 },
             },
             onContentReady: async function () {
+                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 this.showLoading(true);
                 this.hideLoading(true);
             }
@@ -378,8 +397,8 @@ export async function showAlreadyDelegated(DelegatedFtsos, object) {
         escapeKey: false,
         backgroundDismiss: false,
         icon: 'fa fa-solid fa-flag red',
-        title: 'Already delegated!',
-        content: 'You have already delegated to ',
+        title: dappStrings['dapp_popup_alreadydelegated1'],
+        content: dappStrings['dapp_popup_alreadydelegated2'] + " ",
         type: 'red',
         theme: 'material',
         typeAnimated: true,
@@ -395,12 +414,14 @@ export async function showAlreadyDelegated(DelegatedFtsos, object) {
             }
         },
         onContentReady: function () {
+            this.buttons.undelegate.setText(dappStrings['dapp_popup_alreadydelegated5']);
+            this.buttons.cancel.setText(dappStrings['dapp_popup_cancel']);
             if (DelegatedFtsos.length > 1) {
-                this.setContentAppend(DelegatedFtsos[0] + " and " + DelegatedFtsos[1] + ". <br />");
+                this.setContentAppend(DelegatedFtsos[0] + " " + dappStrings['dapp_popup_alreadydelegated3'] + " " + DelegatedFtsos[1] + ". <br />");
             } else {
                 this.setContentAppend(DelegatedFtsos[0] + ". <br />");
             }
-            this.setContentAppend("You MUST undelegate before you can delegate to another provider. <br />");
+            this.setContentAppend(dappStrings['dapp_popup_alreadydelegated4'] + ' <br />');
             this.showLoading(true);
             this.hideLoading(true);
         }

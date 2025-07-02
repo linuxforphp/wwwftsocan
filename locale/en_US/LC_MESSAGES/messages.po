@@ -1,0 +1,830 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FTSOCAN\n"
+"Report-Msgid-Bugs-To: info@ftsocan.com\n"
+"POT-Creation-Date: 2025-06-29 19:30-0400\n"
+"PO-Revision-Date: 2025-07-01 21:22-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: ../../src\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: _\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: strings.orig.php:3 strings.php:3
+msgid "title"
+msgstr "FTSOCAN"
+
+#: strings.orig.php:4 strings.php:4
+msgid "author"
+msgstr "Flare Time Series Oracle Canada"
+
+#: strings.orig.php:5 strings.php:5
+msgid "description"
+msgstr ""
+"Flare Time Series Oracle Canada (FTSOCAN) is one of the most reliable Flare "
+"signal providers in the World. FTSOCAN is your best partner when it comes to "
+"earning passive income on the Flare Network."
+
+#: strings.orig.php:6 strings.php:6
+msgid "home"
+msgstr "Home"
+
+#: strings.orig.php:7 strings.php:7
+msgid "toggle"
+msgstr "Toggle navigation"
+
+#: strings.orig.php:8 strings.php:8
+msgid "delegation_tools"
+msgstr "Delegation Tools"
+
+#: strings.orig.php:9 strings.php:9
+msgid "dapp"
+msgstr "DApp"
+
+#: strings.orig.php:10 strings.php:10
+msgid "new"
+msgstr "NEW!"
+
+#: strings.orig.php:11 strings.php:11
+msgid "faq"
+msgstr "FAQ"
+
+#: strings.orig.php:12 strings.php:12
+msgid "about"
+msgstr "About"
+
+#: strings.orig.php:13 strings.php:13
+msgid "select_wallet"
+msgstr "Select Wallet"
+
+#: strings.orig.php:14 strings.php:14
+msgid "wrap"
+msgstr "Wrap"
+
+#: strings.orig.php:15 strings.php:15
+msgid "delegate"
+msgstr "Delegate"
+
+#: strings.orig.php:16 strings.php:16
+msgid "rewards"
+msgstr "Rewards"
+
+#: strings.orig.php:17 strings.php:17
+msgid "stake"
+msgstr "Stake"
+
+#: strings.php:18
+msgid "powered_by"
+msgstr "Powered by the"
+
+#: strings.php:19
+msgid "templates_by"
+msgstr "and templates by"
+
+#: strings.php:20
+msgid "copyright"
+msgstr "Copyright"
+
+#: strings.php:21
+msgid "index_lead"
+msgstr "Start building passive income today!"
+
+#: strings.php:22
+msgid "index_about"
+msgstr "About FTSO Canada"
+
+#: strings.php:23
+msgid "index_slide1_body"
+msgstr ""
+"FTSO Canada is your partner to help you build your passive income on the "
+"Flare network,<br /> by providing Flare Networks with a fast and efficient "
+"price provider."
+
+#: strings.php:24
+msgid "index_slide2_title"
+msgstr "Earn SGB and FLR"
+
+#: strings.php:25
+msgid "index_slide2_body1"
+msgstr ""
+"Passive income is at hand!<br /> You can earn $SGB and $FLR, without the "
+"risk of losing your tokens.<br /> Make your money work for you, and start "
+"claiming your tokens every week!<br /><br />"
+
+#: strings.php:26
+msgid "index_slide2_body2"
+msgstr "Delegate Now"
+
+#: strings.php:27
+msgid "index_slide3_body1"
+msgstr ""
+"Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is "
+"inaccessible to decentralised applications.<br /> That changes now.<br /"
+"><br /> Please visit the"
+
+#: strings.php:28
+msgid "index_slide3_body2"
+msgstr "Flare website"
+
+#: strings.php:29
+msgid "index_followus"
+msgstr "FOLLOW US"
+
+#: strings.php:30
+msgid "index_invitation"
+msgstr "Stay up to date with the latest information about FTSO Canada!"
+
+#: strings.php:31
+msgid "delegate_title1"
+msgstr "You can delegate to"
+
+#: strings.php:32
+msgid "delegate_title2"
+msgstr ",<br />by using the Flare Portal!"
+
+#: strings.php:33
+msgid "delegate_launch"
+msgstr "Launch Flare Portal"
+
+#: strings.php:34
+msgid "delegate_featurette1_title"
+msgstr "Don't forget to claim your rewards every week!"
+
+#: strings.php:35
+msgid "delegate_featurette2_title"
+msgstr "Delegate the classic way with the Explorer!"
+
+#: strings.php:36
+msgid "delegate_featurette2_body"
+msgstr ""
+"Instead of using the Flare Portal to delegate your tokens, you might prefer "
+"to use the Flare or the Songbird Explorer:"
+
+#: strings.php:37
+msgid "delegate_flr_explorer"
+msgstr "Flare Explorer"
+
+#: strings.php:38
+msgid "delegate_sgb_explorer"
+msgstr "Songbird Explorer"
+
+#: strings.php:39
+msgid "delegate_featurette3_title"
+msgstr "Add the WFLR and WSGB tokens to your wallet!"
+
+#: strings.php:40
+msgid "delegate_featurette3_body"
+msgstr ""
+"Import your favorite tokens by pasting these addresses in the \"Import tokens"
+"\" section of your wallet:"
+
+#: strings.php:41
+msgid "delegate_outro"
+msgstr "Enjoy your passive income!"
+
+#: strings.php:42
+msgid "stake_title1"
+msgstr "You can stake to the"
+
+#: strings.php:43
+msgid "stake_title2"
+msgstr "FTSOCAN Validator Node"
+
+#: strings.php:44
+msgid "stake_title3"
+msgstr ",<br />by using the FlareStake Tool!"
+
+#: strings.php:45
+msgid "stake_nodeid"
+msgstr "FTSOCAN FLR Validator Node ID:"
+
+#: strings.php:46
+msgid "stake_launch"
+msgstr "Launch FlareStake"
+
+#: strings.php:47
+msgid "stake_featurette"
+msgstr "Don't forget to claim your rewards every two weeks!"
+
+#: strings.php:48
+msgid "stake_outro"
+msgstr "Enjoy your passive income!"
+
+#: strings.php:49
+msgid "faq_title"
+msgstr "Frequently Asked Questions"
+
+#: strings.php:50
+msgid "faq_accordion1_title"
+msgstr "What is FTSO Canada?"
+
+#: strings.php:51
+msgid "faq_accordion1_body1"
+msgstr ""
+"<strong>FTSO Canada</strong> is one of <strong>Flare Networks</strong>' many "
+"FTSOs (Flare Time Series Oracle). <br>It provides applications on the "
+"<strong>Flare</strong> Network with highly accurate and decentralized data, "
+"such as cryptocurrency prices, and transaction validation. To learn more "
+"about FTSOs, you can visit "
+
+#: strings.php:52
+msgid "faq_accordion1_body2"
+msgstr "Flare's official post about FTSOs."
+
+#: strings.php:53
+msgid "faq_accordion2_title"
+msgstr "How Do I get \"Flare\" or \"Songbird\" installed in my browser?"
+
+#: strings.php:54
+msgid "faq_accordion2_body1"
+msgstr ""
+"To be able to interact with Ethereum chains such as <strong>Flare</strong>, "
+"<strong>Songbird</strong>, <strong>Coston</strong> or <strong>Coston2</"
+"strong>, you must first download Metamask, or any other EVM Wallet, on your "
+"browser, such as Chrome, Firefox, Edge, or Opera.<br>"
+
+#: strings.php:55
+msgid "faq_metamask"
+msgstr "Download Metamask"
+
+#: strings.php:56
+msgid "faq_accordion2_body3"
+msgstr ""
+"Then, once your account has been created, to make sure that you can see your "
+"tokens and wrapped tokens, you need to add the <strong>Flare</strong> ETH "
+"chain, and \"WFLR\" token."
+
+#: strings.php:57
+msgid "faq_accordion2_body4"
+msgstr "Add Flare"
+
+#: strings.php:58
+msgid "faq_accordion2_body5"
+msgstr "Add WFLR"
+
+#: strings.php:59
+msgid "faq_accordion2_body6"
+msgstr ""
+"You can also do the same for the <strong>Songbird</strong> ETH chain, and "
+"\"WSGB\" token."
+
+#: strings.php:60
+msgid "faq_accordion2_body7"
+msgstr "Add Songbird"
+
+#: strings.php:61
+msgid "faq_accordion2_body8"
+msgstr "Add WSGB"
+
+#: strings.php:62
+msgid "faq_accordion2_body9"
+msgstr ""
+"Please note that adding the tokens will only permit you to view them. To "
+"actually own WSGB or WFLR, you will need to buy some SGB or FLR from an "
+"exchange, and wrap them."
+
+#: strings.php:63
+msgid "faq_accordion3_title"
+msgstr "How do I connect my Ledger device to my browser?"
+
+#: strings.php:64
+msgid "faq_accordion3_body1"
+msgstr ""
+"Assuming you already have an Ethereum account assigned to your "
+"<strong>Ledger</strong> device, you must first download Metamask on your "
+"browser, such as Chrome, Firefox, Edge, or Opera.<br>"
+
+#: strings.php:65
+msgid "faq_accordion3_body2"
+msgstr ""
+"Then, once the set up is completed, click on your account, and head down to "
+"\"Add Account or Hardware Wallet\". <br>Click on \"Hardware Wallet\", select "
+"Ledger from the given options, and make sure your <strong>Ledger</strong> "
+"device is connected to your computer. <br>Then, select the account that you "
+"would like to connect to, and accept the request on your <strong>Ledger</"
+"strong> device. Your account should now be connected to Metamask."
+
+#: strings.php:66
+msgid "faq_accordion4_title"
+msgstr "How can I wrap, delegate, or claim my Flare or Songbird tokens?"
+
+#: strings.php:67
+msgid "faq_accordion4_body1"
+msgstr ""
+"Decentralized applications (DApps) will allow you to wrap, delegate, or "
+"claim your <strong>Flare</strong> or <strong>Songbird</strong> tokens. Many "
+"DApps are available within the  Flare community, such as"
+
+#: strings.php:68
+msgid "faq_accordion4_body2"
+msgstr "the FTSOCAN Dapp"
+
+#: strings.php:69
+msgid "faq_accordion4_body3"
+msgstr "the Flare Portal"
+
+#: strings.php:70
+msgid "faq_accordion4_body4"
+msgstr ", which is Flare Networks's official DApp, or "
+
+#: strings.php:71
+msgid "faq_accordion4_body5"
+msgstr "the Flare Explorer"
+
+#: strings.php:72
+msgid "dapp_selectwallet_title"
+msgstr "How would you like to access your Wallet?"
+
+#: strings.php:73
+msgid "dapp_browserwallet"
+msgstr "Browser Wallet"
+
+#: strings.php:74
+msgid "dapp_wallet_warning"
+msgstr "WARNING"
+
+#: strings.php:75
+msgid "dapp_metamask_title1"
+msgstr "The staking functionality of the"
+
+#: strings.php:76
+msgid "dapp_metamask_title2"
+msgstr ""
+"is currently disabled for Browser Wallets. Sorry for the inconvenience!"
+
+#: strings.php:77
+msgid "dapp_wallet_back"
+msgstr "Go Back"
+
+#: strings.php:78
+msgid "dapp_wallet_continue"
+msgstr "Continue"
+
+#: strings.php:79
+msgid "dapp_ledger_title1"
+msgstr "Before accessing the"
+
+#: strings.php:80
+msgid "dapp_ledger_title2"
+msgstr "using your Ledger device, you must open the"
+
+#: strings.php:81
+msgid "dapp_ledger_title3"
+msgstr "and enable Expert mode."
+
+#: strings.php:82
+msgid "dapp_connect"
+msgstr "Connect Wallet"
+
+#: strings.php:83
+msgid "dapp_connectstake"
+msgstr "Connect to P-Chain"
+
+#: strings.php:84
+msgid "dapp_wrap"
+msgstr "Wrap"
+
+#: strings.php:85
+msgid "dapp_unwrap"
+msgstr "Unwrap"
+
+#: strings.php:86
+msgid "dapp_balance"
+msgstr "Balance"
+
+#: strings.php:87
+msgid "dapp_account"
+msgstr "Account"
+
+#: strings.php:88
+msgid "dapp_provider"
+msgstr "Provider"
+
+#: strings.php:89
+msgid "dapp_enteramount"
+msgstr "Enter Amount"
+
+#: strings.php:90
+msgid "dapp_selectftso"
+msgstr "Select FTSO"
+
+#: strings.php:91
+msgid "dapp_delegate"
+msgstr "Delegate"
+
+#: strings.php:92
+msgid "dapp_undelegate"
+msgstr "Undelegate All"
+
+#: strings.php:93
+msgid "dapp_claim_autowrap"
+msgstr "Auto Wrap"
+
+#: strings.php:94
+msgid "dapp_claim_claimrewards"
+msgstr "Claim Rewards"
+
+#: strings.php:95
+msgid "dapp_claim_claimfd"
+msgstr "Claim FlareDrop"
+
+#: strings.php:96
+msgid "dapp_transfer"
+msgstr "Transfer"
+
+#: strings.php:97
+msgid "dapp_transferfunds"
+msgstr "Transfer Funds"
+
+#: strings.php:98
+msgid "dapp_validatorlist"
+msgstr "Validator List"
+
+#: strings.php:99
+msgid "dapp_maximum"
+msgstr "MAX"
+
+#: strings.php:100
+msgid "dapp_claim"
+msgstr "Claim"
+
+#: strings.php:101
+msgid "dapp_mabel_selectwallet1"
+msgstr ""
+"Hi! I'm Mabel. And, I'll be your virtual assistant to guide you, and help "
+"you unleash the value of your FLR and SGB tokens!"
+
+#: strings.php:102
+msgid "dapp_mabel_selectwallet2"
+msgstr ""
+"First, choose a wallet! If you have a Ledger device, please choose Ledger. "
+"If your account is stored within"
+
+#: strings.php:103
+msgid "dapp_mabel_selectwallet3"
+msgstr ", please choose the"
+
+#: strings.php:104
+msgid "dapp_mabel_selectwallet4"
+msgstr "option. More coming soon!"
+
+#: strings.php:105
+msgid "dapp_mabel_wrap1"
+msgstr ""
+"This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and "
+"WSGB respectively. This will allow you to delegate to an FTSO and earn "
+"passive income!"
+
+#: strings.php:106
+msgid "dapp_mabel_wrap2"
+msgstr ""
+"First, choose if you would like to Wrap, or Unwrap your tokens by clicking "
+"on the top left button. Then, input the amount of tokens you would like to "
+"transfer. Don't forget to keep some FLR or SGB for gas fees!"
+
+#: strings.php:107
+msgid "dapp_mabel_delegate1"
+msgstr ""
+"This is the 'Delegate' page, where you can delegate a percentage of your "
+"WFLR or WSGB to an FTSO and earn passive income!"
+
+#: strings.php:108
+msgid "dapp_mabel_delegate2"
+msgstr ""
+"First, choose an FTSO from the dropdown list. Then, enter the percentage you "
+"would like to delegate to that FTSO, either 50% or 100%!"
+
+#: strings.php:109
+msgid "dapp_mabel_claim1"
+msgstr ""
+"This is the 'Rewards' page, where you can claim your FLR or SGB tokens that "
+"you have earned by delegating to an FTSO!"
+
+#: strings.php:110
+msgid "dapp_mabel_claim2"
+msgstr ""
+"If you have any rewards, one of the bottom buttons will become red and "
+"contain the amount of rewards you have earned. You only need to click it to "
+"begin the claiming process!"
+
+#: strings.php:111
+msgid "dapp_mabel_transfer1"
+msgstr ""
+"This is the 'Transfer' page, where you can transfer your FLR tokens from the "
+"C-Chain to the P-Chain, to enable you to stake to a validator node and earn "
+"passive income!"
+
+#: strings.php:112
+msgid "dapp_mabel_transfer2"
+msgstr ""
+"First, choose if you would like to send your tokens from, or to the P-Chain "
+"by clicking on the arrow button. Then, input the amount of tokens you would "
+"like to transfer. Don't forget to keep some FLR for gas fees!"
+
+#: strings.php:113
+msgid "dapp_mabel_stake1"
+msgstr ""
+"This is the 'Stake' page, where you can stake your FLR tokens (at least "
+"50,000) to a validator node and earn passive income!"
+
+#: strings.php:114
+msgid "dapp_mabel_stake2"
+msgstr ""
+"First, choose a validator from the dropdown list. Then, enter for how many "
+"days you would like to stake in the calendar, because your FLR will be "
+"locked until that date. Finally, enter the amount you would like to stake to "
+"that validator (at least 50,000)."
+
+#: strings.php:115
+msgid "dapp_mabel_claimstake1"
+msgstr ""
+"This is the 'Claim' page, where you can claim the FLR tokens that you have "
+"earned by staking to a validator node."
+
+#: strings.php:116
+msgid "dapp_mabel_claimstake2"
+msgstr ""
+"If you have any rewards, the bottom button will become red and contain the "
+"amount of rewards you have earned. You only need to click it to begin the "
+"claiming process!"
+
+#: strings.php:117
+msgid "dapp_mabel_metamask"
+msgstr ""
+"To use the FTSOCAN DApp's staking features, you must turn on eth_sign in "
+"Metamask."
+
+#: strings.php:118
+msgid "dapp_mabel_ledger1"
+msgstr ""
+"Whoops! Your browser does not currently support Ledger Transport! You will "
+"need to use another wallet."
+
+#: strings.php:119
+msgid "dapp_mabel_ledger2"
+msgstr "Whoops! Looks like you do not have the"
+
+#: strings.php:120
+msgid "dapp_mabel_ledger3"
+msgstr ""
+"installed on your Ledger device! Please install it and come back again later!"
+
+#: strings.php:121
+msgid "dapp_mabel_connecting"
+msgstr "Connecting..."
+
+#: strings.php:122
+msgid "dapp_mabel_connected"
+msgstr "Connected!"
+
+#: strings.php:123
+msgid "dapp_mabel_selectaccount"
+msgstr "Please select an account."
+
+#: strings.php:124
+msgid "dapp_mabel_stake_error1"
+msgstr "Please enter a valid staking amount (more than 0)."
+
+#: strings.php:125
+msgid "dapp_mabel_stake_error2"
+msgstr "You have insufficient funds!"
+
+#: strings.php:126
+msgid "dapp_mabel_transfer_error1"
+msgstr ""
+"You need to enter a valid amount of tokens: a number that is not greater "
+"than your balance."
+
+#: strings.php:127
+msgid "dapp_mabel_transfer_error2"
+msgstr "The amount you have entered is not a number!"
+
+#: strings.php:128
+msgid "dapp_mabel_wrap_error1"
+msgstr ""
+"You need to enter a valid value: a number that is not greater than your "
+"balance."
+
+#: strings.php:129
+msgid "dapp_mabel_wrap_error2"
+msgstr "The value you have entered is not a number!"
+
+#: strings.php:130
+msgid "dapp_mabel_wrap_error3"
+msgstr "You do not have enough native tokens!"
+
+#: strings.php:131
+msgid "dapp_mabel_wrap_error4"
+msgstr "You do not have enough wrapped tokens!"
+
+#: strings.php:132
+msgid "dapp_mabel_delegate_error1"
+msgstr ""
+"It looks like you have already delegated 100% of your tokens! If you want to "
+"delegate to another FTSO, you will need to undelegate first!"
+
+#: strings.php:133
+msgid "dapp_mabel_delegate_error2"
+msgstr "The FTSO that you have delegated to is invalid!"
+
+#: strings.php:134
+msgid "dapp_mabel_delegate_error3"
+msgstr "You need to enter a valid value, either 50% or 100%."
+
+#: strings.php:135
+msgid "dapp_mabel_internet_error"
+msgstr ""
+"Your Internet connection is unstable! Please make sure you can access the "
+"Internet."
+
+#: strings.php:136
+msgid "dapp_popup_loading"
+msgstr "Loading..."
+
+#: strings.php:137
+msgid "dapp_popup_checkwallet1"
+msgstr "To continue, you must approve the transaction."
+
+#: strings.php:138
+msgid "dapp_popup_checkwallet2"
+msgstr "Please check your Wallet..."
+
+#: strings.php:139
+msgid "dapp_popup_networkconfirm1"
+msgstr "Waiting for network confirmation. "
+
+#: strings.php:140
+msgid "dapp_popup_networkconfirm2"
+msgstr "Please wait..."
+
+#: strings.php:141
+msgid "dapp_popup_txsuccess"
+msgstr "Transaction confirmed!"
+
+#: strings.php:142
+msgid "dapp_popup_txfail"
+msgstr "Transaction declined!"
+
+#: strings.php:143
+msgid "dapp_popup_txhash"
+msgstr "Transaction hash:"
+
+#: strings.php:144
+msgid "dapp_popup_v1status"
+msgstr " V1 rewards claim status:"
+
+#: strings.php:145
+msgid "dapp_popup_v2status1"
+msgstr "V2 rewards claim status:"
+
+#: strings.php:146
+msgid "dapp_popup_v2status2"
+msgstr "Waiting for V1 reward status..."
+
+#: strings.php:147
+msgid "dapp_popup_v1empty1"
+msgstr "V1 Bucket is Empty!"
+
+#: strings.php:148
+msgid "dapp_popup_v1empty2"
+msgstr ""
+"The V1 rewards bucket will be replenished shortly.<br /> Only V2 rewards "
+"will be claimed for now."
+
+#: strings.php:149
+msgid "dapp_popup_exportstatus"
+msgstr "Export Transaction status:"
+
+#: strings.php:150
+msgid "dapp_popup_importstatus1"
+msgstr "Import Transaction status:"
+
+#: strings.php:151
+msgid "dapp_popup_importstatus2"
+msgstr "Waiting for Export status..."
+
+#: strings.php:152
+msgid "dapp_popup_exportsuccess"
+msgstr "Accepted"
+
+#: strings.php:153
+msgid "dapp_popup_importsuccess"
+msgstr "Committed"
+
+#: strings.php:154
+msgid "dapp_popup_transferfail"
+msgstr "Dropped"
+
+#: strings.php:155
+msgid "dapp_popup_transferunknown"
+msgstr "Unknown"
+
+#: strings.php:156
+msgid "dapp_popup_success"
+msgstr "Confirmed"
+
+#: strings.php:157
+msgid "dapp_popup_failed"
+msgstr "Failed"
+
+#: strings.php:158
+msgid "dapp_popup_bindpchain1"
+msgstr "P-Address Invalid!"
+
+#: strings.php:159
+msgid "dapp_popup_bindpchain2"
+msgstr ""
+"Your P-Chain address is not bound to your C-Chain address! <br />If you do "
+"not bind them, you will not be able to stake. <br />Do you wish to bind them?"
+
+#: strings.php:160
+msgid "dapp_popup_metamask1"
+msgstr "Metamask is not installed!"
+
+#: strings.php:161
+msgid "dapp_popup_metamask2"
+msgstr "Would you like to install Metamask in your browser?"
+
+#: strings.php:162
+msgid "dapp_popup_validatorinvalid"
+msgstr ""
+"The validator you have selected is not currently stakeable. <br />Please "
+"select another validator."
+
+#: strings.php:163
+msgid "dapp_popup_alreadydelegated1"
+msgstr "Already delegated!"
+
+#: strings.php:164
+msgid "dapp_popup_alreadydelegated2"
+msgstr "You have already delegated to"
+
+#: strings.php:165
+msgid "dapp_popup_alreadydelegated3"
+msgstr "and"
+
+#: strings.php:166
+msgid "dapp_popup_alreadydelegated4"
+msgstr "You MUST undelegate before you can delegate to another provider."
+
+#: strings.php:167
+msgid "dapp_popup_alreadydelegated5"
+msgstr "undelegate"
+
+#: strings.php:168
+msgid "dapp_popup_cancel"
+msgstr "cancel"
+
+#: strings.php:169
+msgid "dapp_popup_yes"
+msgstr "yes"
+
+#: strings.php:170
+msgid "dapp_popup_no"
+msgstr "no"
+
+#: strings.php:171
+msgid "dapp_popup_ok"
+msgstr "ok"
+
+#: strings.php:172
+msgid "dapp_stake"
+msgstr "Stake"
+
+#: strings.php:173
+msgid "notfound"
+msgstr "Page Not Found"
+
+#: strings.php:174
+msgid "notfound_lead"
+msgstr "Sorry, but we did not find this page!"
+
+#: strings.php:175
+msgid "notfound_backlink"
+msgstr "Let's go back"
+
+#: strings.php:176
+msgid "notallowed"
+msgstr "Method Not Allowed"
+
+#: strings.php:177
+msgid "notallowed_lead1"
+msgstr "Sorry, but this method is not allowed on this page!"
+
+#: strings.php:178
+msgid "notallowed_lead2"
+msgstr "Allowed method(s):"
+
+#: strings.php:179
+msgid "dapp_select_wallet"
+msgstr "Select Account"
+
+#: strings.php:180
+msgid "dapp_copied"
+msgstr "Copied!"

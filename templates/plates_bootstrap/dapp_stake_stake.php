@@ -3,21 +3,21 @@
         <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
             <button class="transfer" type="button" id="Transfer" onclick="getDappPage(5)">
                 <a class="wrap-unwrap-text">
-                    <span id="Transfer">Transfer</span>
+                    <span id="Transfer"><?=_("dapp_transfer")?></span>
                 </a>
             </button>
         </div>
         <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
             <button class="stake selected-stake" type="button" id="Stake" onclick="getDappPage(6)">
                 <a class="stake-text">
-                    <span id="Stake">Stake</span>
+                    <span id="Stake"><?=_("stake")?></span>
                 </a>
             </button>
         </div>
         <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
             <button class="stakeRewards" type="button" id="StakeRewards" onclick="getDappPage(7)">
                 <a class="wrap-unwrap-text">
-                    <span id="StakeRewards">Claim</span>
+                    <span id="StakeRewards"><?=_("dapp_claim")?></span>
                 </a>
             </button>
         </div>
@@ -28,7 +28,7 @@
         <span class="wrap-box-content">
             <div class="row">
                 <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
-                <select id="select-validator" placeholder="Validator List"></select>
+                <select id="select-validator" placeholder="<?=_("dapp_validatorlist")?>"></select>
                 <div class="stake-calendar">
                     <input id="calendar" title="Please select a Validator" type="text" name="calendar" placeholder="2022/06/24 18:00" class="calendar" readOnly="true">
                 </div>
@@ -41,10 +41,10 @@
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <button id="ConnectPChain" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Connect to P-Chain</i></button>
+        <button id="ConnectPChain" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText"><?=_("dapp_connectstake")?></i></button>
     </div>
     <div class="col-sm-6">
-        <button id="WrapButton" class="connect-wallet wrap-button"><i class="wrap-button-text" id="WrapButtonText">Enter Amount</i></button>
+        <button id="WrapButton" class="connect-wallet wrap-button"><i class="wrap-button-text" id="WrapButtonText"><?=_("dapp_enteramount")?></i></button>
     </div>
 </div>
 <div class="row">

@@ -37,7 +37,7 @@ export function setWrapButton(DappObject) {
     if (Number(document.getElementById("AmountFrom").value.replace(/[^0-9]/g, '')) < 1) {
         wrapButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
         wrapButton.style.cursor = "auto";
-        wrapButtonText.innerText = "Enter Amount";
+        wrapButtonText.innerText = dappStrings['dapp_enteramount'];
         DappObject.isRealValue = false;
     } else {
         wrapButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
@@ -45,9 +45,9 @@ export function setWrapButton(DappObject) {
         DappObject.isRealValue = true;
 
         if (DappObject.wrapBool === true) {
-            wrapButtonText.innerText = "Wrap";
+            wrapButtonText.innerText = dappStrings['dapp_wrap'];
         } else {
-            wrapButtonText.innerText = "Unwrap";
+            wrapButtonText.innerText = dappStrings['dapp_unwrap'];
         }
     }
 }
@@ -67,7 +67,7 @@ export function copyWrapInput() {
 
 export async function wrapTokens(object, DappObject) {
     if (DappObject.isRealValue === false) {
-        await setCurrentPopup('You need to enter a valid value: a number that is not greater than your balance.', true);
+        await setCurrentPopup(dappStrings['dapp_mabel_wrap_error1'], true);
     } else {
         DappObject.isHandlingOperation = true;
 
@@ -84,7 +84,7 @@ export async function wrapTokens(object, DappObject) {
             const amountFromValue = parseFloat(amountFrom.value);
 
             if (!isNumber(amountFromValue)) {
-                await setCurrentPopup('The value you have entered is not a number!', true);
+                await setCurrentPopup(dappStrings['dapp_mabel_wrap_error2'], true);
             } else {
                 const amountFromValueWei = web32.utils.toWei(amountFromValue, "ether");
                 const amountFromValueWeiBN = BigInt(amountFromValueWei);
@@ -110,9 +110,9 @@ export async function wrapTokens(object, DappObject) {
                 const transactionParameters = txPayload;
 
                 if (DappObject.wrapBool === true && amountFromValueWeiBN > balance) {
-                    await setCurrentPopup('You do not have enough native tokens!', true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_wrap_error3'], true);
                 } else if (DappObject.wrapBool === false && amountFromValueWeiBN > tokenBalance) {
-                    await setCurrentPopup('You do not have enough wrapped tokens!', true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_wrap_error4'], true);
                 } else {
                     if (typeof amountFrom !== 'undefined' && amountFrom != null && typeof amountTo !== 'undefined' && amountTo != null) {
                         amountFrom.value = "";

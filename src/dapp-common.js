@@ -339,6 +339,12 @@ window.dappInit = async (option, stakingOption) => {
 
     closeCurrentPopup();
 
+    if (dappLanguage === "fr_FR") {
+        $.datepicker.setDefaults( $.datepicker.regional['fr'] );
+        
+        $.timepicker.setDefaults($.timepicker.regional['fr']);
+    }
+
     document.getElementById("currentWallet")?.addEventListener("click", (event) => {
 
         if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
@@ -622,7 +628,7 @@ window.dappInit = async (option, stakingOption) => {
 
                             let delegatedBips = getDelegatedBips();
             
-                            if (delegatedFtsos.length === 2 || delegatedBips === 100 || document.getElementById("ClaimButton").innerText === "Undelegate All") {
+                            if (delegatedFtsos.length === 2 || delegatedBips === 100 || document.getElementById("ClaimButton").innerText === dappStrings['dapp_undelegate']) {
                                 showAlreadyDelegated(ftsoNames, object, DappObject);
                             } else {
                                 delegate(object, DappObject);
@@ -955,12 +961,12 @@ window.dappInit = async (option, stakingOption) => {
 
                 await setCurrentAppState("Null");
 
-                await setCurrentPopup("Hi! I'm Mabel. And I'll be your virtual assistant to guide you, and to help you efficiently claim your FLR or SGB rewards!", true);
+                await setCurrentPopup(dappStrings['dapp_mabel_selectwallet1'], true);
 
                 clearTimeout(DappObject.latestPopupTimeoutId);
 
                 DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                    await setCurrentPopup(`First, choose a wallet! If you have a Ledger device, please choose Ledger. If your wallet is stored within ${DappObject.providerList[0].info.name}, please choose the ${DappObject.providerList[0].info.name} option. More coming soon!`, true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_selectwallet2']  + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet3'] + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet4'], true);
                 }, 9000);
             } catch (error) {
                 // console.log(error);
@@ -980,7 +986,7 @@ window.dappInit = async (option, stakingOption) => {
                 getDappPage(4);
             });
 
-            await setCurrentPopup("To use the FTSOCAN DApp's staking features, you must turn on eth_sign in Metamask.", true);
+            await setCurrentPopup(dappStrings['dapp_mabel_metamask'], true);
         } else if (stakingOption === 5) {
             //Ledger
             DappObject.isAccountConnected = true;
@@ -988,9 +994,9 @@ window.dappInit = async (option, stakingOption) => {
             await setCurrentAppState("Null");
 
             if (!("usb" in navigator) && !("hid" in navigator)) {
-                document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> WARNING</span></div></div><div class="row"><div class="col-md-12"><span style="font-size: 12px;">Your browser does not currently support <i style="font-style: italic;">Ledger Transport</i> ! <br /> Please switch to a compatible browser.</span></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">Go Back</i></button></div></div>';
+                document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> ' + dappStrings['dapp_wallet_warning'] + '</span></div></div><div class="row"><div class="col-md-12"><span style="font-size: 12px;">' + dappStrings['dapp_mabel_ledger1'] + '</span></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">' + dappStrings['dapp_wallet_back'] + '</i></button></div></div>';
 
-                await setCurrentPopup("Whoops! Your browser does not currently support Ledger Transport! You will need to use another wallet.", true);
+                await setCurrentPopup(dappStrings['dapp_mabel_ledger1'], true);
             } else {
                 let requiredApp;
 
@@ -1013,7 +1019,7 @@ window.dappInit = async (option, stakingOption) => {
     
                             await setCurrentAppState("Connected");
 
-                            await setCurrentPopup("Connected!", false);
+                            await setCurrentPopup(dappStrings['dapp_mabel_connected'], false);
 
                             document.getElementById("ContinueAnyway")?.classList.add("connect-wallet");
 
@@ -1030,7 +1036,7 @@ window.dappInit = async (option, stakingOption) => {
                             clearTimeout(DappObject.latestPopupTimeoutId);
     
                             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                await setCurrentPopup("Whoops! Looks like you do not have the " + requiredApp + " installed on your Ledger device! Please install it and come back again later!", true);
+                                await setCurrentPopup(dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], true);
                             }, 1000);
     
                             throw new Error("Ledger Avalanche App not installed!");
@@ -1083,7 +1089,7 @@ window.dappInit = async (option, stakingOption) => {
 
             document.getElementById("WrapButton")?.addEventListener("click", async () => {
                 if (DappObject.isRealValue === false) {
-                    await setCurrentPopup('Please enter a valid staking amount (more than 0).', true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_stake_error1'], true);
                 } else {
                     stake(DappObject, stakingOption);
                 }
