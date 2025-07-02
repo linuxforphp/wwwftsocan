@@ -72,7 +72,7 @@ export async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, Dap
                                 document.getElementById("ClaimButton").style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                                 document.getElementById("ClaimButton").style.cursor = "pointer";
                                 DappObject.isRealValue = true;
-                                document.getElementById("ClaimButtonText").innerText = "Undelegate all";
+                                document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_undelegate'];
                             }
                         }
                     }

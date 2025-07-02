@@ -37,7 +37,7 @@ export async function isDelegateInput1(DappObject) {
             claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
             claimButton.style.cursor = "pointer";
             DappObject.isRealValue = true;
-            document.getElementById("ClaimButtonText").innerText = "Undelegate all";
+            document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_undelegate'];
         }
 
         await setCurrentPopup(dappStrings['dapp_mabel_delegate_error1'], true);

@@ -10,7 +10,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <span style="font-size: 12px;"><?=_("dapp_ledger_title1")?> <i style="font-style: italic;">FTSOCAN DApp</i> <?=_("dapp_ledger_title2")?> </br> <i id="appName" style="font-style: italic;">Flare Network App</i> <?=_("dapp_ledger_title3")?></span>
+                    <span style="font-size: 12px;"><?=_("dapp_ledger_title1")?> <i style="font-style: italic;">FTSOCAN DApp</i> <?=_("dapp_ledger_title2")?> <i id="appName" style="font-style: italic;">Flare Network App</i> <?=_("dapp_ledger_title3")?></span>
                 </div>
             </div>
         </div>

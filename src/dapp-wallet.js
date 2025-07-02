@@ -202,7 +202,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
     
                             // console.log(DappObject.ledgerAddrArray);
     
-                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
+                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="' + dappStrings['dapp_select_wallet'] + '"></select>'
     
                             var onInputChange = async (value) => {
                                 let addressBox = document.querySelector("span.title.connect-wallet-text");

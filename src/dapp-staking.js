@@ -80,7 +80,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
         
                             // console.log(DappObject.ledgerAddrArray);
         
-                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>';
+                            document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="' + dappStrings['dapp_select_wallet'] + '"></select>';
     
                             if (!document.querySelector("span.title.connect-wallet-text")) {
                                 var onInputChange = async (value) => {
