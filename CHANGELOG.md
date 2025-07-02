@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.4.0 (2025-07-01)
+
+- Adds a translation feature
+- Adds French translation
+- Updates the project's dependencies.
+
 ## 1.3.6 (2025-06-24)
 
 - Upgrades to flare-js version 4.0.5.
