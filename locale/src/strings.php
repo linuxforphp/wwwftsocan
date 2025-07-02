@@ -176,3 +176,5 @@ _("notfound_backlink");
 _("notallowed");
 _("notallowed_lead1");
 _("notallowed_lead2");
+_("dapp_select_wallet");
+_("dapp_copied");

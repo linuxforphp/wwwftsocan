@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-01 19:58-0400\n"
+"PO-Revision-Date: 2025-07-01 21:22-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -820,3 +820,11 @@ msgstr "Sorry, but this method is not allowed on this page!"
 #: strings.php:178
 msgid "notallowed_lead2"
 msgstr "Allowed method(s):"
+
+#: strings.php:179
+msgid "dapp_select_wallet"
+msgstr "Select Account"
+
+#: strings.php:180
+msgid "dapp_copied"
+msgstr "Copied!"
