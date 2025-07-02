@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-01 21:22-0400\n"
+"PO-Revision-Date: 2025-07-02 13:16-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -828,3 +828,15 @@ msgstr "Select Account"
 #: strings.php:180
 msgid "dapp_copied"
 msgstr "Copied!"
+
+#: strings.php:181
+msgid "dapp_processing"
+msgstr "Processing..."
+
+#: strings.php:182
+msgid "dapp_mabel_ledger4"
+msgstr "Please open the"
+
+#: strings.php:183
+msgid "dapp_mabel_ledger5"
+msgstr "App on your Ledger device."
