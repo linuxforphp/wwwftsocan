@@ -178,3 +178,6 @@ _("notallowed_lead1");
 _("notallowed_lead2");
 _("dapp_select_wallet");
 _("dapp_copied");
+_("dapp_processing");
+_("dapp_mabel_ledger4");
+_("dapp_mabel_ledger5");

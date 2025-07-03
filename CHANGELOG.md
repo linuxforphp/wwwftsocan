@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.4.1 (2025-07-01)
+
+- Adds some translation strings to the DApp.
+
 ## 1.4.0 (2025-07-01)
 
 - Adds a translation feature
