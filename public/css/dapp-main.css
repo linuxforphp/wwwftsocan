@@ -103,6 +103,13 @@ h1, h2 {
     }
 }
 
+.dapp-wallet-title {
+    margin: auto;
+    font-weight: bold;
+    color: #383a3b;
+    font-size: 23px;
+}
+
 .connect-wallet {
     /* display: inline-block; */
     background-color: rgba(253, 0, 15, 0.8);
