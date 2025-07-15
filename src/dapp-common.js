@@ -345,6 +345,14 @@ window.dappInit = async (option, stakingOption) => {
         $.timepicker.setDefaults($.timepicker.regional['fr']);
     }
 
+    // Removes the navbar's staking option for Browser Wallets
+
+    if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 1) {
+        document.getElementById("navbar-stake-item").style.display = "none";
+    } else {
+        document.getElementById("navbar-stake-item").style.display = "block";
+    }
+
     document.getElementById("currentWallet")?.addEventListener("click", (event) => {
 
         if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
@@ -978,6 +986,7 @@ window.dappInit = async (option, stakingOption) => {
             await setCurrentAppState("Null");
 
             document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
+                document.cookie = "ftsocan_browser-wallet=true;";
                 DappObject.walletIndex = 0;
                 getDappPage(1);
             });
@@ -1026,6 +1035,7 @@ window.dappInit = async (option, stakingOption) => {
                             document.getElementById("ContinueAnyway")?.classList.remove("claim-button");
     
                             document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
+                                document.cookie = "ftsocan_browser-wallet=false;";
                                 DappObject.walletIndex = 1;
                                 getDappPage(1);
                             });

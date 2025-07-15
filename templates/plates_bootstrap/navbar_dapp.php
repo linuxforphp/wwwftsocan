@@ -73,7 +73,7 @@ Fixed Navigation
                     <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(1)"><?=_("wrap")?></a></li>
                     <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(2)"><?=_("delegate")?></a></li>
                     <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(3)"><?=_("rewards")?></a></li>
-                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(5)"><?=_("stake")?></a></li>
+                    <li><a href="#" id="navbar-stake-item" class="nav-link nav-link-dapp" onclick="getDappPage(5)"><?=_("stake")?></a></li>
                 </ul>
             </div>
         </div>
