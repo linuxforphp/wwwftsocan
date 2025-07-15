@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-02 13:33-0400\n"
+"PO-Revision-Date: 2025-07-15 16:34-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -197,7 +197,7 @@ msgstr "Profitez de vos revenus passifs!"
 
 #: strings.php:42
 msgid "stake_title1"
-msgstr "Vous pouvez jalonner au"
+msgstr "Vous pouvez jalonner via le"
 
 #: strings.php:43
 msgid "stake_title2"

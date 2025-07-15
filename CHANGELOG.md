@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## 1.4.1 (2025-07-01)
+## 1.4.2 (2025-07-15)
+
+- Fixes an issue with deprecated on-chain Reward Managers.
+- Fixes some UI issues.
+- Fixes a french translation.
+
+## 1.4.1 (2025-07-02)
 
 - Adds some translation strings to the DApp.
 

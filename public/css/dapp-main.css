@@ -38,6 +38,11 @@ h1, h2 {
     background-color: rgba(253, 0, 15, 0.8);
 }
 
+.nav-link-dapp {
+    border-top: 0px solid #fff;
+    border-bottom: 0px solid #fff;
+}
+
 /* change the brand and text color */
 .navbar-dapp-actions .navbar-brand,
 .navbar-dapp-actions .navbar-text {
@@ -96,6 +101,13 @@ h1, h2 {
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
     }
+}
+
+.dapp-wallet-title {
+    margin: auto;
+    font-weight: bold;
+    color: #383a3b;
+    font-size: 23px;
 }
 
 .connect-wallet {
@@ -607,6 +619,20 @@ h1, h2 {
         background-size: 400%;
     }
 
+    .dd-menu {
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    .nav-link-dapp {
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+    }
+
+    .navbar-nav-dapp {
+        margin: 0px -15px;
+    }
+
     .wrap-box {
         margin: 10px;
     }
@@ -617,7 +643,7 @@ h1, h2 {
     }
 
     .container {
-        padding: 10px !important;
+        padding: 0px 10px !important;
         height: fit-content;
     }
 
@@ -695,6 +721,20 @@ h1, h2 {
         background-size: 300%;
     }
 
+    .dd-menu {
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    .nav-link-dapp {
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+    }
+
+    .navbar-nav-dapp {
+        margin: 0px -15px;
+    }
+
     .wrap-box {
         margin: 10px
     }
@@ -705,7 +745,7 @@ h1, h2 {
     }
 
     .container {
-        padding: 10px !important;
+        padding: 0px 10px !important;
         height: fit-content;
     }
 

@@ -10,7 +10,7 @@
     <div class="wrap-box" style="white-space: normal; text-align: center !important; padding: 4% !important; margin-top: -25px; height: 75px;">
         <div class="row">
             <div class="col-md-12">
-                <span style="margin: auto; font-weight: bold; color: #383a3b; font-size: 23px;">
+                <span class="dapp-wallet-title" <?php if ($view['language'] === "fr_FR"): ?> style="font-size: 20px;" <?php endif ?>>
                     <?=_("dapp_selectwallet_title")?>
                 </span>
             </div>

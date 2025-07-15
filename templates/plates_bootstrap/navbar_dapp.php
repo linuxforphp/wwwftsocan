@@ -9,7 +9,7 @@
 <!--
 Fixed Navigation
 ==================================== -->
-<header id="navigation" class="navbar-inverse navbar-fixed-top animated-header">
+<header id="navigation" class="navbar-inverse navbar-fixed-top animated-header" style="text-align: left;">
     <div class="container" style="margin-bottom: 0.5em;">
         <div class="navbar-header">
             <!-- responsive nav button -->
@@ -67,13 +67,13 @@ Fixed Navigation
     <!-- secondary nav -->
     <nav class="navbar-dapp-actions navbar-expand">
         <div class="container">
-            <div class="collapse navbar-collapse static-top navbar-right" role="navigation" style="border: none; box-shadow: none; -webkit-box-shadow: none;">
+            <div class="collapse navbar-collapse static-top navbar-right" role="navigation" style="border: none; box-shadow: none; -webkit-box-shadow: none; margin-top: 0px;">
                 <ul class="nav navbar-nav navbar-nav-dapp nav-item">
-                    <li><a href="#" class="nav-link" onclick="getDappPage(4)"><?=_("select_wallet")?></a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(1)"><?=_("wrap")?></a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(2)"><?=_("delegate")?></a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(3)"><?=_("rewards")?></a></li>
-                    <li><a href="#" class="nav-link" onclick="getDappPage(5)"><?=_("stake")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(4)"><?=_("select_wallet")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(1)"><?=_("wrap")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(2)"><?=_("delegate")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(3)"><?=_("rewards")?></a></li>
+                    <li><a href="#" id="navbar-stake-item" class="nav-link nav-link-dapp" onclick="getDappPage(5)"><?=_("stake")?></a></li>
                 </ul>
             </div>
         </div>
