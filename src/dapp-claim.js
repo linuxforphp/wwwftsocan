@@ -245,33 +245,39 @@ export async function getV1Rewards(epochsUnclaimed, network, account, ftsoReward
 
 export async function getV2Rewards(unclaimedAmountv2, network, account, DappObject, flareSystemsManagerContract, rewardManagerContractArray) {
     let tokens = BigInt(0);
+
+    let validRewardManagerIndex = 0;
     
     try {
         for (let j = 0; j < rewardManagerContractArray.length; j++) {
-            unclaimedAmountv2 = await rewardManagerContractArray[j].methods.getStateOfRewards(account).call();
-    
-            // console.log("unclaimedAmountv2: ");
-            // console.log(unclaimedAmountv2);
-            // console.log("unclaimedAmount: ");
-            // console.log(unclaimedAmount);
-            // console.log(unclaimedAmountv2[0].length);
-    
-            if (unclaimedAmountv2.length > 0) {
-                for (var i = 0; i < unclaimedAmountv2.length; i++) {
-                    for (var k = 0; k < unclaimedAmountv2[i].length; k++) {
-                        if (unclaimedAmountv2[i][k] !== undefined) {
-                            if (unclaimedAmountv2[i][k].amount > 0n) {
-                                DappObject.rewardManagerData[j + 1] = [unclaimedAmountv2[i][k].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
-    
-                                DappObject.hasV2Rewards = true;
+            let currentRewardManagerStatus = await rewardManagerContractArray[j].methods.active().call();
+
+            if (currentRewardManagerStatus === true) {
+                unclaimedAmountv2 = await rewardManagerContractArray[j].methods.getStateOfRewards(account).call();
+
+                // console.log("unclaimedAmountv2: ");
+                // console.log(unclaimedAmountv2);
+                // console.log(unclaimedAmountv2[0].length);
+        
+                if (unclaimedAmountv2.length > 0) {
+                    for (var i = 0; i < unclaimedAmountv2.length; i++) {
+                        for (var k = 0; k < unclaimedAmountv2[i].length; k++) {
+                            if (unclaimedAmountv2[i][k] !== undefined) {
+                                if (unclaimedAmountv2[i][k].amount > 0n) {
+                                    DappObject.rewardManagerData[validRewardManagerIndex + 1] = [unclaimedAmountv2[i][k].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
+
+                                    validRewardManagerIndex += 1;
+        
+                                    DappObject.hasV2Rewards = true;
+                                }
+
+                                tokens += BigInt(unclaimedAmountv2[i][k].amount);
                             }
-    
-                            tokens += BigInt(unclaimedAmountv2[i][k].amount);
                         }
                     }
+                } else {
+                    DappObject.hasV2Rewards = false;
                 }
-            } else {
-                DappObject.hasV2Rewards = false;
             }
         }
     
@@ -386,11 +392,19 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
 
     let rewardManagerContractArray = [];
 
+    let validRewardManagerIndex = 0;
+
     for (let i = 0; i < rewardManagerAddrArray.length; i++) {
         try {
             rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
 
-            rewardManagerContractArray[i] = rewardManagerContract;
+            let currentRewardManagerStatus = await rewardManagerContract.methods.active().call();
+
+            if (currentRewardManagerStatus === true) {
+                rewardManagerContractArray[validRewardManagerIndex] = rewardManagerContract;
+
+                validRewardManagerIndex += 1;
+            }
 
             oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
 
