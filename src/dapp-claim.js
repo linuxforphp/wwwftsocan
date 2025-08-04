@@ -265,10 +265,12 @@ export async function getV2Rewards(unclaimedAmountv2, network, account, DappObje
                             if (unclaimedAmountv2[i][k] !== undefined) {
                                 if (unclaimedAmountv2[i][k].amount > 0n) {
                                     DappObject.rewardManagerData[validRewardManagerIndex + 1] = [unclaimedAmountv2[i][k].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
-
-                                    validRewardManagerIndex += 1;
         
                                     DappObject.hasV2Rewards = true;
+                                }
+
+                                if (unclaimedAmountv2[i][k].rewardEpochId > DappObject.latestRewardEpochId) {
+                                    DappObject.latestRewardEpochId = unclaimedAmountv2[i][k].rewardEpochId;
                                 }
 
                                 tokens += BigInt(unclaimedAmountv2[i][k].amount);
@@ -278,6 +280,8 @@ export async function getV2Rewards(unclaimedAmountv2, network, account, DappObje
                 } else {
                     DappObject.hasV2Rewards = false;
                 }
+
+                validRewardManagerIndex += 1;
             }
         }
     
@@ -307,11 +311,11 @@ export async function getFlareDropRewards(account, DistributionDelegatorsContrac
         let month;
         const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-        for (const property in claimableMonths) {
-            month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
+        month = claimableMonths._startMonth;
 
-            if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
-                let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
+        for (let i = month; i <= claimableMonths._endMonth; i++) {
+            if (i && typeof i !== 'undefined' && isNumber(Number(i))) {
+                let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, i).call();
                 
                 if (typeof claimableAmountMonth === "bigint") {
                     tokens += claimableAmountMonth;
@@ -467,7 +471,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                             }
                         }
 
-                        v2RewardEpochId = rewardManagerConfig[j][0];
+                        v2RewardEpochId = DappObject.latestRewardEpochId;
                     } catch (error) {
                         throw error;
                     }

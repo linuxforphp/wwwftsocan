@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.4.3 (2025-08-03)
+
+- Fixes an issue with V2 reward claiming.
+- Fixes an issue with FlareDrop amount calculation.
+- Updates the project's dependencies.
+
 ## 1.4.2 (2025-07-15)
 
 - Fixes an issue with deprecated on-chain Reward Managers.
