@@ -311,11 +311,11 @@ export async function getFlareDropRewards(account, DistributionDelegatorsContrac
         let month;
         const claimableMonths = await DistributionDelegatorsContract.methods.getClaimableMonths().call();
 
-        for (const property in claimableMonths) {
-            month = !property.includes("_") && typeof claimableMonths[property] !== 'undefined' ? claimableMonths[property] : null;
+        month = claimableMonths._startMonth;
 
-            if (month && typeof month !== 'undefined' && isNumber(Number(month))) {
-                let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, month).call();
+        for (let i = month; i <= claimableMonths._endMonth; i++) {
+            if (i && typeof i !== 'undefined' && isNumber(Number(i))) {
+                let claimableAmountMonth = await DistributionDelegatorsContract.methods.getClaimableAmountOf(account, i).call();
                 
                 if (typeof claimableAmountMonth === "bigint") {
                     tokens += claimableAmountMonth;
