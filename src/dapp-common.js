@@ -48,6 +48,7 @@ window.DappObject = {
     metamaskInstalled: false,
     // Array that stores the latest reward epoch on all RewardManager contracts with null padding on index 0.
     rewardManagerData: [undefined],
+    latestRewardEpochId: 0,
     // Chosen Wallet (-1 = null, 0 = Metamask, 1 = Ledger, 2 = WalletConnect, 3 = Crypto.com)
     walletIndex: -1,
     // Signature used for non-EVM transactions

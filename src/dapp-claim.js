@@ -265,10 +265,12 @@ export async function getV2Rewards(unclaimedAmountv2, network, account, DappObje
                             if (unclaimedAmountv2[i][k] !== undefined) {
                                 if (unclaimedAmountv2[i][k].amount > 0n) {
                                     DappObject.rewardManagerData[validRewardManagerIndex + 1] = [unclaimedAmountv2[i][k].rewardEpochId, rewardManagerContractArray[j]._address, rewardManagerContractArray[j]];
-
-                                    validRewardManagerIndex += 1;
         
                                     DappObject.hasV2Rewards = true;
+                                }
+
+                                if (unclaimedAmountv2[i][k].rewardEpochId > DappObject.latestRewardEpochId) {
+                                    DappObject.latestRewardEpochId = unclaimedAmountv2[i][k].rewardEpochId;
                                 }
 
                                 tokens += BigInt(unclaimedAmountv2[i][k].amount);
@@ -278,6 +280,8 @@ export async function getV2Rewards(unclaimedAmountv2, network, account, DappObje
                 } else {
                     DappObject.hasV2Rewards = false;
                 }
+
+                validRewardManagerIndex += 1;
             }
         }
     
@@ -467,7 +471,7 @@ export async function claimRewards(object, DappObject, passedClaimAmount) {
                             }
                         }
 
-                        v2RewardEpochId = rewardManagerConfig[j][0];
+                        v2RewardEpochId = DappObject.latestRewardEpochId;
                     } catch (error) {
                         throw error;
                     }
