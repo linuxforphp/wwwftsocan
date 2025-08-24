@@ -22,7 +22,7 @@ addFlr.addEventListener("click", async () => {
             "chainId": "0xe",
             "chainName": "Flare Mainnet",
             "rpcUrls": [
-              "https://sbi.flr.ftsocan.com/ext/C/rpc"
+              "https://flare-api.flare.network/ext/C/rpc"
             ],
             "iconUrls": [
               "https://portal.flare.network/token-logos/FLR.svg"
@@ -49,7 +49,7 @@ addSgb.addEventListener("click", async () => {
             "chainId": "0x13",
             "chainName": "Songbird Canary-Network",
             "rpcUrls": [
-              "https://sbi.sgb.ftsocan.com/ext/C/rpc"
+              "https://songbird-api.flare.network/ext/C/rpc"
             ],
             "iconUrls": [
               "https://portal.flare.network/token-logos/SGB.svg"
