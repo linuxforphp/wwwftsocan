@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.4.4 (2025-08-24)
+
+- Sets the Flare API as the default RPC.
+- Removes the XRPL TOML file.
+- Fixes a french translation.
+- Updates the project's dependencies.
+
 ## 1.4.3 (2025-08-03)
 
 - Fixes an issue with V2 reward claiming.
