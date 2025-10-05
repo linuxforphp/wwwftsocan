@@ -25,8 +25,10 @@ DROP TABLE IF EXISTS `networks`;
 CREATE TABLE `networks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `chainidentifier` varchar(10) NOT NULL,
-  `rpcurl` varchar(100) NOT NULL,
+  `chainname` varchar(255) NOT NULL,
   `chainid` int(11) NOT NULL,
+  `rpcurl` varchar(100) NOT NULL,
+  `publicrpcurl` varchar(100) NOT NULL,
   `registrycontract` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
@@ -38,7 +40,7 @@ CREATE TABLE `networks` (
 
 LOCK TABLES `networks` WRITE;
 /*!40000 ALTER TABLE `networks` DISABLE KEYS */;
-INSERT INTO `networks` VALUES (1,'FLR','https://sbi.flr.ftsocan.com/ext/C/rpc',14,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(2,'SGB','https://sbi.sgb.ftsocan.com/ext/C/rpc',19,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(3,'CFLR','https://coston-api.flare.network/ext/bc/C/rpc',16,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(4,'C2FLR','https://sbi1.costwo.ftsocan.com/ext/C/rpc',114,'0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019');
+INSERT INTO `networks` VALUES (1,'FLR','Flare Mainnet',14,'https://sbi.flr.ftsocan.com/ext/C/rpc','https://flare-api.flare.network/ext/C/rpc','0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(2,'SGB','Songbird Canary-Network',19,'https://sbi.sgb.ftsocan.com/ext/C/rpc','https://songbird-api.flare.network/ext/C/rpc','0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(3,'CFLR','Songbird Testnet Coston',16,'https://sbi1.coston.ftsocan.com/ext/C/rpc','https://coston-api.flare.network/ext/bc/C/rpc','0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019'),(4,'C2FLR','Flare Testnet Coston2',114,'https://sbi1.costwo.ftsocan.com/ext/C/rpc','https://coston2-api.flare.network/ext/C/rpc','0xaD67FE66660Fb8dFE9d6b1b4240d8650e30F6019');
 /*!40000 ALTER TABLE `networks` ENABLE KEYS */;
 UNLOCK TABLES;
 
