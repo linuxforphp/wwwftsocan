@@ -24,9 +24,11 @@ DROP TABLE IF EXISTS `networks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `networks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `chainidentifier` varchar(4) NOT NULL,
-  `rpcurl` varchar(100) NOT NULL,
+  `chainidentifier` varchar(10) NOT NULL,
+  `chainname` varchar(255) NOT NULL,
   `chainid` int(11) NOT NULL,
+  `rpcurl` varchar(100) NOT NULL,
+  `publicrpcurl` varchar(100) NOT NULL,
   `registrycontract` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;

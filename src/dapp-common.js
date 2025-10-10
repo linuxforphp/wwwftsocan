@@ -104,8 +104,10 @@ async function createSelectedNetwork(DappObject) {
                 var option = document.createElement("option");
                 option.value = dappNetworks[property].id;
                 option.text = dappNetworks[property].chainidentifier;
+                option.setAttribute('data-chainname', dappNetworks[property].chainname);
                 option.setAttribute('data-chainidhex', '0x' + dappNetworks[property].chainid.toString(16));
                 option.setAttribute('data-rpcurl', dappNetworks[property].rpcurl);
+                option.setAttribute('data-publicrpcurl', dappNetworks[property].publicrpcurl);
                 option.setAttribute('data-registrycontract', dappNetworks[property].registrycontract);
 
                 networkSelectBox.appendChild(option);
@@ -169,6 +171,25 @@ async function createSelectedNetwork(DappObject) {
 
                     if (DappObject.metamaskInstalled === true) {
                         try {
+                            await DappObject.chosenEVMProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        "chainId": realChainId,
+                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-publicrpcurl')],
+                                        "chainName": networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-chainname'),
+                                        "iconUrls": [
+                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
+                                        ],
+                                        "nativeCurrency": {
+                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
+                                            "decimals": 18
+                                        }
+                                    },
+                                ],
+                            });
+
                             if (DappObject.walletIndex === 0 && realChainId != chainIdHex) {
                                 await DappObject.chosenEVMProvider.request({
                                     method: "wallet_switchEthereumChain",
@@ -182,32 +203,7 @@ async function createSelectedNetwork(DappObject) {
                                     });
                             }
                         } catch (error) {
-                            // console.log(error);
-
-                            if (error.code === 4902) {
-                                try {
-                                    await DappObject.chosenEVMProvider.request({
-                                        method: 'wallet_addEthereumChain',
-                                        params: [
-                                            {
-                                                "chainId": realChainId,
-                                                "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                "iconUrls": [
-                                                    `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                ],
-                                                "nativeCurrency": {
-                                                    "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                    "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                    "decimals": 18
-                                                }
-                                            },
-                                        ],
-                                    });
-                                } catch (error) {
-                                    throw(error);
-                                }
-                            }
+                            throw(error);
                         }
                     }
                 });        
@@ -502,6 +498,25 @@ window.dappInit = async (option, stakingOption) => {
 
                             if (realChainId != object.chainIdHex) {
                                 await DappObject.chosenEVMProvider.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            "chainId": object.chainIdHex,
+                                            "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
+                                            "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
+                                            "iconUrls": [
+                                                `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
+                                            ],
+                                            "nativeCurrency": {
+                                                "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                                "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                                "decimals": 18
+                                            }
+                                        },
+                                    ],
+                                });
+
+                                await DappObject.chosenEVMProvider.request({
                                     method: "wallet_switchEthereumChain",
                                     params: [
                                         {
@@ -509,30 +524,7 @@ window.dappInit = async (option, stakingOption) => {
                                         }
                                     ]
                                     }).catch(async (error) => {
-                                        if (error.code === 4902) {
-                                            try {
-                                                await DappObject.chosenEVMProvider.request({
-                                                    method: 'wallet_addEthereumChain',
-                                                    params: [
-                                                        {
-                                                            "chainId": realChainId,
-                                                            "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                            "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                            "iconUrls": [
-                                                                `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                            ],
-                                                            "nativeCurrency": {
-                                                                "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                                "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                                "decimals": 18
-                                                            }
-                                                        },
-                                                    ],
-                                                });
-                                            } catch (error) {
-                                                throw(error);
-                                            }
-                                        }
+                                        throw(error);
                                     });
                             }
                         }
@@ -676,38 +668,34 @@ window.dappInit = async (option, stakingOption) => {
 
                             if (realChainId != object.chainIdHex) {
                                 await DappObject.chosenEVMProvider.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            "chainId": object.chainIdHex,
+                                            "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
+                                            "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
+                                            "iconUrls": [
+                                                `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
+                                            ],
+                                            "nativeCurrency": {
+                                                "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                                "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                                "decimals": 18
+                                            }
+                                        },
+                                    ],
+                                });
+
+                                await DappObject.chosenEVMProvider.request({
                                     method: "wallet_switchEthereumChain",
                                     params: [
                                         {
                                         "chainId": object.chainIdHex
                                         }
                                     ]
-                                }).catch(async (error) => {
-                                    if (error.code === 4902) {
-                                        try {
-                                            await DappObject.chosenEVMProvider.request({
-                                                method: 'wallet_addEthereumChain',
-                                                params: [
-                                                    {
-                                                        "chainId": realChainId,
-                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                        "iconUrls": [
-                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                        ],
-                                                        "nativeCurrency": {
-                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "decimals": 18
-                                                        }
-                                                    },
-                                                ],
-                                            });
-                                        } catch (error) {
-                                            throw(error);
-                                        }
-                                    }
-                                });
+                                    }).catch(async (error) => {
+                                        throw(error);
+                                    });
                             }                    
                         }
 
@@ -806,38 +794,34 @@ window.dappInit = async (option, stakingOption) => {
 
                             if (realChainId != object.chainIdHex) {
                                 await DappObject.chosenEVMProvider.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            "chainId": object.chainIdHex,
+                                            "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
+                                            "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
+                                            "iconUrls": [
+                                                `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
+                                            ],
+                                            "nativeCurrency": {
+                                                "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                                "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                                "decimals": 18
+                                            }
+                                        },
+                                    ],
+                                });
+
+                                await DappObject.chosenEVMProvider.request({
                                     method: "wallet_switchEthereumChain",
                                     params: [
                                         {
                                         "chainId": object.chainIdHex
                                         }
                                     ]
-                                }).catch(async (error) => {
-                                    if (error.code === 4902) {
-                                        try {
-                                            await DappObject.chosenEVMProvider.request({
-                                                method: 'wallet_addEthereumChain',
-                                                params: [
-                                                    {
-                                                        "chainId": realChainId,
-                                                        "rpcUrls": [networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute('data-rpcurl')],
-                                                        "chainName": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText} Mainnet`,
-                                                        "iconUrls": [
-                                                            `https://portal.flare.network/token-logos/${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}.svg`
-                                                        ],
-                                                        "nativeCurrency": {
-                                                            "name": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "symbol": `${networkSelectBox.options[networkSelectBox.selectedIndex].innerText}`,
-                                                            "decimals": 18
-                                                        }
-                                                    },
-                                                ],
-                                            });
-                                        } catch (error) {
-                                            throw(error);
-                                        }
-                                    }
-                                });
+                                    }).catch(async (error) => {
+                                        throw(error);
+                                    });
                             }
                         }
 
@@ -870,6 +854,37 @@ window.dappInit = async (option, stakingOption) => {
             // switch to Flare
             if (DappObject.walletIndex !== 1) {
                 try {
+                    let flareParamsArray;
+
+                    for (const property in dappNetworks) {
+                        if (dappNetworks[property].chainidentifier == "FLR") {
+                            flareParamsArray = dappNetworks[property];
+                        }
+                    }
+
+                    try {
+                        await DappObject.chosenEVMProvider.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    "chainId": '0x' + flareParamsArray.chainid.toString(16),
+                                    "rpcUrls": [flareParamsArray.publicrpcurl],
+                                    "chainName": flareParamsArray.chainname,
+                                    "iconUrls": [
+                                        `https://portal.flare.network/token-logos/${flareParamsArray.chainidentifier}.svg`
+                                    ],
+                                    "nativeCurrency": {
+                                        "name": flareParamsArray.chainidentifier,
+                                        "symbol": flareParamsArray.chainidentifier,
+                                        "decimals": 18
+                                    }
+                                },
+                            ],
+                        });
+                    } catch (error) {
+                        getDappPage(1);
+                    }
+
                     await DappObject.chosenEVMProvider.request({
                         method: "wallet_switchEthereumChain",
                         params: [
@@ -882,31 +897,6 @@ window.dappInit = async (option, stakingOption) => {
                         });
                 } catch (error) {
                     // console.log(error);
-
-                    if (error.code === 4902) {
-                        try {
-                            await DappObject.chosenEVMProvider.request({
-                                method: 'wallet_addEthereumChain',
-                                params: [
-                                    {
-                                        "chainId": "0xe",
-                                        "rpcUrls": ["https://sbi.flr.ftsocan.com/ext/C/rpc"],
-                                        "chainName": `Flare Mainnet`,
-                                        "iconUrls": [
-                                            `https://portal.flare.network/token-logos/FLR.svg`
-                                        ],
-                                        "nativeCurrency": {
-                                            "name": `FLR`,
-                                            "symbol": `FLR`,
-                                            "decimals": 18
-                                        }
-                                    },
-                                ],
-                            });
-                        } catch (error) {
-                            getDappPage(1);
-                        }
-                    }
                 }
             }
         }

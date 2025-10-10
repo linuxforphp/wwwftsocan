@@ -48,9 +48,11 @@ class NetworksRepository extends EntityRepository
     public function hydrateArray(Networks $networks)
     {
         $array['id'] = $networks->getId();
-        $array['chainidentifier'] = $networks->getIdentifier();
-        $array['rpcurl'] = $networks->getRpcUrl();
+        $array['chainidentifier'] = $networks->getChainIdentifier();
+        $array['chainname'] = $networks->getChainName();
         $array['chainid'] = $networks->getChainId();
+        $array['rpcurl'] = $networks->getRpcUrl();
+        $array['publicrpcurl'] = $networks->getPublicRpcUrl();
         $array['registrycontract'] = $networks->getRegistryContract();
 
         return $array;
@@ -64,9 +66,11 @@ class NetworksRepository extends EntityRepository
             $this->networks = $networks;
         }
 
-        $this->networks->setIdentifier($networkArray['chainidentifier']);
-        $this->networks->setRpcUrl($networkArray['rpcurl']);
+        $this->networks->setChainIdentifier($networkArray['chainidentifier']);
+        $this->networks->setChainName($networkArray['chainname']);
         $this->networks->setChainId($networkArray['chainid']);
+        $this->networks->setRpcUrl($networkArray['rpcurl']);
+        $this->networks->setPublicRpcUrl($networkArray['publicrpcurl']);
         $this->networks->setRegistryContract($networkArray['registrycontract']);
 
         return $this->networks;

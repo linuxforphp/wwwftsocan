@@ -101,13 +101,34 @@ export async function handleChainChanged(DappObject) {
 
                 if (realChainId != chainIdHex) {
                     await DappObject.chosenEVMProvider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [
+                            {
+                                "chainId": realChainId,
+                                "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
+                                "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
+                                "iconUrls": [
+                                    `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
+                                ],
+                                "nativeCurrency": {
+                                    "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                    "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                    "decimals": 18
+                                }
+                            },
+                        ],
+                    });
+
+                    await DappObject.chosenEVMProvider.request({
                         method: "wallet_switchEthereumChain",
                         params: [
                             {
                             "chainId": realChainId
                             }
                         ]
-                        }).catch((error) => console.error(error));
+                        }).catch(async (error) => {
+                            throw(error);
+                        });
                 }
             });
         }
@@ -120,6 +141,37 @@ export async function handleChainChanged(DappObject) {
 
 export async function handleChainChangedStake(DappObject) {
     if (DappObject.walletIndex !== 1) {
+        let flareParamsArray;
+
+        for (const property in dappNetworks) {
+            if (dappNetworks[property].chainidentifier == "FLR") {
+                flareParamsArray = dappNetworks[property];
+            }
+        }
+
+        try {
+            await DappObject.chosenEVMProvider.request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                    {
+                        "chainId": '0x' + flareParamsArray.chainid.toString(16),
+                        "rpcUrls": [flareParamsArray.publicrpcurl],
+                        "chainName": flareParamsArray.chainname,
+                        "iconUrls": [
+                            `https://portal.flare.network/token-logos/${flareParamsArray.chainidentifier}.svg`
+                        ],
+                        "nativeCurrency": {
+                            "name": flareParamsArray.chainidentifier,
+                            "symbol": flareParamsArray.chainidentifier,
+                            "decimals": 18
+                        }
+                    },
+                ],
+            });
+        } catch (error) {
+            getDappPage(1);
+        }
+
         await DappObject.chosenEVMProvider.request({
             method: "wallet_switchEthereumChain",
             params: [
@@ -127,7 +179,9 @@ export async function handleChainChangedStake(DappObject) {
                 "chainId": "0xe"
                 }
             ]
-            }).catch((error) => console.error(error));
+            }).catch(async (error) => {
+                throw(error);
+            });
     }
 }
 
@@ -313,7 +367,11 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                 DappObject.isAccountConnected = true;
             }
         } else if ((!PassedPublicKey || PassedPublicKey === "")) {
-            if (DappObject.walletIndex === 2) {
+            if (DappObject.walletIndex === 0) { 
+                if (DappObject.chosenEVMProvider === undefined) {
+                    DappObject.chosenEVMProvider = window.ethereum;
+                }
+            } else if (DappObject.walletIndex === 2) {
                 if (DappObject.chosenEVMProvider === undefined) {
                     DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
                 }
@@ -546,9 +604,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             }
         }
     } catch (error) {
-        // console.log(error);
-
-        console.log(dappStrings);
+        console.log(error);
 
         document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connect"];
 
