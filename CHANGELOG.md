@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.4.5 (2025-10-10)
+
+- Fixes an issue with Metamask when adding a network.
+- Adds a Doctrine CLI configuration file.
+- Updates the project's dependencies.
+
 ## 1.4.4 (2025-08-24)
 
 - Sets the Flare API as the default RPC.
