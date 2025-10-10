@@ -367,7 +367,11 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                 DappObject.isAccountConnected = true;
             }
         } else if ((!PassedPublicKey || PassedPublicKey === "")) {
-            if (DappObject.walletIndex === 2) {
+            if (DappObject.walletIndex === 0) { 
+                if (DappObject.chosenEVMProvider === undefined) {
+                    DappObject.chosenEVMProvider = window.ethereum;
+                }
+            } else if (DappObject.walletIndex === 2) {
                 if (DappObject.chosenEVMProvider === undefined) {
                     DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
                 }
