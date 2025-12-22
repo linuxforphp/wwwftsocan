@@ -1,4 +1,4 @@
-import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
+import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos, updateCurrentAccountStatus } from "./flare-utils";
 import { wait, round, isNumber, checkConnection, showConnectedAccountAddress, remove, resetDappObjectState } from "./dapp-utils.js";
 import { setCurrentAppState, setCurrentPopup, closeCurrentPopup } from "./dapp-ui.js";
 import { walletConnectEVMParams } from "./dapp-globals.js";
@@ -197,6 +197,8 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
     await setCurrentPopup(dappStrings['dapp_mabel_connecting'], true);
 
     DappObject.isAccountConnected = false;
+
+    updateCurrentAccountStatus("", null, false);
 
     if (typeof addressIndex === "undefined" || addressIndex === "") {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
@@ -404,6 +406,12 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             DappObject.isHandlingOperation = false;
         } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex !== -1) {
             DappObject.selectedAddress = account;
+
+            if (GetNetworkName(rpcUrl) === "flare") {
+                updateCurrentAccountStatus(DappObject.selectedAddress, 1, true);
+            } else if (GetNetworkName(rpcUrl) === "songbird") {
+                updateCurrentAccountStatus(DappObject.selectedAddress, 2, true);
+            }
 
             try {
                 if (pageIndex === 0) {

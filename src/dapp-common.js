@@ -1,7 +1,7 @@
 // Copyright 2024, Andrew Caya <andrewscaya@yahoo.ca>
 // Copyright 2024, Jean-Thomas Caya
 
-import { GetContract, FlareAbis, FlareLogos } from "./flare-utils";
+import { GetContract, FlareAbis, FlareLogos, updateCurrentAccountStatus } from "./flare-utils";
 import { wait, checkConnection, showTokenIdentifiers, resetDappObjectState } from "./dapp-utils.js";
 import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption } from "./dapp-ui.js";
 import { injectedProviderDropdown, walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
@@ -55,6 +55,7 @@ window.DappObject = {
     signatureStaking: "",
     // Injected Providers
     providerList: [],
+    browserWalletLogo: '',
     // Ledger Variables
     unPrefixedAddr: "",
     ledgerAddrArray: [],
@@ -220,6 +221,8 @@ function setInjectedInfo(info, provider) {
         document.getElementById("injectedProviderName").innerText = info.name;
 
         document.getElementById("injectedProviderIcon").innerHTML = `<img src="${info.icon}" alt="${info.name}" />`;
+
+        DappObject.browserWalletLogo = `<img src="${info.icon}" alt="${info.name}" />`;
     }
 }
 
@@ -919,6 +922,10 @@ window.dappInit = async (option, stakingOption) => {
 
                 await setupLedgerOption();
 
+                // Setup the CurrentAccount modal
+
+                updateCurrentAccountStatus("0x00000000", DappObject.selectedNetworkIndex, false, -1);
+
                 // Reset the injected Provider settings
                 injectedProviderDropdown = undefined;
 
@@ -947,12 +954,14 @@ window.dappInit = async (option, stakingOption) => {
                 });
                 document.getElementById("ContinueWalletConnect")?.addEventListener("click", async () => {
                     DappObject.walletIndex = 2;
+                    updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                     DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
                     getDappPage(1);
                 });
 
                 document.getElementById("ContinueCryptoCom")?.addEventListener("click", async () => {
                     DappObject.walletIndex = 3;
+                    updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                     await cryptoComConnector.activate();
                     DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
                     getDappPage(1);
@@ -979,6 +988,7 @@ window.dappInit = async (option, stakingOption) => {
             document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
                 document.cookie = "ftsocan_browser-wallet=true;";
                 DappObject.walletIndex = 0;
+                updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                 getDappPage(1);
             });
 
@@ -1028,6 +1038,7 @@ window.dappInit = async (option, stakingOption) => {
                             document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
                                 document.cookie = "ftsocan_browser-wallet=false;";
                                 DappObject.walletIndex = 1;
+                                updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                                 getDappPage(1);
                             });
                             break

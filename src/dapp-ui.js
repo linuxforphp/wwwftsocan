@@ -429,7 +429,7 @@ export async function showAlreadyDelegated(DelegatedFtsos, object) {
 }
 
 export async function setCurrentAppState(state) {
-    const currentWallet = document.getElementById("currentWallet");
+    const currentWallets = document.querySelectorAll('.current-wallet');
 
     const appLogo = document.getElementById("appLogo");
 
@@ -456,29 +456,37 @@ export async function setCurrentAppState(state) {
 
     switch (state) {
         case "Null":
-            currentWallet.classList.remove("ring");
-            currentWallet.classList.add("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("ring");
+                element.classList.add("paused");
+            });
 
             walletNotification.style.backgroundColor = "#aaa";
             walletNotification.style.border = "3px solid #dadada";
             break
         case "Alert":
-            currentWallet.classList.add("ring");
-            currentWallet.classList.remove("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("paused");
+                element.classList.add("ring");
+            });
 
             walletNotification.style.backgroundColor = "#f45f58";
             walletNotification.style.border = "3px solid #ff9994";
             break
         case "Connecting":
-            currentWallet.classList.add("ring");
-            currentWallet.classList.remove("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("paused");
+                element.classList.add("ring");
+            });
 
             walletNotification.style.backgroundColor = "#f9be2f";
             walletNotification.style.border = "3px solid #ffe5a7";
             break
         case "Connected":
-            currentWallet.classList.remove("ring");
-            currentWallet.classList.add("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("ring");
+                element.classList.add("paused");
+            });
 
             walletNotification.style.backgroundColor = "#42ca40";
             walletNotification.style.border = "3px solid #8fe18e";

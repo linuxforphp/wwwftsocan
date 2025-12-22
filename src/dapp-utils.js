@@ -1,4 +1,5 @@
 import { showConfirm, showConfirmStake, showFail, showFailStake, setCurrentAppState, setCurrentPopup } from "./dapp-ui.js";
+import { updateCurrentAccountStatus } from "./flare-utils.js";
 
 export function wait(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -136,6 +137,8 @@ export function showTokenIdentifiers(token, wrappedToken) {
 }
 
 export function showConnectedAccountAddress(address) {
+    updateCurrentAccountStatus(address, null, true);
+
     document.getElementById('AccountAddress').innerText = address;
 }
 
