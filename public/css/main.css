@@ -42,7 +42,16 @@
     font-style: normal;
 }
 
+:root {
+    color-scheme: dark;
+}
+
+html {
+    overscroll-behavior: none !important;
+}
+
 body {
+    overscroll-behavior: auto;
     font-family: 'Poppins', sans-serif;
     line-height: 24px;
 }
@@ -446,6 +455,7 @@ ul.delegation {
 /* ==========================================*/
 
 #navigation {
+    overscroll-behavior: none !important;
     -webkit-transition: all 0.8s ease 0s;
     -moz-transition: all 0.8s ease 0s;
     -ms-transition: all 0.8s ease 0s;

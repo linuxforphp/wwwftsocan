@@ -543,11 +543,8 @@ export async function setupLedgerOption() {
             dropdownParent: "body",
         });
     } else {
-        document.getElementById("metamaskOption").classList.remove("col-md-4");
-        document.getElementById("metamaskOption").classList.add("col-md-6");
-
-        document.getElementById("walletConnectOption").classList.remove("col-md-4");
-        document.getElementById("walletConnectOption").classList.add("col-md-6");
+        document.getElementById("cryptoComOption").classList.remove("col-md-6");
+        document.getElementById("cryptoComOption").classList.remove("col-md-12");
 
         document.getElementById("ledgerOption").style.display = "none";
     }

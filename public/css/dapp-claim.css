@@ -19,16 +19,15 @@
     position: relative;
     height: auto;
     width: 45%;
-    padding: 20px;
 }
 
 .connect-wallet.claim-button {
     float: right;
-    margin: 15px;
+    margin: 10px 15px 15px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    padding: 7px;
+    padding: 5px;
     width: 100%;
 }
 

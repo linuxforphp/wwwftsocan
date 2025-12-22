@@ -14,6 +14,12 @@
 
     <link rel="apple-touch-icon" href="<?=$view['urlbaseaddr'] ?>apple-touch-icon.png">
 
+    <meta name="color-scheme" content="light"/>
+    <!-- Theme color for light mode -->
+    <meta name="theme-color" content="#d2200f" media="(prefers-color-scheme: light)">
+    <!-- Theme color for dark mode -->
+    <meta name="theme-color" content="#d2200f" media="(prefers-color-scheme: dark)">
+
     <title><?=$view['title'] ?></title>
 
     <!-- CSS

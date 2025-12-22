@@ -16,7 +16,9 @@
     <main id="MainSection" class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main" data-urlbaseaddr="<?=$view['urlbaseaddr'] ?>">
         <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
         <div id="Accounts" data-address=""></div>
-        <div class="dapp-container" id="dapp-root"></div>
+        <div class="dapp-container">
+            <div class="scroller" id="dapp-root"></div>
+        </div>
         <div id="currentWallet" class="current-wallet paused">
             <div id="currentWalletPopup" class="current-wallet-popup">
                 <p id="currentWalletPopupText"><?=_("dapp_mabel_selectwallet1")?></p>

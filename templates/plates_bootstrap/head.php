@@ -16,6 +16,12 @@
         <link href="<?php echo $value ?>" rel="stylesheet">
     <?php endforeach; ?>
 
+    <meta name="color-scheme" content="light"/>
+    <!-- Theme color for light mode -->
+    <meta name="theme-color" content="#d2200f" media="(prefers-color-scheme: light)">
+    <!-- Theme color for dark mode -->
+    <meta name="theme-color" content="#d2200f" media="(prefers-color-scheme: dark)">
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="<?php echo $view['urlbaseaddr'] ?>js/html5shiv.min.js"></script>
