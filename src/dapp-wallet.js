@@ -1,4 +1,4 @@
-import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos, updateCurrentAccountStatus } from "./flare-utils";
+import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos, updateCurrentAccountStatus, updateCurrentBalancesStatus } from "./flare-utils";
 import { wait, round, isNumber, checkConnection, showConnectedAccountAddress, remove, resetDappObjectState } from "./dapp-utils.js";
 import { setCurrentAppState, setCurrentPopup, closeCurrentPopup } from "./dapp-ui.js";
 import { walletConnectEVMParams } from "./dapp-globals.js";
@@ -413,14 +413,16 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                 updateCurrentAccountStatus(DappObject.selectedAddress, 2, true);
             }
 
+            const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
+            let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+            const balance = await web32.eth.getBalance(account);
+            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+
+            updateCurrentBalancesStatus(web32.utils.fromWei(balance, "ether"), web32.utils.fromWei(tokenBalance, "ether"), 0);
+
             try {
                 if (pageIndex === 0) {
-                    const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
-                    let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                     showAccountAddress(account);
-                    const balance = await web32.eth.getBalance(account);
-                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-    
                     DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
     
                     if (DappObject.wrapBool === true) {
@@ -490,17 +492,13 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                     }
     
                     try {
-                        const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
                         const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
                         const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
 
                         const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
-                        let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
                         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
                         let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
                         let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
-
-                        const tokenBalance = await tokenContract.methods.balanceOf(account).call();
     
                         showAccountAddress(account);
                         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));

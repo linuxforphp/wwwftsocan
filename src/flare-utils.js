@@ -68,6 +68,20 @@ export function round(num) {
     return +(Math.round(num + "e+4") + "e-4");
 }
 
+export function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
+    if (typeof balance !== 'undefined') {
+        document.getElementById('balanceInfo').innerText = String(round(balance));
+    }
+
+    if (typeof tokenBalance !== 'undefined') {
+        document.getElementById('wnatInfo').innerText = String(round(tokenBalance));
+    }
+
+    if (typeof pBalance !== 'undefined') {
+        document.getElementById('pBalanceInfo').innerText = String(round(pBalance));
+    }
+}
+
 export function updateCurrentAccountStatus(address, networkIndex, isAccountConnected, walletIndex) {
     if (address.startsWith('0x') && address.length > 3) {
         document.getElementById('currentAccount').innerText = address.slice(0, 6) + "..." + address.slice(-4);
