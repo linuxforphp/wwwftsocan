@@ -948,7 +948,10 @@ window.dappInit = async (option, stakingOption) => {
                 DappObject.walletIndex = -1;
 
                 document.getElementById("ContinueMetamask")?.addEventListener("click", async () => {
-                    getDappPage(8);
+                    document.cookie = "ftsocan_browser-wallet=true;";
+                    DappObject.walletIndex = 0;
+                    updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
+                    getDappPage(1);
                 });
                 document.getElementById("ContinueLedger")?.addEventListener("click", async () => {
                     getDappPage(9);
@@ -981,23 +984,20 @@ window.dappInit = async (option, stakingOption) => {
                 // console.log(error);
             }
         } else if (stakingOption === 4) {
-            //Metamask
-            DappObject.isAccountConnected = true;
+            // //Metamask
+            // DappObject.isAccountConnected = true;
 
-            await setCurrentAppState("Null");
+            // await setCurrentAppState("Null");
 
-            document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
-                document.cookie = "ftsocan_browser-wallet=true;";
-                DappObject.walletIndex = 0;
-                updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
-                getDappPage(1);
-            });
+            // document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
 
-            document.getElementById("GoBack")?.addEventListener("click", async () => {
-                getDappPage(4);
-            });
+            // });
 
-            await setCurrentPopup(dappStrings['dapp_mabel_metamask'], true);
+            // document.getElementById("GoBack")?.addEventListener("click", async () => {
+            //     getDappPage(4);
+            // });
+
+            // await setCurrentPopup(dappStrings['dapp_mabel_metamask'], true);
         } else if (stakingOption === 5) {
             //Ledger
             DappObject.isAccountConnected = true;
