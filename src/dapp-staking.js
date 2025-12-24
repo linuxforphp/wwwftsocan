@@ -19,9 +19,9 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
     DappObject.isAccountConnected = false;
 
-    // console.log("PassedPublicKey:");
-    // console.log(PassedPublicKey);
-    // console.log(!PassedPublicKey);
+    console.log("PassedPublicKey:");
+    console.log(PassedPublicKey);
+    console.log(!PassedPublicKey);
 
     if (!PassedPublicKey) {
         document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
@@ -33,7 +33,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
     let web32 = new Web3(rpcUrl);
 
-    let message = "You are enabling the FTSOCAN DApp to access your accounts PUBLIC key to derive your P-Chain address. Additionally, you are acknowledging the risks involved with staking on Flare and the usage of the MetaMask 'eth_sign' functionality. \n\nWE ARE NOT RESPONSIBLE FOR ANY LOSSES OF FUNDS AFTER STAKING. CONTINUE AT YOUR OWN RISK!";
+    let message = "Please sign this message in order to obtain the PUBLIC key associated with your account.";
 
     try {
         let flrPublicKey;
@@ -62,7 +62,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                             await wait(3000);
     
                             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                                // console.log("Fetching Addresses... P-Chain");
+                                console.log("Fetching Addresses... P-Chain");
                                 let addresses = await getLedgerAddresses("flare", DappObject.isAvax);
         
                                 let insert = [];
@@ -78,7 +78,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                                 DappObject.ledgerAddrArray = insert;
                             }
         
-                            // console.log(DappObject.ledgerAddrArray);
+                            console.log(DappObject.ledgerAddrArray);
         
                             document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="' + dappStrings['dapp_select_wallet'] + '"></select>';
     
@@ -90,8 +90,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                                     
                                     flrPublicKey = pubKey;
         
-                                    // console.log("flrPublicKey: ");
-                                    // console.log(flrPublicKey);
+                                    console.log("flrPublicKey: ");
+                                    console.log(flrPublicKey);
             
                                     account = ethaddr;
             
@@ -184,31 +184,6 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                     if (!DappObject.chosenEVMProvider.session) {
                         await DappObject.chosenEVMProvider.connect();
                     }
-        
-                    if (!DappObject.chosenEVMProvider.session.namespaces.eip155.methods.includes("eth_sign")) {                       
-                        let signSpinner = $.confirm({
-                            escapeKey: false,
-                            backgroundDismiss: false,
-                            icon: 'fa fa-spinner fa-spin',
-                            title: dappStrings['dapp_popup_loading'],
-                            content: "Sorry!<br /> Your wallet does not support 'eth_sign'!<br /> You will not be able to stake using the FTSOCAN DApp.",
-                            theme: 'material',
-                            type: 'dark',
-                            typeAnimated: true,
-                            draggable: false,
-                            buttons: {
-                                ok: {
-                                    action: function () {
-                                        getDappPage(4);
-                                    },
-                                },
-                            },
-                            onContentReady: async function () {
-                            }
-                        });
-        
-                        return
-                    }
                 } else if (DappObject.walletIndex === 3) {
                     if (DappObject.chosenEVMProvider === undefined) {
                         await cryptoComConnector.activate();
@@ -228,7 +203,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                         backgroundDismiss: false,
                         icon: 'fa fa-spinner fa-spin',
                         title: dappStrings['dapp_popup_loading'],
-                        content: 'Waiting for signature confirmation. <br />Remember to turn on "eth_sign"...',
+                        content: 'Waiting for signature confirmation.' + '<br />' + dappStrings['dapp_popup_checkwallet2'],
                         theme: 'material',
                         type: 'dark',
                         typeAnimated: true,
@@ -286,7 +261,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             DappObject.isAccountConnected = true;
         }
 
-        // console.log(flrPublicKey);
+        console.log(flrPublicKey);
 
         if (flrPublicKey) {
             const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
@@ -302,6 +277,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             DappObject.unPrefixedAddr = PchainAddr;
 
             DappObject.selectedAddress = account;
+
+            DappObject.publicKey = flrPublicKey;
 
             const PchainAddrEncoded = await publicKeyToPchainEncodedAddressString(flrPublicKey);
                 
@@ -352,7 +329,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                     
                         await populateValidators();
                     } catch (error) {
-                        // console.log(error);
+                        console.log(error);
                     }
 
                     await setCurrentPopup(dappStrings['dapp_mabel_stake1'], true);
@@ -394,7 +371,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
                     const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
 
-                    // console.log(unclaimedAmount);
+                    console.log(unclaimedAmount);
                     
                     // Changing the color of Claim button.
                     showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
@@ -429,7 +406,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             DappObject.isHandlingOperation = false;
         }
     } catch (error) {
-        // console.log(error);
+        console.log(error);
 
         document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connectstake"];
 
@@ -552,20 +529,6 @@ export async function RefreshStakingPage(DappObject, stakingOption) {
     ConnectPChainClickStake(DappObject);
 }
 
-export async function GetPublicKey(address, message, signature) {
-    const messageHash = ethers.utils.hashMessage(message);
-    const recoveredPublicKey = ethers.utils.recoverPublicKey(messageHash, signature);
-
-    // To confirm the signer's address, you can compute the Ethereum address from the recovered public key
-    const recoveredAddress = ethers.utils.computeAddress(recoveredPublicKey);
-  
-    if (recoveredAddress.toLowerCase() === address.toLowerCase()) {
-        return recoveredPublicKey;
-    } else {
-        throw new Error("Failed to verify signer.");
-    }
-}
-
 export async function showPchainBalance(Pchainbalance) {
     document.getElementById("TokenBalance").innerText = Pchainbalance;
 }
@@ -685,9 +648,9 @@ export async function transferTokens(DappObject, stakingOption) {
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
                             try {
-                                const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, nonce, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                const cChainTxId = await exportTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, DappObject.publicKey, nonce, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                     return new Promise((resolve, reject) => {
-                                        // console.log("C Chain TX ID: " + result.txid);
+                                        console.log("C Chain TX ID: " + result.txid);
     
                                         cChainTransactionId = result.txid;
                                         
@@ -724,15 +687,15 @@ export async function transferTokens(DappObject, stakingOption) {
                                                 }
                                             });
                                         } catch (error) {
-                                            // console.log(error);
+                                            console.log(error);
                                             throw error;
                                         }
                                     });
                                 }).then(async result => {
                                     if (result == "Success" || result == "Unknown") {
                                         document.getElementById('ImportTxStatus').innerText = dappStrings['dapp_popup_checkwallet2'];
-                                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
-                                            // console.log("P Chain TX ID: " + result.txid);
+                                        const pChainTxId = await importTokensP(DappObject.unPrefixedAddr, DappObject.selectedAddress, DappObject.publicKey, 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                            console.log("P Chain TX ID: " + result.txid);
             
                                             pChainTransactionId = result.txid;
                                         
@@ -766,7 +729,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                                     }
                                                 });
                                             } catch (error) {
-                                                // console.log(error);
+                                                console.log(error);
                                                 throw error;
                                             }
                                         });
@@ -776,12 +739,13 @@ export async function transferTokens(DappObject, stakingOption) {
                                 DappObject.isHandlingOperation = false;
 
                                 showFailStake(DappObject, stakingOption);
+                                console.log(error);
 
                                 throw error
                             }
                         });
                     } catch (error) {
-                        // console.log("ERROR C-chain to P-chain");
+                        console.log("ERROR C-chain to P-chain");
                         throw error;
                     }
                 } else {
@@ -796,9 +760,9 @@ export async function transferTokens(DappObject, stakingOption) {
                     try {
                         showConfirmationSpinnerTransfer(async (spinner) => {
                             try {
-                                const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                const pChainTxId = await exportTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, DappObject.publicKey, amountFromValueInt, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
                                     return new Promise((resolve, reject) => {
-                                        // console.log("P Chain TX ID: " + result);
+                                        console.log("P Chain TX ID: " + result);
     
                                         pChainTransactionId = result;
                                     
@@ -835,15 +799,15 @@ export async function transferTokens(DappObject, stakingOption) {
                                                 }
                                             });
                                         } catch (error) {
-                                            // console.log(error);
+                                            console.log(error);
                                             throw error;
                                         }
                                     });
                                 }).then(async result => {
                                     if (result == "Success" || result == "Unknown") {
                                         document.getElementById('ImportTxStatus').innerText = dappStrings['dapp_popup_checkwallet2'];
-                                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, undefined, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
-                                            // console.log("C Chain TX ID: " + result);
+                                        const cChainTxId = await importTokensC(DappObject.unPrefixedAddr, DappObject.selectedAddress, DappObject.publicKey, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                                            console.log("C Chain TX ID: " + result);
     
                                             cChainTransactionId = result;
                                             
@@ -877,7 +841,7 @@ export async function transferTokens(DappObject, stakingOption) {
                                                     }
                                                 });
                                             } catch (error) {
-                                                // console.log(error);
+                                                console.log(error);
                                                 throw error;
                                             }   
                                         });
@@ -887,12 +851,13 @@ export async function transferTokens(DappObject, stakingOption) {
                                 DappObject.isHandlingOperation = false;
 
                                 showFailStake(DappObject, stakingOption);
+                                console.log(error);
 
                                 throw error
                             }
                         });
                     } catch (error) {
-                        // console.log("ERROR P-chain to C-chain");
+                        console.log("ERROR P-chain to C-chain");
                         throw error;
                     }
                 }
@@ -907,7 +872,7 @@ export async function transferTokens(DappObject, stakingOption) {
                 DappObject.isHandlingOperation = false;
             }
         } catch (error) {
-            // console.log(error);
+            console.log(error);
 
             DappObject.isHandlingOperation = false;
 
@@ -1066,7 +1031,7 @@ export async function populateValidators() {
                 }
             });
         } catch (error) {
-            // console.log(error)
+            console.log(error)
         }
 
         resolve();
@@ -1204,8 +1169,8 @@ export async function stake(DappObject, stakingOption) {
         try {
             showConfirmationSpinnerStake(async (spinner) => {
                 try {
-                    const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, undefined, undefined, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
-                        // console.log("P Chain TX ID: " + result);
+                    const PchainTxId = await addDelegator(DappObject.selectedAddress, DappObject.unPrefixedAddr, DappObject.publicKey, undefined, addr1, stakeAmount, diffDays, selectedDate.getHours(), 1, DappObject.walletIndex, DappObject.ledgerSelectedIndex).then(result => {
+                        console.log("P Chain TX ID: " + result);
     
                         pChainTransactionId = result;
                     
@@ -1248,7 +1213,7 @@ export async function stake(DappObject, stakingOption) {
                             
             showFailStake(DappObject, stakingOption);
 
-            // console.log(error);
+            console.log(error);
         }
     }
 }
@@ -1320,6 +1285,6 @@ export async function claimStakingRewards(DappObject, stakingOption) {
     } catch (error) {
         DappObject.isHandlingOperation = false;
 
-        // console.log(error);
+        console.log(error);
     }
 }

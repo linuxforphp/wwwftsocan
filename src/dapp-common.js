@@ -58,6 +58,7 @@ window.DappObject = {
     browserWalletLogo: '',
     // Ledger Variables
     unPrefixedAddr: "",
+    publicKey: "",
     ledgerAddrArray: [],
     ledgerSelectedIndex: "",
     isAvax: true,
@@ -347,11 +348,11 @@ window.dappInit = async (option, stakingOption) => {
 
     // Removes the navbar's staking option for Browser Wallets
 
-    if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 1) {
-        document.getElementById("navbar-stake-item").style.display = "none";
-    } else {
-        document.getElementById("navbar-stake-item").style.display = "block";
-    }
+    // if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 1) {
+    //     document.getElementById("navbar-stake-item").style.display = "none";
+    // } else {
+    //     document.getElementById("navbar-stake-item").style.display = "block";
+    // }
 
     document.getElementById("currentWallet")?.addEventListener("click", (event) => {
 
