@@ -136,8 +136,10 @@ export function showTokenIdentifiers(token, wrappedToken) {
     document.getElementById("wrappedTokenIdentifier").innerText = wrappedToken;
 }
 
-export function showConnectedAccountAddress(address) {
-    updateCurrentAccountStatus(address, null, true);
+export function showConnectedAccountAddress(address, pAddress) {
+    if (address !== "0x0") {
+        updateCurrentAccountStatus(address, null, true, pAddress);
+    }
 
     document.getElementById('AccountAddress').innerText = address;
 }

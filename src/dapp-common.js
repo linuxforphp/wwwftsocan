@@ -1,9 +1,9 @@
 // Copyright 2024, Andrew Caya <andrewscaya@yahoo.ca>
 // Copyright 2024, Jean-Thomas Caya
 
-import { GetContract, FlareAbis, FlareLogos, updateCurrentAccountStatus } from "./flare-utils";
+import { GetContract, FlareAbis, FlareLogos, updateCurrentAccountStatus, updateCurrentBalancesStatus } from "./flare-utils";
 import { wait, checkConnection, showTokenIdentifiers, resetDappObjectState } from "./dapp-utils.js";
-import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption } from "./dapp-ui.js";
+import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption, togglePopup } from "./dapp-ui.js";
 import { injectedProviderDropdown, walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
 import { handleAccountsChanged, handleChainChanged, handleChainChangedStake, ConnectWalletClick } from "./dapp-wallet.js";
 import { toggleWrapButton, setWrapButton, copyWrapInput, wrapTokens } from "./dapp-wrap.js";
@@ -354,14 +354,7 @@ window.dappInit = async (option, stakingOption) => {
     //     document.getElementById("navbar-stake-item").style.display = "block";
     // }
 
-    document.getElementById("currentWallet")?.addEventListener("click", (event) => {
-
-        if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
-            return;
-        }
-
-        document.getElementById("currentWalletPopup").classList.toggle("showing");
-    });
+    document.getElementById("currentWallet")?.addEventListener("click", togglePopup);
 
     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -925,7 +918,8 @@ window.dappInit = async (option, stakingOption) => {
 
                 // Setup the CurrentAccount modal
 
-                updateCurrentAccountStatus("0x00000000", DappObject.selectedNetworkIndex, false, -1);
+                updateCurrentAccountStatus("0x00000000", DappObject.selectedNetworkIndex, false, -1, "P-000000000000");
+                updateCurrentBalancesStatus(0, 0, 0);
 
                 // Reset the injected Provider settings
                 injectedProviderDropdown = undefined;

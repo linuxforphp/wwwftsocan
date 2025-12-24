@@ -71,35 +71,96 @@ export function round(num) {
 export function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
     if (typeof balance !== 'undefined') {
         document.getElementById('balanceInfo').innerText = String(round(balance));
+
+        if (round(balance) > 0) {
+            document.getElementById('balanceInfoText').style.color = "#fd000f";
+        } else {
+            document.getElementById('balanceInfoText').style.color = "#aaaaaa";
+        }
     }
 
     if (typeof tokenBalance !== 'undefined') {
         document.getElementById('wnatInfo').innerText = String(round(tokenBalance));
+
+        if (round(tokenBalance) > 0) {
+            document.getElementById('wnatInfoText').style.color = "#383a3b";
+        } else {
+            document.getElementById('wnatInfoText').style.color = "#aaaaaa";
+        }
     }
 
     if (typeof pBalance !== 'undefined') {
         document.getElementById('pBalanceInfo').innerText = String(round(pBalance));
+
+        if (round(pBalance) > 0) {
+            document.getElementById('pBalanceInfoText').style.color = "#383a3b";
+        } else {
+            document.getElementById('pBalanceInfoText').style.color = "#aaaaaa";
+        }
     }
 }
 
-export function updateCurrentAccountStatus(address, networkIndex, isAccountConnected, walletIndex) {
+export async function openAddressInExplorer(address, networkIndex) {
+    let urlPrefix = "flare";
+
+    if (networkIndex == 1) {
+        urlPrefix = "flare";
+    } else if (networkIndex == 2) {
+        urlPrefix = "songbird";
+    }
+
+    window.open("https://" + urlPrefix + "-explorer.flare.network/address/" + address, '_blank').focus();
+}
+
+export function updateCurrentAccountStatus(address, networkIndex, isAccountConnected, walletIndex, pAddress) {
+    let clickBind = () => {openAddressInExplorer(address, DappObject.selectedNetworkIndex);};
+
+    let currentAccount = document.getElementById('currentAccount');
+    let currentPAccount = document.getElementById('currentPAccount');
+    let currentNetworkLogo = document.getElementById('currentNetworkLogo');
+
     if (address.startsWith('0x') && address.length > 3) {
-        document.getElementById('currentAccount').innerText = address.slice(0, 6) + "..." + address.slice(-4);
+        currentAccount.innerText = address.slice(0, 6) + "..." + address.slice(-4);
+
+        if (currentAccount.innerText.toLowerCase() !== "0x0000...0000") {
+            currentAccount.style.color = "#383a3b";
+
+            document.getElementById('viewCurrentInExplorer').classList.remove("disabled");
+            document.getElementById('viewCurrentInExplorer').addEventListener('click', clickBind);
+        } else {
+            currentAccount.style.color = "#aaaaaa";
+
+            document.getElementById('viewCurrentInExplorer').classList.add("disabled");
+
+            const oldElement = document.getElementById('viewCurrentInExplorer');
+            const newElement = oldElement.cloneNode(true);
+            oldElement.replaceWith(newElement);
+        }
+    }
+
+    if (typeof pAddress !== 'undefined') {
+        currentPAccount.innerText = pAddress.slice(0, 10) + "..." + pAddress.slice(-4);
+
+        if (currentPAccount.innerText.toLowerCase() !== "p-00000000...0000") {
+            currentPAccount.style.color = "#383a3b";
+        } else {
+            currentPAccount.style.color = "#aaaaaa";
+        }
     }
 
     if (networkIndex) {
         if (networkIndex == 1) {
-            document.getElementById('currentNetworkLogo').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor" style="width: 35px; height: 45px;">' + FlareLogos.flrLogo + "</svg>";
+            currentNetworkLogo.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor" style="width: 35px; height: 45px;">' + FlareLogos.flrLogo + "</svg>";
         } else if (networkIndex == 2) {
-            document.getElementById('currentNetworkLogo').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor" style="width: 35px; height: 45px;">' + FlareLogos.sgbLogo + "</svg>";
+            currentNetworkLogo.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor" style="width: 35px; height: 45px;">' + FlareLogos.sgbLogo + "</svg>";
         }
     }
 
     if (typeof isAccountConnected !== 'undefined') {
         if (isAccountConnected === true) {
-            document.getElementById('currentNetworkLogo').style.color = "#fd000f";
+            currentNetworkLogo.style.color = "#fd000f";
         } else if (isAccountConnected === false) {
-            document.getElementById('currentNetworkLogo').style.color = "#aaaaaa";
+            currentNetworkLogo.style.color = "#aaaaaa";
         }
     }
 
@@ -121,8 +182,12 @@ export function updateCurrentAccountStatus(address, networkIndex, isAccountConne
 }
 
 // Show user's account address.
-export function showAccountAddress(address) {
-    updateCurrentAccountStatus(address, null, true);
+export function showAccountAddress(address, pAddress) {
+    if (address.startsWith("0x")) {
+        updateCurrentAccountStatus(address, null, true, undefined, pAddress);
+    } else {
+        updateCurrentAccountStatus(pAddress, null, true, undefined, address);
+    }
 
     document.getElementById('ConnectWalletText').innerText = address;
 }

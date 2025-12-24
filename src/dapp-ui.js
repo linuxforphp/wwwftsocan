@@ -494,6 +494,14 @@ export async function setCurrentAppState(state) {
     }
 }
 
+export async function togglePopup(event) {
+    if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
+        return;
+    }
+
+    document.getElementById("currentWalletPopup").classList.toggle("showing");
+}
+
 
 export async function setCurrentPopup(message, open) {
     document.getElementById("currentWalletPopup").classList.remove("showing");

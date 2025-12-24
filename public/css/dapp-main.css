@@ -476,6 +476,24 @@ h1, h2 {
     overflow: hidden;
     cursor: pointer;
 }
+
+.account-btn .view-explorer {
+    margin: 20px;
+    margin-bottom: 10px;
+    padding: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.account-btn .view-explorer.disabled {
+    background-color: rgba(143, 143, 143, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.account-btn .view-explorer.disabled:hover {
+    letter-spacing: normal;
+}
   
 .account-btn .cta {
     position: relative;
@@ -490,6 +508,14 @@ h1, h2 {
     left: auto;
     height: 50px;
     width: fit-content;
+}
+
+.account-btn .ctaP {
+    transition-delay: .05s;
+    opacity: 0;
+    font-size: 11px;
+    width: 170px;
+    text-align: left;
 }
 
 .current-wallet.cta {
@@ -552,12 +578,28 @@ h1, h2 {
 }
 
 .account-btn .balances li {
+    color: #aaa;
     text-align: left;
     padding-bottom: 15px;
     transform: scale(0.7) translateX(10px) translateY(-10px);
-    transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out, color 0.5s ease-in;
     transform-origin: 0% 0%;
     opacity: 0;
+
+    &:nth-child(1) {
+        color: #aaaaaa;
+      transition-delay: .05s;
+    }
+    
+    &:nth-child(2) {
+        color: #aaaaaa;
+      transition-delay: .1s;
+    }
+    
+    &:nth-child(3) {
+        color: #aaaaaa;
+      transition-delay: .15s;
+    }
 }
   
   .account-btn .fake-input {
@@ -579,7 +621,19 @@ h1, h2 {
   
   .account-btn.clicked .cta {
     top: 10px;
-    color: #383a3b;
+  }
+
+  .account-btn.clicked .network-icon {
+    top: 7px;
+  }
+
+  .account-btn.clicked .ctaC {
+    top: 0px;
+  }
+
+  .account-btn.clicked .ctaP {
+    opacity: 1;
+    top: -30px;
   }
   
   .account-btn.clicked .close {
@@ -590,21 +644,6 @@ h1, h2 {
   .account-btn.clicked .balances li {
     transform: scale(1) translateX(0) translateY(0);
     opacity: 1;
-    
-    &:nth-child(1) {
-        color: #fd000f;
-      transition-delay: .05s;
-    }
-    
-    &:nth-child(2) {
-        color: #383a3b;
-      transition-delay: .1s;
-    }
-    
-    &:nth-child(3) {
-        color: #aaaaaa;
-      transition-delay: .15s;
-    }
 }
 
 .current-wallet-icon-border, .btn-bell {
