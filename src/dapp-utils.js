@@ -137,11 +137,17 @@ export function showTokenIdentifiers(token, wrappedToken) {
 }
 
 export function showConnectedAccountAddress(address, pAddress) {
-    if (address !== "0x0") {
-        updateCurrentAccountStatus(address, null, true, pAddress);
+    if (typeof address !== "undefined") {
+        if (address !== "0x0") {
+            updateCurrentAccountStatus(address, null, true, pAddress);
+        }
+        
+        document.getElementById('AccountAddress').innerText = address;
+    } else {
+        if (DappObject.selectedAddress && DappObject.selectedAddress.startsWith("0x")) {
+            document.getElementById('AccountAddress').innerText = DappObject.selectedAddress;
+        }
     }
-
-    document.getElementById('AccountAddress').innerText = address;
 }
 
 // Function to remove by id or class name.

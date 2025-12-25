@@ -209,10 +209,27 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
 
     DappObject.isAccountConnected = false;
 
+    // Fast loading.
+
     updateCurrentAccountStatus("", DappObject.selectedNetworkIndex, false);
 
-    if (typeof addressIndex === "undefined" || addressIndex === "") {
-        document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+    if (pageIndex === 0) {
+        DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
+
+        // showAccountAddress(PassedEthAddr);
+
+        showBalance(undefined, DappObject.wrapBool);
+        showTokenBalance(undefined, DappObject.wrapBool);
+    } else if (pageIndex === 1) {
+        // showAccountAddress(PassedEthAddr);
+    } else if (pageIndex === 2) {
+        // showAccountAddress(PassedEthAddr);
+        showFdRewards('<i class="fa fa-spinner fa-spin"></i>');
+        showClaimRewards('<i class="fa fa-spinner fa-spin"></i>');
+        showTokenBalance(undefined);
+        showConnectedAccountAddress(PassedEthAddr);
     }
     
     let web32 = new Web3(rpcUrl);
@@ -458,7 +475,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             flrPublicKey = PassedPublicKey;
 
             if (HandleClick) {
-                document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
+                document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
             }
 
             await setCurrentAppState("Connected");
@@ -470,243 +487,253 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             DappObject.isAccountConnected = true;
         }
 
-        if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
-            DappObject.isHandlingOperation = false;
-        } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex !== -1) {
-            DappObject.selectedAddress = account;
+        if (!flrPublicKey) {
+            flrPublicKey = DappObject.publicKey;
+        }
 
-            let prefixedPchainAddress;
-
-            let PchainBalanceBigInt = BigInt(0);
-
-            if (GetNetworkName(rpcUrl) === "flare") {
-                const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
-
-                const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
-
-                const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
-
-                const CchainAddr = ethers.utils.getAddress(ethAddressString);
-
-                const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-
-                DappObject.unPrefixedAddr = PchainAddr;
-
+        if (flrPublicKey) {
+            if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
+                DappObject.isHandlingOperation = false;
+            } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex !== -1) {
                 DappObject.selectedAddress = account;
 
-                DappObject.publicKey = flrPublicKey;
-                    
-                const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
+                let prefixedPchainAddress;
 
-                if (addressPchain !== "0x0000000000000000000000000000000000000000") {
+                let PchainBalanceBigInt = BigInt(0);
 
-                    prefixedPchainAddress = "P-" + PchainAddr;
+                if (GetNetworkName(rpcUrl) === "flare") {
+                    const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
 
-                    const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+                    const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
 
-                    PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+                    const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
+
+                    const CchainAddr = ethers.utils.getAddress(ethAddressString);
+
+                    const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+
+                    DappObject.unPrefixedAddr = PchainAddr;
+
+                    DappObject.selectedAddress = account;
+
+                    DappObject.publicKey = flrPublicKey;
+                        
+                    const addressPchain = await AddressBinderContract.methods.cAddressToPAddress(CchainAddr).call();
+
+                    if (addressPchain !== "0x0000000000000000000000000000000000000000") {
+
+                        prefixedPchainAddress = "P-" + PchainAddr;
+
+                        const PchainBalanceObject = await getPchainBalanceOf(prefixedPchainAddress);
+
+                        PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
+                    }
+
+                    updateCurrentAccountStatus(DappObject.selectedAddress, 1, true, undefined, prefixedPchainAddress);
+                } else if (GetNetworkName(rpcUrl) === "songbird") {
+                    updateCurrentAccountStatus(DappObject.selectedAddress, 2, true, undefined);
                 }
 
-                updateCurrentAccountStatus(DappObject.selectedAddress, 1, true, undefined, prefixedPchainAddress);
-            } else if (GetNetworkName(rpcUrl) === "songbird") {
-                updateCurrentAccountStatus(DappObject.selectedAddress, 2, true, undefined);
-            }
+                const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
+                let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+                const balance = await web32.eth.getBalance(account);
+                const tokenBalance = await tokenContract.methods.balanceOf(account).call();
 
-            const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
-            let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-            const balance = await web32.eth.getBalance(account);
-            const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+                updateCurrentBalancesStatus(web32.utils.fromWei(balance, "ether"), web32.utils.fromWei(tokenBalance, "ether"), web32.utils.fromWei(PchainBalanceBigInt, "gwei"));
 
-            updateCurrentBalancesStatus(web32.utils.fromWei(balance, "ether"), web32.utils.fromWei(tokenBalance, "ether"), web32.utils.fromWei(PchainBalanceBigInt, "gwei"));
-
-            try {
-                if (pageIndex === 0) {
-                    showAccountAddress(account, prefixedPchainAddress);
-                    DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
-    
-                    if (DappObject.wrapBool === true) {
-                        showBalance(round(web32.utils.fromWei(balance, "ether")));
-                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                    } else {
-                        showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
-                    }
-
-                    await setCurrentPopup(dappStrings['dapp_mabel_wrap1'], true);
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup(dappStrings['dapp_mabel_wrap2'], true);
-                    }, 15000);
-                } else if (pageIndex === 1) {
-                    let delegatedIcon1 = document.getElementById("delegatedIcon1");
-                    delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
-    
-                    await isDelegateInput1(DappObject);
-    
-                    await populateFtsos(rpcUrl, flrAddr);
-
-                    await setCurrentPopup(dappStrings['dapp_mabel_delegate1'], true);
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup(dappStrings['dapp_mabel_delegate2'], true);
-                    }, 15000);
-    
-                    try {
+                try {
+                    if (pageIndex === 0) {
                         showAccountAddress(account, prefixedPchainAddress);
-                        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-                    } catch (error) {
-                        throw error;
-                    }
-                } else if (pageIndex === 2) {
-                    var networkSelectBox = document.getElementById('SelectedNetwork');
-
-                    let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
-
-                    let oldRewardManagerAddr;
-
-                    let rewardManagerContract;
-
-                    let rewardManagerAddrArray = [rewardManagerAddr];
-
-                    let rewardManagerContractArray = [];
-
-                    for (let i = 0; i < rewardManagerAddrArray.length; i++) {
-                        try {
-                            rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
-
-                            rewardManagerContractArray[i] = rewardManagerContract;
-
-                            oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
-
-                            if (oldRewardManagerAddr !== "0x0000000000000000000000000000000000000000") {
-                                rewardManagerAddrArray[i + 1] = oldRewardManagerAddr;
-                            }
-                        } catch (error) {
-                            // console.log(error);
-                        }
-                    }
-    
-                    try {
-                        const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
-                        const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
-
-                        const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
-                        let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
-                        let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
-                        let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
-    
-                        showAccountAddress(account, prefixedPchainAddress);
-                        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                        showFdRewards(0);
-                        showClaimRewards(0);
-                        showConnectedAccountAddress(account);
-    
-                        // Changing the color of Claim button.
-                        if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
-                            switchClaimButtonColor();
-                            
-                            DappObject.claimBool = true;
+        
+                        if (DappObject.wrapBool === true) {
+                            showBalance(round(web32.utils.fromWei(balance, "ether")));
+                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
                         } else {
-                            switchClaimButtonColorBack();
-    
-                            DappObject.claimBool = false;
-                        }
-    
-                        if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
-                            switchClaimFdButtonColor();
-                            
-                            DappObject.fdClaimBool = true;
-                        } else {
-                            switchClaimFdButtonColorBack();
-    
-                            DappObject.fdClaimBool = false;
-                        }
-    
-                        remove(".wrap-box-ftso");
-    
-                        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-    
-                        // Getting the unclaimed Rewards and affecting the Claim button.
-                        const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-                        let unclaimedAmount = BigInt(0);
-                        let unclaimedAmountv2;
-                        let l;
-
-                        let network = GetNetworkName(rpcUrl);
-
-                        unclaimedAmount += await getV1Rewards(epochsUnclaimed, network, account, ftsoRewardContract, l);
-
-                        if (unclaimedAmount > BigInt(0)) {
-                            DappObject.hasV1Rewards = true;
-                        } else {
-                            DappObject.hasV1Rewards = false;
+                            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
                         }
 
-                        if (rewardsOverrideConfig[network].V2Check === true && rewardManagerContractArray?.length) {
-                            unclaimedAmount += await getV2Rewards(unclaimedAmountv2, network, account, DappObject, flareSystemsManagerContract, rewardManagerContractArray);
-                        } else {
-                            DappObject.hasV2Rewards = false;
-
-                            DappObject.hasFtsoRewards = false;
-                        }
-                        
-                        const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
-                        
-                        // Changing the color of Claim button.
-                        showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
-    
-                        if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
-                            let claimableAmountFd = BigInt(0);
-
-                            claimableAmountFd += await getFlareDropRewards(account, DistributionDelegatorsContract);
-                            
-                            const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
-    
-                            // Changing the color of FlareDrop Claim button.
-                            showFdRewards(convertedRewardsFd[0] + "." + convertedRewardsFd[1].slice(0, 2));
-    
-                            if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
-                                switchClaimFdButtonColor();
-    
-                                DappObject.fdClaimBool = true;
-                            } else {
-                                switchClaimFdButtonColorBack();
-    
-                                DappObject.fdClaimBool = false;
-                            }
-                        }
-    
-                        if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
-                            switchClaimButtonColor();
-    
-                            DappObject.claimBool = true;
-                        } else {
-                            showClaimRewards(0);
-                            switchClaimButtonColorBack();
-    
-                            DappObject.claimBool = false;
-                        }
-
-                        await setCurrentPopup(dappStrings['dapp_mabel_claim1'], true);
+                        await setCurrentPopup(dappStrings['dapp_mabel_wrap1'], true);
 
                         clearTimeout(DappObject.latestPopupTimeoutId);
 
                         DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                            await setCurrentPopup(dappStrings['dapp_mabel_claim2'], true);
+                            await setCurrentPopup(dappStrings['dapp_mabel_wrap2'], true);
                         }, 15000);
-                    } catch (error) {
-                        // console.log(error);
-                    }
-                }
+                    } else if (pageIndex === 1) {
+                        let delegatedIcon1 = document.getElementById("delegatedIcon1");
+                        delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+        
+                        await isDelegateInput1(DappObject);
+        
+                        await populateFtsos(rpcUrl, flrAddr);
 
-                DappObject.isHandlingOperation = false;
-            } catch (error) {
-                throw error
+                        await setCurrentPopup(dappStrings['dapp_mabel_delegate1'], true);
+
+                        clearTimeout(DappObject.latestPopupTimeoutId);
+
+                        DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                            await setCurrentPopup(dappStrings['dapp_mabel_delegate2'], true);
+                        }, 15000);
+        
+                        try {
+                            showAccountAddress(account, prefixedPchainAddress);
+                            await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+                        } catch (error) {
+                            throw error;
+                        }
+                    } else if (pageIndex === 2) {
+                        var networkSelectBox = document.getElementById('SelectedNetwork');
+
+                        let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
+
+                        let oldRewardManagerAddr;
+
+                        let rewardManagerContract;
+
+                        let rewardManagerAddrArray = [rewardManagerAddr];
+
+                        let rewardManagerContractArray = [];
+
+                        for (let i = 0; i < rewardManagerAddrArray.length; i++) {
+                            try {
+                                rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
+
+                                rewardManagerContractArray[i] = rewardManagerContract;
+
+                                oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
+
+                                if (oldRewardManagerAddr !== "0x0000000000000000000000000000000000000000") {
+                                    rewardManagerAddrArray[i + 1] = oldRewardManagerAddr;
+                                }
+                            } catch (error) {
+                                // console.log(error);
+                            }
+                        }
+        
+                        try {
+                            const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
+                            const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
+
+                            const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
+                            let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
+                            let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
+                            let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
+        
+                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                            showConnectedAccountAddress(account);
+        
+                            // Changing the color of Claim button.
+                            if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+                                switchClaimButtonColor();
+                                
+                                DappObject.claimBool = true;
+                            } else {
+                                switchClaimButtonColorBack();
+        
+                                DappObject.claimBool = false;
+                            }
+        
+                            if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
+                                switchClaimFdButtonColor();
+                                
+                                DappObject.fdClaimBool = true;
+                            } else {
+                                switchClaimFdButtonColorBack();
+        
+                                DappObject.fdClaimBool = false;
+                            }
+        
+                            remove(".wrap-box-ftso");
+        
+                            await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+
+                            showAccountAddress(account, prefixedPchainAddress);
+        
+                            // Getting the unclaimed Rewards and affecting the Claim button.
+                            const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
+                            let unclaimedAmount = BigInt(0);
+                            let unclaimedAmountv2;
+                            let l;
+
+                            let network = GetNetworkName(rpcUrl);
+
+                            unclaimedAmount += await getV1Rewards(epochsUnclaimed, network, account, ftsoRewardContract, l);
+
+                            if (unclaimedAmount > BigInt(0)) {
+                                DappObject.hasV1Rewards = true;
+                            } else {
+                                DappObject.hasV1Rewards = false;
+                            }
+
+                            if (rewardsOverrideConfig[network].V2Check === true && rewardManagerContractArray?.length) {
+                                unclaimedAmount += await getV2Rewards(unclaimedAmountv2, network, account, DappObject, flareSystemsManagerContract, rewardManagerContractArray);
+                            } else {
+                                DappObject.hasV2Rewards = false;
+
+                                DappObject.hasFtsoRewards = false;
+                            }
+                            
+                            const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
+                            
+                            // Changing the color of Claim button.
+                            showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
+        
+                            if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
+                                let claimableAmountFd = BigInt(0);
+
+                                claimableAmountFd += await getFlareDropRewards(account, DistributionDelegatorsContract);
+                                
+                                const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
+        
+                                // Changing the color of FlareDrop Claim button.
+                                showFdRewards(convertedRewardsFd[0] + "." + convertedRewardsFd[1].slice(0, 2));
+        
+                                if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
+                                    switchClaimFdButtonColor();
+        
+                                    DappObject.fdClaimBool = true;
+                                } else {
+                                    switchClaimFdButtonColorBack();
+        
+                                    DappObject.fdClaimBool = false;
+                                }
+                            } else {
+                                showFdRewards(0);
+                            }
+        
+                            if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
+                                switchClaimButtonColor();
+        
+                                DappObject.claimBool = true;
+                            } else {
+                                showClaimRewards(0);
+                                switchClaimButtonColorBack();
+        
+                                DappObject.claimBool = false;
+                            }
+
+                            await setCurrentPopup(dappStrings['dapp_mabel_claim1'], true);
+
+                            clearTimeout(DappObject.latestPopupTimeoutId);
+
+                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                                await setCurrentPopup(dappStrings['dapp_mabel_claim2'], true);
+                            }, 15000);
+                        } catch (error) {
+                            // console.log(error);
+                        }
+                    }
+
+                    DappObject.isHandlingOperation = false;
+                } catch (error) {
+                    throw error
+                }
             }
+        } else {
+            document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+
+            DappObject.isHandlingOperation = false;
         }
     } catch (error) {
         // console.log(error);

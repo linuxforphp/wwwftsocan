@@ -21,14 +21,24 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
     DappObject.isAccountConnected = false;
 
+    // Fast loading.
+
     updateCurrentAccountStatus("", DappObject.selectedNetworkIndex, false);
 
     // console.log("PassedPublicKey:");
     // console.log(PassedPublicKey);
     // console.log(!PassedPublicKey);
 
-    if (!PassedPublicKey) {
-        document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+    document.getElementById("ConnectWalletText").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+    if (dappStakingOption === 1) {
+        // showAccountAddress(PassedEthAddr);
+        showBalance(undefined, DappObject.transferBool, true);
+        showPchainBalance(undefined, DappObject.transferBool);
+    } else if (dappStakingOption === 2) {
+        // showAccountAddress(PassedEthAddr);
+    } else if (dappStakingOption === 3) {
+        // showConnectedAccountAddress(PassedEthAddr);
     }
 
     let rpcUrl = "https://sbi.flr.ftsocan.com/ext/C/rpc";
@@ -263,16 +273,16 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
             DappObject.isAccountConnected = true;
         }
 
-        // console.log(flrPublicKey);
+        if (!flrPublicKey) {
+            flrPublicKey = DappObject.publicKey;
+        }
 
         if (flrPublicKey) {
             const addressBinderAddr = await GetContract("AddressBinder", rpcUrl, flrAddr);
 
             const AddressBinderContract = new web32.eth.Contract(DappObject.addressBinderAbiLocal, addressBinderAddr);
 
-            const ethAddressString = await publicKeyToEthereumAddressString(flrPublicKey);
-
-            const CchainAddr = ethers.utils.getAddress(ethAddressString);
+            const CchainAddr = ethers.utils.getAddress(DappObject.selectedAddress);
 
             const PchainAddr = await publicKeyToBech32AddressString(flrPublicKey, "flare");
 
@@ -294,15 +304,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
                 const PchainBalanceBigInt = BigInt(PchainBalanceObject.balance);
 
-                let addressBox = document.querySelector("span.title.connect-wallet-text");
-
                 updateCurrentAccountStatus(DappObject.selectedAddress, 1, true, undefined, prefixedPchainAddress);
-
-                if (DappObject.walletIndex === 1) {          
-                    addressBox.innerText = prefixedPchainAddress;
-                } else {
-                    showAccountAddress(prefixedPchainAddress, account);
-                }
 
                 const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
                 let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
@@ -312,6 +314,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                 updateCurrentBalancesStatus(web32.utils.fromWei(balance, "ether"), web32.utils.fromWei(tokenBalance, "ether"), web32.utils.fromWei(PchainBalanceBigInt, "gwei"));
 
                 if (dappStakingOption === 1) {
+                    showAccountAddress(prefixedPchainAddress, account);
+
                     if (DappObject.transferBool === true) {
                         showBalance(round(web32.utils.fromWei(balance, "ether")));
 
@@ -340,6 +344,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                     } catch (error) {
                         // console.log(error);
                     }
+
+                    showAccountAddress(prefixedPchainAddress, account);
 
                     await setCurrentPopup(dappStrings['dapp_mabel_stake1'], true);
 
@@ -395,6 +401,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
                         DappObject.claimBool = false;
                     }
+
+                    showAccountAddress(prefixedPchainAddress, account);
 
                     await setCurrentPopup(dappStrings['dapp_mabel_claimstake1'], true);
 
@@ -538,8 +546,16 @@ export async function RefreshStakingPage(DappObject, stakingOption) {
     ConnectPChainClickStake(DappObject);
 }
 
-export async function showPchainBalance(Pchainbalance) {
-    document.getElementById("TokenBalance").innerText = Pchainbalance;
+export async function showPchainBalance(tokenBalanceAddress, wrapBool = true) {
+    if (tokenBalanceAddress) {
+        document.getElementById("TokenBalance").innerText = tokenBalanceAddress;
+    } else {
+        if (wrapBool === true) {
+            document.getElementById("TokenBalance").innerText = document.getElementById("pBalanceInfo").innerText;
+        } else {
+            document.getElementById("TokenBalance").innerText = document.getElementById("balanceInfo").innerText;
+        }
+    }
 }
 
 export async function toggleTransferButton(DappObject, stakingOption) {

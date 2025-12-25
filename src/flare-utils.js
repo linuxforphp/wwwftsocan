@@ -183,22 +183,48 @@ export function updateCurrentAccountStatus(address, networkIndex, isAccountConne
 
 // Show user's account address.
 export function showAccountAddress(address, pAddress) {
-    if (address.startsWith("0x")) {
-        updateCurrentAccountStatus(address, null, true, undefined, pAddress);
-    } else {
-        updateCurrentAccountStatus(pAddress, null, true, undefined, address);
-    }
+    if (typeof address !== "undefined") {
+        if (address.startsWith("0x")) {
+            updateCurrentAccountStatus(address, null, true, undefined, pAddress);
+        } else {
+            updateCurrentAccountStatus(pAddress, null, true, undefined, address);
+        }
 
-    document.getElementById('ConnectWalletText').innerText = address;
+        document.getElementById('ConnectWalletText').innerText = address;
+    } else {
+        if (DappObject.selectedAddress && DappObject.selectedAddress.startsWith("0x")) {
+            document.getElementById('ConnectWalletText').innerText = DappObject.selectedAddress;
+        }
+    }
 }
 
 //Functions to show the requested info
-export function showBalance(balanceAddress) {
-    document.getElementById("Balance").innerText = balanceAddress;
+export function showBalance(balanceAddress, wrapBool = true, staking = false) {
+    if (balanceAddress) {
+        document.getElementById("Balance").innerText = balanceAddress;
+    } else {
+        if (wrapBool === true) {
+            document.getElementById("Balance").innerText = document.getElementById("balanceInfo").innerText;
+        } else {
+            if (staking === true) {
+                document.getElementById("Balance").innerText = document.getElementById("pBalanceInfo").innerText;
+            } else {
+                document.getElementById("Balance").innerText = document.getElementById("wnatInfo").innerText;
+            }
+        }
+    }
 }
 
-export function showTokenBalance(tokenBalanceAddress) {
-    document.getElementById("TokenBalance").innerText = tokenBalanceAddress;
+export function showTokenBalance(tokenBalanceAddress, wrapBool = true) {
+    if (tokenBalanceAddress) {
+        document.getElementById("TokenBalance").innerText = tokenBalanceAddress;
+    } else {
+        if (wrapBool === true) {
+            document.getElementById("TokenBalance").innerText = document.getElementById("wnatInfo").innerText;
+        } else {
+            document.getElementById("TokenBalance").innerText = document.getElementById("balanceInfo").innerText;
+        }
+    }
 }
 
 // Is value a number?
