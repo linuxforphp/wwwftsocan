@@ -838,7 +838,6 @@ h1, h2 {
 
     body {
         overflow-y: auto;
-        padding: 9.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
@@ -873,8 +872,33 @@ h1, h2 {
     }
 
     .dapp-container {
-        padding: 30px 24px 25px !important;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+        margin-top: 6.5em !important;
         width: 100%;
+        max-height: 700px;
+    }
+
+    .scroller {
+        width: 100%;
+        padding: 20px 5px 15px;
+        max-height: 560px;
+    }
+
+    .account-btn {
+        left: 0;
+        width: 100%;
+        bottom: 0;
+        border-radius: 0;
+        position: sticky;
+    }
+
+    .clicked {
+        border-radius: 50px 50px 0 0;
+    }
+
+    #navigation.animated-header {
+        padding: 10px 0 !important;
     }
 
     .addr-wrap .selectize-input {
@@ -926,8 +950,13 @@ h1, h2 {
     }
 
     .current-wallet {
+        display: none;
         font-size: 13px;
         left: 72%;
+    }
+
+    .current-wallet.cta {
+        display: block;
     }
 
     .current-wallet-popup {
@@ -940,10 +969,13 @@ h1, h2 {
 
     body {
         overflow-y: auto;
-        padding: 9.5em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
+    }
+
+    #navigation.animated-header {
+        padding: 0 !important;
     }
 
     .dd-menu {
@@ -975,8 +1007,19 @@ h1, h2 {
     }
 
     .dapp-container {
-        padding: 30px 24px 25px !important;
-        width: auto;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+        margin-top: 5.5em !important;
+        max-height: 260px;
+        width: max(50%, 700px);
+    }
+
+    .scroller {
+        max-height: 250px;
+    }
+
+    .account-btn {
+        display: none;
     }
 
     .addr-wrap .selectize-input {
@@ -1045,7 +1088,6 @@ h1, h2 {
 @media (min-width: 768px) and (max-width: 979px) {
 
     body {
-        padding: 15em 0 0 0 !important;
         background-repeat: no-repeat;
         background-position-x: left 50%;
         background-position-y: bottom 100%;
@@ -1061,7 +1103,9 @@ h1, h2 {
     }
 
     .dapp-container {
-        padding: 30px 24px 25px;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+        margin-top: 15em !important;
         width: 90%;
     }
 

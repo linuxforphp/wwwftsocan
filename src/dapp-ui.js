@@ -508,12 +508,12 @@ export async function togglePopup(event) {
         return;
     }
 
-    document.getElementById("currentWalletPopup").classList.toggle("showing");
+    document.getElementById("currentWalletPopup")?.classList.toggle("showing");
 }
 
 
 export async function setCurrentPopup(message, open) {
-    document.getElementById("currentWalletPopup").classList.remove("showing");
+    document.getElementById("currentWalletPopup")?.classList.remove("showing");
 
     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -521,7 +521,7 @@ export async function setCurrentPopup(message, open) {
         if ((navigator.maxTouchPoints & 0xFF) === 0) {
             await wait(1000);
 
-            document.getElementById("currentWalletPopup").classList.add("showing");
+            document.getElementById("currentWalletPopup")?.classList.add("showing");
         }
     }
 
@@ -529,7 +529,7 @@ export async function setCurrentPopup(message, open) {
 }
 
 export function closeCurrentPopup() {
-    document.getElementById("currentWalletPopup").classList.remove("showing");
+    document.getElementById("currentWalletPopup")?.classList.remove("showing");
 }
 
 export async function setupLedgerOption() {

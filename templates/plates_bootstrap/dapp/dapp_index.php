@@ -21,7 +21,7 @@
         </div>
         <div id="accountStatus" class="account-btn">
             <div class="row" style="padding: 0 15px;">
-                <div class="col-md-3">
+                <div class="col-sm-3">
                     <div id="currentWalletLogoBg" class="current-wallet cta paused">
                         <div id="currentWalletIcon" class="current-wallet-icon">
                             <div class="current-wallet-icon-border"></div>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6" style="height: 50px;">
+                <div class="col-sm-6" style="height: 50px;">
                     <div id="currentAccount" class="cta ctaC">
                         0x0000...0000
                     </div>
@@ -60,7 +60,7 @@
                         P-00000000...0000
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-sm-3">
                     <div id="currentNetworkLogo" class="wallet-icon cta network-icon" style="mix-blend-mode: normal; filter: none; padding: 0 5px;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 383.66 538.51" fill="currentColor" style="color: #aaaaaa !important; width: 35px; height: 45px;">
                             <g id="layer1-2" transform="matrix(1.7,0,0,1.7,-0,120)"><path inkscape:connector-curvature="0" d="M 1.54,44.88 C 1.54,44.88 0,44.043066 0,43.309998 0,29.293727 13.305791,-2.1604174e-7 44.83,-2.1604171e-7 c 7.083657,1e-14 178,0 178,0 0,0 1.54998,0.83699994604171 1.54,1.57000021604171 -0.28292,20.783154 -17.20265,43.31 -44.86,43.31 -7.19693,0 -177.97,0 -177.97,0 z" id="path5842" /><path inkscape:connector-curvature="0" d="M -2.8370967e-7,133.36 C -0.01006008,134.093 1.5399997,134.93 1.5399997,134.93 c 0,0 73.8666673,0 110.8000003,0 25.5862,0 44.57708,-22.52684 44.86,-43.309998 0.01,-0.733001 -1.54,-1.570002 -1.54,-1.570002 0,0 -96.641983,0 -110.78,0 -25.4532,0 -44.5947035,22.52208 -44.88000028370967,43.31 z" id="path5840" /><path d="M 45.068739,202.56174 A 22.648399,22.301296 0 0 1 22.42034,224.86303 22.648399,22.301296 0 0 1 -0.22805977,202.56174 22.648399,22.301296 0 0 1 22.42034,180.26044 a 22.648399,22.301296 0 0 1 22.648399,22.3013 z" id="path5799" /></g>
