@@ -71,6 +71,12 @@ window.DappObject = {
     StakeMinDate: "",
 }
 
+window.cachedValues = {
+    balance: "",
+    tokenBalance: "",
+    pBalance: "",
+}
+
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -395,6 +401,8 @@ window.dappInit = async (option, stakingOption) => {
     }
 
     if (option === 1 || option === '1') {
+        // WRAP PAGE
+
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let chainidhex;
         let rpcUrl;
@@ -406,6 +414,12 @@ window.dappInit = async (option, stakingOption) => {
         var toIcon = document.getElementById("ToIcon");
         document.getElementById("layer2").innerHTML = DappObject.flrLogo;
         document.getElementById("layer3").innerHTML = DappObject.flrLogo;
+
+        let balanceElement = document.getElementById("Balance");
+        let tokenBalanceElement = document.getElementById("TokenBalance");
+
+        new Odometer({el: balanceElement, value: 0});
+        new Odometer({el: tokenBalanceElement, value: 0});
 
         await createSelectedNetwork(DappObject).then( async () => {
             getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
@@ -552,6 +566,8 @@ window.dappInit = async (option, stakingOption) => {
             });
         });
     } else if (option === 2 || option === '2') {
+        // DELEGATE PAGE
+
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let rpcUrl;
         let chainidhex;
@@ -720,6 +736,11 @@ window.dappInit = async (option, stakingOption) => {
             });
         });
     } else if (option === 3 || option === '3') {
+        // REWARDS PAGE
+        let tokenBalanceElement = document.getElementById("TokenBalance");
+
+        new Odometer({el: tokenBalanceElement, value: 0});
+
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let chainidhex;
         let rpcUrl;
@@ -901,6 +922,8 @@ window.dappInit = async (option, stakingOption) => {
         var handleClick;
 
         if (typeof stakingOption === 'undefined') {
+            // SELECT WALLET PAGE
+
             try {
                 // Network is Flare by default.
                 DappObject.selectedNetworkIndex = 1;
@@ -993,7 +1016,8 @@ window.dappInit = async (option, stakingOption) => {
 
             // await setCurrentPopup(dappStrings['dapp_mabel_metamask'], true);
         } else if (stakingOption === 5) {
-            //Ledger
+            // LEDGER PAGE
+
             DappObject.isAccountConnected = true;
 
             await setCurrentAppState("Null");
@@ -1058,6 +1082,13 @@ window.dappInit = async (option, stakingOption) => {
                 getDappPage(4);
             });
         } else if (stakingOption === 1) {
+            // TRANSFER PAGE
+            let balanceElement = document.getElementById("Balance");
+            let tokenBalanceElement = document.getElementById("TokenBalance");
+
+            new Odometer({el: balanceElement, value: 0,});
+            new Odometer({el: tokenBalanceElement, value: 0});
+
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
@@ -1085,6 +1116,7 @@ window.dappInit = async (option, stakingOption) => {
                 transferTokens(DappObject, stakingOption);
             });
         } else if (stakingOption === 2) {
+            // STAKE PAGE
 
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
@@ -1102,6 +1134,11 @@ window.dappInit = async (option, stakingOption) => {
                 }
             });
         } else if (stakingOption === 3) {
+            // STAKE REWARDS PAGE
+            let tokenBalanceElement = document.getElementById("TokenBalance");
+
+            new Odometer({el: tokenBalanceElement, value: 0});
+
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });

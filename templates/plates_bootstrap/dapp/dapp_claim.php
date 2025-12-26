@@ -43,7 +43,7 @@
                             <span id="wrappedTokenIdentifier"></span>
                         </div>
                         <div class="wrapper">
-                                <span id="TokenBalance" class="token-balance-claim">0.0</span>
+                                <span id="TokenBalance" class="token-balance-claim odometer">0.0</span>
                         </div>
                     </div>
                     <div class="row">

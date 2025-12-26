@@ -70,9 +70,28 @@
             </div>
             <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text" id="ConnectWalletText">View in Explorer</i></button>
             <ul class="balances">
-                <li id="balanceInfoText">Balance<span id="balanceInfo">0.00</span></li>
-                <li id="wnatInfoText">WNat<span id="wnatInfo">0.00</span></li>
-                <li id="pBalanceInfoText">P-Balance<span id="pBalanceInfo">0.00</span></li>
+                <div class="col-md-6">
+                    <div class="row">
+                        <li id="balanceInfoText">Balance</li>
+                    </div>
+                    <div class="row">
+                        <li id="wnatInfoText">WNat</li>
+                    </div>
+                    <div class="row">
+                        <li id="pBalanceInfoText">P-Balance</li>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <li id="balanceInfo" class="odometer">0.00</li>
+                    </div>
+                    <div class="row">
+                        <li id="wnatInfo" class="odometer">0.00</li>
+                    </div>
+                    <div class="row">
+                        <li id="pBalanceInfo" class="odometer">0.00</li>
+                    </div>
+                </div>
             </ul>
         </div>
         <div id="currentWallet" class="current-wallet paused">

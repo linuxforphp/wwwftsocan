@@ -10,7 +10,6 @@
 body {
     overflow-x: hidden;
     overflow-y: hidden;
-    padding-top: 12.7em;
     font-family: 'Poppins', sans-serif;
     background-color: #891511 !important;
     background-image: url("../img/Flare-Network-Red.png") !important;
@@ -86,6 +85,7 @@ h1, h2 {
     display: inline-block;
     margin-top: -15px;
     padding: 5px 12px 10px 5px;
+    margin-top: 11.5em;
     border-radius: 25px;
     width: max(50%, 675px);
     min-height: auto;
@@ -462,7 +462,7 @@ h1, h2 {
     font-size: inherit;
     cursor: pointer;
     transition: 2s;
-	position: sticky;
+	position: absolute;
 	bottom: 3%;
 	left: 30px;
     background-color: #fff;
@@ -572,10 +572,6 @@ h1, h2 {
     list-style-type: none;
     margin: 30px auto 0 auto;
 }
-    
-.account-btn .balances span {
-      float: right;
-}
 
 .account-btn .balances li {
     color: #aaa;
@@ -661,8 +657,8 @@ h1, h2 {
     cursor: pointer;
     transition: 2s;
     border-radius: 50%;
-	position: sticky;
-	bottom: 8%;
+	position: absolute;
+	bottom: 5%;
 	left: 85%;
 	height: 80px; 
 	width: 80px;

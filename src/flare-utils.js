@@ -72,30 +72,42 @@ export function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
     if (typeof balance !== 'undefined') {
         document.getElementById('balanceInfo').innerText = String(round(balance));
 
+        cachedValues.balance = String(round(balance));
+
         if (round(balance) > 0) {
             document.getElementById('balanceInfoText').style.color = "#fd000f";
+            document.getElementById('balanceInfo').style.color = "#fd000f";
         } else {
             document.getElementById('balanceInfoText').style.color = "#aaaaaa";
+            document.getElementById('balanceInfo').style.color = "#aaaaaa";
         }
     }
 
     if (typeof tokenBalance !== 'undefined') {
         document.getElementById('wnatInfo').innerText = String(round(tokenBalance));
 
+        cachedValues.tokenBalance = String(round(tokenBalance));
+
         if (round(tokenBalance) > 0) {
             document.getElementById('wnatInfoText').style.color = "#383a3b";
+            document.getElementById('wnatInfo').style.color = "#383a3b";
         } else {
             document.getElementById('wnatInfoText').style.color = "#aaaaaa";
+            document.getElementById('wnatInfo').style.color = "#aaaaaa";
         }
     }
 
     if (typeof pBalance !== 'undefined') {
         document.getElementById('pBalanceInfo').innerText = String(round(pBalance));
 
+        cachedValues.pBalance = String(round(pBalance));
+
         if (round(pBalance) > 0) {
             document.getElementById('pBalanceInfoText').style.color = "#383a3b";
+            document.getElementById('pBalanceInfo').style.color = "#383a3b";
         } else {
             document.getElementById('pBalanceInfoText').style.color = "#aaaaaa";
+            document.getElementById('pBalanceInfo').style.color = "#aaaaaa";
         }
     }
 }
@@ -204,12 +216,12 @@ export function showBalance(balanceAddress, wrapBool = true, staking = false) {
         document.getElementById("Balance").innerText = balanceAddress;
     } else {
         if (wrapBool === true) {
-            document.getElementById("Balance").innerText = document.getElementById("balanceInfo").innerText;
+            document.getElementById("Balance").innerText = cachedValues.balance;
         } else {
             if (staking === true) {
-                document.getElementById("Balance").innerText = document.getElementById("pBalanceInfo").innerText;
+                document.getElementById("Balance").innerText = cachedValues.pBalance;
             } else {
-                document.getElementById("Balance").innerText = document.getElementById("wnatInfo").innerText;
+                document.getElementById("Balance").innerText = cachedValues.tokenBalance;
             }
         }
     }
@@ -220,9 +232,9 @@ export function showTokenBalance(tokenBalanceAddress, wrapBool = true) {
         document.getElementById("TokenBalance").innerText = tokenBalanceAddress;
     } else {
         if (wrapBool === true) {
-            document.getElementById("TokenBalance").innerText = document.getElementById("wnatInfo").innerText;
+            document.getElementById("TokenBalance").innerText = cachedValues.tokenBalance;
         } else {
-            document.getElementById("TokenBalance").innerText = document.getElementById("balanceInfo").innerText;
+            document.getElementById("TokenBalance").innerText = cachedValues.balance;
         }
     }
 }

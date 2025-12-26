@@ -188,6 +188,9 @@
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui-timepicker-addon.min.js"></script>
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui-timepicker-fr.js"></script>
 
+<!-- Custom counter -->
+<script src="<?=$view['urlbaseaddr'] ?>js/odometer.min.js"></script>
+
 <!-- Custom alert box -->
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-confirm.min.js"></script>
 

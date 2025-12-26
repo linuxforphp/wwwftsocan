@@ -218,8 +218,6 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
     if (pageIndex === 0) {
         DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
 
-        // showAccountAddress(PassedEthAddr);
-
         showBalance(undefined, DappObject.wrapBool);
         showTokenBalance(undefined, DappObject.wrapBool);
     } else if (pageIndex === 1) {

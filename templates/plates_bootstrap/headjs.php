@@ -17,8 +17,6 @@
     <meta name="color-scheme" content="light"/>
     <!-- Theme color for light mode -->
     <meta name="theme-color" content="#d2200f" media="(prefers-color-scheme: light)">
-    <!-- Theme color for dark mode -->
-    <meta name="theme-color" content="#d2200f" media="(prefers-color-scheme: dark)">
 
     <title><?=$view['title'] ?></title>
 
@@ -46,6 +44,7 @@
     <!-- slit-slider.css -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/slit-slider.css">
     <!-- animate.css -->
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/odometer-theme-minimal.css">
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">

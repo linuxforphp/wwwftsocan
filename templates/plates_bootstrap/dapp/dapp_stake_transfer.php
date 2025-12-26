@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="wrapper-wrap">
                     <span><?=_("dapp_balance")?>:</span>
-                    <span id="Balance">0</span>
+                    <span id="Balance" class="odometer">0</span>
                 </div>
             </div>
         </span>
@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="wrapper-wrap">
                     <span><?=_("dapp_balance")?>:</span>
-                    <span id="TokenBalance">0</span>
+                    <span id="TokenBalance" class="odometer">0</span>
                 </div>
             </div>
         </span>

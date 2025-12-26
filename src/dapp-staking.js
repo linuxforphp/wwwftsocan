@@ -551,9 +551,9 @@ export async function showPchainBalance(tokenBalanceAddress, wrapBool = true) {
         document.getElementById("TokenBalance").innerText = tokenBalanceAddress;
     } else {
         if (wrapBool === true) {
-            document.getElementById("TokenBalance").innerText = document.getElementById("pBalanceInfo").innerText;
+            document.getElementById("TokenBalance").innerText = cachedValues.pBalance;
         } else {
-            document.getElementById("TokenBalance").innerText = document.getElementById("balanceInfo").innerText;
+            document.getElementById("TokenBalance").innerText = cachedValues.balance;
         }
     }
 }

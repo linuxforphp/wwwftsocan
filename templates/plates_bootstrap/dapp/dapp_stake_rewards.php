@@ -29,7 +29,7 @@
             <div class="row">
                 <span id="ToText" class="text-to">P</span>
                 <div class="wrapper">
-                        <span id="TokenBalance" class="token-balance-claim">0.0</span>
+                        <span id="TokenBalance" class="token-balance-claim odometer">0.0</span>
                 </div>
             </div>
             <div class="row">
