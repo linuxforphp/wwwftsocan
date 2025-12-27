@@ -19,7 +19,27 @@
         <div class="dapp-container">
             <div class="scroller" id="dapp-root"></div>
         </div>
-        <div id="accountStatus" class="account-btn">
+        <div class="bottom-nav account-btn" style="z-index: 1032 !important; background-color: transparent;">
+            <ul style="list-style-type: none; margin-block-start: 0px; margin-block-end: 0px; padding: 2px; display: inline-flex;">
+                <li class="tab-icon">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    <span><?=_("wrap")?></span>
+                </li>
+                <li class="tab-icon">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <span><?=_("delegate")?></span>
+                </li>
+                <li class="tab-icon" style="margin-left: 70px;">
+                    <i class="fa-solid fa-gift"></i>
+                    <span><?=_("rewards")?></span>
+                </li>
+                <li class="tab-icon">
+                    <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                    <span><?=_("stake")?></span>
+                </li>
+            </ul>
+        </div>
+        <div id="centerButton" class="account-btn" style="z-index: 1033 !important; background-color: transparent;">
             <div class="row" style="padding: 0 15px;">
                 <div class="col-sm-3">
                     <div id="currentWalletLogoBg" class="current-wallet cta paused">
@@ -52,7 +72,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6" style="height: 50px;">
+            </div>
+        </div>
+        <div id="accountStatus" class="account-btn">
+            <div class="row top-row" >
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-6 address-row">
                     <div id="currentAccount" class="cta ctaC">
                         0x0000...0000
                     </div>
@@ -222,8 +248,19 @@
     }
 </script>
 <script>
-    $('.account-btn').click(function(){
+    $('#centerButton').click(function(){
         $(this).toggleClass("clicked");
+        $('#accountStatus').toggleClass("clicked");
+    });
+
+    $('#currentWalletLogoBg').click(function(){
+        $('#centerButton').toggleClass("clicked");
+        $('#accountStatus').toggleClass("clicked");
+    });
+
+    $('#currentWalletLogo').click(function(){
+        $('#centerButton').toggleClass("clicked");
+        $('#accountStatus').toggleClass("clicked");
     });
 </script>
 <script src="<?=$view['urlbaseaddr'] ?>js/buffer.min.js"></script>
