@@ -362,6 +362,28 @@ window.dappInit = async (option, stakingOption) => {
 
     document.getElementById("currentWallet")?.addEventListener("click", togglePopup);
 
+    $("#wrapTab").off();
+    $("#delegateTab").off();
+    $("#rewardsTab").off();
+    $("#stakeTab").off();
+
+    if (option == 4 && (stakingOption == undefined || stakingOption == 4 || stakingOption == 5)) {
+        // Do nothing;    
+    } else {
+       $("#wrapTab")?.on("click", function () {
+            getDappPage(1);
+        });
+        $("#delegateTab")?.on("click", function () {
+            getDappPage(2);
+        });
+        $("#rewardsTab")?.on("click", function () {
+            getDappPage(3);
+        });
+        $("#stakeTab")?.on("click", function () {
+            getDappPage(5);
+        });
+    }
+
     clearTimeout(DappObject.latestPopupTimeoutId);
 
     checkConnection();
@@ -402,6 +424,10 @@ window.dappInit = async (option, stakingOption) => {
 
     if (option === 1 || option === '1') {
         // WRAP PAGE
+        document.getElementById("wrapTab")?.classList.add("selected");
+        document.getElementById("delegateTab")?.classList.remove("selected");
+        document.getElementById("rewardsTab")?.classList.remove("selected");
+        document.getElementById("stakeTab")?.classList.remove("selected");
 
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let chainidhex;
@@ -567,6 +593,10 @@ window.dappInit = async (option, stakingOption) => {
         });
     } else if (option === 2 || option === '2') {
         // DELEGATE PAGE
+        document.getElementById("wrapTab")?.classList.remove("selected");
+        document.getElementById("delegateTab")?.classList.add("selected");
+        document.getElementById("rewardsTab")?.classList.remove("selected");
+        document.getElementById("stakeTab")?.classList.remove("selected");
 
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let rpcUrl;
@@ -737,6 +767,11 @@ window.dappInit = async (option, stakingOption) => {
         });
     } else if (option === 3 || option === '3') {
         // REWARDS PAGE
+        document.getElementById("wrapTab")?.classList.remove("selected");
+        document.getElementById("delegateTab")?.classList.remove("selected");
+        document.getElementById("rewardsTab")?.classList.add("selected");
+        document.getElementById("stakeTab")?.classList.remove("selected");
+
         let tokenBalanceElement = document.getElementById("TokenBalance");
 
         new Odometer({el: tokenBalanceElement, value: 0});
@@ -1083,6 +1118,11 @@ window.dappInit = async (option, stakingOption) => {
             });
         } else if (stakingOption === 1) {
             // TRANSFER PAGE
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.add("selected");
+
             let balanceElement = document.getElementById("Balance");
             let tokenBalanceElement = document.getElementById("TokenBalance");
 
@@ -1117,6 +1157,10 @@ window.dappInit = async (option, stakingOption) => {
             });
         } else if (stakingOption === 2) {
             // STAKE PAGE
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.add("selected");
 
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
@@ -1135,6 +1179,11 @@ window.dappInit = async (option, stakingOption) => {
             });
         } else if (stakingOption === 3) {
             // STAKE REWARDS PAGE
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.add("selected");
+
             let tokenBalanceElement = document.getElementById("TokenBalance");
 
             new Odometer({el: tokenBalanceElement, value: 0});

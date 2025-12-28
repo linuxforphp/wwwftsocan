@@ -19,23 +19,27 @@
         <div class="dapp-container">
             <div class="scroller" id="dapp-root"></div>
         </div>
-        <div class="bottom-nav account-btn" style="z-index: 1032 !important; background-color: transparent;">
-            <ul style="list-style-type: none; margin-block-start: 0px; margin-block-end: 0px; padding: 2px; display: inline-flex;">
-                <li class="tab-icon">
+        <div id="bottomNav" class="bottom-nav account-btn" style="z-index: 1032 !important; background-color: transparent;">
+            <ul style="list-style-type: none; margin-block-start: 0px; margin-block-end: 0px; padding: 2px; display: inline-flex; height: 58px !important; background-color: #fff;">
+                <li class="tab-icon" id="wrapTab">
                     <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                    <span><?=_("wrap")?></span>
+                    <span style="margin-bottom: 10px;"><?=_("wrap")?></span>
                 </li>
-                <li class="tab-icon">
+                <li class="tab-icon" id="delegateTab">
                     <i class="fa-solid fa-hand-holding-dollar"></i>
-                    <span><?=_("delegate")?></span>
-                </li>
-                <li class="tab-icon" style="margin-left: 70px;">
-                    <i class="fa-solid fa-gift"></i>
-                    <span><?=_("rewards")?></span>
+                    <span style="margin-bottom: 10px;"><?=_("delegate")?></span>
                 </li>
                 <li class="tab-icon">
+                    <span></span>
+                    <span id="walletLabel" style="margin-top: 35px;">Wallet</span>
+                </li>
+                <li class="tab-icon" id="rewardsTab">
+                    <i class="fa-solid fa-gift"></i>
+                    <span style="margin-bottom: 10px;"><?=_("rewards")?></span>
+                </li>
+                <li class="tab-icon" id="stakeTab">
                     <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                    <span><?=_("stake")?></span>
+                    <span style="margin-bottom: 10px;"><?=_("stake")?></span>
                 </li>
             </ul>
         </div>
@@ -95,30 +99,22 @@
                 </div>
             </div>
             <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text" id="ConnectWalletText">View in Explorer</i></button>
-            <ul class="balances">
-                <div class="col-md-6">
+            <div class="balances">
+                <div class="col-md-12">
                     <div class="row">
                         <li id="balanceInfoText">Balance</li>
-                    </div>
-                    <div class="row">
-                        <li id="wnatInfoText">WNat</li>
-                    </div>
-                    <div class="row">
-                        <li id="pBalanceInfoText">P-Balance</li>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row">
                         <li id="balanceInfo" class="odometer">0.00</li>
                     </div>
                     <div class="row">
+                        <li id="wnatInfoText">WNat</li>
                         <li id="wnatInfo" class="odometer">0.00</li>
                     </div>
                     <div class="row">
+                        <li id="pBalanceInfoText">P-Balance</li>
                         <li id="pBalanceInfo" class="odometer">0.00</li>
                     </div>
                 </div>
-            </ul>
+            </div>
         </div>
         <div id="currentWallet" class="current-wallet paused">
             <div id="currentWalletPopup" class="current-wallet-popup">
@@ -251,16 +247,19 @@
     $('#centerButton').click(function(){
         $(this).toggleClass("clicked");
         $('#accountStatus').toggleClass("clicked");
+        $('#bottomNav').toggleClass("clicked");
     });
 
     $('#currentWalletLogoBg').click(function(){
         $('#centerButton').toggleClass("clicked");
         $('#accountStatus').toggleClass("clicked");
+        $('#bottomNav').toggleClass("clicked");
     });
 
     $('#currentWalletLogo').click(function(){
         $('#centerButton').toggleClass("clicked");
         $('#accountStatus').toggleClass("clicked");
+        $('#bottomNav').toggleClass("clicked");
     });
 </script>
 <script src="<?=$view['urlbaseaddr'] ?>js/buffer.min.js"></script>

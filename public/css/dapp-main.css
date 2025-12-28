@@ -105,6 +105,7 @@ h1, h2 {
     overflow-y: auto;
     padding: 20px 44px 15px;
     width: max(50%, 665px);
+    min-height: 0px;
     max-height: 440px;
 }
 
@@ -447,9 +448,26 @@ h1, h2 {
     padding: 0 1.5em;
 }
 
+.tab-icon.selected {
+    color: #fd000f;
+}
+
 .tab-icon i {
     font-size: 18px;
-    padding: 5px;
+    padding: 5px 5px 3px;
+    transition: all 0.2s ease-in-out;
+}
+
+.tab-icon span {
+    transition: all 0.2s ease-in-out;
+}
+
+.account-btn #walletLabel {
+    opacity: 1;
+}
+
+.account-btn.clicked #walletLabel {
+    opacity: 0;
 }
 
 .current-wallet-icon {
@@ -524,6 +542,10 @@ h1, h2 {
     left: auto;
     height: 50px;
     width: fit-content;
+}
+
+#currentWalletLogoBg {
+    opacity: 1 !important;
 }
 
 .account-btn .ctaP {
@@ -650,6 +672,7 @@ h1, h2 {
   }
   
   .account-btn.clicked .cta {
+    opacity: 1;
     top: 10px;
   }
 
@@ -674,6 +697,13 @@ h1, h2 {
   .account-btn.clicked .balances li {
     transform: scale(1) translateX(0) translateY(0);
     opacity: 1;
+    width: 50%;
+    display: block;
+    float: left;
+}
+
+.account-btn .balances li.odometer {
+    text-align: center;
 }
 
 .current-wallet-icon-border, .btn-bell {
@@ -793,16 +823,16 @@ h1, h2 {
 }
 @keyframes col-mobile {
 	0% {
-		transform: scale(1.3) translate(0,-1em);
+		transform: scale(1.4) translate(0,-0.8em);
 	}
 	10% {
-		transform: scale(1.4) translate(0,-1em);
+		transform: scale(1.5) translate(0,-0.8em);
 	}
 	75% {
-		transform: scale(1.3) translate(0,-1em);
+		transform: scale(1.4) translate(0,-0.8em);
 	}
 	100% {
-		transform: scale(1.3) translate(0,-1em);
+		transform: scale(1.4) translate(0,-0.8em);
 	}
 }
 @keyframes bell-ring {
@@ -928,7 +958,7 @@ h1, h2 {
 
     .top-row {
         opacity: 0;
-        padding: 35px 15px 0;
+        padding: 30px 15px 0;
     }
 
     .address-row {
@@ -936,15 +966,31 @@ h1, h2 {
         padding-left: 25%;
     }
 
+    .account-btn.clicked .view-explorer {
+        opacity: 1 !important;
+    }
+
+    .account-btn.clicked .view-explorer.disabled {
+        opacity: 0.7 !important;
+    }
+
     .account-btn .view-explorer {
-        margin-top: 0px;
+        margin-top: 12px;
         margin-left: 260px;
-        font-size: 12px;
-        min-width: none;
+        font-size: 15px;
+        min-width: 0;
+        padding: 10px;
+        height: 45px;
+        opacity: 0 !important;
+    }
+
+    .account-btn .balances {
+        margin: 10px auto 60px auto;
     }
 
     .account-btn .cta {
         font-size: 20px;
+        opacity: 0;
     }
 
     .account-btn.clicked .ctaP {
@@ -953,8 +999,8 @@ h1, h2 {
     }
 
     .dapp-container {
-        padding-left: 24px !important;
-        padding-right: 24px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
         margin-top: 6.5em !important;
         width: 100%;
         max-height: 700px;
@@ -963,8 +1009,9 @@ h1, h2 {
 
     .scroller {
         width: 100%;
-        padding: 20px 5px 15px;
-        max-height: 520px;
+        padding: 20px 15px 15px;
+        min-height: 585px;
+        max-height: 585px;
     }
 
     #centerButton.clicked {
@@ -973,7 +1020,7 @@ h1, h2 {
 
     #centerButton {
         width: fit-content;
-        margin-left: 40%;
+        margin-left: 41.5%;
     }
 
     .account-btn {
@@ -983,6 +1030,10 @@ h1, h2 {
         border-radius: 0;
         position: absolute;
         overflow: visible;
+    }
+
+    .account-btn .balances li {
+        padding-bottom: 10px;
     }
 
     .network-icon {
@@ -1056,7 +1107,7 @@ h1, h2 {
     }
 
     .current-wallet.paused {
-        transform: scale(1.3) translate(0, -1em);
+        transform: scale(1.4) translate(0, -0.8em);
     }
 
     .current-wallet.cta {
