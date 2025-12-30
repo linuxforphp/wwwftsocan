@@ -7,9 +7,9 @@ import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentP
 import { injectedProviderDropdown, walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
 import { handleAccountsChanged, handleChainChanged, handleChainChangedStake, ConnectWalletClick } from "./dapp-wallet.js";
 import { toggleWrapButton, setWrapButton, copyWrapInput, wrapTokens } from "./dapp-wrap.js";
-import { getDelegatedBips, isDelegateInput1, delegate } from "./dapp-delegate.js";
+import { getDelegatedBips, isDelegateInput1, delegate, populateFtsos } from "./dapp-delegate.js";
 import { claimRewards, claimFdRewards } from "./dapp-claim.js";
-import { ConnectPChainClickStake, toggleTransferButton, setTransferButton, setTransferButton2, copyTransferInput, transferTokens, stake, claimStakingRewards } from "./dapp-staking.js";
+import { ConnectPChainClickStake, toggleTransferButton, setTransferButton, setTransferButton2, copyTransferInput, transferTokens, stake, claimStakingRewards, populateValidators } from "./dapp-staking.js";
 import { handleTransportConnect } from "./dapp-ledger.js";
 
 // ALL MODULES.
@@ -763,6 +763,8 @@ window.dappInit = async (option, stakingOption) => {
                         });
                     }
                 }
+
+                await populateFtsos(object.rpcUrl, object.flrAddr);
             });
         });
     } else if (option === 3 || option === '3') {
@@ -1177,6 +1179,12 @@ window.dappInit = async (option, stakingOption) => {
                     stake(DappObject, stakingOption);
                 }
             });
+
+            try {                 
+                await populateValidators();
+            } catch (error) {
+                // console.log(error);
+            }
         } else if (stakingOption === 3) {
             // STAKE REWARDS PAGE
             document.getElementById("wrapTab")?.classList.remove("selected");

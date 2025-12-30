@@ -75,6 +75,52 @@ export async function populateFtsos(rpcUrl, flrAddr) {
             let selectedNetwork = document.getElementById('SelectedNetwork');
             let chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
 
+            var onInputChange = async (value) => {
+                let ftso1 = document.querySelector(".selectize-input");
+                let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
+                let delegatedicon = document.getElementById("delegatedIcon1");
+                delegatedicon.src = img;
+                await isDelegateInput1(DappObject);
+            }
+
+
+            var $select = $('#select-ftso').selectize({
+                maxItems: 1,
+                valueField: 'id',
+                labelField: 'title',
+                searchField: ["title", "nodeid"],
+                render: {
+                    item: function (item, escape) {
+                        return (
+                        "<div>" +
+                        (item.title
+                            ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
+                            : "") +
+                        "</div>"
+                        );
+                    },
+                    option: function (item, escape) {
+                        var label = item.title || item.nodeid;
+                        var caption = item.title ? item.nodeid : null;
+                        return (
+                        "<div>" +
+                        '<span class="ftso-name">' +
+                        escape(label) +
+                        "</span>" +
+                        (caption
+                            ? '<span class="ftso-address">' + escape(caption) + "</span>"
+                            : "") +
+                        "</div>"
+                        );
+                    },
+                },
+                onChange: function(value) {
+                    onInputChange(value);
+                },
+                create: false,
+                dropdownParent: "body",
+            });
+
             try {
                 const voterWhitelistAddr = await GetContract("VoterWhitelister", rpcUrl, flrAddr);
                 let voterWhitelistContract = new web32.eth.Contract(DappObject.voterWhitelisterAbi, voterWhitelistAddr);
@@ -82,52 +128,6 @@ export async function populateFtsos(rpcUrl, flrAddr) {
                 const ftsoList = await voterWhitelistContract.methods.getFtsoWhitelistedPriceProviders("0").call();
 
                 const ftsoJsonList = JSON.stringify(ftsoList);
-
-                var onInputChange = async (value) => {
-                    let ftso1 = document.querySelector(".selectize-input");
-                    let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
-                    let delegatedicon = document.getElementById("delegatedIcon1");
-                    delegatedicon.src = img;
-                    await isDelegateInput1(DappObject);
-                }
-
-
-                var $select = $('#select-ftso').selectize({
-                    maxItems: 1,
-                    valueField: 'id',
-                    labelField: 'title',
-                    searchField: ["title", "nodeid"],
-                    render: {
-                        item: function (item, escape) {
-                            return (
-                            "<div>" +
-                            (item.title
-                                ? `<span class="title" data-img=${item.img} data-addr=${item.nodeid}>` + escape(item.title) + "</span>"
-                                : "") +
-                            "</div>"
-                            );
-                        },
-                        option: function (item, escape) {
-                            var label = item.title || item.nodeid;
-                            var caption = item.title ? item.nodeid : null;
-                            return (
-                            "<div>" +
-                            '<span class="ftso-name">' +
-                            escape(label) +
-                            "</span>" +
-                            (caption
-                                ? '<span class="ftso-address">' + escape(caption) + "</span>"
-                                : "") +
-                            "</div>"
-                            );
-                        },
-                    },
-                    onChange: function(value) {
-                        onInputChange(value);
-                    },
-                    create: false,
-                    dropdownParent: "body",
-                });
 
                 // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/next/bifrost-wallet.providerlist.json
                 fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')

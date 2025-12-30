@@ -41,7 +41,7 @@
                         <div class="token-identifier">
                             <span id="tokenIdentifier"></span>
                         </div>
-                        <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
+                        <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="<?=_("dapp_enteramount")?>">
                     </div>
                     <div class="row">
                         <div class="wrapper-wrap">

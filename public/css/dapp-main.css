@@ -7,6 +7,10 @@
     max-width: none !important;
 }
 
+html {
+    color-scheme: light !important;
+}
+
 body {
     overflow-x: hidden;
     overflow-y: hidden;
@@ -107,6 +111,7 @@ h1, h2 {
     width: max(50%, 665px);
     min-height: 0px;
     max-height: 440px;
+    overscroll-behavior: contain;
 }
 
 @supports selector(::-webkit-scrollbar) {
@@ -198,7 +203,7 @@ h1, h2 {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    margin: 15px 20px 5px 20px;
+    margin: 15px 20px 3px 20px;
     padding: 10px;
     letter-spacing: normal;
     transition: 0.5s;
@@ -426,7 +431,7 @@ h1, h2 {
 .amount {
     border: none;
     width: 50%;
-    margin-top: 20px;
+    margin-top: 22px;
     margin-right: 20px;
     font-size: 2.4rem;
     padding-bottom: 10px;
@@ -445,7 +450,7 @@ h1, h2 {
     display: inline-grid;
     position: relative;
     font-size: 12px;
-    padding: 0 1.5em;
+    width: 20%;
 }
 
 .tab-icon.selected {
@@ -644,6 +649,7 @@ h1, h2 {
 
 #centerButton.clicked {
     margin-bottom: 210px;
+    max-height: 100px
 }
 
 .top-row {
@@ -939,7 +945,7 @@ h1, h2 {
     }
 
     .wrap-box-ftso {
-        height: 9rem;
+        height: fit-content;
         margin: 10px;
     }
 
@@ -1020,7 +1026,7 @@ h1, h2 {
 
     #centerButton {
         width: fit-content;
-        margin-left: 41.5%;
+        margin-left: 40.2%;
     }
 
     .account-btn {
@@ -1062,7 +1068,7 @@ h1, h2 {
     /*}*/
 
     .amount {
-        width: 35%;
+        width: 50%;
     }
 
     .connect-wallet {
@@ -1153,7 +1159,7 @@ h1, h2 {
     }
 
     .wrap-box-ftso {
-        height: 9rem;
+        height: fit-content;
         margin: 10px;
     }
 
@@ -1198,7 +1204,7 @@ h1, h2 {
         min-width: 178px;
         max-width: 179px;
         margin: auto;
-        margin-top: 5px;
+        margin-top: 8px;
         margin-bottom: 10px;
         padding: 15px 20px;
     }
@@ -1210,7 +1216,7 @@ h1, h2 {
     .addr-wrap {
         text-align: center;
         font-size: 13px;
-        margin: 20px;
+        margin: 8px;
     }
 
     .dapp-box {

@@ -7,7 +7,7 @@
     color: #383a3b;
     font-size: 20px;
     padding: 12px;
-    width: 100%;
+    width: 33%;
     float: left;
     cursor: pointer;
     border-left: none;
@@ -86,7 +86,6 @@
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
     .transfer, .stake, .stakeRewards {
-        border-radius: 30px !important;
         margin-bottom: 5px;
     }
 }

@@ -336,14 +336,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                 } else if (dappStakingOption === 2) {
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
-                
-                    try {                 
-                        customInput(PchainBalanceBigInt, DappObject);
-                    
-                        await populateValidators();
-                    } catch (error) {
-                        // console.log(error);
-                    }
+
+                    customInput(PchainBalanceBigInt, DappObject);
 
                     showAccountAddress(prefixedPchainAddress, account);
 
@@ -935,8 +929,6 @@ export async function populateValidators() {
 
             var control;
 
-            const ftsoList = await getValidators();
-
             var onInputChange = async (value) => {
                 document.getElementById("calendar").title = "";
 
@@ -996,6 +988,8 @@ export async function populateValidators() {
             });
 
             control = $select[0].selectize;
+
+            const ftsoList = await getValidators();
 
             // Origin: https://api-flare-validators.flare.network/api/v1/validator
             fetch(dappUrlBaseAddr + 'validatorlist.json')

@@ -1,26 +1,20 @@
 <div class="top">
     <div class="row" style="margin-bottom: 5px;">
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="transfer" type="button" id="Transfer" onclick="getDappPage(5)">
-                <a class="wrap-unwrap-text">
-                    <span id="Transfer"><?=_("dapp_transfer")?></span>
-                </a>
-            </button>
-        </div>
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="stake selected-stake" type="button" id="Stake" onclick="getDappPage(6)">
-                <a class="stake-text">
-                    <span id="Stake"><?=_("stake")?></span>
-                </a>
-            </button>
-        </div>
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="stakeRewards" type="button" id="StakeRewards" onclick="getDappPage(7)">
-                <a class="wrap-unwrap-text">
-                    <span id="StakeRewards"><?=_("dapp_claim")?></span>
-                </a>
-            </button>
-        </div>
+        <button class="transfer" type="button" id="Transfer" onclick="getDappPage(5)">
+            <a class="wrap-unwrap-text">
+                <span id="Transfer"><?=_("dapp_transfer")?></span>
+            </a>
+        </button>
+        <button class="stake selected-stake" type="button" id="Stake" onclick="getDappPage(6)">
+            <a class="stake-text">
+                <span id="Stake"><?=_("stake")?></span>
+            </a>
+        </button>
+        <button class="stakeRewards" type="button" id="StakeRewards" onclick="getDappPage(7)">
+            <a class="wrap-unwrap-text">
+                <span id="StakeRewards"><?=_("dapp_claim")?></span>
+            </a>
+        </button>
     </div>
 </div>
 <div class="row">
@@ -30,10 +24,10 @@
                 <img src="<?=$view['urlbaseaddr'] ?>img/FLR.svg" class="provider-icon" id="delegatedIcon1">
                 <select id="select-validator" placeholder="<?=_("dapp_validatorlist")?>"></select>
                 <div class="stake-calendar">
-                    <input id="calendar" title="Please select a Validator" type="text" name="calendar" placeholder="2022/06/24 18:00" class="calendar" readOnly="true">
+                    <input id="calendar" readonly inputmode="none" type="text" name="calendar" placeholder="2022/06/24 18:00" class="calendar" readOnly="true">
                 </div>
                 <div id="stakeAmount" class="stake-amount">
-                    <input id="Amount1" class="amount-delegate" type="text" min="50" max="950" step="50" placeholder="50k" readOnly="true">
+                    <input id="Amount1" readonly class="amount-delegate" type="text" min="50" max="950" step="50" placeholder="50k" readOnly="true">
                 </div>
             </div>
         </span>

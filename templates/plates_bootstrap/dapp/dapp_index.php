@@ -20,7 +20,7 @@
             <div class="scroller" id="dapp-root"></div>
         </div>
         <div id="bottomNav" class="bottom-nav account-btn" style="z-index: 1032 !important; background-color: transparent;">
-            <ul style="list-style-type: none; margin-block-start: 0px; margin-block-end: 0px; padding: 2px; display: inline-flex; height: 58px !important; background-color: #fff;">
+            <ul style="list-style-type: none; margin-block-start: 0px; margin-block-end: 0px; padding: 2px; display: inline-flex; width: 100%; height: 60px !important; background-color: #fff;">
                 <li class="tab-icon" id="wrapTab">
                     <i class="fa-solid fa-arrow-right-arrow-left"></i>
                     <span style="margin-bottom: 10px;"><?=_("wrap")?></span>
@@ -102,7 +102,7 @@
             <div class="balances">
                 <div class="col-md-12">
                     <div class="row">
-                        <li id="balanceInfoText">Balance</li>
+                        <li id="balanceInfoText"><?=_("dapp_balance")?></li>
                         <li id="balanceInfo" class="odometer">0.00</li>
                     </div>
                     <div class="row">

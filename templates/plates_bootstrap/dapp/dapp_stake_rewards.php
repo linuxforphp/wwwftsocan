@@ -1,26 +1,20 @@
 <div class="top">
     <div class="row" style="margin-bottom: 5px;">
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="transfer" type="button" id="Transfer" onclick="getDappPage(5)">
-                <a class="wrap-unwrap-text">
-                    <span id="Transfer"><?=_("dapp_transfer")?></span>
-                </a>
-            </button>
-        </div>
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="stake" type="button" id="Stake" onclick="getDappPage(6)">
-                <a class="wrap-unwrap-text">
-                    <span id="Stake"><?=_("stake")?></span>
-                </a>
-            </button>
-        </div>
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="stakeRewards selected-stake" type="button" id="StakeRewards" onclick="getDappPage(7)">
-                <a class="stake-text">
-                    <span id="StakeRewards"><?=_("dapp_claim")?></span>
-                </a>
-            </button>
-        </div>
+        <button class="transfer" type="button" id="Transfer" onclick="getDappPage(5)">
+            <a class="wrap-unwrap-text">
+                <span id="Transfer"><?=_("dapp_transfer")?></span>
+            </a>
+        </button>
+        <button class="stake" type="button" id="Stake" onclick="getDappPage(6)">
+            <a class="wrap-unwrap-text">
+                <span id="Stake"><?=_("stake")?></span>
+            </a>
+        </button>
+        <button class="stakeRewards selected-stake" type="button" id="StakeRewards" onclick="getDappPage(7)">
+            <a class="stake-text">
+                <span id="StakeRewards"><?=_("dapp_claim")?></span>
+            </a>
+        </button>
     </div>
 </div>
 <div class="row">

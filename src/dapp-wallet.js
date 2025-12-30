@@ -563,8 +563,6 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
         
                         await isDelegateInput1(DappObject);
-        
-                        await populateFtsos(rpcUrl, flrAddr);
 
                         await setCurrentPopup(dappStrings['dapp_mabel_delegate1'], true);
 

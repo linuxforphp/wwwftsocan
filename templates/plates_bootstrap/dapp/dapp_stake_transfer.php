@@ -1,26 +1,20 @@
 <div class="top">
     <div class="row" style="margin-bottom: 5px;">
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="transfer selected-stake" type="button" id="Transfer" onclick="getDappPage(5)">
-                <a class="stake-text">
-                    <span id="Transfer"><?=_("dapp_transfer")?></span>
-                </a>
-            </button>
-        </div>
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="stake" type="button" id="Stake" onclick="getDappPage(6)">
-                <a class="wrap-unwrap-text">
-                    <span id="Stake"><?=_("stake")?></span>
-                </a>
-            </button>
-        </div>
-        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <button class="stakeRewards" type="button" id="StakeRewards" onclick="getDappPage(7)">
-                <a class="wrap-unwrap-text">
-                    <span id="StakeRewards"><?=_("dapp_claim")?></span>
-                </a>
-            </button>
-        </div>
+        <button class="transfer selected-stake" type="button" id="Transfer" onclick="getDappPage(5)">
+            <a class="stake-text">
+                <span id="Transfer"><?=_("dapp_transfer")?></span>
+            </a>
+        </button>
+        <button class="stake" type="button" id="Stake" onclick="getDappPage(6)">
+            <a class="wrap-unwrap-text">
+                <span id="Stake"><?=_("stake")?></span>
+            </a>
+        </button>
+        <button class="stakeRewards" type="button" id="StakeRewards" onclick="getDappPage(7)">
+            <a class="wrap-unwrap-text">
+                <span id="StakeRewards"><?=_("dapp_claim")?></span>
+            </a>
+        </button>
     </div>
 </div>
 <div class="row">
@@ -28,7 +22,7 @@
         <span class="wrap-box-content">
             <div class="row">
                 <span id="FromText" class="text-from">C</span>
-                <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="0">
+                <input id="AmountFrom" class="amount" dir="rtl" type="text" inputmode="decimal" min="1" minlength="1" max="79" placeholder="<?=_("dapp_enteramount")?>">
             </div>
             <div class="row">
                 <div class="wrapper-wrap">

@@ -150,6 +150,7 @@ a:hover, a:active, a:focus {
     .wrap-unwrap {
         width: auto;
         padding: 10px;
+        font-size: 18px;
     }
 
     .dapp-box {
