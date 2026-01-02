@@ -343,6 +343,26 @@ async function eip6963Listener(event) {
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
+    window.dappOption = option;
+
+    window.dappStakingOption = stakingOption;
+
+    const dappContainer = document.getElementById("dappContainer");
+
+    dappContainer.style.display = "inline-block";
+
+    if (window.innerWidth <= 480) {
+        dappContainer.style.setProperty('--animate-duration', '0.2s');
+
+        dappContainer.classList.remove("slideOutLeft");
+        dappContainer.classList.add("slideInRight");
+
+        dappContainer.addEventListener('animationend', () => {
+            dappContainer.classList.remove("slideInRight");
+        }, { once: true });
+    } else {
+        dappContainer.classList.add("slideInUp");
+    }
 
     closeCurrentPopup();
 
@@ -351,6 +371,10 @@ window.dappInit = async (option, stakingOption) => {
         
         $.timepicker.setDefaults($.timepicker.regional['fr']);
     }
+
+    new Odometer({el: document.getElementById("balanceInfo"), value: 0, format: odometerFormat});
+    new Odometer({el: document.getElementById("wnatInfo"), value: 0, format: odometerFormat});
+    new Odometer({el: document.getElementById("pBalanceInfo"), value: 0, format: odometerFormat});
 
     // Removes the navbar's staking option for Browser Wallets
 
@@ -370,6 +394,11 @@ window.dappInit = async (option, stakingOption) => {
     if (option == 4 && (stakingOption == undefined || stakingOption == 4 || stakingOption == 5)) {
         // Do nothing;    
     } else {
+        document.getElementById("wrapTab")?.classList.remove("disabled");
+        document.getElementById("delegateTab")?.classList.remove("disabled");
+        document.getElementById("rewardsTab")?.classList.remove("disabled");
+        document.getElementById("stakeTab")?.classList.remove("disabled");
+
        $("#wrapTab")?.on("click", function () {
             getDappPage(1);
         });
@@ -387,10 +416,6 @@ window.dappInit = async (option, stakingOption) => {
     clearTimeout(DappObject.latestPopupTimeoutId);
 
     checkConnection();
-
-    window.dappOption = option;
-
-    window.dappStakingOption = stakingOption;
 
     if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
         window.chosenNavigator = navigator.usb;
@@ -444,8 +469,8 @@ window.dappInit = async (option, stakingOption) => {
         let balanceElement = document.getElementById("Balance");
         let tokenBalanceElement = document.getElementById("TokenBalance");
 
-        new Odometer({el: balanceElement, value: 0});
-        new Odometer({el: tokenBalanceElement, value: 0});
+        new Odometer({el: balanceElement, value: 0, format: odometerFormat});
+        new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
 
         await createSelectedNetwork(DappObject).then( async () => {
             getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
@@ -776,7 +801,7 @@ window.dappInit = async (option, stakingOption) => {
 
         let tokenBalanceElement = document.getElementById("TokenBalance");
 
-        new Odometer({el: tokenBalanceElement, value: 0});
+        new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
 
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let chainidhex;
@@ -961,6 +986,16 @@ window.dappInit = async (option, stakingOption) => {
         if (typeof stakingOption === 'undefined') {
             // SELECT WALLET PAGE
 
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.remove("selected");
+
+            document.getElementById("wrapTab")?.classList.add("disabled");
+            document.getElementById("delegateTab")?.classList.add("disabled");
+            document.getElementById("rewardsTab")?.classList.add("disabled");
+            document.getElementById("stakeTab")?.classList.add("disabled");
+
             try {
                 // Network is Flare by default.
                 DappObject.selectedNetworkIndex = 1;
@@ -1128,8 +1163,8 @@ window.dappInit = async (option, stakingOption) => {
             let balanceElement = document.getElementById("Balance");
             let tokenBalanceElement = document.getElementById("TokenBalance");
 
-            new Odometer({el: balanceElement, value: 0,});
-            new Odometer({el: tokenBalanceElement, value: 0});
+            new Odometer({el: balanceElement, value: 0, format: odometerFormat});
+            new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
 
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
@@ -1194,7 +1229,7 @@ window.dappInit = async (option, stakingOption) => {
 
             let tokenBalanceElement = document.getElementById("TokenBalance");
 
-            new Odometer({el: tokenBalanceElement, value: 0});
+            new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
 
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
@@ -1221,4 +1256,16 @@ window.dappInit = async (option, stakingOption) => {
             });
         }
     }
+
+    document.querySelectorAll(".odometer").forEach(odometer => {
+        odometer.addEventListener('odometerdone', function(){
+            document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+                if (dappLanguage === "fr_FR") {
+                    element.innerText = ",";
+                } else {
+                    element.innerText = ".";
+                }
+            });
+        });
+    });
 };

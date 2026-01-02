@@ -40,6 +40,20 @@ h1, h2 {
     padding: 0 0 70px 0;
 }
 
+.connect-wallet.select-wallet-nav {
+    display: none;
+    float: right !important;
+    min-width: 0px;
+    padding: 10px 12px;
+    font-size: 17px;
+    height: fit-content;
+    margin-right: 20px;
+}
+
+.connect-wallet.select-wallet-nav:hover {
+    letter-spacing: normal;
+}
+
 /* change the background color */
 .navbar-dapp-actions {
     background-color: rgba(253, 0, 15, 0.8);
@@ -455,6 +469,10 @@ h1, h2 {
 
 .tab-icon.selected {
     color: #fd000f;
+}
+
+.tab-icon.disabled {
+    color: #8f8f8f;
 }
 
 .tab-icon i {
@@ -916,6 +934,14 @@ h1, h2 {
 }
 
 @media only screen and (min-width: 0px) and (max-width: 480px) {
+    .connect-wallet.select-wallet-nav {
+        display: inline-block;
+    }
+
+    .navbar-dapp-actions {
+        display: none;
+    }
+
     .jconfirm-box-container {
         max-width: 420px !important;
     }

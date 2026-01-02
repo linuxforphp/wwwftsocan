@@ -549,6 +549,14 @@ export async function showPchainBalance(tokenBalanceAddress, wrapBool = true) {
         } else {
             document.getElementById("TokenBalance").innerText = cachedValues.balance;
         }
+
+        document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+            if (dappLanguage === "fr_FR") {
+                element.innerText = ",";
+            } else {
+                element.innerText = ".";
+            }
+        });
     }
 }
 

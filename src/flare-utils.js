@@ -64,12 +64,14 @@ export function GetNetworkName(rpcUrl) {
     }
 }
 
-export function round(num) {
-    return +(Math.round(num + "e+4") + "e-4");
+export function round(num, exp = 4) {
+    return +(Math.round(num + "e+" + String(exp)) + "e-" + String(exp));
 }
 
 export function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
     if (typeof balance !== 'undefined') {
+        console.log(String(round(balance, 2)));
+
         document.getElementById('balanceInfo').innerText = String(round(balance));
 
         cachedValues.balance = String(round(balance));
@@ -110,6 +112,14 @@ export function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
             document.getElementById('pBalanceInfo').style.color = "#aaaaaa";
         }
     }
+
+    document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+        if (dappLanguage === "fr_FR") {
+            element.innerText = ",";
+        } else {
+            element.innerText = ".";
+        }
+    });
 }
 
 export async function openAddressInExplorer(address, networkIndex) {
@@ -224,6 +234,14 @@ export function showBalance(balanceAddress, wrapBool = true, staking = false) {
                 document.getElementById("Balance").innerText = cachedValues.tokenBalance;
             }
         }
+
+        document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+            if (dappLanguage === "fr_FR") {
+                element.innerText = ",";
+            } else {
+                element.innerText = ".";
+            }
+        });
     }
 }
 
@@ -236,6 +254,14 @@ export function showTokenBalance(tokenBalanceAddress, wrapBool = true) {
         } else {
             document.getElementById("TokenBalance").innerText = cachedValues.balance;
         }
+
+        document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+            if (dappLanguage === "fr_FR") {
+                element.innerText = ",";
+            } else {
+                element.innerText = ".";
+            }
+        });
     }
 }
 

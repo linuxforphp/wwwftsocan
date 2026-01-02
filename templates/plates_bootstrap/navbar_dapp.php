@@ -21,6 +21,8 @@ Fixed Navigation
             </button>
             <!-- /responsive nav button -->
 
+            <button class="connect-wallet select-wallet-nav" onclick="getDappPage(4)"><i class="connect-wallet-text"><?=_("select_wallet")?></i></button>
+
             <!-- logo -->
             <h1 class="navbar-brand">
                 <span>

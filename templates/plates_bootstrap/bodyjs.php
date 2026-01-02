@@ -87,7 +87,27 @@
     }
 
     function getDappPage(option, reconnect = true) {
-            if (option === 4) {
+        if (window.dappTranslatedOption && (window.dappTranslatedOption == option)) {
+            return;
+        }
+
+        if (window.innerWidth <= 480) {
+            document.getElementById("dappContainer").style.setProperty('--animate-duration', '0.15s');
+
+            document.getElementById("dappContainer").classList.add("slideOutLeft");
+
+            document.getElementById("dappContainer").addEventListener('animationend', () => {
+                openDappPage(option, reconnect);
+            }, { once: true });
+        } else {
+            openDappPage(option, reconnect);
+        }
+    }
+
+    function openDappPage(option, reconnect) {
+        window.dappTranslatedOption = option;
+
+        if (option === 4) {
                 $.get( "wallet", function( data ) {
                     $( "#dapp-root" ).html( data );
 

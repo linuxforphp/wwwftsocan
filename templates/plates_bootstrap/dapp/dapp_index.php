@@ -16,16 +16,16 @@
     <main id="MainSection" class="mx-auto h-full max-w-7xl pt-24 md:pt-12 px-4 md:px-8" role="main" data-urlbaseaddr="<?=$view['urlbaseaddr'] ?>">
         <?=$this->section('navbar_dapp', $this->fetch('navbar_dapp', ['view' => $view]))?>
         <div id="Accounts" data-address=""></div>
-        <div class="dapp-container">
+        <div id="dappContainer" class="dapp-container wow animated" style="display: none;">
             <div class="scroller" id="dapp-root"></div>
         </div>
         <div id="bottomNav" class="bottom-nav account-btn" style="z-index: 1032 !important; background-color: transparent;">
             <ul style="list-style-type: none; margin-block-start: 0px; margin-block-end: 0px; padding: 2px; display: inline-flex; width: 100%; height: 60px !important; background-color: #fff;">
-                <li class="tab-icon" id="wrapTab">
+                <li class="tab-icon disabled" id="wrapTab">
                     <i class="fa-solid fa-arrow-right-arrow-left"></i>
                     <span style="margin-bottom: 10px;"><?=_("wrap")?></span>
                 </li>
-                <li class="tab-icon" id="delegateTab">
+                <li class="tab-icon disabled" id="delegateTab">
                     <i class="fa-solid fa-hand-holding-dollar"></i>
                     <span style="margin-bottom: 10px;"><?=_("delegate")?></span>
                 </li>
@@ -33,11 +33,11 @@
                     <span></span>
                     <span id="walletLabel" style="margin-top: 35px;">Wallet</span>
                 </li>
-                <li class="tab-icon" id="rewardsTab">
+                <li class="tab-icon disabled" id="rewardsTab">
                     <i class="fa-solid fa-gift"></i>
                     <span style="margin-bottom: 10px;"><?=_("rewards")?></span>
                 </li>
-                <li class="tab-icon" id="stakeTab">
+                <li class="tab-icon disabled" id="stakeTab">
                     <i class="fa-solid fa-circle-dollar-to-slot"></i>
                     <span style="margin-bottom: 10px;"><?=_("stake")?></span>
                 </li>
@@ -156,20 +156,28 @@
     </div>
 <?php endif ?>
 
+<script>
+    var dappUrlBaseAddr = <?= json_encode($view['urlbaseaddr']); ?>;
+
+    var dappLanguage = "<?= $view['language']; ?>";
+
+    var odometerFormat = dappLanguage === "fr_FR" ? '( ddd).dd' : '(,ddd).dd';
+
+    window.odometerOptions = {
+        auto: false, // Don't automatically initialize everything with class 'odometer'
+        format: odometerFormat,
+        theme: 'minimal', // Specify the theme (if you have more than one theme css file on the page)
+    };
+
+    var dappStrings = <?= $view['jstranslate']; ?>;
+</script>
+
 <?php if ($view['bodyjs'] === 1): ?>
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
 
 <script>
     var dappNetworks = <?= json_encode($view['results']); ?>;
-</script>
-
-<script>
-    var dappUrlBaseAddr = <?= json_encode($view['urlbaseaddr']); ?>;
-
-    var dappLanguage = "<?= $view['language']; ?>";
-
-    var dappStrings = <?= $view['jstranslate']; ?>;
 </script>
 
 <script>
