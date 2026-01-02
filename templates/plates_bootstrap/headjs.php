@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/slit-slider.css">
     <!-- animate.css -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/odometer-theme-minimal.css">
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.compat.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">
 
