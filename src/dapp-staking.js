@@ -1,7 +1,7 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos, updateCurrentBalancesStatus, updateCurrentAccountStatus } from "./flare-utils";
 import { ethers } from "./ethers.js";
 import { wait, unPrefix0x, round, isNumber, checkConnection, checkTxStake, showConnectedAccountAddress, resetDappObjectState } from "./dapp-utils.js";
-import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid } from "./dapp-ui.js";
+import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid, showSignatureSpinner } from "./dapp-ui.js";
 import { walletConnectEVMParams } from "./dapp-globals.js";
 import { switchClaimButtonColor, switchClaimButtonColorBack, showClaimRewards } from "./dapp-claim.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
@@ -210,24 +210,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
     
                 if (DappObject.signatureStaking === "") {
     
-                    let signSpinner = $.confirm({
-                        escapeKey: false,
-                        backgroundDismiss: false,
-                        icon: 'fa fa-spinner fa-spin',
-                        title: dappStrings['dapp_popup_loading'],
-                        content: 'Waiting for signature confirmation.' + '<br />' + dappStrings['dapp_popup_checkwallet2'],
-                        theme: 'material',
-                        type: 'dark',
-                        typeAnimated: true,
-                        draggable: false,
-                        buttons: {
-                            ok: {
-                                isHidden: true, // hide the button
-                            },
-                        },
-                        onContentReady: async function () {
-                        }
-                    });
+                    let signSpinner = await showSignatureSpinner();
     
                     const signature = await DappObject.chosenEVMProvider.request({
                         "method": "personal_sign",

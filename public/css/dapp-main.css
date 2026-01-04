@@ -944,6 +944,16 @@ h1, h2 {
 
     .jconfirm-box-container {
         max-width: 420px !important;
+        padding: 0 !important;
+    }
+
+    .jconfirm.jconfirm-material .jconfirm-box {
+        padding: 32px 22px 21px 22px;
+    }
+
+    .jconfirm .jconfirm-box .jconfirm-buttons button {
+        font-size: 18px;
+        padding: 6px 16px;
     }
 
     body {

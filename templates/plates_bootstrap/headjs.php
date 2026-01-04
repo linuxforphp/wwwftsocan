@@ -62,6 +62,9 @@
         window.process = { browser: true, env: { ENVIRONMENT: 'BROWSER' } };
     </script>
 
+    <!-- Animated icons -->
+    <script src="<?=$view['urlbaseaddr'] ?>js/lordicon.js"></script>
+
     <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
 
     <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>

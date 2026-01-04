@@ -70,8 +70,6 @@ export function round(num, exp = 4) {
 
 export function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
     if (typeof balance !== 'undefined') {
-        console.log(String(round(balance, 2)));
-
         document.getElementById('balanceInfo').innerText = String(round(balance));
 
         cachedValues.balance = String(round(balance));

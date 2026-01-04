@@ -218,5 +218,8 @@
 <script src="<?=$view['urlbaseaddr'] ?>js/selectize.js"></script>
 <script src="<?=$view['urlbaseaddr'] ?>js/selectize.min.js"></script>
 
+<!-- Haptics -->
+<script src="<?=$view['urlbaseaddr'] ?>js/ios-haptics.js"></script>
+
 <!-- Modernizer Script for old Browsers -->
 <script src="<?=$view['urlbaseaddr'] ?>js/modernizr-2.6.2.min.js"></script>
