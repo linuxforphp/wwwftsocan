@@ -37,6 +37,14 @@
 @font-face {
     font-display: swap;
     font-family: Poppins;
+    src: url(../fonts/poppins/Poppins-Medium.ttf);
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: Poppins;
     src: url(../fonts/poppins/poppins-v20-latin-700.woff);
     font-weight: bold;
     font-style: normal;
