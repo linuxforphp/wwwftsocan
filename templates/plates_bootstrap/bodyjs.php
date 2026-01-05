@@ -83,6 +83,10 @@
             url = 'https://metamask.io/download/';
 
             window.open(url, '_blank').focus();
+        } else if (option === 6) {
+            url = 'https://portal.flare.network/staking';
+
+            window.open(url, '_blank').focus();
         }
     }
 

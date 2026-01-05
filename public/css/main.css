@@ -189,7 +189,7 @@ ul.delegation {
     margin-left: 8px;
 }
 
-.connect-wallet.hero-btn .connect-wallet-text::before {
+/* .connect-wallet.hero-btn .connect-wallet-text::before {
     content: '';
     position: absolute;
     top: 0;
@@ -199,7 +199,7 @@ ul.delegation {
     background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
-}
+} */
 
 .connect-wallet:hover > .connect-wallet-text::before {
     transform: skewX(45deg) translateX(200%);
@@ -1651,7 +1651,7 @@ textarea.form-control {
     .connect-wallet.hero-btn {
         font-size: 15px;
         width: 160px;
-        padding: 12px 0;
+        padding: 8px 0 12px;
         margin-top: 12px;
         margin-left: 0;
     }
@@ -1868,6 +1868,14 @@ textarea.form-control {
         margin-bottom: 50px;
     }
 
+    .flr-icon {
+        margin-left: 45%;
+    }
+
+    .copy-btn {
+        margin-left: 45%;
+    }
+
     /* follow us */
     .social-button li:nth-child(2) {
         margin: 0 25px;
@@ -2081,10 +2089,17 @@ pre {
     color: #fff;
     word-break: break-all;
     word-wrap: break-word;
-    background-color: rgb(45, 46, 69);
+    background-color: rgba(253, 0, 15, 0.8);
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 10px;
     text-align: center;
+}
+
+.copy-btn {
+    background-color: transparent;
+    border: 2px solid rgba(253 0 15);
+    border-radius: 5px;
+    padding-top: 5px;
 }
 
 .command-styling {
