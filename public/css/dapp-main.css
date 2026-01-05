@@ -168,39 +168,6 @@ h1, h2 {
     font-size: 23px;
 }
 
-.connect-wallet {
-    /* display: inline-block; */
-    background-color: rgba(253, 0, 15, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: pointer;
-    border-left: none;
-    border-right: none;
-    width: 90%;
-    max-width: 234px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    float: left;
-    margin: 10px 20px 20px;
-    padding: 20px;
-    border-radius: 30px;
-    letter-spacing: normal;
-    transition: 0.5s;
-}
-
-.connect-wallet:hover {
-    letter-spacing: 1.5px;
-}
-
-.connect-wallet-text {
-    font-style: normal;
-}
-
 .continue-wallet {
     width: 100%;
     background-color: rgba(253, 0, 15, 0.8);
@@ -237,33 +204,6 @@ h1, h2 {
     filter: url(#shadow);
     margin-top: 15px;
     width: 50px;
-}
-
-/* .connect-wallet-text::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
-    transform: skewX(45deg) translateX(0);
-    transition: 0.5s;
-} */
-
-.connect-wallet:hover > .connect-wallet-text::after {
-    transform: skewX(45deg) translateX(200%);
-}
-
-.connect-wallet:hover {
-    letter-spacing: 1.5px;
-}
-
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .connect-wallet {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
 }
 
 .dummytext {
