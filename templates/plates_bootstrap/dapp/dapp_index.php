@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-            <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text" id="ConnectWalletText">View in Explorer</i></button>
+            <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text" id="ConnectWalletText"><?=_("dapp_view_explorer")?></i></button>
             <div class="balances">
                 <div class="col-md-12">
                     <div class="row">
@@ -110,7 +110,7 @@
                         <li id="wnatInfo" class="odometer">0.00</li>
                     </div>
                     <div class="row">
-                        <li id="pBalanceInfoText">P-Balance</li>
+                        <li id="pBalanceInfoText"><?=_("dapp_p_balance")?></li>
                         <li id="pBalanceInfo" class="odometer">0.00</li>
                     </div>
                 </div>

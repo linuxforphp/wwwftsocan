@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2025-07-02 13:16-0400\n"
+"PO-Revision-Date: 2026-01-05 18:53-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -27,9 +27,9 @@ msgstr "Flare Time Series Oracle Canada"
 #: strings.orig.php:5 strings.php:5
 msgid "description"
 msgstr ""
-"Flare Time Series Oracle Canada (FTSOCAN) is one of the most reliable Flare "
-"signal providers in the World. FTSOCAN is your best partner when it comes to "
-"earning passive income on the Flare Network."
+"Flare Time Series Oracle Canada (FTSOCAN) is one of the most reliable Flare signal providers "
+"in the World. FTSOCAN is your best partner when it comes to earning passive income on the "
+"Flare Network."
 
 #: strings.orig.php:6 strings.php:6
 msgid "home"
@@ -102,9 +102,8 @@ msgstr "About FTSO Canada"
 #: strings.php:23
 msgid "index_slide1_body"
 msgstr ""
-"FTSO Canada is your partner to help you build your passive income on the "
-"Flare network,<br /> by providing Flare Networks with a fast and efficient "
-"price provider."
+"FTSO Canada is your partner to help you build your passive income on the Flare network,<br /> "
+"by providing Flare Networks with a fast and efficient price provider."
 
 #: strings.php:24
 msgid "index_slide2_title"
@@ -113,9 +112,9 @@ msgstr "Earn SGB and FLR"
 #: strings.php:25
 msgid "index_slide2_body1"
 msgstr ""
-"Passive income is at hand!<br /> You can earn $SGB and $FLR, without the "
-"risk of losing your tokens.<br /> Make your money work for you, and start "
-"claiming your tokens every week!<br /><br />"
+"Passive income is at hand!<br /> You can earn $SGB and $FLR, without the risk of losing your "
+"tokens.<br /> Make your money work for you, and start claiming your tokens every week!<br /"
+"><br />"
 
 #: strings.php:26
 msgid "index_slide2_body2"
@@ -124,9 +123,8 @@ msgstr "Delegate Now"
 #: strings.php:27
 msgid "index_slide3_body1"
 msgstr ""
-"Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is "
-"inaccessible to decentralised applications.<br /> That changes now.<br /"
-"><br /> Please visit the"
+"Unleashing Value.<br /> Around 65% of the value of Blockchain Tokens is inaccessible to "
+"decentralised applications.<br /> That changes now.<br /><br /> Please visit the"
 
 #: strings.php:28
 msgid "index_slide3_body2"
@@ -163,8 +161,8 @@ msgstr "Delegate the classic way with the Explorer!"
 #: strings.php:36
 msgid "delegate_featurette2_body"
 msgstr ""
-"Instead of using the Flare Portal to delegate your tokens, you might prefer "
-"to use the Flare or the Songbird Explorer:"
+"Instead of using the Flare Portal to delegate your tokens, you might prefer to use the Flare "
+"or the Songbird Explorer:"
 
 #: strings.php:37
 msgid "delegate_flr_explorer"
@@ -181,8 +179,8 @@ msgstr "Add the WFLR and WSGB tokens to your wallet!"
 #: strings.php:40
 msgid "delegate_featurette3_body"
 msgstr ""
-"Import your favorite tokens by pasting these addresses in the \"Import tokens"
-"\" section of your wallet:"
+"Import your favorite tokens by pasting these addresses in the \"Import tokens\" section of "
+"your wallet:"
 
 #: strings.php:41
 msgid "delegate_outro"
@@ -227,11 +225,10 @@ msgstr "What is FTSO Canada?"
 #: strings.php:51
 msgid "faq_accordion1_body1"
 msgstr ""
-"<strong>FTSO Canada</strong> is one of <strong>Flare Networks</strong>' many "
-"FTSOs (Flare Time Series Oracle). <br>It provides applications on the "
-"<strong>Flare</strong> Network with highly accurate and decentralized data, "
-"such as cryptocurrency prices, and transaction validation. To learn more "
-"about FTSOs, you can visit "
+"<strong>FTSO Canada</strong> is one of <strong>Flare Networks</strong>' many FTSOs (Flare Time "
+"Series Oracle). <br>It provides applications on the <strong>Flare</strong> Network with highly "
+"accurate and decentralized data, such as cryptocurrency prices, and transaction validation. To "
+"learn more about FTSOs, you can visit "
 
 #: strings.php:52
 msgid "faq_accordion1_body2"
@@ -244,10 +241,10 @@ msgstr "How Do I get \"Flare\" or \"Songbird\" installed in my browser?"
 #: strings.php:54
 msgid "faq_accordion2_body1"
 msgstr ""
-"To be able to interact with Ethereum chains such as <strong>Flare</strong>, "
-"<strong>Songbird</strong>, <strong>Coston</strong> or <strong>Coston2</"
-"strong>, you must first download Metamask, or any other EVM Wallet, on your "
-"browser, such as Chrome, Firefox, Edge, or Opera.<br>"
+"To be able to interact with Ethereum chains such as <strong>Flare</strong>, <strong>Songbird</"
+"strong>, <strong>Coston</strong> or <strong>Coston2</strong>, you must first download "
+"Metamask, or any other EVM Wallet, on your browser, such as Chrome, Firefox, Edge, or Opera."
+"<br>"
 
 #: strings.php:55
 msgid "faq_metamask"
@@ -256,9 +253,8 @@ msgstr "Download Metamask"
 #: strings.php:56
 msgid "faq_accordion2_body3"
 msgstr ""
-"Then, once your account has been created, to make sure that you can see your "
-"tokens and wrapped tokens, you need to add the <strong>Flare</strong> ETH "
-"chain, and \"WFLR\" token."
+"Then, once your account has been created, to make sure that you can see your tokens and "
+"wrapped tokens, you need to add the <strong>Flare</strong> ETH chain, and \"WFLR\" token."
 
 #: strings.php:57
 msgid "faq_accordion2_body4"
@@ -271,8 +267,7 @@ msgstr "Add WFLR"
 #: strings.php:59
 msgid "faq_accordion2_body6"
 msgstr ""
-"You can also do the same for the <strong>Songbird</strong> ETH chain, and "
-"\"WSGB\" token."
+"You can also do the same for the <strong>Songbird</strong> ETH chain, and \"WSGB\" token."
 
 #: strings.php:60
 msgid "faq_accordion2_body7"
@@ -285,9 +280,8 @@ msgstr "Add WSGB"
 #: strings.php:62
 msgid "faq_accordion2_body9"
 msgstr ""
-"Please note that adding the tokens will only permit you to view them. To "
-"actually own WSGB or WFLR, you will need to buy some SGB or FLR from an "
-"exchange, and wrap them."
+"Please note that adding the tokens will only permit you to view them. To actually own WSGB or "
+"WFLR, you will need to buy some SGB or FLR from an exchange, and wrap them."
 
 #: strings.php:63
 msgid "faq_accordion3_title"
@@ -296,18 +290,16 @@ msgstr "How do I connect my Ledger device to my browser?"
 #: strings.php:64
 msgid "faq_accordion3_body1"
 msgstr ""
-"Assuming you already have an Ethereum account assigned to your "
-"<strong>Ledger</strong> device, you must first download Metamask on your "
-"browser, such as Chrome, Firefox, Edge, or Opera.<br>"
+"Assuming you already have an Ethereum account assigned to your <strong>Ledger</strong> device, "
+"you must first download Metamask on your browser, such as Chrome, Firefox, Edge, or Opera.<br>"
 
 #: strings.php:65
 msgid "faq_accordion3_body2"
 msgstr ""
-"Then, once the set up is completed, click on your account, and head down to "
-"\"Add Account or Hardware Wallet\". <br>Click on \"Hardware Wallet\", select "
-"Ledger from the given options, and make sure your <strong>Ledger</strong> "
-"device is connected to your computer. <br>Then, select the account that you "
-"would like to connect to, and accept the request on your <strong>Ledger</"
+"Then, once the set up is completed, click on your account, and head down to \"Add Account or "
+"Hardware Wallet\". <br>Click on \"Hardware Wallet\", select Ledger from the given options, and "
+"make sure your <strong>Ledger</strong> device is connected to your computer. <br>Then, select "
+"the account that you would like to connect to, and accept the request on your <strong>Ledger</"
 "strong> device. Your account should now be connected to Metamask."
 
 #: strings.php:66
@@ -317,9 +309,9 @@ msgstr "How can I wrap, delegate, or claim my Flare or Songbird tokens?"
 #: strings.php:67
 msgid "faq_accordion4_body1"
 msgstr ""
-"Decentralized applications (DApps) will allow you to wrap, delegate, or "
-"claim your <strong>Flare</strong> or <strong>Songbird</strong> tokens. Many "
-"DApps are available within the  Flare community, such as"
+"Decentralized applications (DApps) will allow you to wrap, delegate, or claim your "
+"<strong>Flare</strong> or <strong>Songbird</strong> tokens. Many DApps are available within "
+"the  Flare community, such as"
 
 #: strings.php:68
 msgid "faq_accordion4_body2"
@@ -355,8 +347,7 @@ msgstr "The staking functionality of the"
 
 #: strings.php:76
 msgid "dapp_metamask_title2"
-msgstr ""
-"is currently disabled for Browser Wallets. Sorry for the inconvenience!"
+msgstr "is currently disabled for Browser Wallets. Sorry for the inconvenience!"
 
 #: strings.php:77
 msgid "dapp_wallet_back"
@@ -457,14 +448,14 @@ msgstr "Claim"
 #: strings.php:101
 msgid "dapp_mabel_selectwallet1"
 msgstr ""
-"Hi! I'm Mabel. And, I'll be your virtual assistant to guide you, and help "
-"you unleash the value of your FLR and SGB tokens!"
+"Hi! I'm Mabel. And, I'll be your virtual assistant to guide you, and help you unleash the "
+"value of your FLR and SGB tokens!"
 
 #: strings.php:102
 msgid "dapp_mabel_selectwallet2"
 msgstr ""
-"First, choose a wallet! If you have a Ledger device, please choose Ledger. "
-"If your account is stored within"
+"First, choose a wallet! If you have a Ledger device, please choose Ledger. If your account is "
+"stored within"
 
 #: strings.php:103
 msgid "dapp_mabel_selectwallet3"
@@ -477,94 +468,87 @@ msgstr "option. More coming soon!"
 #: strings.php:105
 msgid "dapp_mabel_wrap1"
 msgstr ""
-"This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and "
-"WSGB respectively. This will allow you to delegate to an FTSO and earn "
-"passive income!"
+"This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB "
+"respectively. This will allow you to delegate to an FTSO and earn passive income!"
 
 #: strings.php:106
 msgid "dapp_mabel_wrap2"
 msgstr ""
-"First, choose if you would like to Wrap, or Unwrap your tokens by clicking "
-"on the top left button. Then, input the amount of tokens you would like to "
-"transfer. Don't forget to keep some FLR or SGB for gas fees!"
+"First, choose if you would like to Wrap, or Unwrap your tokens by clicking on the top left "
+"button. Then, input the amount of tokens you would like to transfer. Don't forget to keep some "
+"FLR or SGB for gas fees!"
 
 #: strings.php:107
 msgid "dapp_mabel_delegate1"
 msgstr ""
-"This is the 'Delegate' page, where you can delegate a percentage of your "
-"WFLR or WSGB to an FTSO and earn passive income!"
+"This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an "
+"FTSO and earn passive income!"
 
 #: strings.php:108
 msgid "dapp_mabel_delegate2"
 msgstr ""
-"First, choose an FTSO from the dropdown list. Then, enter the percentage you "
-"would like to delegate to that FTSO, either 50% or 100%!"
+"First, choose an FTSO from the dropdown list. Then, enter the percentage you would like to "
+"delegate to that FTSO, either 50% or 100%!"
 
 #: strings.php:109
 msgid "dapp_mabel_claim1"
 msgstr ""
-"This is the 'Rewards' page, where you can claim your FLR or SGB tokens that "
-"you have earned by delegating to an FTSO!"
+"This is the 'Rewards' page, where you can claim your FLR or SGB tokens that you have earned by "
+"delegating to an FTSO!"
 
 #: strings.php:110
 msgid "dapp_mabel_claim2"
 msgstr ""
-"If you have any rewards, one of the bottom buttons will become red and "
-"contain the amount of rewards you have earned. You only need to click it to "
-"begin the claiming process!"
+"If you have any rewards, one of the bottom buttons will become red and contain the amount of "
+"rewards you have earned. You only need to click it to begin the claiming process!"
 
 #: strings.php:111
 msgid "dapp_mabel_transfer1"
 msgstr ""
-"This is the 'Transfer' page, where you can transfer your FLR tokens from the "
-"C-Chain to the P-Chain, to enable you to stake to a validator node and earn "
-"passive income!"
+"This is the 'Transfer' page, where you can transfer your FLR tokens from the C-Chain to the P-"
+"Chain, to enable you to stake to a validator node and earn passive income!"
 
 #: strings.php:112
 msgid "dapp_mabel_transfer2"
 msgstr ""
-"First, choose if you would like to send your tokens from, or to the P-Chain "
-"by clicking on the arrow button. Then, input the amount of tokens you would "
-"like to transfer. Don't forget to keep some FLR for gas fees!"
+"First, choose if you would like to send your tokens from, or to the P-Chain by clicking on the "
+"arrow button. Then, input the amount of tokens you would like to transfer. Don't forget to "
+"keep some FLR for gas fees!"
 
 #: strings.php:113
 msgid "dapp_mabel_stake1"
 msgstr ""
-"This is the 'Stake' page, where you can stake your FLR tokens (at least "
-"50,000) to a validator node and earn passive income!"
+"This is the 'Stake' page, where you can stake your FLR tokens (at least 50,000) to a validator "
+"node and earn passive income!"
 
 #: strings.php:114
 msgid "dapp_mabel_stake2"
 msgstr ""
-"First, choose a validator from the dropdown list. Then, enter for how many "
-"days you would like to stake in the calendar, because your FLR will be "
-"locked until that date. Finally, enter the amount you would like to stake to "
-"that validator (at least 50,000)."
+"First, choose a validator from the dropdown list. Then, enter for how many days you would like "
+"to stake in the calendar, because your FLR will be locked until that date. Finally, enter the "
+"amount you would like to stake to that validator (at least 50,000)."
 
 #: strings.php:115
 msgid "dapp_mabel_claimstake1"
 msgstr ""
-"This is the 'Claim' page, where you can claim the FLR tokens that you have "
-"earned by staking to a validator node."
+"This is the 'Claim' page, where you can claim the FLR tokens that you have earned by staking "
+"to a validator node."
 
 #: strings.php:116
 msgid "dapp_mabel_claimstake2"
 msgstr ""
-"If you have any rewards, the bottom button will become red and contain the "
-"amount of rewards you have earned. You only need to click it to begin the "
-"claiming process!"
+"If you have any rewards, the bottom button will become red and contain the amount of rewards "
+"you have earned. You only need to click it to begin the claiming process!"
 
 #: strings.php:117
 msgid "dapp_mabel_metamask"
-msgstr ""
-"To use the FTSOCAN DApp's staking features, you must turn on eth_sign in "
-"Metamask."
+msgstr "To use the FTSOCAN DApp's staking features, you must turn on eth_sign in Metamask."
 
 #: strings.php:118
 msgid "dapp_mabel_ledger1"
 msgstr ""
-"Whoops! Your browser does not currently support Ledger Transport! You will "
-"need to use another wallet."
+"Whoops! Your browser does not currently support Ledger Transport! You will need to use another "
+"wallet."
 
 #: strings.php:119
 msgid "dapp_mabel_ledger2"
@@ -572,8 +556,7 @@ msgstr "Whoops! Looks like you do not have the"
 
 #: strings.php:120
 msgid "dapp_mabel_ledger3"
-msgstr ""
-"installed on your Ledger device! Please install it and come back again later!"
+msgstr "installed on your Ledger device! Please install it and come back again later!"
 
 #: strings.php:121
 msgid "dapp_mabel_connecting"
@@ -598,8 +581,7 @@ msgstr "You have insufficient funds!"
 #: strings.php:126
 msgid "dapp_mabel_transfer_error1"
 msgstr ""
-"You need to enter a valid amount of tokens: a number that is not greater "
-"than your balance."
+"You need to enter a valid amount of tokens: a number that is not greater than your balance."
 
 #: strings.php:127
 msgid "dapp_mabel_transfer_error2"
@@ -607,9 +589,7 @@ msgstr "The amount you have entered is not a number!"
 
 #: strings.php:128
 msgid "dapp_mabel_wrap_error1"
-msgstr ""
-"You need to enter a valid value: a number that is not greater than your "
-"balance."
+msgstr "You need to enter a valid value: a number that is not greater than your balance."
 
 #: strings.php:129
 msgid "dapp_mabel_wrap_error2"
@@ -626,8 +606,8 @@ msgstr "You do not have enough wrapped tokens!"
 #: strings.php:132
 msgid "dapp_mabel_delegate_error1"
 msgstr ""
-"It looks like you have already delegated 100% of your tokens! If you want to "
-"delegate to another FTSO, you will need to undelegate first!"
+"It looks like you have already delegated 100% of your tokens! If you want to delegate to "
+"another FTSO, you will need to undelegate first!"
 
 #: strings.php:133
 msgid "dapp_mabel_delegate_error2"
@@ -639,9 +619,7 @@ msgstr "You need to enter a valid value, either 50% or 100%."
 
 #: strings.php:135
 msgid "dapp_mabel_internet_error"
-msgstr ""
-"Your Internet connection is unstable! Please make sure you can access the "
-"Internet."
+msgstr "Your Internet connection is unstable! Please make sure you can access the Internet."
 
 #: strings.php:136
 msgid "dapp_popup_loading"
@@ -694,8 +672,8 @@ msgstr "V1 Bucket is Empty!"
 #: strings.php:148
 msgid "dapp_popup_v1empty2"
 msgstr ""
-"The V1 rewards bucket will be replenished shortly.<br /> Only V2 rewards "
-"will be claimed for now."
+"The V1 rewards bucket will be replenished shortly.<br /> Only V2 rewards will be claimed for "
+"now."
 
 #: strings.php:149
 msgid "dapp_popup_exportstatus"
@@ -740,8 +718,8 @@ msgstr "P-Address Invalid!"
 #: strings.php:159
 msgid "dapp_popup_bindpchain2"
 msgstr ""
-"Your P-Chain address is not bound to your C-Chain address! <br />If you do "
-"not bind them, you will not be able to stake. <br />Do you wish to bind them?"
+"Your P-Chain address is not bound to your C-Chain address! <br />If you do not bind them, you "
+"will not be able to stake. <br />Do you wish to bind them?"
 
 #: strings.php:160
 msgid "dapp_popup_metamask1"
@@ -754,8 +732,8 @@ msgstr "Would you like to install Metamask in your browser?"
 #: strings.php:162
 msgid "dapp_popup_validatorinvalid"
 msgstr ""
-"The validator you have selected is not currently stakeable. <br />Please "
-"select another validator."
+"The validator you have selected is not currently stakeable. <br />Please select another "
+"validator."
 
 #: strings.php:163
 msgid "dapp_popup_alreadydelegated1"
@@ -840,3 +818,23 @@ msgstr "Please open the"
 #: strings.php:183
 msgid "dapp_mabel_ledger5"
 msgstr "App on your Ledger device."
+
+#: strings.php:184
+msgid "dapp_open_app"
+msgstr "Open App"
+
+#: strings.php:185
+msgid "dapp_view_explorer"
+msgstr "View in Explorer"
+
+#: strings.php:186
+msgid "dapp_p_balance"
+msgstr "P-Balance"
+
+#: strings.php:187
+msgid "dapp_popup_signature"
+msgstr "Waiting for signature confirmation."
+
+#: strings.php:188
+msgid "dapp_metamask_signature"
+msgstr "Please sign this message in order to obtain the PUBLIC key associated with your account."

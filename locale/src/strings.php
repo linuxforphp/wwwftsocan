@@ -181,3 +181,8 @@ _("dapp_copied");
 _("dapp_processing");
 _("dapp_mabel_ledger4");
 _("dapp_mabel_ledger5");
+_("dapp_open_app");
+_("dapp_view_explorer");
+_("dapp_p_balance");
+_("dapp_popup_signature");
+_("dapp_metamask_signature");

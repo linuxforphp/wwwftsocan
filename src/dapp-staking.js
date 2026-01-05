@@ -6,7 +6,7 @@ import { walletConnectEVMParams } from "./dapp-globals.js";
 import { switchClaimButtonColor, switchClaimButtonColorBack, showClaimRewards } from "./dapp-claim.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
 
-export let message = "Please sign this message in order to obtain the PUBLIC key associated with your account.";
+export let message = dappStrings['dapp_metamask_signature'];
 
 export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
     DappObject.isHandlingOperation = true;

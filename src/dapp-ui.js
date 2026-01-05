@@ -12,7 +12,7 @@ export async function showSignatureSpinner() {
         backgroundDismiss: false,
         icon: '',
         title: `<lord-icon colors="primary:#34495e" style="width: 36px; height: 30px;" trigger="loop" delay="1100" src="${dappUrlBaseAddr}img/icons/wallet.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_loading'] + "</span>",
-        content: 'Waiting for signature confirmation.' + '<br />' + dappStrings['dapp_popup_checkwallet2'],
+        content: dappStrings['dapp_popup_signature'] + '<br />' + dappStrings['dapp_popup_checkwallet2'],
         theme: 'material',
         type: 'dark',
         typeAnimated: true,
