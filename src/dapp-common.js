@@ -1068,7 +1068,7 @@ window.dappInit = async (option, stakingOption) => {
                 clearTimeout(DappObject.latestPopupTimeoutId);
 
                 DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                    await setCurrentPopup(dappStrings['dapp_mabel_selectwallet2']  + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet3'] + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet4'], true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_selectwallet2']  + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet3'] + ' ' + DappObject.providerList[0].info.name + dappStrings['dapp_mabel_selectwallet4'], true);
                 }, 9000);
             } catch (error) {
                 // console.log(error);
