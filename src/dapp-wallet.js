@@ -422,23 +422,29 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
 
                 if (DappObject.signatureStaking === "") {
         
-                    let signSpinner = await showSignatureSpinner();
+                    if (DappObject.isPopupActive == false) {
+                        let signSpinner = await showSignatureSpinner();
 
-                    const signature = await DappObject.chosenEVMProvider.request({
-                        "method": "personal_sign",
-                        "params": [
-                            message,
-                            account
-                        ]
-                    }).catch((error) => async function() {
+                        const signature = await DappObject.chosenEVMProvider.request({
+                            "method": "personal_sign",
+                            "params": [
+                                message,
+                                account
+                            ]
+                        }).catch((error) => async function() {
+                            signSpinner.close();
+
+                            throw error;
+                        });
+
+                        DappObject.signatureStaking = signature;
+
+                        DappObject.isPopupActive = false;
+
                         signSpinner.close();
-
-                        throw error;
-                    });
-
-                    DappObject.signatureStaking = signature;
-
-                    signSpinner.close();
+                    } else {
+                        return;
+                    }
                 }
 
                 await setCurrentAppState("Connected");

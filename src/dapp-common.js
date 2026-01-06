@@ -46,6 +46,7 @@ window.DappObject = {
 	hasV2Rewards: false,
     hasFtsoRewards: false,
     metamaskInstalled: false,
+    isPopupActive: false,
     // Array that stores the latest reward epoch on all RewardManager contracts with null padding on index 0.
     rewardManagerData: [undefined],
     latestRewardEpochId: 0,

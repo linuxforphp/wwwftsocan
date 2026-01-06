@@ -7,6 +7,8 @@ import { RefreshStakingPage } from "./dapp-staking.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
 
 export async function showSignatureSpinner() {
+    DappObject.isPopupActive = true;
+
     let spinner = $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
@@ -310,7 +312,9 @@ export function showFailStake(DappObject, stakingOption) {
     });
 }
 
-export async function showBindPAddress(contract, web32, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
+export async function showBindPAddress(contract, contractAddr, web32, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
+    DappObject.isPopupActive = true;
+    
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
@@ -327,7 +331,7 @@ export async function showBindPAddress(contract, web32, address, publicKey, addr
                 action: async function () {
                     const transactionParameters = {
                         from: address,
-                        to: contract.options.address,
+                        to: contractAddr,
                         data: contract.methods.registerAddresses(publicKey, addressPchainEncoded, address).encodeABI(),
                     };
         

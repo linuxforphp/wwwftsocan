@@ -210,23 +210,29 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
     
                 if (DappObject.signatureStaking === "") {
     
-                    let signSpinner = await showSignatureSpinner();
-    
-                    const signature = await DappObject.chosenEVMProvider.request({
-                        "method": "personal_sign",
-                        "params": [
-                            message,
-                            account
-                        ]
-                    }).catch((error) => async function() {
+                    if (DappObject.isPopupActive == false) {
+                        let signSpinner = await showSignatureSpinner();
+        
+                        const signature = await DappObject.chosenEVMProvider.request({
+                            "method": "personal_sign",
+                            "params": [
+                                message,
+                                account
+                            ]
+                        }).catch((error) => async function() {
+                            signSpinner.close();
+        
+                            throw error;
+                        });
+        
+                        DappObject.signatureStaking = signature;
+                        
+                        DappObject.isPopupActive = false;
+        
                         signSpinner.close();
-    
-                        throw error;
-                    });
-    
-                    DappObject.signatureStaking = signature;
-    
-                    signSpinner.close();
+                    } else {
+                        return;
+                    }
                 }
     
                 await setCurrentAppState("Connected");
@@ -392,7 +398,13 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
                 DappObject.isHandlingOperation = false;
             } else {
-                await showBindPAddress(AddressBinderContract, web32, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
+                if (DappObject.isPopupActive == false) {
+                    await showBindPAddress(AddressBinderContract, addressBinderAddr, web32, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
+
+                    DappObject.isPopupActive = false;
+                } else {
+                    return;
+                }
             }
         } else {
             document.getElementById("ConnectPChain").removeEventListener("click", HandleClick);
