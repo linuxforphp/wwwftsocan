@@ -1015,6 +1015,8 @@ window.dappInit = async (option, stakingOption) => {
                 // Setup the Ledger App dropdown
                 DappObject.isAvax = false;
 
+                DappObject.isPopupActive = false;
+
                 await setupLedgerOption();
 
                 // Setup the CurrentAccount modal

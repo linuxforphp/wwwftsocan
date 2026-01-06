@@ -399,9 +399,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                 DappObject.isHandlingOperation = false;
             } else {
                 if (DappObject.isPopupActive == false) {
+                    DappObject.isPopupActive = true;
                     await showBindPAddress(AddressBinderContract, addressBinderAddr, web32, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
-
-                    DappObject.isPopupActive = false;
                 } else {
                     return;
                 }
