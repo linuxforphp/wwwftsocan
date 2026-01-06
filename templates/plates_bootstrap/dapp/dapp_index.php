@@ -269,6 +269,12 @@
         $('#accountStatus').toggleClass("clicked");
         $('#bottomNav').toggleClass("clicked");
     });
+
+    if (window.innerWidth > 480) {
+        $('#centerButton').addClass("clicked");
+        $('#accountStatus').addClass("clicked");
+        $('#bottomNav').addClass("clicked");
+    }
 </script>
 <script src="<?=$view['urlbaseaddr'] ?>js/buffer.min.js"></script>
 <script>
