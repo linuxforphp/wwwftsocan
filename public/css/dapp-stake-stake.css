@@ -2,6 +2,7 @@
     position: absolute;
     z-index: 100;
     width: auto;
+    max-width: 250px;
     outline: none;
     font-size: 2.4rem !important;
     padding: 20px;
@@ -20,6 +21,15 @@
     -moz-appearance: none;
     transition: 0.5s;
     letter-spacing: normal;
+    text-overflow: ellipsis;
+}
+
+#select-validator ~ .selectize-control .selectize-input span {
+    max-width: 200px;
+    width: 200px;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
 }
 
 .selectize-dropdown-content {
@@ -216,6 +226,11 @@ input[type="number"]::-webkit-outer-spin-button {
 @media only screen and (min-width: 0px) and (max-width: 480px) {
     .selectize-input {
         font-size: 2rem !important;
+    }
+
+    #select-validator ~ .selectize-control .selectize-input span {
+        max-width: 135px;
+        width: 135px;
     }
 
     .stake-calendar input {
