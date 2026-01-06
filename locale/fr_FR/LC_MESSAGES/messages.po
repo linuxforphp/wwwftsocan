@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: FTSOCAN\n"
 "Report-Msgid-Bugs-To: info@ftsocan.com\n"
 "POT-Creation-Date: 2025-06-29 19:30-0400\n"
-"PO-Revision-Date: 2026-01-05 18:52-0500\n"
+"PO-Revision-Date: 2026-01-05 20:09-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -320,7 +320,7 @@ msgstr ""
 msgid "faq_accordion4_title"
 msgstr "Comment wrapper, déléguer ou réclamer mes jetons Flare ou Songbird?"
 
-# Vous pouvez utiliser tout DApp de confiance ---
+# Vous pouvez utiliser toute DApp de confiance ---
 #: strings.php:67
 msgid "faq_accordion4_body1"
 msgstr ""
@@ -330,7 +330,7 @@ msgstr ""
 
 #: strings.php:68
 msgid "faq_accordion4_body2"
-msgstr "le DApp FTSOCAN"
+msgstr "la DApp FTSOCAN"
 
 #: strings.php:69
 msgid "faq_accordion4_body3"
@@ -338,7 +338,7 @@ msgstr "le Flare Portal"
 
 #: strings.php:70
 msgid "faq_accordion4_body4"
-msgstr ", qui est le DApp officiel de Flare Networks, ou"
+msgstr ", qui est la DApp officiel de Flare Networks, ou"
 
 #: strings.php:71
 msgid "faq_accordion4_body5"
@@ -480,7 +480,7 @@ msgstr ", veuillez choisir l'option"
 
 #: strings.php:104
 msgid "dapp_mabel_selectwallet4"
-msgstr "D'autres s'ajouteront bientôt!"
+msgstr ". D'autres s'ajouteront bientôt!"
 
 #: strings.php:105
 msgid "dapp_mabel_wrap1"
@@ -564,7 +564,7 @@ msgstr ""
 #: strings.php:117
 msgid "dapp_mabel_metamask"
 msgstr ""
-"Pour utiliser les fonctionnalités de jalonnement du DApp de FTSOCAN, vous devez activer "
+"Pour utiliser les fonctionnalités de jalonnement de la DApp de FTSOCAN, vous devez activer "
 "l'option eth_sign de Metamask."
 
 #: strings.php:118
@@ -847,7 +847,7 @@ msgstr "sur votre dispositif Ledger."
 
 #: strings.php:184
 msgid "dapp_open_app"
-msgstr "Ouvrir le DApp"
+msgstr "Ouvrir la DApp"
 
 #: strings.php:185
 msgid "dapp_view_explorer"
