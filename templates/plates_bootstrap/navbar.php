@@ -1,6 +1,7 @@
 <!-- preloader -->
 <div id="preloader">
     <div class="loader-box">
+        <img src="<?=$view['urlbaseaddr']?>img/Logo-Corporate-Red.svg" style="max-height: 37px; position: absolute; top: 22%; left: 28%;">
         <div id="se-pre-con"></div>
     </div>
 </div>

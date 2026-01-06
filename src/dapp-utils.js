@@ -1,4 +1,5 @@
 import { showConfirm, showConfirmStake, showFail, showFailStake, setCurrentAppState, setCurrentPopup } from "./dapp-ui.js";
+import { updateCurrentAccountStatus } from "./flare-utils.js";
 
 export function wait(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -135,8 +136,18 @@ export function showTokenIdentifiers(token, wrappedToken) {
     document.getElementById("wrappedTokenIdentifier").innerText = wrappedToken;
 }
 
-export function showConnectedAccountAddress(address) {
-    document.getElementById('AccountAddress').innerText = address;
+export function showConnectedAccountAddress(address, pAddress) {
+    if (typeof address !== "undefined") {
+        if (address !== "0x0") {
+            updateCurrentAccountStatus(address, null, true, pAddress);
+        }
+        
+        document.getElementById('AccountAddress').innerText = address;
+    } else {
+        if (DappObject.selectedAddress && DappObject.selectedAddress.startsWith("0x")) {
+            document.getElementById('AccountAddress').innerText = DappObject.selectedAddress;
+        }
+    }
 }
 
 // Function to remove by id or class name.

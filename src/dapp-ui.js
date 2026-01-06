@@ -6,13 +6,38 @@ import { claimRewards } from "./dapp-claim.js";
 import { RefreshStakingPage } from "./dapp-staking.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
 
+export async function showSignatureSpinner() {
+    DappObject.isPopupActive = true;
+
+    let spinner = $.confirm({
+        escapeKey: false,
+        backgroundDismiss: false,
+        icon: '',
+        title: `<lord-icon colors="primary:#34495e" style="width: 36px; height: 30px;" trigger="loop" delay="1100" src="${dappUrlBaseAddr}img/icons/wallet.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_loading'] + "</span>",
+        content: dappStrings['dapp_popup_signature'] + '<br />' + dappStrings['dapp_popup_checkwallet2'],
+        theme: 'material',
+        type: 'dark',
+        typeAnimated: true,
+        draggable: false,
+        buttons: {
+            ok: {
+                isHidden: true, // hide the button
+            },
+        },
+        onContentReady: async function () {
+        }
+    });
+
+    return spinner;
+}
+
 export async function showSpinner(doSomething) {
     return new Promise(async (resolve, reject) => {
         $.confirm({
             escapeKey: false,
             backgroundDismiss: false,
-            icon: 'fa fa-spinner fa-spin',
-            title: dappStrings['dapp_popup_loading'],
+            icon: '',
+            title: `<lord-icon colors="primary:#34495e" style="width: 36px; height: 30px;" trigger="loop" delay="1100" src="${dappUrlBaseAddr}img/icons/wallet.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_loading'] + "</span>",
             content: dappStrings['dapp_popup_checkwallet1'] + ' ' + '<br />' + dappStrings['dapp_popup_checkwallet2'],
             theme: 'material',
             type: 'dark',
@@ -24,7 +49,6 @@ export async function showSpinner(doSomething) {
                 },
             },
             onContentReady: async function () {
-                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 await doSomething();
                 resolve("Success");
                 this.close();
@@ -51,7 +75,6 @@ export async function showConfirmationSpinner(txHash, web32, object, DappObject,
             },
         },
         onContentReady: async function () {
-            this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             await checkTx(txHash, web32, this, object, DappObject, pageIndex);
         }
     });
@@ -76,9 +99,12 @@ export async function showConfirmationSpinnerv2(doSomething) {
                 },
             },
             onContentReady: async function () {
-                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
-                await doSomething(this);
-                resolve("Success");
+                try {
+                    await doSomething(this);
+                    resolve("Success");
+                } catch (error) {
+                    this.close();
+                }
             }
         });
     });
@@ -103,10 +129,9 @@ export async function showConfirmationSpinnerTransfer(doSomething) {
         },
         onContentReady: async function () {
             try {
-                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 await doSomething(this);
             } catch (error) {
-                this.close()
+                this.close();
             }
         }
     });
@@ -131,10 +156,9 @@ export async function showConfirmationSpinnerStake(doSomething) {
         },
         onContentReady: async function () {
             try {
-                this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
                 await doSomething(this);
             } catch (error) {
-                this.close()
+                this.close();
             }
         }
     });
@@ -144,8 +168,8 @@ export async function showConfirm(txHash, object, DappObject, pageIndex) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
-        icon: 'fa fa-solid fa-check green',
-        title: dappStrings['dapp_popup_txsuccess'],
+        icon: '',
+        title: `<lord-icon colors="primary:#2ecc71" state="in-reveal" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/check.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_txsuccess'] + "</span>",
         content: dappStrings['dapp_popup_txhash'] + ' <br />',
         type: 'green',
         theme: 'material',
@@ -153,12 +177,14 @@ export async function showConfirm(txHash, object, DappObject, pageIndex) {
         draggable: false,
         buttons: {
             ok: {
+                btnClass: 'btn-green',
                 action: function () {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, pageIndex, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                 },
             }
         },
         onContentReady: async function () {
+            haptic.confirm();
             this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             this.setContentAppend(txHash);
             this.showLoading(true);
@@ -171,8 +197,8 @@ export async function showConfirmStake(DappObject, stakingOption, txHashes) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
-        icon: 'fa fa-solid fa-check green',
-        title: dappStrings['dapp_popup_txsuccess'],
+        icon: '',
+        title: `<lord-icon colors="primary:#2ecc71" state="in-reveal" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/check.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_txsuccess'] + "</span>",
         content: '',
         type: 'green',
         theme: 'material',
@@ -180,12 +206,14 @@ export async function showConfirmStake(DappObject, stakingOption, txHashes) {
         draggable: false,
         buttons: {
             ok: {
+                btnClass: 'btn-green',
                 action: function () {
                     RefreshStakingPage(DappObject, stakingOption);
                 },
             }
         },
         onContentReady: async function () {
+            haptic.confirm();
             this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             for (let i = 0; i < txHashes.length; i++) {
                 this.setContentAppend(txHashes[i] + "<br />");
@@ -201,8 +229,8 @@ export function showEmptyBucket(object, DappObject, claimAmount) {
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
-        icon: 'fa fa-warning',
-        title: dappStrings['dapp_popup_v1empty1'],
+        icon: '',
+        title: `<lord-icon colors="primary:#34495e" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/warning.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_v1empty1'] + "</span>",
         content: dappStrings['dapp_popup_v1empty2'],
         type: 'dark',
         theme: 'material',
@@ -210,6 +238,7 @@ export function showEmptyBucket(object, DappObject, claimAmount) {
         draggable: false,
         buttons: {
             ok: {
+                btnClass: 'btn-dark',
                 action: function () {
                     claimRewards(object, DappObject, claimAmount);
                 },
@@ -227,8 +256,8 @@ export function showFail(object, DappObject, pageIndex, revertReason) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
-        icon: 'fa fa-warning red',
-        title: dappStrings['dapp_popup_txfail'],
+        icon: '',
+        title: `<lord-icon colors="primary:#e74c3c" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/error.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_txfail'] + "</span>",
         content: '<div id="revertReason"></div>',
         type: 'red',
         theme: 'material',
@@ -236,12 +265,14 @@ export function showFail(object, DappObject, pageIndex, revertReason) {
         draggable: false,
         buttons: {
             ok: {
+                btnClass: 'btn-red',
                 action: function () {
                     ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, pageIndex, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
                 },
             },
         },
         onContentReady: function () {
+            haptic.error();
             this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             this.showLoading(true);
             this.hideLoading(true);
@@ -257,8 +288,8 @@ export function showFailStake(DappObject, stakingOption) {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: true,
-        icon: 'fa fa-warning red',
-        title: dappStrings['dapp_popup_txfail'],
+        icon: '',
+        title: `<lord-icon colors="primary:#e74c3c" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/error.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_txfail'] + "</span>",
         content: '',
         type: 'red',
         theme: 'material',
@@ -266,12 +297,14 @@ export function showFailStake(DappObject, stakingOption) {
         draggable: false,
         buttons: {
             ok: {
+                btnClass: 'btn-red',
                 action: function () {
                     RefreshStakingPage(DappObject, stakingOption);
                 },
             },
         },
         onContentReady: function () {
+            haptic.error();
             this.buttons.ok.setText(dappStrings['dapp_popup_ok']);
             this.showLoading(true);
             this.hideLoading(true);
@@ -279,12 +312,14 @@ export function showFailStake(DappObject, stakingOption) {
     });
 }
 
-export async function showBindPAddress(contract, web32, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
+export async function showBindPAddress(contract, contractAddr, web32, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
+    DappObject.isPopupActive = true;
+    
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
-        icon: 'fa fa-warning',
-        title: dappStrings['dapp_popup_bindpchain1'],
+        icon: '',
+        title: `<lord-icon colors="primary:#f1c40f" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/warning.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_bindpchain1'] + "</span>",
         content: dappStrings['dapp_popup_bindpchain2'],
         type: 'orange',
         theme: 'material',
@@ -292,10 +327,11 @@ export async function showBindPAddress(contract, web32, address, publicKey, addr
         draggable: false,
         buttons: {
             yes: {
+                btnClass: 'btn-orange',
                 action: async function () {
                     const transactionParameters = {
                         from: address,
-                        to: contract.options.address,
+                        to: contractAddr,
                         data: contract.methods.registerAddresses(publicKey, addressPchainEncoded, address).encodeABI(),
                     };
         
@@ -335,8 +371,8 @@ export function downloadMetamask() {
     $.confirm({
         escapeKey: true,
         backgroundDismiss: false,
-        icon: 'fa fa-warning red',
-        title: dappStrings['dapp_popup_metamask1'],
+        icon: '',
+        title: `<lord-icon colors="primary:#e74c3c" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/warning.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_metamask1'] + "</span>",
         content: dappStrings['dapp_popup_metamask2'],
         type: 'red',
         theme: 'material',
@@ -368,8 +404,8 @@ export async function showValidatorInvalid(control, delegatedicon) {
         $.confirm({
             escapeKey: false,
             backgroundDismiss: false,
-            icon: 'fa fa-solid fa-flag red',
-            title: dappStrings['dapp_popup_loading'],
+            icon: '',
+            title: `<lord-icon colors="primary:#e74c3c" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/warning.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_loading'] + "</span>",
             content: dappStrings['dapp_popup_validatorinvalid'],
             theme: 'material',
             type: 'red',
@@ -377,6 +413,7 @@ export async function showValidatorInvalid(control, delegatedicon) {
             draggable: false,
             buttons: {
                 ok: {
+                    btnClass: 'btn-red',
                     action: function () {
                         control.clear();
                         delegatedicon.src = dappUrlBaseAddr + "img/FLR.svg";
@@ -396,8 +433,8 @@ export async function showAlreadyDelegated(DelegatedFtsos, object) {
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
-        icon: 'fa fa-solid fa-flag red',
-        title: dappStrings['dapp_popup_alreadydelegated1'],
+        icon: '',
+        title: `<lord-icon colors="primary:#e74c3c" trigger="in" delay="200" src="${dappUrlBaseAddr}img/icons/warning.json"></lord-icon>` + "<span>" + dappStrings['dapp_popup_alreadydelegated1'] + "</span>",
         content: dappStrings['dapp_popup_alreadydelegated2'] + " ",
         type: 'red',
         theme: 'material',
@@ -429,7 +466,7 @@ export async function showAlreadyDelegated(DelegatedFtsos, object) {
 }
 
 export async function setCurrentAppState(state) {
-    const currentWallet = document.getElementById("currentWallet");
+    const currentWallets = document.querySelectorAll('.current-wallet');
 
     const appLogo = document.getElementById("appLogo");
 
@@ -456,29 +493,37 @@ export async function setCurrentAppState(state) {
 
     switch (state) {
         case "Null":
-            currentWallet.classList.remove("ring");
-            currentWallet.classList.add("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("ring");
+                element.classList.add("paused");
+            });
 
             walletNotification.style.backgroundColor = "#aaa";
             walletNotification.style.border = "3px solid #dadada";
             break
         case "Alert":
-            currentWallet.classList.add("ring");
-            currentWallet.classList.remove("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("paused");
+                element.classList.add("ring");
+            });
 
             walletNotification.style.backgroundColor = "#f45f58";
             walletNotification.style.border = "3px solid #ff9994";
             break
         case "Connecting":
-            currentWallet.classList.add("ring");
-            currentWallet.classList.remove("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("paused");
+                element.classList.add("ring");
+            });
 
             walletNotification.style.backgroundColor = "#f9be2f";
             walletNotification.style.border = "3px solid #ffe5a7";
             break
         case "Connected":
-            currentWallet.classList.remove("ring");
-            currentWallet.classList.add("paused");
+            currentWallets.forEach(element => {
+                element.classList.remove("ring");
+                element.classList.add("paused");
+            });
 
             walletNotification.style.backgroundColor = "#42ca40";
             walletNotification.style.border = "3px solid #8fe18e";
@@ -486,9 +531,17 @@ export async function setCurrentAppState(state) {
     }
 }
 
+export async function togglePopup(event) {
+    if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
+        return;
+    }
+
+    document.getElementById("currentWalletPopup")?.classList.toggle("showing");
+}
+
 
 export async function setCurrentPopup(message, open) {
-    document.getElementById("currentWalletPopup").classList.remove("showing");
+    document.getElementById("currentWalletPopup")?.classList.remove("showing");
 
     clearTimeout(DappObject.latestPopupTimeoutId);
 
@@ -496,7 +549,7 @@ export async function setCurrentPopup(message, open) {
         if ((navigator.maxTouchPoints & 0xFF) === 0) {
             await wait(1000);
 
-            document.getElementById("currentWalletPopup").classList.add("showing");
+            document.getElementById("currentWalletPopup")?.classList.add("showing");
         }
     }
 
@@ -504,7 +557,7 @@ export async function setCurrentPopup(message, open) {
 }
 
 export function closeCurrentPopup() {
-    document.getElementById("currentWalletPopup").classList.remove("showing");
+    document.getElementById("currentWalletPopup")?.classList.remove("showing");
 }
 
 export async function setupLedgerOption() {
@@ -543,11 +596,8 @@ export async function setupLedgerOption() {
             dropdownParent: "body",
         });
     } else {
-        document.getElementById("metamaskOption").classList.remove("col-md-4");
-        document.getElementById("metamaskOption").classList.add("col-md-6");
-
-        document.getElementById("walletConnectOption").classList.remove("col-md-4");
-        document.getElementById("walletConnectOption").classList.add("col-md-6");
+        document.getElementById("cryptoComOption").classList.remove("col-md-6");
+        document.getElementById("cryptoComOption").classList.remove("col-md-12");
 
         document.getElementById("ledgerOption").style.display = "none";
     }

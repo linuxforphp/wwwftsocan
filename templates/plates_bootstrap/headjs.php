@@ -14,6 +14,10 @@
 
     <link rel="apple-touch-icon" href="<?=$view['urlbaseaddr'] ?>apple-touch-icon.png">
 
+    <meta name="color-scheme" content="light"/>
+    <!-- Theme color for light mode -->
+    <meta name="theme-color" content="#d2200f" media="(prefers-color-scheme: light)">
+
     <title><?=$view['title'] ?></title>
 
     <!-- CSS
@@ -40,7 +44,8 @@
     <!-- slit-slider.css -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/slit-slider.css">
     <!-- animate.css -->
-    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/odometer-theme-minimal.css">
+    <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/animate.compat.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="<?=$view['urlbaseaddr'] ?>css/main.css">
 
@@ -56,6 +61,9 @@
         // Required by some npm packages
         window.process = { browser: true, env: { ENVIRONMENT: 'BROWSER' } };
     </script>
+
+    <!-- Animated icons -->
+    <script src="<?=$view['urlbaseaddr'] ?>js/lordicon.js"></script>
 
     <script src="<?=$view['urlbaseaddr'] ?>js/navbar.js"></script>
 

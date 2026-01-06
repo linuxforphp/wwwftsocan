@@ -19,16 +19,15 @@
     position: relative;
     height: auto;
     width: 45%;
-    padding: 20px;
 }
 
 .connect-wallet.claim-button {
     float: right;
-    margin: 15px;
+    margin: 10px 15px 15px;
     background-color: rgba(143, 143, 143, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    padding: 7px;
+    padding: 5px;
     width: 100%;
 }
 
@@ -224,7 +223,7 @@
     }
 
     .wrap-box-ftso {
-        margin: 5px;
+        margin: 5px 10px 10px;
     }
 
     .delegated-icon {
@@ -241,6 +240,8 @@
 
     .wrapper-ftso {
         width: 10%;
+        margin-right: 55px;
+        margin-top: 27px;
     }
 
     .wrapper-claim {
@@ -248,7 +249,12 @@
     }
 
     .address-claim {
-        font-size: 8px;
+        display: inline-block;
+        width: 50%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-top: 5px;
+        height: 17px;
     }
 
     #TokenBalance {
@@ -268,8 +274,12 @@
         max-width: 179px;
         margin: auto;
         margin-top: 5px;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
         padding: 15px 20px;
+    }
+
+    .connect-wallet.claim-button {
+        margin: 10px 15px 2px !important;
     }
 
     .rewards {

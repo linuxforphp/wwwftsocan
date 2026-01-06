@@ -25,8 +25,21 @@
                     <img src="<?=$view['urlbaseaddr']?>img/logo-dark-2.svg"/>
                     <div class="h1">
                         FTSO Canada<br />
-                        <span class="lead"><?=_("index_lead")?></span>
                     </div>
+                    <span class="lead"><?=_("index_lead")?></span>
+                    <br />
+                    <button id="dappButton" style="background-color: rgba(253, 0, 15, 0.9);" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')" class="connect-wallet hero-btn">
+                        <i class="connect-wallet-text" style="font-weight: 500; vertical-align: text-top; padding-left: 5px;"><?=_("dapp_open_app")?> 
+                        </i>
+                        <lord-icon
+                                src="<?=$view['urlbaseaddr']?>img/icons/arrow.json"
+                                colors="primary:#ffffff"
+                                trigger="hover"
+                                target="#dappButton"
+                                state="hover-slide"
+                                style="width:22px;height:22px;top:5px;left:2px;">
+                        </lord-icon>
+                    </button>
                 </div>
             </div>
         </div>
@@ -87,7 +100,7 @@
 
                     <div class="sec-title text-center dark wow animated fadeInDown">
                         <h2><?=_("index_followus")?></h2>
-                        <p><?=_("index_invitation")?></p>
+                        <p style="padding: 0 20px;"><?=_("index_invitation")?></p>
                     </div>
 
                     <ul class="social-button">

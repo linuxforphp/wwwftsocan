@@ -789,10 +789,10 @@ export function switchClaimFdButtonColorBack() {
 
 // Show current rewards.
 export function showClaimRewards(rewards) {
-    document.getElementById('ClaimButtonText').innerText = rewards == 0 ? '0' : rewards;
+    document.getElementById('ClaimButtonText').innerHTML = rewards == 0 ? '0' : rewards;
 }
 
 // Show current rewards.
 export function showFdRewards(rewards) {
-    document.getElementById('ClaimFdButtonText').innerText = rewards == 0 ? '0' : rewards;
+    document.getElementById('ClaimFdButtonText').innerHTML = rewards == 0 ? '0' : rewards;
 }

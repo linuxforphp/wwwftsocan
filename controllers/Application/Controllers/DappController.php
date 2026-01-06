@@ -233,7 +233,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappwrap'] = 1;
 
-        $this->view['templatefile'] = 'dapp_index';
+        $this->view['templatefile'] = 'dapp/dapp_index';
 
         return $this->view;
     }
@@ -288,7 +288,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappwrap'] = 1;
 
-        $this->view['templatefile'] = 'dapp_wrap';
+        $this->view['templatefile'] = 'dapp/dapp_wrap';
 
         return $this->view;
     }
@@ -343,7 +343,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappdelegate'] = 1;
 
-        $this->view['templatefile'] = 'dapp_delegate';
+        $this->view['templatefile'] = 'dapp/dapp_delegate';
 
         return $this->view;
     }
@@ -398,7 +398,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappclaim'] = 1;
 
-        $this->view['templatefile'] = 'dapp_claim';
+        $this->view['templatefile'] = 'dapp/dapp_claim';
 
         return $this->view;
     }
@@ -455,7 +455,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_wallet';
+        $this->view['templatefile'] = 'dapp/dapp_wallet';
 
         return $this->view;
     }
@@ -512,7 +512,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_stake_transfer';
+        $this->view['templatefile'] = 'dapp/dapp_stake_transfer';
 
         return $this->view;
     }
@@ -569,7 +569,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_stake_stake';
+        $this->view['templatefile'] = 'dapp/dapp_stake_stake';
 
         return $this->view;
     }
@@ -626,7 +626,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_stake_rewards';
+        $this->view['templatefile'] = 'dapp/dapp_stake_rewards';
 
         return $this->view;
     }
@@ -683,7 +683,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_wallet_metamask';
+        $this->view['templatefile'] = 'dapp/dapp_wallet_metamask';
 
         return $this->view;
     }
@@ -740,7 +740,7 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['dappstake'] = 1;
 
-        $this->view['templatefile'] = 'dapp_wallet_ledger';
+        $this->view['templatefile'] = 'dapp/dapp_wallet_ledger';
 
         return $this->view;
     }

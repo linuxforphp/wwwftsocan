@@ -83,11 +83,35 @@
             url = 'https://metamask.io/download/';
 
             window.open(url, '_blank').focus();
+        } else if (option === 6) {
+            url = 'https://portal.flare.network/staking';
+
+            window.open(url, '_blank').focus();
         }
     }
 
     function getDappPage(option, reconnect = true) {
-            if (option === 4) {
+        if (window.dappTranslatedOption && (window.dappTranslatedOption == option)) {
+            return;
+        }
+
+        if (window.innerWidth <= 480) {
+            document.getElementById("dappContainer").style.setProperty('--animate-duration', '0.15s');
+
+            document.getElementById("dappContainer").classList.add("slideOutLeft");
+
+            document.getElementById("dappContainer").addEventListener('animationend', () => {
+                openDappPage(option, reconnect);
+            }, { once: true });
+        } else {
+            openDappPage(option, reconnect);
+        }
+    }
+
+    function openDappPage(option, reconnect) {
+        window.dappTranslatedOption = option;
+
+        if (option === 4) {
                 $.get( "wallet", function( data ) {
                     $( "#dapp-root" ).html( data );
 
@@ -188,12 +212,18 @@
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui-timepicker-addon.min.js"></script>
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-ui-timepicker-fr.js"></script>
 
+<!-- Custom counter -->
+<script src="<?=$view['urlbaseaddr'] ?>js/odometer.min.js"></script>
+
 <!-- Custom alert box -->
 <script src="<?=$view['urlbaseaddr'] ?>js/jquery-confirm.min.js"></script>
 
 <!-- Custom select box -->
 <script src="<?=$view['urlbaseaddr'] ?>js/selectize.js"></script>
 <script src="<?=$view['urlbaseaddr'] ?>js/selectize.min.js"></script>
+
+<!-- Haptics -->
+<script src="<?=$view['urlbaseaddr'] ?>js/ios-haptics.js"></script>
 
 <!-- Modernizer Script for old Browsers -->
 <script src="<?=$view['urlbaseaddr'] ?>js/modernizr-2.6.2.min.js"></script>

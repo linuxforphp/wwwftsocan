@@ -1,15 +1,15 @@
 // Copyright 2024, Andrew Caya <andrewscaya@yahoo.ca>
 // Copyright 2024, Jean-Thomas Caya
 
-import { GetContract, FlareAbis, FlareLogos } from "./flare-utils";
+import { GetContract, FlareAbis, FlareLogos, updateCurrentAccountStatus, updateCurrentBalancesStatus } from "./flare-utils";
 import { wait, checkConnection, showTokenIdentifiers, resetDappObjectState } from "./dapp-utils.js";
-import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption } from "./dapp-ui.js";
+import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption, togglePopup } from "./dapp-ui.js";
 import { injectedProviderDropdown, walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
 import { handleAccountsChanged, handleChainChanged, handleChainChangedStake, ConnectWalletClick } from "./dapp-wallet.js";
 import { toggleWrapButton, setWrapButton, copyWrapInput, wrapTokens } from "./dapp-wrap.js";
-import { getDelegatedBips, isDelegateInput1, delegate } from "./dapp-delegate.js";
+import { getDelegatedBips, isDelegateInput1, delegate, populateFtsos } from "./dapp-delegate.js";
 import { claimRewards, claimFdRewards } from "./dapp-claim.js";
-import { ConnectPChainClickStake, toggleTransferButton, setTransferButton, setTransferButton2, copyTransferInput, transferTokens, stake, claimStakingRewards } from "./dapp-staking.js";
+import { ConnectPChainClickStake, toggleTransferButton, setTransferButton, setTransferButton2, copyTransferInput, transferTokens, stake, claimStakingRewards, populateValidators } from "./dapp-staking.js";
 import { handleTransportConnect } from "./dapp-ledger.js";
 
 // ALL MODULES.
@@ -46,6 +46,7 @@ window.DappObject = {
 	hasV2Rewards: false,
     hasFtsoRewards: false,
     metamaskInstalled: false,
+    isPopupActive: false,
     // Array that stores the latest reward epoch on all RewardManager contracts with null padding on index 0.
     rewardManagerData: [undefined],
     latestRewardEpochId: 0,
@@ -55,8 +56,10 @@ window.DappObject = {
     signatureStaking: "",
     // Injected Providers
     providerList: [],
+    browserWalletLogo: '',
     // Ledger Variables
     unPrefixedAddr: "",
+    publicKey: "",
     ledgerAddrArray: [],
     ledgerSelectedIndex: "",
     isAvax: true,
@@ -67,6 +70,12 @@ window.DappObject = {
     selectedDateTime: "",
     StakeMaxDate: "",
     StakeMinDate: "",
+}
+
+window.cachedValues = {
+    balance: "",
+    tokenBalance: "",
+    pBalance: "",
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -220,6 +229,8 @@ function setInjectedInfo(info, provider) {
         document.getElementById("injectedProviderName").innerText = info.name;
 
         document.getElementById("injectedProviderIcon").innerHTML = `<img src="${info.icon}" alt="${info.name}" />`;
+
+        DappObject.browserWalletLogo = `<img src="${info.icon}" alt="${info.name}" />`;
     }
 }
 
@@ -333,6 +344,26 @@ async function eip6963Listener(event) {
 // INIT
 
 window.dappInit = async (option, stakingOption) => {
+    window.dappOption = option;
+
+    window.dappStakingOption = stakingOption;
+
+    const dappContainer = document.getElementById("dappContainer");
+
+    dappContainer.style.display = "inline-block";
+
+    if (window.innerWidth <= 480) {
+        dappContainer.style.setProperty('--animate-duration', '0.2s');
+
+        dappContainer.classList.remove("slideOutLeft");
+        dappContainer.classList.add("slideInRight");
+
+        dappContainer.addEventListener('animationend', () => {
+            dappContainer.classList.remove("slideInRight");
+        }, { once: true });
+    } else {
+        dappContainer.classList.add("slideInUp");
+    }
 
     closeCurrentPopup();
 
@@ -342,30 +373,50 @@ window.dappInit = async (option, stakingOption) => {
         $.timepicker.setDefaults($.timepicker.regional['fr']);
     }
 
+    new Odometer({el: document.getElementById("balanceInfo"), value: 0, format: odometerFormat});
+    new Odometer({el: document.getElementById("wnatInfo"), value: 0, format: odometerFormat});
+    new Odometer({el: document.getElementById("pBalanceInfo"), value: 0, format: odometerFormat});
+
     // Removes the navbar's staking option for Browser Wallets
 
-    if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 1) {
-        document.getElementById("navbar-stake-item").style.display = "none";
+    // if (DappObject.walletIndex !== -1 && DappObject.walletIndex !== 1) {
+    //     document.getElementById("navbar-stake-item").style.display = "none";
+    // } else {
+    //     document.getElementById("navbar-stake-item").style.display = "block";
+    // }
+
+    document.getElementById("currentWallet")?.addEventListener("click", togglePopup);
+
+    $("#wrapTab").off();
+    $("#delegateTab").off();
+    $("#rewardsTab").off();
+    $("#stakeTab").off();
+
+    if (option == 4 && (stakingOption == undefined || stakingOption == 4 || stakingOption == 5)) {
+        // Do nothing;    
     } else {
-        document.getElementById("navbar-stake-item").style.display = "block";
+        document.getElementById("wrapTab")?.classList.remove("disabled");
+        document.getElementById("delegateTab")?.classList.remove("disabled");
+        document.getElementById("rewardsTab")?.classList.remove("disabled");
+        document.getElementById("stakeTab")?.classList.remove("disabled");
+
+       $("#wrapTab")?.on("click", function () {
+            getDappPage(1);
+        });
+        $("#delegateTab")?.on("click", function () {
+            getDappPage(2);
+        });
+        $("#rewardsTab")?.on("click", function () {
+            getDappPage(3);
+        });
+        $("#stakeTab")?.on("click", function () {
+            getDappPage(5);
+        });
     }
-
-    document.getElementById("currentWallet")?.addEventListener("click", (event) => {
-
-        if (event.target === document.getElementById("currentWalletPopup") || event.target === document.getElementById("currentWalletPopupText")) {
-            return;
-        }
-
-        document.getElementById("currentWalletPopup").classList.toggle("showing");
-    });
 
     clearTimeout(DappObject.latestPopupTimeoutId);
 
     checkConnection();
-
-    window.dappOption = option;
-
-    window.dappStakingOption = stakingOption;
 
     if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
         window.chosenNavigator = navigator.usb;
@@ -398,6 +449,12 @@ window.dappInit = async (option, stakingOption) => {
     }
 
     if (option === 1 || option === '1') {
+        // WRAP PAGE
+        document.getElementById("wrapTab")?.classList.add("selected");
+        document.getElementById("delegateTab")?.classList.remove("selected");
+        document.getElementById("rewardsTab")?.classList.remove("selected");
+        document.getElementById("stakeTab")?.classList.remove("selected");
+
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let chainidhex;
         let rpcUrl;
@@ -409,6 +466,12 @@ window.dappInit = async (option, stakingOption) => {
         var toIcon = document.getElementById("ToIcon");
         document.getElementById("layer2").innerHTML = DappObject.flrLogo;
         document.getElementById("layer3").innerHTML = DappObject.flrLogo;
+
+        let balanceElement = document.getElementById("Balance");
+        let tokenBalanceElement = document.getElementById("TokenBalance");
+
+        new Odometer({el: balanceElement, value: 0, format: odometerFormat});
+        new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
 
         await createSelectedNetwork(DappObject).then( async () => {
             getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
@@ -555,6 +618,12 @@ window.dappInit = async (option, stakingOption) => {
             });
         });
     } else if (option === 2 || option === '2') {
+        // DELEGATE PAGE
+        document.getElementById("wrapTab")?.classList.remove("selected");
+        document.getElementById("delegateTab")?.classList.add("selected");
+        document.getElementById("rewardsTab")?.classList.remove("selected");
+        document.getElementById("stakeTab")?.classList.remove("selected");
+
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let rpcUrl;
         let chainidhex;
@@ -720,9 +789,21 @@ window.dappInit = async (option, stakingOption) => {
                         });
                     }
                 }
+
+                await populateFtsos(object.rpcUrl, object.flrAddr);
             });
         });
     } else if (option === 3 || option === '3') {
+        // REWARDS PAGE
+        document.getElementById("wrapTab")?.classList.remove("selected");
+        document.getElementById("delegateTab")?.classList.remove("selected");
+        document.getElementById("rewardsTab")?.classList.add("selected");
+        document.getElementById("stakeTab")?.classList.remove("selected");
+
+        let tokenBalanceElement = document.getElementById("TokenBalance");
+
+        new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
+
         let selectedNetwork = document.getElementById("SelectedNetwork");
         let chainidhex;
         let rpcUrl;
@@ -904,6 +985,18 @@ window.dappInit = async (option, stakingOption) => {
         var handleClick;
 
         if (typeof stakingOption === 'undefined') {
+            // SELECT WALLET PAGE
+
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.remove("selected");
+
+            document.getElementById("wrapTab")?.classList.add("disabled");
+            document.getElementById("delegateTab")?.classList.add("disabled");
+            document.getElementById("rewardsTab")?.classList.add("disabled");
+            document.getElementById("stakeTab")?.classList.add("disabled");
+
             try {
                 // Network is Flare by default.
                 DappObject.selectedNetworkIndex = 1;
@@ -918,6 +1011,11 @@ window.dappInit = async (option, stakingOption) => {
                 DappObject.isAvax = false;
 
                 await setupLedgerOption();
+
+                // Setup the CurrentAccount modal
+
+                updateCurrentAccountStatus("0x00000000", DappObject.selectedNetworkIndex, false, -1, "P-000000000000");
+                updateCurrentBalancesStatus(0, 0, 0);
 
                 // Reset the injected Provider settings
                 injectedProviderDropdown = undefined;
@@ -940,19 +1038,24 @@ window.dappInit = async (option, stakingOption) => {
                 DappObject.walletIndex = -1;
 
                 document.getElementById("ContinueMetamask")?.addEventListener("click", async () => {
-                    getDappPage(8);
+                    document.cookie = "ftsocan_browser-wallet=true;";
+                    DappObject.walletIndex = 0;
+                    updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
+                    getDappPage(1);
                 });
                 document.getElementById("ContinueLedger")?.addEventListener("click", async () => {
                     getDappPage(9);
                 });
                 document.getElementById("ContinueWalletConnect")?.addEventListener("click", async () => {
                     DappObject.walletIndex = 2;
+                    updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                     DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
                     getDappPage(1);
                 });
 
                 document.getElementById("ContinueCryptoCom")?.addEventListener("click", async () => {
                     DappObject.walletIndex = 3;
+                    updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                     await cryptoComConnector.activate();
                     DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
                     getDappPage(1);
@@ -965,36 +1068,35 @@ window.dappInit = async (option, stakingOption) => {
                 clearTimeout(DappObject.latestPopupTimeoutId);
 
                 DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                    await setCurrentPopup(dappStrings['dapp_mabel_selectwallet2']  + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet3'] + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet4'], true);
+                    await setCurrentPopup(dappStrings['dapp_mabel_selectwallet2']  + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet3'] + ' ' + DappObject.providerList[0].info.name + dappStrings['dapp_mabel_selectwallet4'], true);
                 }, 9000);
             } catch (error) {
                 // console.log(error);
             }
         } else if (stakingOption === 4) {
-            //Metamask
-            DappObject.isAccountConnected = true;
+            // //Metamask
+            // DappObject.isAccountConnected = true;
 
-            await setCurrentAppState("Null");
+            // await setCurrentAppState("Null");
 
-            document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
-                document.cookie = "ftsocan_browser-wallet=true;";
-                DappObject.walletIndex = 0;
-                getDappPage(1);
-            });
+            // document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
 
-            document.getElementById("GoBack")?.addEventListener("click", async () => {
-                getDappPage(4);
-            });
+            // });
 
-            await setCurrentPopup(dappStrings['dapp_mabel_metamask'], true);
+            // document.getElementById("GoBack")?.addEventListener("click", async () => {
+            //     getDappPage(4);
+            // });
+
+            // await setCurrentPopup(dappStrings['dapp_mabel_metamask'], true);
         } else if (stakingOption === 5) {
-            //Ledger
+            // LEDGER PAGE
+
             DappObject.isAccountConnected = true;
 
             await setCurrentAppState("Null");
 
             if (!("usb" in navigator) && !("hid" in navigator)) {
-                document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> ' + dappStrings['dapp_wallet_warning'] + '</span></div></div><div class="row"><div class="col-md-12"><span style="font-size: 12px;">' + dappStrings['dapp_mabel_ledger1'] + '</span></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">' + dappStrings['dapp_wallet_back'] + '</i></button></div></div>';
+                document.getElementById("ledgerContent").innerHTML = '<div class="top"><div class="wrap-box" style="height: auto !important; text-align: center !important; padding: 20px !important;"><div class="row"><div class="col-md-12"><span style="color: #383a3b; font-size: 25px; font-weight: bold;"><span class="fa fa-warning"></span> ' + dappStrings['dapp_wallet_warning'] + '</span></div></div><div class="row"><div class="col-md-12"><div style="font-size: 12px; width:100%; white-space: pre-wrap;">' + dappStrings['dapp_mabel_ledger1'] + '</div></div></div></div></div><div class="row"><div class="col-sm-12"><button id="GoBack" class="connect-wallet" style="float: none; margin-left: auto; margin-right: auto;"><i class="connect-wallet-text" id="ConnectWalletText">' + dappStrings['dapp_wallet_back'] + '</i></button></div></div>';
 
                 await setCurrentPopup(dappStrings['dapp_mabel_ledger1'], true);
             } else {
@@ -1028,6 +1130,7 @@ window.dappInit = async (option, stakingOption) => {
                             document.getElementById("ContinueAnyway")?.addEventListener("click", async () => {
                                 document.cookie = "ftsocan_browser-wallet=false;";
                                 DappObject.walletIndex = 1;
+                                updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                                 getDappPage(1);
                             });
                             break
@@ -1052,6 +1155,18 @@ window.dappInit = async (option, stakingOption) => {
                 getDappPage(4);
             });
         } else if (stakingOption === 1) {
+            // TRANSFER PAGE
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.add("selected");
+
+            let balanceElement = document.getElementById("Balance");
+            let tokenBalanceElement = document.getElementById("TokenBalance");
+
+            new Odometer({el: balanceElement, value: 0, format: odometerFormat});
+            new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
+
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
@@ -1079,6 +1194,11 @@ window.dappInit = async (option, stakingOption) => {
                 transferTokens(DappObject, stakingOption);
             });
         } else if (stakingOption === 2) {
+            // STAKE PAGE
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.add("selected");
 
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
@@ -1095,7 +1215,23 @@ window.dappInit = async (option, stakingOption) => {
                     stake(DappObject, stakingOption);
                 }
             });
+
+            try {                 
+                await populateValidators();
+            } catch (error) {
+                // console.log(error);
+            }
         } else if (stakingOption === 3) {
+            // STAKE REWARDS PAGE
+            document.getElementById("wrapTab")?.classList.remove("selected");
+            document.getElementById("delegateTab")?.classList.remove("selected");
+            document.getElementById("rewardsTab")?.classList.remove("selected");
+            document.getElementById("stakeTab")?.classList.add("selected");
+
+            let tokenBalanceElement = document.getElementById("TokenBalance");
+
+            new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
+
             document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
                 ConnectPChainClickStake(DappObject, handleClick);
             });
@@ -1121,4 +1257,16 @@ window.dappInit = async (option, stakingOption) => {
             });
         }
     }
+
+    document.querySelectorAll(".odometer").forEach(odometer => {
+        odometer.addEventListener('odometerdone', function(){
+            document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+                if (dappLanguage === "fr_FR") {
+                    element.innerText = ",";
+                } else {
+                    element.innerText = ".";
+                }
+            });
+        });
+    });
 };

@@ -1,6 +1,7 @@
 <!-- preloader -->
 <div id="preloader">
     <div class="loader-box">
+        <img src="<?=$view['urlbaseaddr']?>img/Logo-Corporate-Red.svg" style="max-height: 37px; position: absolute; top: 22%; left: 28%;">
         <div id="se-pre-con"></div>
     </div>
 </div>
@@ -20,6 +21,8 @@ Fixed Navigation
                 <span class="icon-bar"></span>
             </button>
             <!-- /responsive nav button -->
+
+            <button class="connect-wallet select-wallet-nav" onclick="getDappPage(4)"><i class="connect-wallet-text"><?=_("select_wallet")?></i></button>
 
             <!-- logo -->
             <h1 class="navbar-brand">

@@ -107,6 +107,7 @@ button.faq-accordion:hover::after {
 button.faq-accordion strong {
     transition: 1s;
     z-index: 100;
+    font-weight: 500;
 }
 
 button.faq-accordion:hover {
