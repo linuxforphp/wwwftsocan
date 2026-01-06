@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-            <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text" id="ConnectWalletText"><?=_("dapp_view_explorer")?></i></button>
+            <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text"><?=_("dapp_view_explorer")?></i></button>
             <div class="balances">
                 <div class="col-md-12">
                     <div class="row">
