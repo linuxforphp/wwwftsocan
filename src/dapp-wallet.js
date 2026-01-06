@@ -550,6 +550,10 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                     } else if (pageIndex === 1) {
                         let delegatedIcon1 = document.getElementById("delegatedIcon1");
                         delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+
+                        if (window.cachedValues.delegateDropdown !== undefined) {
+                            window.cachedValues.delegateDropdown.clear();
+                        }
         
                         await isDelegateInput1(DappObject);
 

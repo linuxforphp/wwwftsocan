@@ -76,6 +76,7 @@ window.cachedValues = {
     balance: "",
     tokenBalance: "",
     pBalance: "",
+    delegateDropdown: undefined,
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -720,6 +721,10 @@ window.dappInit = async (option, stakingOption) => {
                 }
 
                 await isDelegateInput1(DappObject);
+
+                if (window.cachedValues.delegateDropdown !== undefined) {
+                    window.cachedValues.delegateDropdown.clear();
+                }
 
                 selectedNetwork.onchange = async () => {
                     object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
