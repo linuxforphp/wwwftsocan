@@ -25,7 +25,10 @@ body {
     align-items: center;
     text-align: center;
     height: 100vh;
-    height: 100svh;
+}
+
+#MainSection {
+    height: 100%;
 }
 
 .site-content {
@@ -101,14 +104,13 @@ h1, h2 {
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
     background: rgba(236, 236, 236, 0.7);
     display: inline-block;
-    margin-top: -15px;
     padding: 5px 12px 10px 5px;
     margin-top: 11.5em;
     border-radius: 25px;
-    width: max(50%, 675px);
+    max-width: 50vw;
     min-height: auto;
-    max-height: 450px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    max-height: 72vh;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 35
 }
 
 @supports (scrollbar-color: auto) {
@@ -119,12 +121,11 @@ h1, h2 {
 }
 
 .scroller {
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden auto;
     padding: 20px 44px 15px;
-    width: max(50%, 665px);
+    width: 49vw;
     min-height: 0px;
-    max-height: 440px;
+    max-height: 71vh;
     overscroll-behavior: contain;
 }
 
@@ -984,6 +985,7 @@ h1, h2 {
         padding-left: 10px !important;
         padding-right: 10px !important;
         margin-top: 6.5em !important;
+        max-width: 100%;
         width: 100%;
         max-height: 700px;
         border-radius: 25px 25px 0 0;
@@ -1149,7 +1151,6 @@ h1, h2 {
         padding-right: 24px !important;
         margin-top: 5.5em !important;
         max-height: 260px;
-        width: max(50%, 700px);
     }
 
     .scroller {
@@ -1244,6 +1245,7 @@ h1, h2 {
         padding-left: 24px !important;
         padding-right: 24px !important;
         margin-top: 15em !important;
+        max-width: 90vw;
         width: 90%;
     }
 
