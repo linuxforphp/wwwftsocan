@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.0 (2026-01-05)
+
+- Fixes staking for Metamask and other Browser Wallets.
+- Changes the DApp's UI styling.
+- Fixes some translations.
+
 ## 1.4.5 (2025-10-10)
 
 - Fixes an issue with Metamask when adding a network.
