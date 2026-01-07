@@ -306,13 +306,13 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                     showAccountAddress(prefixedPchainAddress, account);
 
                     if (DappObject.transferBool === true) {
-                        showBalance(round(web32.utils.fromWei(balance, "ether")));
+                        showBalance(round(web32.utils.fromWei(balance, "ether")), DappObject.transferBool, true);
 
-                        showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+                        showPchainBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")), DappObject.transferBool);
                     } else {
-                        showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")));
+                        showBalance(round(web32.utils.fromWei(PchainBalanceBigInt, "gwei")), DappObject.transferBool, true);
 
-                        showPchainBalance(round(web32.utils.fromWei(balance, "ether")));
+                        showPchainBalance(round(web32.utils.fromWei(balance, "ether")), DappObject.transferBool);
                     }
 
                     await setCurrentPopup(dappStrings['dapp_mabel_transfer1'], true);
@@ -399,9 +399,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                 DappObject.isHandlingOperation = false;
             } else {
                 if (DappObject.isPopupActive == false) {
+                    DappObject.isPopupActive = true;
                     await showBindPAddress(AddressBinderContract, addressBinderAddr, web32, account, flrPublicKey, PchainAddrEncoded, DappObject, dappStakingOption);
-
-                    DappObject.isPopupActive = false;
                 } else {
                     return;
                 }

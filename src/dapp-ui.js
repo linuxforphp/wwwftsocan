@@ -5,6 +5,7 @@ import { undelegate } from "./dapp-delegate.js";
 import { claimRewards } from "./dapp-claim.js";
 import { RefreshStakingPage } from "./dapp-staking.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
+import { ethers } from "./ethers.js";
 
 export async function showSignatureSpinner() {
     DappObject.isPopupActive = true;
@@ -313,8 +314,6 @@ export function showFailStake(DappObject, stakingOption) {
 }
 
 export async function showBindPAddress(contract, contractAddr, web32, address, publicKey, addressPchainEncoded, DappObject, stakingOption) {
-    DappObject.isPopupActive = true;
-    
     $.confirm({
         escapeKey: false,
         backgroundDismiss: false,
@@ -329,27 +328,42 @@ export async function showBindPAddress(contract, contractAddr, web32, address, p
             yes: {
                 btnClass: 'btn-orange',
                 action: async function () {
-                    const transactionParameters = {
-                        from: address,
-                        to: contractAddr,
-                        data: contract.methods.registerAddresses(publicKey, addressPchainEncoded, address).encodeABI(),
-                    };
-        
-                    if (DappObject.walletIndex === 1) {
-                        await LedgerEVMSingleSign(transactionParameters, DappObject, stakingOption, true);
-                    } else {
-                        showSpinner(async () => {
-                            await DappObject.chosenEVMProvider.request({
-                                method: 'eth_sendTransaction',
-                                params: [transactionParameters],
-                            })
-                            .then(txHash => showConfirmationSpinnerStake(async (spinner) => {
-                                checkTxStake(txHash, web32, spinner, DappObject);
-                            }))
-                            .catch((error) => showFailStake(DappObject, stakingOption));
-                        });
+                    try {
+                        if (DappObject.walletIndex === 1) {
+                            if (publicKey.startsWith("02") || publicKey.startsWith("03")) {
+                                let compressedPublicKey = "0x" + publicKey
+                                let uncompressedPublicKey = ethers.utils.computePublicKey(compressedPublicKey);
+                                publicKey = uncompressedPublicKey;
+                            }
+                        }
+
+                        const transactionParameters = {
+                            from: address,
+                            to: contractAddr,
+                            data: contract.methods.registerAddresses(publicKey, addressPchainEncoded, address).encodeABI(),
+                        };
+            
+                        if (DappObject.walletIndex === 1) {
+                            await LedgerEVMSingleSign(transactionParameters, DappObject, stakingOption, true);
+
+                            DappObject.isPopupActive = false;
+                        } else {
+                            DappObject.isPopupActive = false;
+
+                            showSpinner(async () => {
+                                await DappObject.chosenEVMProvider.request({
+                                    method: 'eth_sendTransaction',
+                                    params: [transactionParameters],
+                                })
+                                .then(txHash => showConfirmationSpinnerStake(async (spinner) => {
+                                    checkTxStake(txHash, web32, spinner, DappObject);
+                                }))
+                                .catch((error) => showFailStake(DappObject, stakingOption));
+                            });
+                        }
+                    } catch (error) {
+                        // console.log(error)
                     }
-                    ;
                 },
             },
             no: {

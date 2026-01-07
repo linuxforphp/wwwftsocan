@@ -48,16 +48,28 @@ export async function isDelegateInput1(DappObject) {
 
         let amount1 = document.getElementById("Amount1");
 
-        if (delegatedBips === 0 && (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 || Number(amount1.value.replace(/[^0-9]/g, '')) === 100)) {
-            claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-            claimButton.style.cursor = "pointer";
-            DappObject.isRealValue = true;
-            document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_delegate'];
-        } else if (delegatedBips === 50 && Number(amount1.value.replace(/[^0-9]/g, '')) === 50) {
-            claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
-            claimButton.style.cursor = "pointer";
-            DappObject.isRealValue = true;
-            document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_delegate'];
+        let ftso1 = document.querySelector(".selectize-input");
+        let addr;
+        
+        addr = ftso1?.childNodes[0]?.childNodes[0]?.getAttribute('data-addr');
+
+        if (addr !== undefined) {
+            if (delegatedBips === 0 && (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 || Number(amount1.value.replace(/[^0-9]/g, '')) === 100)) {
+                claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+                claimButton.style.cursor = "pointer";
+                DappObject.isRealValue = true;
+                document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_delegate'];
+            } else if (delegatedBips === 50 && Number(amount1.value.replace(/[^0-9]/g, '')) === 50) {
+                claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
+                claimButton.style.cursor = "pointer";
+                DappObject.isRealValue = true;
+                document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_delegate'];
+            } else {
+                claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+                claimButton.style.cursor = "auto";
+                document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_enteramount'];
+                DappObject.isRealValue = false;
+            }
         } else {
             claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
             claimButton.style.cursor = "auto";
@@ -70,6 +82,10 @@ export async function isDelegateInput1(DappObject) {
 // Populate select elements.
 export async function populateFtsos(rpcUrl, flrAddr) {
     return new Promise(async (resolve) => {
+            if (window.cachedValues.delegateDropdown !== undefined) {
+                window.cachedValues.delegateDropdown.clear();
+            }
+
             var insert = [];
             let web32 = new Web3(rpcUrl);
             let selectedNetwork = document.getElementById('SelectedNetwork');
@@ -77,12 +93,17 @@ export async function populateFtsos(rpcUrl, flrAddr) {
 
             var onInputChange = async (value) => {
                 let ftso1 = document.querySelector(".selectize-input");
-                let img = ftso1.childNodes[0].childNodes[0].getAttribute('data-img');
-                let delegatedicon = document.getElementById("delegatedIcon1");
-                delegatedicon.src = img;
+
+                let img;
+                img = ftso1?.childNodes[0]?.childNodes[0]?.getAttribute('data-img');
+
+                if (img !== undefined) {
+                    let delegatedicon = document.getElementById("delegatedIcon1");
+                    delegatedicon.src = img;
+                }
+
                 await isDelegateInput1(DappObject);
             }
-
 
             var $select = $('#select-ftso').selectize({
                 maxItems: 1,
@@ -187,6 +208,8 @@ export async function populateFtsos(rpcUrl, flrAddr) {
                             img: insert[z].img
                         });
                     }
+
+                    window.cachedValues.delegateDropdown = control;
                 });
             } catch (error) {
                 // console.log(error)

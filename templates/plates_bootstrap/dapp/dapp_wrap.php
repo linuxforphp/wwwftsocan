@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="arrow-box">
+            <div class="arrow-box" id="WrapIcon">
                 <i class="fa fa-solid fa-arrow-down-long" style="font-size: 17px; margin-top: 5px;"></i>
             </div>
         </div>

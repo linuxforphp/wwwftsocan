@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.1 (2026-01-07)
+
+- Fixes P-Chain address binding for Ledger.
+- Adds a link to the P-Explorer in the current wallet modal.
+- Fixes UI issues.
+
 ## 1.5.0 (2026-01-05)
 
 - Fixes staking for Metamask and other Browser Wallets.

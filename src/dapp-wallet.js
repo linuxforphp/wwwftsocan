@@ -533,11 +533,11 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         showAccountAddress(account, prefixedPchainAddress);
         
                         if (DappObject.wrapBool === true) {
-                            showBalance(round(web32.utils.fromWei(balance, "ether")));
-                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                            showBalance(round(web32.utils.fromWei(balance, "ether")), DappObject.wrapBool);
+                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")), DappObject.wrapBool);
                         } else {
-                            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+                            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")), DappObject.wrapBool);
+                            showTokenBalance(round(web32.utils.fromWei(balance, "ether")), DappObject.wrapBool);
                         }
 
                         await setCurrentPopup(dappStrings['dapp_mabel_wrap1'], true);
@@ -550,6 +550,10 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                     } else if (pageIndex === 1) {
                         let delegatedIcon1 = document.getElementById("delegatedIcon1");
                         delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+
+                        if (window.cachedValues.delegateDropdown !== undefined) {
+                            window.cachedValues.delegateDropdown.clear();
+                        }
         
                         await isDelegateInput1(DappObject);
 

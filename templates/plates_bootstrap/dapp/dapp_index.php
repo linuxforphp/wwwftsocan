@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-            <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text" id="ConnectWalletText"><?=_("dapp_view_explorer")?></i></button>
+            <button id="viewCurrentInExplorer" class="connect-wallet view-explorer disabled"><i class="connect-wallet-text"><?=_("dapp_view_explorer")?></i></button>
             <div class="balances">
                 <div class="col-md-12">
                     <div class="row">
@@ -110,7 +110,16 @@
                         <li id="wnatInfo" class="odometer">0.00</li>
                     </div>
                     <div class="row">
-                        <li id="pBalanceInfoText"><?=_("dapp_p_balance")?></li>
+                        <li id="pBalanceLink" style="font-weight: bold;">
+                            <span id="pBalanceInfoText"><?=_("dapp_p_balance")?></span>
+                            <lord-icon
+                                id="pBalanceArrow"
+                                src="<?=$view['urlbaseaddr']?>img/icons/arrow.json"
+                                colors="primary:#aaaaaa"
+                                target="#pBalanceLink"
+                                style="width:19px;height:19px;top:5px;left:2px;display:none;">
+                            </lord-icon>
+                        </li>
                         <li id="pBalanceInfo" class="odometer">0.00</li>
                     </div>
                 </div>
@@ -269,6 +278,12 @@
         $('#accountStatus').toggleClass("clicked");
         $('#bottomNav').toggleClass("clicked");
     });
+
+    if (window.innerWidth > 480) {
+        $('#centerButton').addClass("clicked");
+        $('#accountStatus').addClass("clicked");
+        $('#bottomNav').addClass("clicked");
+    }
 </script>
 <script src="<?=$view['urlbaseaddr'] ?>js/buffer.min.js"></script>
 <script>

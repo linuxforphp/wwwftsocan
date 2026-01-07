@@ -76,6 +76,7 @@ window.cachedValues = {
     balance: "",
     tokenBalance: "",
     pBalance: "",
+    delegateDropdown: undefined,
 }
 
 async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -491,6 +492,10 @@ window.dappInit = async (option, stakingOption) => {
                 document.getElementById("wrapUnwrap")?.addEventListener("click", async () => {
                     toggleWrapButton(DappObject, object.tokenIdentifier, object.wrappedTokenIdentifier, object.rpcUrl, object.flrAddr);
                 });
+
+                document.getElementById("WrapIcon")?.addEventListener("click", async () => {
+                    toggleWrapButton(DappObject, object.tokenIdentifier, object.wrappedTokenIdentifier, object.rpcUrl, object.flrAddr);
+                });
             
                 // If the input is valid, we wrap on click of "WrapButton".
                 document.getElementById("WrapButton")?.addEventListener("click", async () => {
@@ -720,6 +725,10 @@ window.dappInit = async (option, stakingOption) => {
                 }
 
                 await isDelegateInput1(DappObject);
+
+                if (window.cachedValues.delegateDropdown !== undefined) {
+                    window.cachedValues.delegateDropdown.clear();
+                }
 
                 selectedNetwork.onchange = async () => {
                     object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
@@ -1009,6 +1018,8 @@ window.dappInit = async (option, stakingOption) => {
 
                 // Setup the Ledger App dropdown
                 DappObject.isAvax = false;
+
+                DappObject.isPopupActive = false;
 
                 await setupLedgerOption();
 
