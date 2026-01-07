@@ -533,11 +533,11 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                         showAccountAddress(account, prefixedPchainAddress);
         
                         if (DappObject.wrapBool === true) {
-                            showBalance(round(web32.utils.fromWei(balance, "ether")));
-                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+                            showBalance(round(web32.utils.fromWei(balance, "ether")), DappObject.wrapBool);
+                            showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")), DappObject.wrapBool);
                         } else {
-                            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                            showTokenBalance(round(web32.utils.fromWei(balance, "ether")));
+                            showBalance(round(web32.utils.fromWei(tokenBalance, "ether")), DappObject.wrapBool);
+                            showTokenBalance(round(web32.utils.fromWei(balance, "ether")), DappObject.wrapBool);
                         }
 
                         await setCurrentPopup(dappStrings['dapp_mabel_wrap1'], true);
