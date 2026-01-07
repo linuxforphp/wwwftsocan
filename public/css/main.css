@@ -925,6 +925,31 @@ h1.navbar-brand > a:hover, h1.navbar-brand > a:focus {
     color: #444444;
 }
 
+#pBalanceInfoText.dark-link {
+    cursor: pointer;
+    position: relative;
+    transition: all .25s ease-in-out, color 0.5s ease-in;
+}
+
+#pBalanceInfoText.dark-link::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-radius: 4px;
+    background-color: #383a3b;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .3s ease-in-out;
+}
+
+#pBalanceInfoText.dark-link:hover::before, #pBalanceInfoText.dark-link:focus::before, #pBalanceInfoText.dark-link:active::before {
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
 .owl-buttons {
     border: 2px solid #fff;
     display: inline-block;

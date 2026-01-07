@@ -110,7 +110,16 @@
                         <li id="wnatInfo" class="odometer">0.00</li>
                     </div>
                     <div class="row">
-                        <li id="pBalanceInfoText"><?=_("dapp_p_balance")?></li>
+                        <li id="pBalanceLink" style="font-weight: bold;">
+                            <span id="pBalanceInfoText"><?=_("dapp_p_balance")?></span>
+                            <lord-icon
+                                id="pBalanceArrow"
+                                src="<?=$view['urlbaseaddr']?>img/icons/arrow.json"
+                                colors="primary:#aaaaaa"
+                                target="#pBalanceLink"
+                                style="width:19px;height:19px;top:5px;left:2px;display:none;">
+                            </lord-icon>
+                        </li>
                         <li id="pBalanceInfo" class="odometer">0.00</li>
                     </div>
                 </div>

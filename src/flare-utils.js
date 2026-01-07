@@ -68,56 +68,86 @@ export function round(num, exp = 4) {
     return +(Math.round(num + "e+" + String(exp)) + "e-" + String(exp));
 }
 
-export function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
-    if (typeof balance !== 'undefined') {
-        document.getElementById('balanceInfo').innerText = String(round(balance));
-
-        cachedValues.balance = String(round(balance));
-
-        if (round(balance) > 0) {
-            document.getElementById('balanceInfoText').style.color = "#fd000f";
-            document.getElementById('balanceInfo').style.color = "#fd000f";
-        } else {
-            document.getElementById('balanceInfoText').style.color = "#aaaaaa";
-            document.getElementById('balanceInfo').style.color = "#aaaaaa";
+export async function updateCurrentBalancesStatus(balance, tokenBalance, pBalance) {
+    try {   
+        if (typeof balance !== 'undefined') {
+            document.getElementById('balanceInfo').innerText = String(round(balance));
+    
+            cachedValues.balance = String(round(balance));
+    
+            if (round(balance) > 0) {
+                document.getElementById('balanceInfoText').style.color = "#fd000f";
+                document.getElementById('balanceInfo').style.color = "#fd000f";
+            } else {
+                document.getElementById('balanceInfoText').style.color = "#aaaaaa";
+                document.getElementById('balanceInfo').style.color = "#aaaaaa";
+            }
         }
+    
+        if (typeof tokenBalance !== 'undefined') {
+            document.getElementById('wnatInfo').innerText = String(round(tokenBalance));
+    
+            cachedValues.tokenBalance = String(round(tokenBalance));
+    
+            if (round(tokenBalance) > 0) {
+                document.getElementById('wnatInfoText').style.color = "#383a3b";
+                document.getElementById('wnatInfo').style.color = "#383a3b";
+            } else {
+                document.getElementById('wnatInfoText').style.color = "#aaaaaa";
+                document.getElementById('wnatInfo').style.color = "#aaaaaa";
+            }
+        }
+    
+        if (typeof pBalance !== 'undefined') {
+            document.getElementById('pBalanceInfo').innerText = String(round(pBalance));
+    
+            cachedValues.pBalance = String(round(pBalance));
+    
+            if (round(pBalance) > 0) {
+                document.getElementById('pBalanceInfoText').style.color = "#383a3b";
+                document.getElementById('pBalanceInfoText').classList.add("dark-link");
+    
+                const iconElement = document.getElementById('pBalanceArrow');
+    
+                iconElement.style.display = 'inline-block';
+                iconElement.setAttribute('colors', 'primary:#383a3b');
+                iconElement.setAttribute('state', 'in-reveal');
+                iconElement.setAttribute('trigger', 'in');
+    
+                iconElement.playerInstance.addEventListener('complete', (e) => {
+                    // change to assigned state
+                    iconElement.setAttribute('state', 'hover-slide');
+                    iconElement.setAttribute('target', '#pBalanceLink');
+                
+                    // play from beginning
+                    iconElement.setAttribute('trigger', 'hover');
+                }, { once: true });
+    
+                document.getElementById('pBalanceInfo').style.color = "#383a3b";
+            } else {
+                document.getElementById('pBalanceInfoText').style.color = "#aaaaaa";
+                document.getElementById('pBalanceInfoText').classList.remove("dark-link");
+    
+                const iconElement = document.getElementById('pBalanceArrow');
+    
+                iconElement.style.display = 'none';
+                iconElement.setAttribute('colors', 'primary:#aaaaaa');
+                iconElement.removeAttribute('trigger');
+    
+                document.getElementById('pBalanceInfo').style.color = "#aaaaaa";
+            }
+        }
+    
+        document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+            if (dappLanguage === "fr_FR") {
+                element.innerText = ",";
+            } else {
+                element.innerText = ".";
+            }
+        });
+    } catch (error) {
+        console.log(error);
     }
-
-    if (typeof tokenBalance !== 'undefined') {
-        document.getElementById('wnatInfo').innerText = String(round(tokenBalance));
-
-        cachedValues.tokenBalance = String(round(tokenBalance));
-
-        if (round(tokenBalance) > 0) {
-            document.getElementById('wnatInfoText').style.color = "#383a3b";
-            document.getElementById('wnatInfo').style.color = "#383a3b";
-        } else {
-            document.getElementById('wnatInfoText').style.color = "#aaaaaa";
-            document.getElementById('wnatInfo').style.color = "#aaaaaa";
-        }
-    }
-
-    if (typeof pBalance !== 'undefined') {
-        document.getElementById('pBalanceInfo').innerText = String(round(pBalance));
-
-        cachedValues.pBalance = String(round(pBalance));
-
-        if (round(pBalance) > 0) {
-            document.getElementById('pBalanceInfoText').style.color = "#383a3b";
-            document.getElementById('pBalanceInfo').style.color = "#383a3b";
-        } else {
-            document.getElementById('pBalanceInfoText').style.color = "#aaaaaa";
-            document.getElementById('pBalanceInfo').style.color = "#aaaaaa";
-        }
-    }
-
-    document.querySelectorAll(".odometer-radix-mark").forEach(element => {
-        if (dappLanguage === "fr_FR") {
-            element.innerText = ",";
-        } else {
-            element.innerText = ".";
-        }
-    });
 }
 
 export async function openAddressInExplorer(address, networkIndex) {
@@ -132,8 +162,14 @@ export async function openAddressInExplorer(address, networkIndex) {
     window.open("https://" + urlPrefix + "-explorer.flare.network/address/" + address, '_blank').focus();
 }
 
+export async function openAddressInPExplorer(address) {
+    window.open("https://flare.space/dapp/p-chain-explorer/address/" + address, '_blank').focus();
+}
+
 export function updateCurrentAccountStatus(address, networkIndex, isAccountConnected, walletIndex, pAddress) {
     let clickBind = () => {openAddressInExplorer(address, DappObject.selectedNetworkIndex);};
+
+    let pClickBind = () => {openAddressInPExplorer(pAddress.slice(2));};
 
     let currentAccount = document.getElementById('currentAccount');
     let currentPAccount = document.getElementById('currentPAccount');
@@ -163,8 +199,14 @@ export function updateCurrentAccountStatus(address, networkIndex, isAccountConne
 
         if (currentPAccount.innerText.toLowerCase() !== "p-00000000...0000") {
             currentPAccount.style.color = "#383a3b";
+
+            document.getElementById("pBalanceLink").addEventListener('click', pClickBind);
         } else {
             currentPAccount.style.color = "#aaaaaa";
+
+            const oldElement = document.getElementById("pBalanceLink");
+            const newElement = oldElement.cloneNode(true);
+            oldElement.replaceWith(newElement);
         }
     }
 
