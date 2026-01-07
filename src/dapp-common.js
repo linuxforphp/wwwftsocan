@@ -492,6 +492,10 @@ window.dappInit = async (option, stakingOption) => {
                 document.getElementById("wrapUnwrap")?.addEventListener("click", async () => {
                     toggleWrapButton(DappObject, object.tokenIdentifier, object.wrappedTokenIdentifier, object.rpcUrl, object.flrAddr);
                 });
+
+                document.getElementById("WrapIcon")?.addEventListener("click", async () => {
+                    toggleWrapButton(DappObject, object.tokenIdentifier, object.wrappedTokenIdentifier, object.rpcUrl, object.flrAddr);
+                });
             
                 // If the input is valid, we wrap on click of "WrapButton".
                 document.getElementById("WrapButton")?.addEventListener("click", async () => {
