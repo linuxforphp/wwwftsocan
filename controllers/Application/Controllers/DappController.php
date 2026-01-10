@@ -129,6 +129,16 @@ class DappController extends AggregateRootController implements AggregateEventLi
 
         $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/glob.min.js';
         $this->view['js'][] = $baseConfig['URLBASEADDR'] . 'js/web3.min.js';
+
+        $this->view['jsconfig']['explorerconfig'] =
+            file_get_contents(
+                $baseConfig['BASEDIR'] 
+                . DIRECTORY_SEPARATOR 
+                .'config' 
+                . DIRECTORY_SEPARATOR 
+                . 'explorerconfig.json'
+            );
+
         $this->view['jsconfig']['ftsov2']['fetchtupleconfig'] = 
             file_get_contents(
                 $baseConfig['BASEDIR'] 

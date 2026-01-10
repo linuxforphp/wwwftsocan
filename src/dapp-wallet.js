@@ -9,6 +9,7 @@ import { ethers } from "./ethers.js";
 
 export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1, stakingOption, rpcUrl, flrAddr, autoRefresh) {
     DappObject.signatureStaking = "";
+    DappObject.selectedAddress = "";
 
     if (pageIndex === 1 || pageIndex === '1') {
         if ((isNumber(accounts.length) && accounts.length > 0) || autoRefresh === true) {
@@ -416,9 +417,13 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                     }
                 }
 
-                const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
+                if (DappObject.selectedAddress === "") {
+                    const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
                 
-                account = accounts[0];
+                    account = accounts[0];
+                } else {
+                    account = DappObject.selectedAddress;
+                }
 
                 if (DappObject.signatureStaking === "") {
         

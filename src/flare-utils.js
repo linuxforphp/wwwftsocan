@@ -163,7 +163,7 @@ export async function openAddressInExplorer(address, networkIndex) {
 }
 
 export async function openAddressInPExplorer(address) {
-    window.open("https://flare.space/dapp/p-chain-explorer/address/" + address, '_blank').focus();
+    window.open(explorerConfig.pChainUrl + "address/" + address, '_blank').focus();
 }
 
 export function updateCurrentAccountStatus(address, networkIndex, isAccountConnected, walletIndex, pAddress) {

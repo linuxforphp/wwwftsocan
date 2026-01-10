@@ -204,9 +204,13 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                     }
                 }
 
-                const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
-                    
-                account = accounts[0];
+                if (DappObject.selectedAddress === "") {
+                    const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
+                
+                    account = accounts[0];
+                } else {
+                    account = DappObject.selectedAddress;
+                }
     
                 if (DappObject.signatureStaking === "") {
     

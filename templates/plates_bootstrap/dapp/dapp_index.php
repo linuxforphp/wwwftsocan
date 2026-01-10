@@ -195,6 +195,8 @@
     var contractOverrideConfig = <?= $view['jsconfig']['ftsov2']['contractoverrideconfig']; ?>;
 
     var rewardsOverrideConfig = <?= $view['jsconfig']['ftsov2']['rewardsoverrideconfig']; ?>;
+
+    var explorerConfig = <?= $view['jsconfig']['explorerconfig']; ?>;
 </script>
 
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>

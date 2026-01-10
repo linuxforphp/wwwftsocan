@@ -59,7 +59,8 @@ export async function isDelegateInput1(DappObject) {
                 claimButton.style.cursor = "pointer";
                 DappObject.isRealValue = true;
                 document.getElementById("ClaimButtonText").innerText = dappStrings['dapp_delegate'];
-            } else if (delegatedBips === 50 && Number(amount1.value.replace(/[^0-9]/g, '')) === 50) {
+            } else if (delegatedBips === 50 && (Number(amount1.value.replace(/[^0-9]/g, '')) === 50 
+                || (Number(amount1.value.replace(/[^0-9]/g, '')) === 100 && addr.toLowerCase() === document.querySelector(".address-claim").innerText.toLowerCase()))) {
                 claimButton.style.backgroundColor = "rgba(253, 0, 15, 0.8)";
                 claimButton.style.cursor = "pointer";
                 DappObject.isRealValue = true;
@@ -223,18 +224,30 @@ export async function delegate(object, DappObject) {
     if (DappObject.isRealValue === false) {
         await setCurrentPopup(dappStrings['dapp_mabel_delegate_error3'], true);
     } else {
+        let delegatedBips = getDelegatedBips();
+
         let amount1 = document.getElementById("Amount1");
         let ftso1 = document.querySelector(".selectize-input");
+
+        var addr1 = ftso1.childNodes[0].childNodes[0].getAttribute('data-addr');
+
+        let delegatedAddr;
 
         let web32 = new Web3(object.rpcUrl);
 
         const value1 = amount1.value;
 
-        const percent1 = value1.replace(/[^0-9]/g, '');
+        let percent1 = value1.replace(/[^0-9]/g, '');
+
+        if (delegatedBips === 50) {
+            delegatedAddr = document.querySelector(".address-claim").innerText.toLowerCase();
+
+            if (addr1.toLowerCase() === delegatedAddr.toLowerCase()) {
+                percent1 = 100;
+            }
+        }
 
         const bips1 = Number(percent1) * 100;
-
-        var addr1 = ftso1.childNodes[0].childNodes[0].getAttribute('data-addr');
 
         try {
             const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
