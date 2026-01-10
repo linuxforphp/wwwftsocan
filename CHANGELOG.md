@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.2 (2026-01-10)
+
+- Adds a QOL feature to the delegate page when delegating 50%.
+- Adds a polyfill for Bifrost Wallet account handling (in compliancy with EIP-1102).
+- Adds a configuration file for the P-Chain explorer URL.
+
 ## 1.5.1 (2026-01-07)
 
 - Fixes P-Chain address binding for Ledger.
