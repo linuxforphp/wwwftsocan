@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.5.3 (2026-01-10)
+
+- Fixes a responsive issue in portrait view on tablets.
+
 ## 1.5.2 (2026-01-10)
 
 - Adds a QOL feature to the delegate page when delegating 50%.
