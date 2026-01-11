@@ -7,6 +7,54 @@ import { RefreshStakingPage } from "./dapp-staking.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
 import { ethers } from "./ethers.js";
 
+export function setupDappContainerUI() {
+    const dappContainer = document.getElementById("dappContainer");
+
+    dappContainer.style.display = "inline-block";
+
+    if (window.innerWidth <= 480) {
+        dappContainer.style.setProperty('--animate-duration', '0.2s');
+
+        dappContainer.classList.remove("slideOutLeft");
+        dappContainer.classList.add("slideInRight");
+
+        dappContainer.addEventListener('animationend', () => {
+            dappContainer.classList.remove("slideInRight");
+        }, { once: true });
+    } else {
+        dappContainer.classList.add("slideInUp");
+    }
+}
+
+export function setupMobileNav(option, stakingOption) {
+    $("#wrapTab").off();
+    $("#delegateTab").off();
+    $("#rewardsTab").off();
+    $("#stakeTab").off();
+
+    if (option == 4 && (stakingOption == undefined || stakingOption == 4 || stakingOption == 5)) {
+        // Do nothing;    
+    } else {
+        document.getElementById("wrapTab")?.classList.remove("disabled");
+        document.getElementById("delegateTab")?.classList.remove("disabled");
+        document.getElementById("rewardsTab")?.classList.remove("disabled");
+        document.getElementById("stakeTab")?.classList.remove("disabled");
+
+       $("#wrapTab")?.on("click", function () {
+            getDappPage(1);
+        });
+        $("#delegateTab")?.on("click", function () {
+            getDappPage(2);
+        });
+        $("#rewardsTab")?.on("click", function () {
+            getDappPage(3);
+        });
+        $("#stakeTab")?.on("click", function () {
+            getDappPage(5);
+        });
+    }
+}
+
 export async function showSignatureSpinner() {
     DappObject.isPopupActive = true;
 
@@ -543,6 +591,18 @@ export async function setCurrentAppState(state) {
             walletNotification.style.border = "3px solid #8fe18e";
             break
     }
+}
+
+export async function setMabelMessages(message1, message2, delay = 5000) {
+    if (message1 !== undefined) {
+        await setCurrentPopup(message1, true);
+    } 
+
+    clearTimeout(DappObject.latestPopupTimeoutId);
+
+    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+        await setCurrentPopup(message2, true);
+    }, delay);
 }
 
 export async function togglePopup(event) {

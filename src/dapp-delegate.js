@@ -1,6 +1,210 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
-import { showSpinner, showConfirmationSpinner, showFail, setCurrentPopup } from "./dapp-ui.js";
+import { showSpinner, showConfirmationSpinner, showFail, setCurrentPopup, setMabelMessages } from "./dapp-ui.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
+import { getDelegatedProviders } from "./dapp-claim.js";
+import { createSelectedNetwork, getSelectedNetwork } from "./dapp-common.js";
+import { ConnectWalletClick, handleAccountsChanged, handleChainChanged } from "./dapp-wallet.js";
+
+export async function setupDelegatePage(DappObject, handleClick, option) {
+    document.getElementById("wrapTab")?.classList.remove("selected");
+    document.getElementById("delegateTab")?.classList.add("selected");
+    document.getElementById("rewardsTab")?.classList.remove("selected");
+    document.getElementById("stakeTab")?.classList.remove("selected");
+
+    let selectedNetwork = document.getElementById("SelectedNetwork");
+    let rpcUrl;
+    let chainidhex;
+    let networkValue;
+
+    await createSelectedNetwork(DappObject).then( async () => {
+        getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
+
+            document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
+                ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
+            });
+        
+            document.getElementById("Amount1")?.addEventListener('input', async function () {
+                await isDelegateInput1(DappObject);
+        
+                var str = this.value;
+                var suffix = "%";
+        
+                if (str.search(suffix) === -1) {
+                    str += suffix;
+                }
+        
+                var actualLength = str.length - suffix.length;
+        
+                if (actualLength === 0) {
+                    this.value = str.substring(0, actualLength);
+        
+                    this.setSelectionRange(actualLength, actualLength);
+                } else {
+                    this.value = str.substring(0, actualLength) + suffix;
+        
+                    // Set cursor position.
+                    this.setSelectionRange(actualLength, actualLength);
+                }
+            });
+        
+            document.getElementById("ClaimButton")?.addEventListener("click", async () => {
+                let web32 = new Web3(object.rpcUrl);
+
+                DappObject.isHandlingOperation = true;
+        
+                try {
+                    const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
+                    let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
+                    const account = DappObject.selectedAddress;
+        
+                    const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
+                    const delegatedFtsos = delegatesOfUser[0];
+        
+                    let ftsoNames = [];
+        
+                    fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
+                    .then(res => res.json())
+                    .then(FtsoInfo => {
+                        FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
+        
+                        var indexNumber;
+        
+                        for (var f = 0; f < FtsoInfo.providers.length; f++) {
+                            indexNumber = f;
+        
+                            for (var i = 0; i < delegatedFtsos.length; i++) {
+                                if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
+                                    if (typeof ftsoNames[0] !== "undefined" && ftsoNames[0] !== null) {
+                                        ftsoNames[1] = FtsoInfo.providers[indexNumber].name;
+                                    } else {
+                                        ftsoNames[0] = FtsoInfo.providers[indexNumber].name;
+                                    }
+                                }
+                            }
+                        }
+
+                        let delegatedBips = getDelegatedBips();
+        
+                        if (delegatedFtsos.length === 2 || delegatedBips === 100 || document.getElementById("ClaimButton").innerText === dappStrings['dapp_undelegate']) {
+                            showAlreadyDelegated(ftsoNames, object, DappObject);
+                        } else {
+                            delegate(object, DappObject);
+                        }
+
+                        DappObject.isHandlingOperation = false;
+                    });
+                } catch(error) {
+                    DappObject.isHandlingOperation = false;
+
+                    // console.log(error);
+                }
+            });
+
+            if (DappObject.ledgerSelectedIndex !== "") {
+                ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+            } else {
+                document.getElementById("ConnectWallet")?.click();
+            }
+
+            await isDelegateInput1(DappObject);
+
+            if (window.cachedValues.delegateDropdown !== undefined) {
+                window.cachedValues.delegateDropdown.clear();
+            }
+
+            selectedNetwork.onchange = async () => {
+                object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
+                object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
+                object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
+
+                DappObject.selectedNetworkIndex = Number(object.networkValue);
+
+                clearTimeout(DappObject.latestPopupTimeoutId);
+
+                // Alert Metamask to switch.
+                try {
+                    if (DappObject.walletIndex !== 1) {
+                        const realChainId = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'});
+
+                        if (realChainId != object.chainIdHex) {
+                            await DappObject.chosenEVMProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        "chainId": object.chainIdHex,
+                                        "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
+                                        "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
+                                        "iconUrls": [
+                                            `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
+                                        ],
+                                        "nativeCurrency": {
+                                            "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                            "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                            "decimals": 18
+                                        }
+                                    },
+                                ],
+                            });
+
+                            await DappObject.chosenEVMProvider.request({
+                                method: "wallet_switchEthereumChain",
+                                params: [
+                                    {
+                                    "chainId": object.chainIdHex
+                                    }
+                                ]
+                                }).catch(async (error) => {
+                                    throw(error);
+                                });
+                        }                    
+                    }
+
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+                } catch (error) {
+                    // console.log(error);
+                }
+            };
+
+            if (DappObject.walletIndex !== 1) {
+                DappObject.chosenEVMProvider.on("accountsChanged", async (accounts) => {
+                    handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
+                });
+
+                DappObject.chosenEVMProvider.on("chainChanged", async () => {
+                    handleChainChanged(DappObject);
+                });
+
+                if (DappObject.walletIndex === 2) {
+                    DappObject.chosenEVMProvider.on("disconnect", async () => {
+                        getDappPage(4);
+                    });
+                }
+            }
+
+            await populateFtsos(object.rpcUrl, object.flrAddr);
+        });
+    });
+}
+
+export async function ConnectWalletDelegate(account, prefixedPchainAddress, rpcUrl, flrAddr, web32, DappObject) {
+    await setMabelMessages(dappStrings['dapp_mabel_delegate1'], dappStrings['dapp_mabel_delegate2'], 15000);
+    
+    let delegatedIcon1 = document.getElementById("delegatedIcon1");
+    delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
+
+    if (window.cachedValues.delegateDropdown !== undefined) {
+        window.cachedValues.delegateDropdown.clear();
+    }
+
+    await isDelegateInput1(DappObject);
+
+    try {
+        showAccountAddress(account, prefixedPchainAddress);
+        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+    } catch (error) {
+        throw error;
+    }
+}
 
 export function getDelegatedBips() {
     let delegatedBips = 0;

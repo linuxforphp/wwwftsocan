@@ -1,12 +1,107 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos, updateCurrentBalancesStatus, updateCurrentAccountStatus } from "./flare-utils";
 import { ethers } from "./ethers.js";
 import { wait, unPrefix0x, round, isNumber, checkConnection, checkTxStake, showConnectedAccountAddress, resetDappObjectState } from "./dapp-utils.js";
-import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid, showSignatureSpinner } from "./dapp-ui.js";
+import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid, showSignatureSpinner, setMabelMessages } from "./dapp-ui.js";
 import { walletConnectEVMParams } from "./dapp-globals.js";
 import { switchClaimButtonColor, switchClaimButtonColorBack, showClaimRewards } from "./dapp-claim.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
+import { copyWrapInput } from "./dapp-wrap.js";
 
 export let message = dappStrings['dapp_metamask_signature'];
+
+export async function setupStakeRewardsPage(DappObject, handleClick) {
+    document.getElementById("wrapTab")?.classList.remove("selected");
+    document.getElementById("delegateTab")?.classList.remove("selected");
+    document.getElementById("rewardsTab")?.classList.remove("selected");
+    document.getElementById("stakeTab")?.classList.add("selected");
+
+    let tokenBalanceElement = document.getElementById("TokenBalance");
+
+    new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
+
+    document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
+        ConnectPChainClickStake(DappObject, handleClick);
+    });
+
+    if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
+        document.getElementById("ConnectPChain")?.click();
+    }
+
+    document.getElementById("ClaimButton")?.addEventListener("click", async () => {
+        if (DappObject.claimBool === true) {
+            claimStakingRewards(DappObject, stakingOption);
+        }
+    });
+}
+
+export async function setupStakePage(DappObject, handleClick) {
+    document.getElementById("wrapTab")?.classList.remove("selected");
+    document.getElementById("delegateTab")?.classList.remove("selected");
+    document.getElementById("rewardsTab")?.classList.remove("selected");
+    document.getElementById("stakeTab")?.classList.add("selected");
+
+    document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
+        ConnectPChainClickStake(DappObject, handleClick);
+    });
+
+    if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
+        document.getElementById("ConnectPChain")?.click();
+    }
+
+    document.getElementById("WrapButton")?.addEventListener("click", async () => {
+        if (DappObject.isRealValue === false) {
+            await setCurrentPopup(dappStrings['dapp_mabel_stake_error1'], true);
+        } else {
+            stake(DappObject, stakingOption);
+        }
+    });
+
+    try {                 
+        await populateValidators();
+    } catch (error) {
+        // console.log(error);
+    }
+}
+
+export async function setupTransferPage(DappObject, handleClick) {
+    document.getElementById("wrapTab")?.classList.remove("selected");
+    document.getElementById("delegateTab")?.classList.remove("selected");
+    document.getElementById("rewardsTab")?.classList.remove("selected");
+    document.getElementById("stakeTab")?.classList.add("selected");
+
+    let balanceElement = document.getElementById("Balance");
+    let tokenBalanceElement = document.getElementById("TokenBalance");
+
+    new Odometer({el: balanceElement, value: 0, format: odometerFormat});
+    new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
+
+    document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
+        ConnectPChainClickStake(DappObject, handleClick);
+    });
+
+    if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
+        document.getElementById("ConnectPChain")?.click();
+    }
+
+    // We check if the input is valid, then copy it to the wrapped tokens section.
+    document.querySelector("#AmountFrom")?.addEventListener("input", function () {
+        setTransferButton(DappObject);
+        copyWrapInput();
+    });
+
+    document.querySelector("#AmountTo")?.addEventListener("input", function () {
+        setTransferButton2(DappObject);
+        copyTransferInput();
+    });
+
+    document.getElementById("TransferIcon")?.addEventListener("click", async () => {
+        toggleTransferButton(DappObject, stakingOption);
+    });
+
+    document.getElementById("WrapButton")?.addEventListener("click", async () => {
+        transferTokens(DappObject, stakingOption);
+    });
+}
 
 export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex) {
     DappObject.isHandlingOperation = true;
@@ -173,12 +268,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                             break
                         case "Failed: App not Installed":
                             await setCurrentAppState("Alert");
-    
-                            clearTimeout(DappObject.latestPopupTimeoutId);
-    
-                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                await setCurrentPopup(dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], true);
-                            }, 1000);
+
+                            await setMabelMessages(undefined, dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], 1000);
     
                             throw new Error("Ledger Avalanche App not installed!");
                             break
@@ -307,6 +398,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                 updateCurrentBalancesStatus(web32.utils.fromWei(balance, "ether"), web32.utils.fromWei(tokenBalance, "ether"), web32.utils.fromWei(PchainBalanceBigInt, "gwei"));
 
                 if (dappStakingOption === 1) {
+                    await setMabelMessages(dappStrings['dapp_mabel_transfer1'], dappStrings['dapp_mabel_transfer2'], 15000);
+
                     showAccountAddress(prefixedPchainAddress, account);
 
                     if (DappObject.transferBool === true) {
@@ -318,30 +411,18 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
                         showPchainBalance(round(web32.utils.fromWei(balance, "ether")), DappObject.transferBool);
                     }
-
-                    await setCurrentPopup(dappStrings['dapp_mabel_transfer1'], true);
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup(dappStrings['dapp_mabel_transfer2'], true);
-                    }, 15000);
                 } else if (dappStakingOption === 2) {
+                    await setMabelMessages(dappStrings['dapp_mabel_stake1'], dappStrings['dapp_mabel_stake2'], 15000);
+
                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
 
                     customInput(PchainBalanceBigInt, DappObject);
 
                     showAccountAddress(prefixedPchainAddress, account);
-
-                    await setCurrentPopup(dappStrings['dapp_mabel_stake1'], true);
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup(dappStrings['dapp_mabel_stake2'], true);
-                    }, 15000);
                 } else if (dappStakingOption === 3) {
+                    await setMabelMessages(dappStrings['dapp_mabel_claimstake1'], dappStrings['dapp_mabel_claimstake2'], 15000);
+
                     const ValidatorRewardAddr = await GetContract("ValidatorRewardManager", rpcUrl, flrAddr);
 
                     const ValidatorRewardContract = new web32.eth.Contract(DappObject.validatorRewardAbiLocal, ValidatorRewardAddr);
@@ -390,14 +471,6 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                     }
 
                     showAccountAddress(prefixedPchainAddress, account);
-
-                    await setCurrentPopup(dappStrings['dapp_mabel_claimstake1'], true);
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup(dappStrings['dapp_mabel_claimstake2'], true);
-                    }, 15000);
                 }
 
                 DappObject.isHandlingOperation = false;

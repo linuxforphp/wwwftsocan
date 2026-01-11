@@ -3,14 +3,14 @@
 
 import { GetContract, FlareAbis, FlareLogos, updateCurrentAccountStatus, updateCurrentBalancesStatus } from "./flare-utils";
 import { wait, checkConnection, showTokenIdentifiers, resetDappObjectState } from "./dapp-utils.js";
-import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption, togglePopup } from "./dapp-ui.js";
+import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption, togglePopup, setupDappContainerUI, setupMobileNav, setMabelMessages } from "./dapp-ui.js";
 import { injectedProviderDropdown, walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
 import { handleAccountsChanged, handleChainChanged, handleChainChangedStake, ConnectWalletClick } from "./dapp-wallet.js";
-import { toggleWrapButton, setWrapButton, copyWrapInput, wrapTokens } from "./dapp-wrap.js";
-import { getDelegatedBips, isDelegateInput1, delegate, populateFtsos } from "./dapp-delegate.js";
-import { claimRewards, claimFdRewards } from "./dapp-claim.js";
-import { ConnectPChainClickStake, toggleTransferButton, setTransferButton, setTransferButton2, copyTransferInput, transferTokens, stake, claimStakingRewards, populateValidators } from "./dapp-staking.js";
-import { handleTransportConnect } from "./dapp-ledger.js";
+import { setupWrapPage } from "./dapp-wrap.js";
+import { setupDelegatePage } from "./dapp-delegate.js";
+import { setupRewardsPage } from "./dapp-claim.js";
+import { setupTransferPage, setupStakePage, setupStakeRewardsPage } from "./dapp-staking.js";
+import { setupTransportConnect } from "./dapp-ledger.js";
 
 // ALL MODULES.
 
@@ -79,7 +79,7 @@ window.cachedValues = {
     delegateDropdown: undefined,
 }
 
-async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
+export async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
     return new Promise((resolve) => {
         setTimeout(() => {
             var selectedNetwork = document.getElementById("SelectedNetwork");
@@ -105,7 +105,7 @@ async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentif
     })
 }
 
-async function createSelectedNetwork(DappObject) {
+export async function createSelectedNetwork(DappObject) {
     return new Promise((resolve) => {
         setTimeout(async () => {
             var networkSelectBox = document.getElementById('SelectedNetwork');
@@ -349,22 +349,7 @@ window.dappInit = async (option, stakingOption) => {
 
     window.dappStakingOption = stakingOption;
 
-    const dappContainer = document.getElementById("dappContainer");
-
-    dappContainer.style.display = "inline-block";
-
-    if (window.innerWidth <= 480) {
-        dappContainer.style.setProperty('--animate-duration', '0.2s');
-
-        dappContainer.classList.remove("slideOutLeft");
-        dappContainer.classList.add("slideInRight");
-
-        dappContainer.addEventListener('animationend', () => {
-            dappContainer.classList.remove("slideInRight");
-        }, { once: true });
-    } else {
-        dappContainer.classList.add("slideInUp");
-    }
+    setupDappContainerUI();
 
     closeCurrentPopup();
 
@@ -388,556 +373,23 @@ window.dappInit = async (option, stakingOption) => {
 
     document.getElementById("currentWallet")?.addEventListener("click", togglePopup);
 
-    $("#wrapTab").off();
-    $("#delegateTab").off();
-    $("#rewardsTab").off();
-    $("#stakeTab").off();
-
-    if (option == 4 && (stakingOption == undefined || stakingOption == 4 || stakingOption == 5)) {
-        // Do nothing;    
-    } else {
-        document.getElementById("wrapTab")?.classList.remove("disabled");
-        document.getElementById("delegateTab")?.classList.remove("disabled");
-        document.getElementById("rewardsTab")?.classList.remove("disabled");
-        document.getElementById("stakeTab")?.classList.remove("disabled");
-
-       $("#wrapTab")?.on("click", function () {
-            getDappPage(1);
-        });
-        $("#delegateTab")?.on("click", function () {
-            getDappPage(2);
-        });
-        $("#rewardsTab")?.on("click", function () {
-            getDappPage(3);
-        });
-        $("#stakeTab")?.on("click", function () {
-            getDappPage(5);
-        });
-    }
+    setupMobileNav(option, stakingOption);
 
     clearTimeout(DappObject.latestPopupTimeoutId);
 
     checkConnection();
 
-    if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
-        window.chosenNavigator = navigator.usb;
-    } else if (("hid" in navigator) && !("usb" in navigator)) {
-        window.chosenNavigator = navigator.hid;
-    }
-
-    if (("usb" in navigator) || ("hid" in navigator)) {
-        // USB Connect Event
-
-        chosenNavigator?.addEventListener('connect', async event => {
-            // console.log("Connected!");
-            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
-                
-            } else {
-                await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
-            }
-        });
-
-        // USB Disconnect Event
-            
-        chosenNavigator?.addEventListener('disconnect', async event => {
-            // console.log("Disconnected!");
-            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
-                
-            } else {
-                await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
-            }
-        });
-    }
+    await setupTransportConnect(dappOption, dappStakingOption, DappObject);
 
     if (option === 1 || option === '1') {
         // WRAP PAGE
-        document.getElementById("wrapTab")?.classList.add("selected");
-        document.getElementById("delegateTab")?.classList.remove("selected");
-        document.getElementById("rewardsTab")?.classList.remove("selected");
-        document.getElementById("stakeTab")?.classList.remove("selected");
-
-        let selectedNetwork = document.getElementById("SelectedNetwork");
-        let chainidhex;
-        let rpcUrl;
-        let networkValue;
-        let tokenIdentifier;
-        let wrappedTokenIdentifier;
-        var wrapUnwrapButton = document.getElementById("wrapUnwrap");
-        var fromIcon = document.getElementById("FromIcon");
-        var toIcon = document.getElementById("ToIcon");
-        document.getElementById("layer2").innerHTML = DappObject.flrLogo;
-        document.getElementById("layer3").innerHTML = DappObject.flrLogo;
-
-        let balanceElement = document.getElementById("Balance");
-        let tokenBalanceElement = document.getElementById("TokenBalance");
-
-        new Odometer({el: balanceElement, value: 0, format: odometerFormat});
-        new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
-
-        await createSelectedNetwork(DappObject).then( async () => {
-            getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
-
-                showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
-
-                document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
-                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (dappOption - 1), handleClick);
-                });
-            
-                // We check if the input is valid, then copy it to the wrapped tokens section.
-                document.querySelector("#AmountFrom")?.addEventListener("input", function () {
-                    setWrapButton(DappObject);
-                    copyWrapInput();
-                });
-            
-                document.getElementById("wrapUnwrap")?.addEventListener("click", async () => {
-                    toggleWrapButton(DappObject, object.tokenIdentifier, object.wrappedTokenIdentifier, object.rpcUrl, object.flrAddr);
-                });
-
-                document.getElementById("WrapIcon")?.addEventListener("click", async () => {
-                    toggleWrapButton(DappObject, object.tokenIdentifier, object.wrappedTokenIdentifier, object.rpcUrl, object.flrAddr);
-                });
-            
-                // If the input is valid, we wrap on click of "WrapButton".
-                document.getElementById("WrapButton")?.addEventListener("click", async () => {
-                    wrapTokens(object, DappObject);
-                });
-
-                if (DappObject.ledgerSelectedIndex !== "") {
-                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
-                } else {
-                    document.getElementById("ConnectWallet")?.click();
-                }
-
-                // When the Connect Wallet button is clicked, we connect the wallet, and if it
-                // has already been clicked, we copy the public address to the clipboard.
-                if (object.networkValue === '1') {
-                    document.getElementById("layer2").innerHTML = DappObject.flrLogo;
-                    document.getElementById("layer3").innerHTML = DappObject.flrLogo;
-                } else if (object.networkValue === '2') {
-                    document.getElementById("layer2").innerHTML = DappObject.sgbLogo;
-                    document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
-                } else {
-                    document.getElementById("layer2").innerHTML = DappObject.costonLogo;
-                    document.getElementById("layer3").innerHTML = DappObject.costonLogo;
-                }
-
-                object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
-                object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
-                object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
-                showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
-                setWrapButton(DappObject);
-
-                //When Selected Network Changes, alert Metamask
-                selectedNetwork.onchange = async () => {
-                    object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-rpcurl');
-                    object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex].getAttribute('data-chainidhex');
-                    object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex].value;
-
-                    DappObject.selectedNetworkIndex = Number(object.networkValue);
-
-                    if (object.networkValue === '1') {
-                        document.getElementById("layer2").innerHTML = DappObject.flrLogo;
-                        document.getElementById("layer3").innerHTML = DappObject.flrLogo;
-                    } else if (object.networkValue === '2') {
-                        document.getElementById("layer2").innerHTML = DappObject.sgbLogo;
-                        document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
-                    } else {
-                        document.getElementById("layer2").innerHTML = DappObject.costonLogo;
-                        document.getElementById("layer3").innerHTML = DappObject.costonLogo;
-                    }
-
-                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
-                    object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
-                    showTokenIdentifiers(object.tokenIdentifier, object.wrappedTokenIdentifier);
-                    DappObject.wrapBool = false;
-                    wrapUnwrapButton.value = "false";
-                    fromIcon.style.color = "#fd000f";
-                    toIcon.style.color = "#000";
-                    document.getElementById("Wrap").style.color = "#fd000f";
-                    document.getElementById("Unwrap").style.color = "#383a3b";
-                    document.getElementById("wrapUnwrap")?.click();
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    // Alert Metamask to switch.
-                    try {
-                        if (DappObject.walletIndex !== 1) {
-                            const realChainId = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'});
-
-                            if (realChainId != object.chainIdHex) {
-                                await DappObject.chosenEVMProvider.request({
-                                    method: 'wallet_addEthereumChain',
-                                    params: [
-                                        {
-                                            "chainId": object.chainIdHex,
-                                            "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
-                                            "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
-                                            "iconUrls": [
-                                                `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
-                                            ],
-                                            "nativeCurrency": {
-                                                "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
-                                                "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
-                                                "decimals": 18
-                                            }
-                                        },
-                                    ],
-                                });
-
-                                await DappObject.chosenEVMProvider.request({
-                                    method: "wallet_switchEthereumChain",
-                                    params: [
-                                        {
-                                        "chainId": object.chainIdHex
-                                        }
-                                    ]
-                                    }).catch(async (error) => {
-                                        throw(error);
-                                    });
-                            }
-                        }
-
-                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 0, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
-                    } catch (error) {
-                        // console.log(error);
-                    }
-                    
-                    setWrapButton(DappObject);
-                }
-
-                if (DappObject.walletIndex !== 1) {
-                    DappObject.chosenEVMProvider.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
-                    });
-
-                    DappObject.chosenEVMProvider.on("chainChanged", async () => {
-                        handleChainChanged(DappObject);
-                    });
-
-                    if (DappObject.walletIndex === 2) {
-                        DappObject.chosenEVMProvider.on("disconnect", async () => {
-                            getDappPage(4);
-                        });
-                    }
-                }
-            });
-        });
+        await setupWrapPage(DappObject, handleClick);
     } else if (option === 2 || option === '2') {
         // DELEGATE PAGE
-        document.getElementById("wrapTab")?.classList.remove("selected");
-        document.getElementById("delegateTab")?.classList.add("selected");
-        document.getElementById("rewardsTab")?.classList.remove("selected");
-        document.getElementById("stakeTab")?.classList.remove("selected");
-
-        let selectedNetwork = document.getElementById("SelectedNetwork");
-        let rpcUrl;
-        let chainidhex;
-        let networkValue;
-
-        await createSelectedNetwork(DappObject).then( async () => {
-            getSelectedNetwork(rpcUrl, chainidhex, networkValue).then(async (object) => {
-
-                document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
-                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
-                });
-            
-                document.getElementById("Amount1")?.addEventListener('input', async function () {
-                    await isDelegateInput1(DappObject);
-            
-                    var str = this.value;
-                    var suffix = "%";
-            
-                    if (str.search(suffix) === -1) {
-                        str += suffix;
-                    }
-            
-                    var actualLength = str.length - suffix.length;
-            
-                    if (actualLength === 0) {
-                        this.value = str.substring(0, actualLength);
-            
-                        this.setSelectionRange(actualLength, actualLength);
-                    } else {
-                        this.value = str.substring(0, actualLength) + suffix;
-            
-                        // Set cursor position.
-                        this.setSelectionRange(actualLength, actualLength);
-                    }
-                });
-            
-                document.getElementById("ClaimButton")?.addEventListener("click", async () => {
-                    let web32 = new Web3(object.rpcUrl);
-
-                    DappObject.isHandlingOperation = true;
-            
-                    try {
-                        const wrappedTokenAddr = await GetContract("WNat", object.rpcUrl, object.flrAddr);
-                        let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-                        const account = DappObject.selectedAddress;
-            
-                        const delegatesOfUser = await tokenContract.methods.delegatesOf(account).call();
-                        const delegatedFtsos = delegatesOfUser[0];
-            
-                        let ftsoNames = [];
-            
-                        fetch(dappUrlBaseAddr + 'bifrost-wallet.providerlist.json')
-                        .then(res => res.json())
-                        .then(FtsoInfo => {
-                            FtsoInfo.providers.sort((a, b) => a.name > b.name ? 1 : -1);
-            
-                            var indexNumber;
-            
-                            for (var f = 0; f < FtsoInfo.providers.length; f++) {
-                                indexNumber = f;
-            
-                                for (var i = 0; i < delegatedFtsos.length; i++) {
-                                    if (FtsoInfo.providers[f].address === delegatedFtsos[i]) {
-                                        if (typeof ftsoNames[0] !== "undefined" && ftsoNames[0] !== null) {
-                                            ftsoNames[1] = FtsoInfo.providers[indexNumber].name;
-                                        } else {
-                                            ftsoNames[0] = FtsoInfo.providers[indexNumber].name;
-                                        }
-                                    }
-                                }
-                            }
-
-                            let delegatedBips = getDelegatedBips();
-            
-                            if (delegatedFtsos.length === 2 || delegatedBips === 100 || document.getElementById("ClaimButton").innerText === dappStrings['dapp_undelegate']) {
-                                showAlreadyDelegated(ftsoNames, object, DappObject);
-                            } else {
-                                delegate(object, DappObject);
-                            }
-
-                            DappObject.isHandlingOperation = false;
-                        });
-                    } catch(error) {
-                        DappObject.isHandlingOperation = false;
-
-                        // console.log(error);
-                    }
-                });
-
-                if (DappObject.ledgerSelectedIndex !== "") {
-                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
-                } else {
-                    document.getElementById("ConnectWallet")?.click();
-                }
-
-                await isDelegateInput1(DappObject);
-
-                if (window.cachedValues.delegateDropdown !== undefined) {
-                    window.cachedValues.delegateDropdown.clear();
-                }
-
-                selectedNetwork.onchange = async () => {
-                    object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
-                    object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
-                    object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
-
-                    DappObject.selectedNetworkIndex = Number(object.networkValue);
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    // Alert Metamask to switch.
-                    try {
-                        if (DappObject.walletIndex !== 1) {
-                            const realChainId = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'});
-
-                            if (realChainId != object.chainIdHex) {
-                                await DappObject.chosenEVMProvider.request({
-                                    method: 'wallet_addEthereumChain',
-                                    params: [
-                                        {
-                                            "chainId": object.chainIdHex,
-                                            "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
-                                            "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
-                                            "iconUrls": [
-                                                `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
-                                            ],
-                                            "nativeCurrency": {
-                                                "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
-                                                "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
-                                                "decimals": 18
-                                            }
-                                        },
-                                    ],
-                                });
-
-                                await DappObject.chosenEVMProvider.request({
-                                    method: "wallet_switchEthereumChain",
-                                    params: [
-                                        {
-                                        "chainId": object.chainIdHex
-                                        }
-                                    ]
-                                    }).catch(async (error) => {
-                                        throw(error);
-                                    });
-                            }                    
-                        }
-
-                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 1, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
-                    } catch (error) {
-                        // console.log(error);
-                    }
-                };
-
-                if (DappObject.walletIndex !== 1) {
-                    DappObject.chosenEVMProvider.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
-                    });
-
-                    DappObject.chosenEVMProvider.on("chainChanged", async () => {
-                        handleChainChanged(DappObject);
-                    });
-
-                    if (DappObject.walletIndex === 2) {
-                        DappObject.chosenEVMProvider.on("disconnect", async () => {
-                            getDappPage(4);
-                        });
-                    }
-                }
-
-                await populateFtsos(object.rpcUrl, object.flrAddr);
-            });
-        });
+        await setupDelegatePage(DappObject, handleClick, option);
     } else if (option === 3 || option === '3') {
         // REWARDS PAGE
-        document.getElementById("wrapTab")?.classList.remove("selected");
-        document.getElementById("delegateTab")?.classList.remove("selected");
-        document.getElementById("rewardsTab")?.classList.add("selected");
-        document.getElementById("stakeTab")?.classList.remove("selected");
-
-        let tokenBalanceElement = document.getElementById("TokenBalance");
-
-        new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
-
-        let selectedNetwork = document.getElementById("SelectedNetwork");
-        let chainidhex;
-        let rpcUrl;
-        let networkValue;
-        let tokenIdentifier;
-        let wrappedTokenIdentifier;
-        document.getElementById('layer3').innerHTML = DappObject.flrLogo;
-
-        await createSelectedNetwork(DappObject).then( async () => {
-            getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
-
-                showTokenIdentifiers(null, object.wrappedTokenIdentifier);
-
-                document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
-                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
-                });
-            
-                document.getElementById("ClaimButton")?.addEventListener("click", async () => {
-                    if (DappObject.claimBool === true) {
-                        await claimRewards(object, DappObject);
-                    }
-                });
-            
-                document.getElementById("ClaimFdButton")?.addEventListener("click", async () => {
-                    if (DappObject.fdClaimBool === true) {
-                        await claimFdRewards(object, DappObject);
-                    }
-                });
-
-                if (DappObject.ledgerSelectedIndex !== "") {
-                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
-                } else {
-                    document.getElementById("ConnectWallet")?.click();
-                }
-
-                if (object.networkValue === '1') {
-                    document.getElementById("layer3").innerHTML = DappObject.flrLogo;
-                } else if (object.networkValue === '2') {
-                    document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
-                } else {
-                    document.getElementById("layer3").innerHTML = DappObject.costonLogo;
-                }
-
-                selectedNetwork.onchange = async () => {
-                    object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
-                    object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
-                    object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
-
-                    DappObject.selectedNetworkIndex = Number(object.networkValue);
-
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    if (object.networkValue === '1') {
-                        document.getElementById("layer3").innerHTML = DappObject.flrLogo;
-                    } else if (object.networkValue === '2') {
-                        document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
-                    } else {
-                        document.getElementById("layer3").innerHTML = DappObject.costonLogo;
-                    }
-                    
-                    object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
-                    object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
-                    showTokenIdentifiers(null, object.wrappedTokenIdentifier);
-
-                    // Alert Metamask to switch.
-                    try {
-                        if (DappObject.walletIndex !== 1) {
-                            const realChainId = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'});
-
-                            if (realChainId != object.chainIdHex) {
-                                await DappObject.chosenEVMProvider.request({
-                                    method: 'wallet_addEthereumChain',
-                                    params: [
-                                        {
-                                            "chainId": object.chainIdHex,
-                                            "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
-                                            "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
-                                            "iconUrls": [
-                                                `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
-                                            ],
-                                            "nativeCurrency": {
-                                                "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
-                                                "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
-                                                "decimals": 18
-                                            }
-                                        },
-                                    ],
-                                });
-
-                                await DappObject.chosenEVMProvider.request({
-                                    method: "wallet_switchEthereumChain",
-                                    params: [
-                                        {
-                                        "chainId": object.chainIdHex
-                                        }
-                                    ]
-                                    }).catch(async (error) => {
-                                        throw(error);
-                                    });
-                            }
-                        }
-
-                        ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
-                    } catch (error) {
-                        // console.log(error);
-                    }
-                };
-
-                if (DappObject.walletIndex !== 1) {
-                    DappObject.chosenEVMProvider.on("accountsChanged", async (accounts) => {
-                        handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
-                    });
-
-                    DappObject.chosenEVMProvider.on("chainChanged", async () => {
-                        handleChainChanged(DappObject);
-                    });
-
-                    if (DappObject.walletIndex === 2) {
-                        DappObject.chosenEVMProvider.on("disconnect", async () => {
-                            getDappPage(4);
-                        });
-                    }
-                }
-            });
-        });
+        await setupRewardsPage(DappObject, handleClick, option);
     } else if (option === 4 || option === '4') {
 
         if (stakingOption !== undefined && stakingOption !== 4 && stakingOption !== 5) {
@@ -1074,13 +526,9 @@ window.dappInit = async (option, stakingOption) => {
 
                 await setCurrentAppState("Null");
 
-                await setCurrentPopup(dappStrings['dapp_mabel_selectwallet1'], true);
-
-                clearTimeout(DappObject.latestPopupTimeoutId);
-
-                DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                    await setCurrentPopup(dappStrings['dapp_mabel_selectwallet2']  + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet3'] + ' ' + DappObject.providerList[0].info.name + dappStrings['dapp_mabel_selectwallet4'], true);
-                }, 9000);
+                await setMabelMessages(dappStrings['dapp_mabel_selectwallet1'], 
+                dappStrings['dapp_mabel_selectwallet2']  + ' ' + DappObject.providerList[0].info.name + ' ' + dappStrings['dapp_mabel_selectwallet3'] + ' ' + DappObject.providerList[0].info.name + dappStrings['dapp_mabel_selectwallet4'],
+                9000);
             } catch (error) {
                 // console.log(error);
             }
@@ -1147,12 +595,8 @@ window.dappInit = async (option, stakingOption) => {
                             break
                         case "Failed: App not Installed":
                             await setCurrentAppState("Alert");
-    
-                            clearTimeout(DappObject.latestPopupTimeoutId);
-    
-                            DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                await setCurrentPopup(dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], true);
-                            }, 1000);
+
+                            await setMabelMessages(undefined, dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], 1000)
     
                             throw new Error("Ledger Avalanche App not installed!");
                             break
@@ -1167,95 +611,13 @@ window.dappInit = async (option, stakingOption) => {
             });
         } else if (stakingOption === 1) {
             // TRANSFER PAGE
-            document.getElementById("wrapTab")?.classList.remove("selected");
-            document.getElementById("delegateTab")?.classList.remove("selected");
-            document.getElementById("rewardsTab")?.classList.remove("selected");
-            document.getElementById("stakeTab")?.classList.add("selected");
-
-            let balanceElement = document.getElementById("Balance");
-            let tokenBalanceElement = document.getElementById("TokenBalance");
-
-            new Odometer({el: balanceElement, value: 0, format: odometerFormat});
-            new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
-
-            document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
-                ConnectPChainClickStake(DappObject, handleClick);
-            });
-
-            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
-                document.getElementById("ConnectPChain")?.click();
-            }
-
-            // We check if the input is valid, then copy it to the wrapped tokens section.
-            document.querySelector("#AmountFrom")?.addEventListener("input", function () {
-                setTransferButton(DappObject);
-                copyWrapInput();
-            });
-
-            document.querySelector("#AmountTo")?.addEventListener("input", function () {
-                setTransferButton2(DappObject);
-                copyTransferInput();
-            });
-
-            document.getElementById("TransferIcon")?.addEventListener("click", async () => {
-                toggleTransferButton(DappObject, stakingOption);
-            });
-
-            document.getElementById("WrapButton")?.addEventListener("click", async () => {
-                transferTokens(DappObject, stakingOption);
-            });
+            await setupTransferPage(DappObject, handleClick);
         } else if (stakingOption === 2) {
             // STAKE PAGE
-            document.getElementById("wrapTab")?.classList.remove("selected");
-            document.getElementById("delegateTab")?.classList.remove("selected");
-            document.getElementById("rewardsTab")?.classList.remove("selected");
-            document.getElementById("stakeTab")?.classList.add("selected");
-
-            document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
-                ConnectPChainClickStake(DappObject, handleClick);
-            });
-
-            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
-                document.getElementById("ConnectPChain")?.click();
-            }
-
-            document.getElementById("WrapButton")?.addEventListener("click", async () => {
-                if (DappObject.isRealValue === false) {
-                    await setCurrentPopup(dappStrings['dapp_mabel_stake_error1'], true);
-                } else {
-                    stake(DappObject, stakingOption);
-                }
-            });
-
-            try {                 
-                await populateValidators();
-            } catch (error) {
-                // console.log(error);
-            }
+            await setupStakePage(DappObject, handleClick);
         } else if (stakingOption === 3) {
             // STAKE REWARDS PAGE
-            document.getElementById("wrapTab")?.classList.remove("selected");
-            document.getElementById("delegateTab")?.classList.remove("selected");
-            document.getElementById("rewardsTab")?.classList.remove("selected");
-            document.getElementById("stakeTab")?.classList.add("selected");
-
-            let tokenBalanceElement = document.getElementById("TokenBalance");
-
-            new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
-
-            document.getElementById("ConnectPChain")?.addEventListener("click", handleClick = async () => {
-                ConnectPChainClickStake(DappObject, handleClick);
-            });
-
-            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
-                document.getElementById("ConnectPChain")?.click();
-            }
-
-            document.getElementById("ClaimButton")?.addEventListener("click", async () => {
-                if (DappObject.claimBool === true) {
-                    claimStakingRewards(DappObject, stakingOption);
-                }
-            });
+            await setupStakeRewardsPage(DappObject, handleClick);
         }
 
         if (DappObject.walletIndex !== 1 && DappObject.walletIndex !== -1) {
@@ -1268,6 +630,8 @@ window.dappInit = async (option, stakingOption) => {
             });
         }
     }
+
+    // French Number formatting
 
     document.querySelectorAll(".odometer").forEach(odometer => {
         odometer.addEventListener('odometerdone', function(){

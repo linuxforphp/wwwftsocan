@@ -1,8 +1,284 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
-import { round, isNumber, checkTx } from "./dapp-utils.js";
-import { showSpinner, showConfirmationSpinner, showConfirmationSpinnerv2, showConfirm, showEmptyBucket, showFail, setCurrentPopup } from "./dapp-ui.js";
+import { round, isNumber, checkTx, showConnectedAccountAddress, remove, showTokenIdentifiers } from "./dapp-utils.js";
+import { showSpinner, showConfirmationSpinner, showConfirmationSpinnerv2, showConfirm, showEmptyBucket, showFail, setCurrentPopup, setMabelMessages } from "./dapp-ui.js";
 import { isDelegateInput1 } from "./dapp-delegate.js";
 import { LedgerEVMSingleSign, LedgerEVMFtsoV2Sign } from "./dapp-ledger.js";
+import { createSelectedNetwork, getSelectedNetwork } from "./dapp-common.js";
+import { ConnectWalletClick, handleAccountsChanged, handleChainChanged } from "./dapp-wallet.js";
+
+export async function setupRewardsPage(DappObject, handleClick, option) {
+    document.getElementById("wrapTab")?.classList.remove("selected");
+    document.getElementById("delegateTab")?.classList.remove("selected");
+    document.getElementById("rewardsTab")?.classList.add("selected");
+    document.getElementById("stakeTab")?.classList.remove("selected");
+
+    let tokenBalanceElement = document.getElementById("TokenBalance");
+
+    new Odometer({el: tokenBalanceElement, value: 0, format: odometerFormat});
+
+    let selectedNetwork = document.getElementById("SelectedNetwork");
+    let chainidhex;
+    let rpcUrl;
+    let networkValue;
+    let tokenIdentifier;
+    let wrappedTokenIdentifier;
+    document.getElementById('layer3').innerHTML = DappObject.flrLogo;
+
+    await createSelectedNetwork(DappObject).then( async () => {
+        getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier).then(async (object) => {
+
+            showTokenIdentifiers(null, object.wrappedTokenIdentifier);
+
+            document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
+                ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, (option - 1), handleClick);
+            });
+        
+            document.getElementById("ClaimButton")?.addEventListener("click", async () => {
+                if (DappObject.claimBool === true) {
+                    await claimRewards(object, DappObject);
+                }
+            });
+        
+            document.getElementById("ClaimFdButton")?.addEventListener("click", async () => {
+                if (DappObject.fdClaimBool === true) {
+                    await claimFdRewards(object, DappObject);
+                }
+            });
+
+            if (DappObject.ledgerSelectedIndex !== "") {
+                ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+            } else {
+                document.getElementById("ConnectWallet")?.click();
+            }
+
+            if (object.networkValue === '1') {
+                document.getElementById("layer3").innerHTML = DappObject.flrLogo;
+            } else if (object.networkValue === '2') {
+                document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
+            } else {
+                document.getElementById("layer3").innerHTML = DappObject.costonLogo;
+            }
+
+            selectedNetwork.onchange = async () => {
+                object.rpcUrl = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-rpcurl');
+                object.chainIdHex = selectedNetwork?.options[selectedNetwork.selectedIndex]?.getAttribute('data-chainidhex');
+                object.networkValue = selectedNetwork?.options[selectedNetwork.selectedIndex]?.value;
+
+                DappObject.selectedNetworkIndex = Number(object.networkValue);
+
+                clearTimeout(DappObject.latestPopupTimeoutId);
+
+                if (object.networkValue === '1') {
+                    document.getElementById("layer3").innerHTML = DappObject.flrLogo;
+                } else if (object.networkValue === '2') {
+                    document.getElementById("layer3").innerHTML = DappObject.sgbLogo;
+                } else {
+                    document.getElementById("layer3").innerHTML = DappObject.costonLogo;
+                }
+                
+                object.tokenIdentifier = selectedNetwork?.options[selectedNetwork.selectedIndex]?.innerHTML;
+                object.wrappedTokenIdentifier = "W" + object.tokenIdentifier;
+                showTokenIdentifiers(null, object.wrappedTokenIdentifier);
+
+                // Alert Metamask to switch.
+                try {
+                    if (DappObject.walletIndex !== 1) {
+                        const realChainId = await DappObject.chosenEVMProvider.request({method: 'eth_chainId'});
+
+                        if (realChainId != object.chainIdHex) {
+                            await DappObject.chosenEVMProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        "chainId": object.chainIdHex,
+                                        "rpcUrls": [selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-publicrpcurl')],
+                                        "chainName": selectedNetwork.options[selectedNetwork.selectedIndex].getAttribute('data-chainname'),
+                                        "iconUrls": [
+                                            `https://portal.flare.network/token-logos/${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}.svg`
+                                        ],
+                                        "nativeCurrency": {
+                                            "name": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                            "symbol": `${selectedNetwork.options[selectedNetwork.selectedIndex].innerText}`,
+                                            "decimals": 18
+                                        }
+                                    },
+                                ],
+                            });
+
+                            await DappObject.chosenEVMProvider.request({
+                                method: "wallet_switchEthereumChain",
+                                params: [
+                                    {
+                                    "chainId": object.chainIdHex
+                                    }
+                                ]
+                                }).catch(async (error) => {
+                                    throw(error);
+                                });
+                        }
+                    }
+
+                    ConnectWalletClick(object.rpcUrl, object.flrAddr, DappObject, 2, undefined, undefined, DappObject.selectedAddress, DappObject.ledgerSelectedIndex);
+                } catch (error) {
+                    // console.log(error);
+                }
+            };
+
+            if (DappObject.walletIndex !== 1) {
+                DappObject.chosenEVMProvider.on("accountsChanged", async (accounts) => {
+                    handleAccountsChanged(accounts, DappObject, dappOption, undefined, object.rpcUrl, object.flrAddr);
+                });
+
+                DappObject.chosenEVMProvider.on("chainChanged", async () => {
+                    handleChainChanged(DappObject);
+                });
+
+                if (DappObject.walletIndex === 2) {
+                    DappObject.chosenEVMProvider.on("disconnect", async () => {
+                        getDappPage(4);
+                    });
+                }
+            }
+        });
+    });
+}
+
+export async function ConnectWalletRewards(rpcUrl, flrAddr, web32, DappObject, account, prefixedPchainAddress, tokenBalance) {
+    await setMabelMessages(dappStrings['dapp_mabel_claim1'], dappStrings['dapp_mabel_claim2'], 15000);
+    
+    var networkSelectBox = document.getElementById('SelectedNetwork');
+
+    let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
+
+    let oldRewardManagerAddr;
+
+    let rewardManagerContract;
+
+    let rewardManagerAddrArray = [rewardManagerAddr];
+
+    let rewardManagerContractArray = [];
+
+    for (let i = 0; i < rewardManagerAddrArray.length; i++) {
+        try {
+            rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
+
+            rewardManagerContractArray[i] = rewardManagerContract;
+
+            oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
+
+            if (oldRewardManagerAddr !== "0x0000000000000000000000000000000000000000") {
+                rewardManagerAddrArray[i + 1] = oldRewardManagerAddr;
+            }
+        } catch (error) {
+            // console.log(error);
+        }
+    }
+
+    try {
+        const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
+        const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
+
+        const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
+        let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
+        let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
+        let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
+
+        showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+        showConnectedAccountAddress(account);
+
+        // Changing the color of Claim button.
+        if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
+            switchClaimButtonColor();
+            
+            DappObject.claimBool = true;
+        } else {
+            switchClaimButtonColorBack();
+
+            DappObject.claimBool = false;
+        }
+
+        if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
+            switchClaimFdButtonColor();
+            
+            DappObject.fdClaimBool = true;
+        } else {
+            switchClaimFdButtonColorBack();
+
+            DappObject.fdClaimBool = false;
+        }
+
+        remove(".wrap-box-ftso");
+
+        await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
+
+        showAccountAddress(account, prefixedPchainAddress);
+
+        // Getting the unclaimed Rewards and affecting the Claim button.
+        const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
+        let unclaimedAmount = BigInt(0);
+        let unclaimedAmountv2;
+        let l;
+
+        let network = GetNetworkName(rpcUrl);
+
+        unclaimedAmount += await getV1Rewards(epochsUnclaimed, network, account, ftsoRewardContract, l);
+
+        if (unclaimedAmount > BigInt(0)) {
+            DappObject.hasV1Rewards = true;
+        } else {
+            DappObject.hasV1Rewards = false;
+        }
+
+        if (rewardsOverrideConfig[network].V2Check === true && rewardManagerContractArray?.length) {
+            unclaimedAmount += await getV2Rewards(unclaimedAmountv2, network, account, DappObject, flareSystemsManagerContract, rewardManagerContractArray);
+        } else {
+            DappObject.hasV2Rewards = false;
+
+            DappObject.hasFtsoRewards = false;
+        }
+        
+        const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
+        
+        // Changing the color of Claim button.
+        showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
+
+        if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
+            let claimableAmountFd = BigInt(0);
+
+            claimableAmountFd += await getFlareDropRewards(account, DistributionDelegatorsContract);
+            
+            const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
+
+            // Changing the color of FlareDrop Claim button.
+            showFdRewards(convertedRewardsFd[0] + "." + convertedRewardsFd[1].slice(0, 2));
+
+            if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
+                switchClaimFdButtonColor();
+
+                DappObject.fdClaimBool = true;
+            } else {
+                switchClaimFdButtonColorBack();
+
+                DappObject.fdClaimBool = false;
+            }
+        } else {
+            showFdRewards(0);
+        }
+
+        if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
+            switchClaimButtonColor();
+
+            DappObject.claimBool = true;
+        } else {
+            showClaimRewards(0);
+            switchClaimButtonColorBack();
+
+            DappObject.claimBool = false;
+        }
+    } catch (error) {
+        // console.log(error);
+    }
+}
 
 export async function getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject) {
     var delegatedFtsoElement = document.getElementById('delegate-wrapbox');

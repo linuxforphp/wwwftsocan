@@ -1,8 +1,165 @@
-import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos } from "./flare-utils";
+import { GetNetworkName } from "./flare-utils";
 import { ethers } from "./ethers.js";
 import { wait, checkTx, checkTxStake } from "./dapp-utils.js";
-import { showSpinner, showConfirmationSpinnerv2, showConfirmationSpinnerStake, showConfirm, showFail, showFailStake, setCurrentAppState, setCurrentPopup } from "./dapp-ui.js";
-import { handleAccountsChanged } from "./dapp-wallet.js";
+import { showSpinner, showConfirmationSpinnerv2, showConfirmationSpinnerStake, showConfirm, showFail, showFailStake, setCurrentAppState, setCurrentPopup, setMabelMessages } from "./dapp-ui.js";
+import { ConnectWalletClick, handleAccountsChanged } from "./dapp-wallet.js";
+
+export async function setupTransportConnect(dappOption, dappStakingOption, DappObject) {
+    if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
+        window.chosenNavigator = navigator.usb;
+    } else if (("hid" in navigator) && !("usb" in navigator)) {
+        window.chosenNavigator = navigator.hid;
+    }
+
+    if (("usb" in navigator) || ("hid" in navigator)) {
+        // USB Connect Event
+
+        chosenNavigator?.addEventListener('connect', async event => {
+            // console.log("Connected!");
+            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
+                
+            } else {
+                await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
+            }
+        });
+
+        // USB Disconnect Event
+            
+        chosenNavigator?.addEventListener('disconnect', async event => {
+            // console.log("Disconnected!");
+            if ((dappOption === 4 && typeof dappStakingOption === 'undefined') || (dappOption === 4 && dappStakingOption === 4) || DappObject.isHandlingOperation === true) {
+                
+            } else {
+                await handleTransportConnect(chosenNavigator, DappObject, dappOption, dappStakingOption);
+            }
+        });
+    }
+}
+
+export async function ConnectWalletSetupLedger(requiredApp, selectize, account, flrPublicKey, rpcUrl, flrAddr, pageIndex, HandleClick, DappObject) {
+    await getLedgerApp(requiredApp).then(async result => {
+        switch (result) {
+            case "Success":
+                await wait(3000);
+
+                if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
+                    let addresses;
+
+                    // console.log("Fetching Addresses... ETH");
+
+                    if (GetNetworkName(rpcUrl) === "flare") {
+                        addresses = await getLedgerAddresses("flare", DappObject.isAvax);
+                    } else if (GetNetworkName(rpcUrl) === "songbird") {
+                        addresses = await getLedgerAddresses("songbird", DappObject.isAvax);
+                    }
+
+                    let insert = [];
+
+                    for (let i = 0; i < addresses.length; i++) {
+                        insert[i] = {
+                            id: i,
+                            title: addresses[i].ethAddress,
+                            pubkey: addresses[i].publicKey,
+                        };
+                    }
+
+                    DappObject.ledgerAddrArray = insert;
+                }
+
+                // console.log(DappObject.ledgerAddrArray);
+
+                document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="' + dappStrings['dapp_select_wallet'] + '"></select>'
+
+                var onInputChange = async (value) => {
+                    let addressBox = document.querySelector("span.title.connect-wallet-text");
+                    let ethaddr = addressBox.getAttribute('data-ethkey');
+                    let pubKey = addressBox.getAttribute('data-pubkey');
+                    
+                    flrPublicKey = pubKey;
+
+                    account = ethaddr;
+
+                    DappObject.selectedAddress = account;
+
+                    DappObject.ledgerSelectedIndex = value;
+
+                    let unprefixed;
+
+                    if (GetNetworkName(rpcUrl) === "flare") {
+                        unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
+                    } else if (GetNetworkName(rpcUrl) === "songbird") {
+                        unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
+                    }
+
+                    DappObject.unPrefixedAddr = unprefixed;
+
+                    ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+                }
+
+                var $select = $('#select-account').selectize({
+                    maxItems: 1,
+                    valueField: 'id',
+                    labelField: 'title',
+                    searchField: ["title"],
+                    options: DappObject.ledgerAddrArray,
+                    render: {
+                        item: function (item, escape) {
+                            return (
+                            "<div>" +
+                            (item.title
+                                ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                : "") +
+                            "</div>"
+                            );
+                        },
+                        option: function (item, escape) {
+                            var label = item.title;
+                            return (
+                            "<div>" +
+                            '<span class="connect-wallet-text">' +
+                            escape(label) +
+                            "</span>" +
+                            "</div>"
+                            );
+                        },
+                    },
+                    onChange: function(value) {
+                        onInputChange(value);
+                    },
+                    create: false,
+                    dropdownParent: "body",
+                });
+
+                selectize = $select[0].selectize;
+
+                if (HandleClick) {
+                    document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+                }
+
+                if (DappObject.ledgerSelectedIndex !== "") {
+                    selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                } else {
+                    await setCurrentPopup(dappStrings['dapp_mabel_selectaccount'], true);
+                }
+
+                let addressDropdown = document.querySelector(".selectize-input");
+                let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
+                    
+                flrPublicKey = publicKey;
+                break
+            case "Failed: App not Installed":
+                await setCurrentAppState("Alert");
+
+                await setMabelMessages(undefined, dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], 1000);
+
+                throw new Error("Ledger Avalanche App not installed!");
+                break
+            case "Failed: User Rejected":
+                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
+                break
+        }
+    });
+}
 
 export async function LedgerEVMSingleSign(txPayload, DappObject, stakingOption, isStake = false, object, pageIndex) {
     DappObject.isHandlingOperation = true;
@@ -297,11 +454,7 @@ export async function handleTransportConnect(chosenNavigator, DappObject, option
                 case "Failed: App not Installed":
                     await setCurrentAppState("Alert");
 
-                    clearTimeout(DappObject.latestPopupTimeoutId);
-
-                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                        await setCurrentPopup(dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], true);
-                    }, 1000);
+                    await setMabelMessages(undefined, dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], 1000);
 
                     if (option === 4 && stakingOption === 5) {
                         let continueButton = document.getElementById("ContinueAnyway");
