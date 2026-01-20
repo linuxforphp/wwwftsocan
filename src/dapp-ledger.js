@@ -3,6 +3,7 @@ import { ethers } from "./ethers.js";
 import { wait, checkTx, checkTxStake } from "./dapp-utils.js";
 import { showSpinner, showConfirmationSpinnerv2, showConfirmationSpinnerStake, showConfirm, showFail, showFailStake, setCurrentAppState, setCurrentPopup, setMabelMessages } from "./dapp-ui.js";
 import { ConnectWalletClick, handleAccountsChanged } from "./dapp-wallet.js";
+import { FAssetInfo } from "./dapp-fassets.js";
 
 export async function setupTransportConnect(dappOption, dappStakingOption, DappObject) {
     if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
@@ -420,13 +421,17 @@ export async function handleTransportConnect(chosenNavigator, DappObject, option
     if (numberOfLedgers >= 1) {
         let requiredApp;
 
-        if (DappObject.walletIndex === 0) {
-            requiredApp = "Ethereum";
-        } else if (DappObject.walletIndex === 1 || DappObject.walletIndex === -1) {
-            if (DappObject.isAvax === true) {
-                requiredApp = "Avalanche";
-            } else {
-                requiredApp = "Flare Network";
+        if (DappObject.secondaryWalletIndex !== -1) {
+            requiredApp = FAssetInfo[DappObject.chosenFAsset].ledgerAppName;
+        } else {
+            if (DappObject.walletIndex === 0) {
+                requiredApp = "Ethereum";
+            } else if (DappObject.walletIndex === 1 || DappObject.walletIndex === -1) {
+                if (DappObject.isAvax === true) {
+                    requiredApp = "Avalanche";
+                } else {
+                    requiredApp = "Flare Network";
+                }
             }
         }
 

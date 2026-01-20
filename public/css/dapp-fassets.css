@@ -1,0 +1,80 @@
+.fasset-option {
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    justify-content: right;
+    align-items: center;
+    text-align: right;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.6);
+    padding-right: 1.2em;
+    padding-top: .5em;
+    margin: 0px;
+    border-radius: 25px;
+    height: 100%;
+}
+
+.fasset-option:hover {
+    background: #fd000fcc;
+}
+
+.fasset-icon {
+    transition: 0.5s;
+    width: 60px;
+    margin: 5px;
+}
+
+.fasset-icon-bg {
+    transition: 0.5s;
+    fill: #ffffff;
+}
+
+.fasset-option:hover .fasset-icon-bg {
+    fill: #fd000fcc;
+}
+
+.fasset-icon-main {
+    stroke: #fd000fcc;
+    stroke-width: 0.1;
+    transition: 0.5s;
+    fill: #fd000fcc;
+}
+
+.fasset-option:hover .fasset-icon-main {
+    fill: #ffffff;
+    stroke: #ffffff;
+}
+
+.fasset-text {
+    font-size: 18px;
+    color: #fd000fcc !important;
+    z-index: 3;
+    position: relative;
+}
+
+.amount-fassets::placeholder {
+    color: #383a3b;
+}
+
+.dapp-header {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: #383a3b;
+    font-size: 20px;
+    padding: 12px;
+    width: 100%;
+    float: left;
+    cursor: pointer;
+    border-left: none;
+    border-right: none;
+    overflow: hidden !important;
+    letter-spacing: normal;
+    transition: 0.5s;
+}

@@ -11,6 +11,7 @@ export const FlareAbis = {
     AddressBinder: addressBinderAbi,
     ValidatorRewardManager: validatorRewardAbi,
     FlareSystemsManager: systemsManagerAbi,
+    FAssetToken: fassetTokenAbi,
 };
 
 export var selectedNetwork = document.getElementById("SelectedNetwork");

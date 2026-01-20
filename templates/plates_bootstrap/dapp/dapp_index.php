@@ -209,6 +209,7 @@
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/address-binder-abi.js"></script>
 <script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/validator-reward-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/fasset-token-abi.js"></script>
 
 <script>
     var uriPath = <?= json_encode($view['path']); ?>;

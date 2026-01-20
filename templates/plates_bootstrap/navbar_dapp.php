@@ -77,6 +77,7 @@ Fixed Navigation
                     <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage('Delegate')"><?=_("delegate")?></a></li>
                     <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage('Claim')"><?=_("rewards")?></a></li>
                     <li><a href="#" id="navbar-stake-item" class="nav-link nav-link-dapp" onclick="getDappPage('stakeTransfer')"><?=_("stake")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage('FassetsMint')">FAssets</a></li>
                 </ul>
             </div>
         </div>

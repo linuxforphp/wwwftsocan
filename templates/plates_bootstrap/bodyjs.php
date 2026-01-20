@@ -199,6 +199,71 @@
                         window.dappInit(4, 5);
                     }
                 });
+            } else if (option === "fassetsmint") {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsMint", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 1);
+                        }
+                    });
+                }
+            // FASSETS MINT MINT
+            } else if (option === "fassetsmintmint") {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsMintMint", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 2);
+                        }
+                    });
+                }
+            // FASSETS POOLS HOME
+            } else if (option === "fassetspools") {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsPools", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 3);
+                        }
+                    });
+                }
+            // FASSETS POOLS LIST
+            } else if (option === "fassetspoolslist") {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsPoolsList", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 4);
+                        }
+                    });
+                }
+            // FASSETS POOLS DEPOSIT
+            } else if (option === "fassetspoolsdeposit") {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsPoolsDeposit", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 5);
+                        }
+                    });
+                }
+            // FASSETS REWARDS
+            } else if (option === "fassetsrewards") {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "fassetsRewards", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 6);
+                        }
+                    });
+                }
             }
         }
     }

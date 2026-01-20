@@ -11,6 +11,7 @@ import { setupDelegatePage } from "./dapp-delegate.js";
 import { setupRewardsPage } from "./dapp-claim.js";
 import { setupTransferPage, setupStakePage, setupStakeRewardsPage } from "./dapp-staking.js";
 import { setupTransportConnect } from "./dapp-ledger.js";
+import { ConnectWalletClickFassets, FAssetInfo } from "./dapp-fassets.js";
 
 // ALL MODULES.
 
@@ -35,6 +36,7 @@ window.DappObject = {
     addressBinderAbiLocal: FlareAbis.AddressBinder,
     validatorRewardAbiLocal: FlareAbis.ValidatorRewardManager,
     systemsManagerAbiLocal: FlareAbis.FlareSystemsManager,
+    fassetTokenAbi: FlareAbis.FAssetToken,
     // Bools that determine whether or not we should let the user proceed
     wrapBool: true,
     claimBool: false,
@@ -70,6 +72,8 @@ window.DappObject = {
     selectedDateTime: "",
     StakeMaxDate: "",
     StakeMinDate: "",
+    // FAssets Variables
+    chosenFAsset: "",
 }
 
 window.cachedValues = {
@@ -629,6 +633,54 @@ window.dappInit = async (option, stakingOption) => {
                 handleChainChangedStake(DappObject);
             });
         }
+    } else if (option === 5 || option === '5') {
+        var handleClick;
+
+        console.log(DappObject.chosenEVMProvider);
+
+        if (stakingOption === 1) {
+            DappObject.chosenFAsset = "";
+ 
+             const btns = document.querySelectorAll('.fasset-clickable');
+ 
+             btns.forEach(btn => {
+                 btn.addEventListener('click', event => {
+                     DappObject.chosenFAsset = btn.id;
+ 
+                     console.log(btn.id);
+ 
+                     getDappPage('fassetsMintMint');
+                 });
+              });             
+         } else if (stakingOption === 2) {
+            document.getElementById("FAssetName").innerHTML = FAssetInfo[DappObject.chosenFAsset].fasset;
+            document.getElementById("NativeName").innerHTML = FAssetInfo[DappObject.chosenFAsset].name;
+            document.getElementById("FromIcon").innerHTML = FAssetInfo[DappObject.chosenFAsset].icon;
+            document.getElementById("ToIcon").innerHTML = FAssetInfo[DappObject.chosenFAsset].fassetIcon;
+            document.getElementById("NativeAddress").innerHTML = FAssetInfo[DappObject.chosenFAsset].dummyAddress;
+
+            document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
+                ConnectWalletClickFassets(DappObject, 0, handleClick, undefined, undefined, undefined, DappObject.chosenFAsset);
+            });
+
+            if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
+                document.getElementById("ConnectWallet")?.click();
+            }
+ 
+             // We check if the input is valid, then copy it to the wrapped tokens section.
+             // document.querySelector("#AmountTo")?.addEventListener("input", function () {
+             //     setTransferButton2(DappObject);
+             //     copyTransferInput();
+             // });
+ 
+             // document.getElementById("TransferIcon")?.addEventListener("click", async () => {
+             //     toggleTransferButton(DappObject, stakingOption);
+             // });
+ 
+             // document.getElementById("WrapButton")?.addEventListener("click", async () => {
+             //     transferTokens(DappObject, stakingOption);
+             // });
+         }
     }
 
     // French Number formatting
