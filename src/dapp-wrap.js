@@ -171,7 +171,7 @@ export async function setupWrapPage(DappObject, handleClick) {
 
                 if (DappObject.walletIndex === 2) {
                     DappObject.chosenEVMProvider.on("disconnect", async () => {
-                        getDappPage(4);
+                        getDappPage("Wallet");
                     });
                 }
             }

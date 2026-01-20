@@ -41,16 +41,16 @@ export function setupMobileNav(option, stakingOption) {
         document.getElementById("stakeTab")?.classList.remove("disabled");
 
        $("#wrapTab")?.on("click", function () {
-            getDappPage(1);
+            getDappPage("Wrap");
         });
         $("#delegateTab")?.on("click", function () {
-            getDappPage(2);
+            getDappPage("Delegate");
         });
         $("#rewardsTab")?.on("click", function () {
-            getDappPage(3);
+            getDappPage("Claim");
         });
         $("#stakeTab")?.on("click", function () {
-            getDappPage(5);
+            getDappPage("StakeTransfer");
         });
     }
 }

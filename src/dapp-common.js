@@ -424,7 +424,7 @@ window.dappInit = async (option, stakingOption) => {
                             ],
                         });
                     } catch (error) {
-                        getDappPage(1);
+                        getDappPage("Wrap");
                     }
 
                     await DappObject.chosenEVMProvider.request({
@@ -504,16 +504,16 @@ window.dappInit = async (option, stakingOption) => {
                     document.cookie = "ftsocan_browser-wallet=true;";
                     DappObject.walletIndex = 0;
                     updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
-                    getDappPage(1);
+                    getDappPage("Wrap");
                 });
                 document.getElementById("ContinueLedger")?.addEventListener("click", async () => {
-                    getDappPage(9);
+                    getDappPage("WalletLedger");
                 });
                 document.getElementById("ContinueWalletConnect")?.addEventListener("click", async () => {
                     DappObject.walletIndex = 2;
                     updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                     DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
-                    getDappPage(1);
+                    getDappPage("Wrap");
                 });
 
                 document.getElementById("ContinueCryptoCom")?.addEventListener("click", async () => {
@@ -521,7 +521,7 @@ window.dappInit = async (option, stakingOption) => {
                     updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
                     await cryptoComConnector.activate();
                     DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
-                    getDappPage(1);
+                    getDappPage("Wrap");
                 });
 
                 await setCurrentAppState("Null");
@@ -543,7 +543,7 @@ window.dappInit = async (option, stakingOption) => {
             // });
 
             // document.getElementById("GoBack")?.addEventListener("click", async () => {
-            //     getDappPage(4);
+            //     getDappPage("Wallet");
             // });
 
             // await setCurrentPopup(dappStrings['dapp_mabel_metamask'], true);
@@ -590,7 +590,7 @@ window.dappInit = async (option, stakingOption) => {
                                 document.cookie = "ftsocan_browser-wallet=false;";
                                 DappObject.walletIndex = 1;
                                 updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
-                                getDappPage(1);
+                                getDappPage("Wrap");
                             });
                             break
                         case "Failed: App not Installed":
@@ -607,7 +607,7 @@ window.dappInit = async (option, stakingOption) => {
             }
 
             document.getElementById("GoBack")?.addEventListener("click", async () => {
-                getDappPage(4);
+                getDappPage("Wallet");
             });
         } else if (stakingOption === 1) {
             // TRANSFER PAGE

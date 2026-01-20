@@ -91,9 +91,11 @@
     }
 
     function getDappPage(option, reconnect = true) {
-        if (window.dappTranslatedOption && (window.dappTranslatedOption == option)) {
+        if (window.dappTranslatedOption && (window.dappTranslatedOption.toLowerCase() == option.toLowerCase())) {
             return;
         }
+
+        let filteredOption = option.toLowerCase();
 
         if (window.innerWidth <= 480) {
             document.getElementById("dappContainer").style.setProperty('--animate-duration', '0.15s');
@@ -104,14 +106,14 @@
                 openDappPage(option, reconnect);
             }, { once: true });
         } else {
-            openDappPage(option, reconnect);
+            openDappPage(filteredOption, reconnect);
         }
     }
 
     function openDappPage(option, reconnect) {
         window.dappTranslatedOption = option;
 
-        if (option === 4) {
+        if (option === "wallet") {
                 $.get( "wallet", function( data ) {
                     $( "#dapp-root" ).html( data );
 
@@ -121,7 +123,7 @@
                 });
             }
         if (DappObject.isAccountConnected === true) {
-            if (option === 1) {
+            if (option === "wrap") {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "wrap", function( data ) {
                         $( "#dapp-root" ).html( data );
@@ -131,7 +133,7 @@
                         }
                     });
                 }
-            } else if (option === 2) {
+            } else if (option === "delegate") {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "delegate", function( data ) {
                         $( "#dapp-root" ).html( data );
@@ -141,7 +143,7 @@
                         }
                     });
                 }
-            } else if (option === 3) {
+            } else if (option === "claim") {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "claim", function( data ) {
                         $( "#dapp-root" ).html( data );
@@ -151,7 +153,7 @@
                         }
                     });
                 } 
-            } else if (option === 5) {
+            } else if (option === "staketransfer") {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "stakeTransfer", function( data ) {
                         $( "#dapp-root" ).html( data );
@@ -161,7 +163,7 @@
                         }
                     });
                 }
-            } else if (option === 6) {
+            } else if (option === "stakestake") {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "stakeStake", function( data ) {
                         $( "#dapp-root" ).html( data );
@@ -171,7 +173,7 @@
                         }
                     });
                 }
-            } else if (option === 7) {
+            } else if (option === "stakerewards") {
                 if (DappObject.walletIndex !== -1) {
                     $.get( "stakeRewards", function( data ) {
                         $( "#dapp-root" ).html( data );
@@ -181,7 +183,7 @@
                         }
                     });
                 }
-            } else if (option === 8) {
+            } else if (option === "walletmetamask") {
                 $.get( "walletMetamask", function( data ) {
                     $( "#dapp-root" ).html( data );
 
@@ -189,7 +191,7 @@
                         window.dappInit(4, 4);
                     }
                 });
-            } else if (option === 9) {
+            } else if (option === "walletledger") {
                 $.get( "walletLedger", function( data ) {
                     $( "#dapp-root" ).html( data );
 

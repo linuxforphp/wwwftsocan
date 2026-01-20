@@ -83,7 +83,7 @@ export async function handleAccountsChanged(accounts, DappObject, pageIndex = 1,
             document.cookie = "ftsocan_browser-wallet=false;";
             DappObject.walletIndex = 1;
             updateCurrentAccountStatus("", null, false, DappObject.walletIndex);
-            getDappPage(1);
+            getDappPage("Wrap");
         });
 
         DappObject.isHandlingOperation = false;
@@ -183,7 +183,7 @@ export async function handleChainChangedStake(DappObject) {
                 ],
             });
         } catch (error) {
-            getDappPage(1);
+            getDappPage("Wrap");
         }
 
         await DappObject.chosenEVMProvider.request({

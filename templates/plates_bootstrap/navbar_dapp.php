@@ -22,7 +22,7 @@ Fixed Navigation
             </button>
             <!-- /responsive nav button -->
 
-            <button class="connect-wallet select-wallet-nav" onclick="getDappPage(4)"><i class="connect-wallet-text"><?=_("select_wallet")?></i></button>
+            <button class="connect-wallet select-wallet-nav" onclick="getDappPage('Wallet')"><i class="connect-wallet-text"><?=_("select_wallet")?></i></button>
 
             <!-- logo -->
             <h1 class="navbar-brand">
@@ -72,11 +72,11 @@ Fixed Navigation
         <div class="container">
             <div class="collapse navbar-collapse static-top navbar-right" role="navigation" style="border: none; box-shadow: none; -webkit-box-shadow: none; margin-top: 0px;">
                 <ul class="nav navbar-nav navbar-nav-dapp nav-item">
-                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(4)"><?=_("select_wallet")?></a></li>
-                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(1)"><?=_("wrap")?></a></li>
-                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(2)"><?=_("delegate")?></a></li>
-                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage(3)"><?=_("rewards")?></a></li>
-                    <li><a href="#" id="navbar-stake-item" class="nav-link nav-link-dapp" onclick="getDappPage(5)"><?=_("stake")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage('Wallet')"><?=_("select_wallet")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage('Wrap')"><?=_("wrap")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage('Delegate')"><?=_("delegate")?></a></li>
+                    <li><a href="#" class="nav-link nav-link-dapp" onclick="getDappPage('Claim')"><?=_("rewards")?></a></li>
+                    <li><a href="#" id="navbar-stake-item" class="nav-link nav-link-dapp" onclick="getDappPage('stakeTransfer')"><?=_("stake")?></a></li>
                 </ul>
             </div>
         </div>

@@ -1,16 +1,16 @@
 <div class="top">
     <div class="row" style="margin-bottom: 5px;">
-        <button class="transfer selected-stake" type="button" id="Transfer" onclick="getDappPage(5)">
+        <button class="transfer selected-stake" type="button" id="Transfer" onclick="getDappPage('stakeTransfer')">
             <a class="stake-text">
                 <span id="Transfer"><?=_("dapp_transfer")?></span>
             </a>
         </button>
-        <button class="stake" type="button" id="Stake" onclick="getDappPage(6)">
+        <button class="stake" type="button" id="Stake" onclick="getDappPage('stakeStake')">
             <a class="wrap-unwrap-text">
                 <span id="Stake"><?=_("stake")?></span>
             </a>
         </button>
-        <button class="stakeRewards" type="button" id="StakeRewards" onclick="getDappPage(7)">
+        <button class="stakeRewards" type="button" id="StakeRewards" onclick="getDappPage('stakeRewards')">
             <a class="wrap-unwrap-text">
                 <span id="StakeRewards"><?=_("dapp_claim")?></span>
             </a>

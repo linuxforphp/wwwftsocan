@@ -491,7 +491,7 @@ export async function handleTransportConnect(chosenNavigator, DappObject, option
             clearTimeout(DappObject.latestPopupTimeoutId);
 
             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                getDappPage(4);
+                getDappPage("Wallet");
             }, 3000);
         }
 
