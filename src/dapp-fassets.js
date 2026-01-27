@@ -17,6 +17,12 @@ import { GetNetworkName, round, showAccountAddress, showFassetNativeAddress, sho
         metamaskSnapName: "npm:xrpl-snap",
         metamaskSnapRequest: {"npm:xrpl-snap": {},},
         metamaskSnapAccountRequest: {method: 'wallet_invokeSnap', params: {snapId: 'npm:xrpl-snap', request: {method: 'xrpl_getAccount',},},},
+        walletConnectNetworkParams: {
+            name: "Mainnet",
+            networkWss: "wss://xrplcluster.com",
+            walletconnectId: "xrpl:0",
+            rpc: "https://xrplcluster.com",
+        },
      },
      FDOGE: {
          name: "DOGE",
@@ -28,6 +34,14 @@ import { GetNetworkName, round, showAccountAddress, showFassetNativeAddress, sho
          rpcUrl: "bip122:1a91e3dace36e2be3bf030a65679fe82",
         ledgerAppName: "Dogecoin",
         metamaskSnapName: "",
+        metamaskSnapRequest: {"": {},},
+        metamaskSnapAccountRequest: {method: 'wallet_invokeSnap', params: {snapId: '', request: {method: '',},},},
+        walletConnectNetworkParams: {
+            name: "",
+            networkWss: "",
+            walletconnectId: "",
+            rpc: "",
+        },
      },
  }
 
@@ -291,13 +305,6 @@ import { GetNetworkName, round, showAccountAddress, showFassetNativeAddress, sho
                 
                             if (!DappObject.chosenEVMProvider.session) {
                                 await DappObject.chosenEVMProvider.connect();
-                            }
-                        } else if (DappObject.secondaryWalletIndex === 3) {
-                            // CRYPTO.COM ONCHAIN
-                            if (DappObject.chosenEVMProvider === undefined) {
-                                await cryptoComConnector.activate();
-        
-                                DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
                             }
                         }
                     } else {
