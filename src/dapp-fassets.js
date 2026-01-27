@@ -1,17 +1,22 @@
+import { ConnectSecondaryWalletSetupLedger, ConnectWalletSetupLedger } from "./dapp-ledger";
+import { message } from "./dapp-staking";
 import { closeCurrentPopup, setCurrentAppState, setCurrentPopup } from "./dapp-ui";
- import { checkConnection, resetDappObjectState, wait } from "./dapp-utils";
- import { GetNetworkName, round, showAccountAddress, showTokenBalance } from "./flare-utils";
+import { checkConnection, resetDappObjectState, wait } from "./dapp-utils";
+import { GetNetworkName, round, showAccountAddress, showFassetNativeAddress, showTokenBalance } from "./flare-utils";
  
  export const FAssetInfo = {
      FXRP: {
-         name: "XRP",
-         fasset: "FXRP",
-         dummyAddress: "r0000000000000000000000000000000000",
-         icon: '<path d="m14.288 61.775c0-0.31275 15.817-16.483 17.048-17.43 2.4538-1.8855 5.1818-2.8001 8.352-2.8001 3.1705 0 5.899 0.91481 8.3515 2.8001 1.1195 0.86053 15.608 15.657 16.75 17.106 0.34148 0.43328 0.14437 0.46047-3.3073 0.4563l-3.6704-0.0044-6.299-6.5763c-4.2178-4.4035-6.7092-6.7985-7.5406-7.2487-1.6786-0.90899-3.9336-1.3002-5.6349-0.97755-2.8013 0.53125-3.4724 1.0317-8.9551 6.6779-2.8602 2.9455-5.7759 5.9805-6.4794 6.7445l-1.279 1.389h-3.668c-2.0174 0-3.668-0.06166-3.668-0.13703zm22.334-24.315c-3.502-0.80017-4.519-1.5466-10.777-7.9097-3.1754-3.2288-7.0881-7.2695-8.6949-8.9793l-2.9214-3.1089h7.3722l2.3523 2.4474c7.8853 8.2041 10.645 10.875 11.897 11.515 1.9034 0.97222 4.7292 1.1094 6.8806 0.33396 1.489-0.53667 2.0068-0.99861 8.3419-7.4421l6.7544-6.8699 7.2567 0.14798-8.2977 8.599c-8.6373 8.9509-9.7221 9.8759-12.801 10.915-1.9424 0.65576-5.324 0.81705-7.3629 0.35118z" fill="#fff"/><path d="m34.112 78.988c-5.089-0.83306-8.5003-1.957-12.939-4.2633-10.455-5.4319-17.818-15.301-20.417-27.364-0.8634-4.0075-0.86392-11.334-0.0010992-15.346 1.7155-7.9773 5.3779-14.8 10.919-20.341 3.1244-3.1244 6.1979-5.335 10.154-7.3035 3.896-1.9384 6.1914-2.7518 10.186-3.6096 3.9555-0.8493 11.346-0.86002 15.231-0.022105 8.408 1.8136 14.393 5.0541 20.365 11.026 5.9719 5.9719 9.2124 11.957 11.026 20.365 0.83792 3.8847 0.82719 11.275-0.02211 15.231-0.85779 3.9951-1.6712 6.2905-3.6096 10.186-5.3909 10.835-15.358 18.455-27.512 21.034-3.4582 0.73377-10.141 0.93685-13.38 0.4066zm-11.21-18.464c0.70348-0.76398 3.6192-3.799 6.4794-6.7445 5.4827-5.6462 6.1539-6.1467 8.9551-6.6779 1.7013-0.32264 3.9563 0.06855 5.6349 0.97755 0.83143 0.45023 3.3228 2.8452 7.5406 7.2487l6.299 6.5763 3.6704 0.0044c3.4517 0.0042 3.6488-0.02302 3.3073-0.4563-1.1418-1.4487-15.631-16.245-16.75-17.106-4.9061-3.7714-11.795-3.7714-16.703 0-1.2314 0.94626-17.048 17.117-17.048 17.43 0 0.07537 1.6506 0.13703 3.668 0.13703h3.668zm21.082-23.414c3.0793-1.0396 4.1641-1.9646 12.801-10.915l8.2977-8.599-7.2567-0.14798-6.7544 6.8699c-6.3351 6.4435-6.8529 6.9054-8.3419 7.4421-2.1513 0.77541-4.9771 0.63826-6.8806-0.33396-1.252-0.63948-4.012-3.3108-11.897-11.515l-2.3523-2.4474h-7.3722l2.9214 3.1089c1.6068 1.7099 5.5195 5.7506 8.6949 8.9793 6.258 6.3631 7.275 7.1095 10.777 7.9097 2.0389 0.46587 5.4204 0.30459 7.3629-0.35118z"/>',
-         fassetIcon: '<g id="layer1"><ellipse style="fill:#ffffff" id="path2"cx="6.6145835"cy="6.6145859"rx="6.6145835"ry="6.6145859" /><path style="fill:#e62d58; stroke:#e62d58; stroke-width:0.1;" d="M 6.1965174,13.218324 C 4.5578202,13.10096 3.0641187,12.428358 1.928391,11.296418 0.90838745,10.279816 0.27658573,9.0155097 0.04506158,7.5276609 -0.0152826,7.1398696 -0.01495097,6.0913555 0.04564434,5.6848932 0.157305,4.9358959 0.35743914,4.2961256 0.68437568,3.6430572 1.6634303,1.687358 3.4909399,0.37272906 5.6852645,0.04564179 c 0.406489,-0.0605947 1.4550714,-0.06092073 1.8428882,-5.829e-4 1.2528932,0.19493758 2.2860056,0.64425041 3.2458613,1.41166551 1.152619,0.92153 2.000093,2.298635 2.307393,3.7494039 0.215369,1.0167535 0.195163,2.0479666 -0.0597,3.0467512 -0.226223,0.886552 -0.629256,1.7038838 -1.213536,2.4609865 -0.224048,0.290317 -0.803271,0.869503 -1.093607,1.093535 -1.0802462,0.833551 -2.281896,1.299055 -3.622538,1.403327 -0.2735649,0.02128 -0.6588519,0.02455 -0.895511,0.0077 z m 1.3269638,-0.09039 C 8.6351884,12.96691 9.658605,12.54146 10.569968,11.861462 c 0.363661,-0.271341 1.020908,-0.928543 1.292266,-1.292181 0.684887,-0.9177957 1.095401,-1.9087417 1.272357,-3.071368 0.0586,-0.3849914 0.05725,-1.4195956 -0.0024,-1.8011274 C 13.011356,4.922973 12.811347,4.2938824 12.476673,3.6348277 11.847941,2.3966992 10.883668,1.4220701 9.632612,0.76022099 8.8327098,0.33704737 7.7883992,0.05928035 6.8980039,0.0328668 l -0.2377921,-0.0070774 -0.00598,6.5841326 -0.00598,6.584134 0.3151169,-0.01534 c 0.1733144,-0.0085 0.4253715,-0.0313 0.560127,-0.05082 z M 8.2200303,7.7476045 C 8.9399893,7.0356404 9.0697412,6.9270796 9.3108944,6.8348922 9.4963478,6.7639994 9.84347,6.7484728 10.048749,6.8018912 c 0.32049,0.0834 0.384441,0.1334084 1.177071,0.9204624 l 0.737155,0.7319698 -0.31955,3.332e-4 -0.31955,3.331e-4 -0.560281,-0.5543048 C 10.101734,7.2458836 10.07954,7.2313648 9.7396188,7.2308098 9.3991513,7.2302531 9.3777868,7.2442249 8.7160431,7.9000845 L 8.1561623,8.4549897 H 7.8304314 7.5047007 Z M 9.399285,6.3981826 C 9.1204961,6.3215502 9.0464552,6.2630071 8.2566034,5.494672 L 7.4988546,4.7575646 7.826826,4.7508848 8.1547977,4.7442051 8.7272506,5.3123345 c 0.5204431,0.5165124 0.5854157,0.5730604 0.7151278,0.6224093 0.1890534,0.071926 0.402072,0.071537 0.5944796,-0.00111 C 10.16681,5.8845928 10.230623,5.82915 10.75238,5.3119807 l 0.572844,-0.5678096 0.320943,0.00668 0.320943,0.00668 -0.741677,0.7290574 C 10.441203,6.2574763 10.359933,6.321309 10.060638,6.401453 9.9113426,6.441429 9.550182,6.439623 9.399285,6.398113 Z M 2.1723267,8.5132991 C 2.3941064,8.4206393 2.5110909,8.189391 2.4590159,7.9465881 2.424318,7.7848066 2.2568492,7.6146255 2.0992753,7.5810208 1.8874422,7.5358452 1.6953607,7.6106502 1.5717918,7.7864599 c -0.063905,0.09092 -0.071667,0.1208307 -0.071667,0.2761983 0,0.1552377 0.00778,0.185279 0.071338,0.2755134 0.1336795,0.1897847 0.3882159,0.2639718 0.6008639,0.1751275 z M 3.8481013,7.0118494 C 4.1456356,6.8709142 4.3745427,6.5625811 4.4056929,6.2607838 L 4.4189479,6.1323652 4.1626319,6.1166832 C 3.7616046,6.0921512 2.49178,6.0986482 2.3225557,6.1261032 1.9970326,6.1789212 1.7368815,6.3685162 1.5944026,6.6567839 1.5410436,6.7647418 1.5043536,6.8790439 1.4954876,6.9649364 L 1.4813956,7.101475 2.5846041,7.094635 3.6878126,7.087795 Z M 4.7773039,5.5815332 C 5.0873776,5.4564401 5.3675073,5.0888418 5.3733648,4.7993575 L 5.3761348,4.662454 3.8899345,4.6561745 C 2.8962442,4.6519573 2.3626044,4.6583985 2.2796197,4.6755431 1.8612585,4.7619255 1.537941,5.1117971 1.494606,5.5250306 l -0.01316,0.1254891 1.5787667,-0.0066 1.5787668,-0.0066 z"/></g>',
-         fassetAddress: "0xF9a84f4ec903F4EaB117A9c1098BeC078BA7027d",
-         rpcUrl: "xrpl:0",
+        name: "XRP",
+        fasset: "FXRP",
+        dummyAddress: "r0000000000000000000000000000000000",
+        icon: '<path d="m14.288 61.775c0-0.31275 15.817-16.483 17.048-17.43 2.4538-1.8855 5.1818-2.8001 8.352-2.8001 3.1705 0 5.899 0.91481 8.3515 2.8001 1.1195 0.86053 15.608 15.657 16.75 17.106 0.34148 0.43328 0.14437 0.46047-3.3073 0.4563l-3.6704-0.0044-6.299-6.5763c-4.2178-4.4035-6.7092-6.7985-7.5406-7.2487-1.6786-0.90899-3.9336-1.3002-5.6349-0.97755-2.8013 0.53125-3.4724 1.0317-8.9551 6.6779-2.8602 2.9455-5.7759 5.9805-6.4794 6.7445l-1.279 1.389h-3.668c-2.0174 0-3.668-0.06166-3.668-0.13703zm22.334-24.315c-3.502-0.80017-4.519-1.5466-10.777-7.9097-3.1754-3.2288-7.0881-7.2695-8.6949-8.9793l-2.9214-3.1089h7.3722l2.3523 2.4474c7.8853 8.2041 10.645 10.875 11.897 11.515 1.9034 0.97222 4.7292 1.1094 6.8806 0.33396 1.489-0.53667 2.0068-0.99861 8.3419-7.4421l6.7544-6.8699 7.2567 0.14798-8.2977 8.599c-8.6373 8.9509-9.7221 9.8759-12.801 10.915-1.9424 0.65576-5.324 0.81705-7.3629 0.35118z" fill="#fff"/><path d="m34.112 78.988c-5.089-0.83306-8.5003-1.957-12.939-4.2633-10.455-5.4319-17.818-15.301-20.417-27.364-0.8634-4.0075-0.86392-11.334-0.0010992-15.346 1.7155-7.9773 5.3779-14.8 10.919-20.341 3.1244-3.1244 6.1979-5.335 10.154-7.3035 3.896-1.9384 6.1914-2.7518 10.186-3.6096 3.9555-0.8493 11.346-0.86002 15.231-0.022105 8.408 1.8136 14.393 5.0541 20.365 11.026 5.9719 5.9719 9.2124 11.957 11.026 20.365 0.83792 3.8847 0.82719 11.275-0.02211 15.231-0.85779 3.9951-1.6712 6.2905-3.6096 10.186-5.3909 10.835-15.358 18.455-27.512 21.034-3.4582 0.73377-10.141 0.93685-13.38 0.4066zm-11.21-18.464c0.70348-0.76398 3.6192-3.799 6.4794-6.7445 5.4827-5.6462 6.1539-6.1467 8.9551-6.6779 1.7013-0.32264 3.9563 0.06855 5.6349 0.97755 0.83143 0.45023 3.3228 2.8452 7.5406 7.2487l6.299 6.5763 3.6704 0.0044c3.4517 0.0042 3.6488-0.02302 3.3073-0.4563-1.1418-1.4487-15.631-16.245-16.75-17.106-4.9061-3.7714-11.795-3.7714-16.703 0-1.2314 0.94626-17.048 17.117-17.048 17.43 0 0.07537 1.6506 0.13703 3.668 0.13703h3.668zm21.082-23.414c3.0793-1.0396 4.1641-1.9646 12.801-10.915l8.2977-8.599-7.2567-0.14798-6.7544 6.8699c-6.3351 6.4435-6.8529 6.9054-8.3419 7.4421-2.1513 0.77541-4.9771 0.63826-6.8806-0.33396-1.252-0.63948-4.012-3.3108-11.897-11.515l-2.3523-2.4474h-7.3722l2.9214 3.1089c1.6068 1.7099 5.5195 5.7506 8.6949 8.9793 6.258 6.3631 7.275 7.1095 10.777 7.9097 2.0389 0.46587 5.4204 0.30459 7.3629-0.35118z"/>',
+        fassetIcon: '<g id="layer1"><ellipse style="fill:#ffffff" id="path2"cx="6.6145835"cy="6.6145859"rx="6.6145835"ry="6.6145859" /><path style="fill:#e62d58; stroke:#e62d58; stroke-width:0.1;" d="M 6.1965174,13.218324 C 4.5578202,13.10096 3.0641187,12.428358 1.928391,11.296418 0.90838745,10.279816 0.27658573,9.0155097 0.04506158,7.5276609 -0.0152826,7.1398696 -0.01495097,6.0913555 0.04564434,5.6848932 0.157305,4.9358959 0.35743914,4.2961256 0.68437568,3.6430572 1.6634303,1.687358 3.4909399,0.37272906 5.6852645,0.04564179 c 0.406489,-0.0605947 1.4550714,-0.06092073 1.8428882,-5.829e-4 1.2528932,0.19493758 2.2860056,0.64425041 3.2458613,1.41166551 1.152619,0.92153 2.000093,2.298635 2.307393,3.7494039 0.215369,1.0167535 0.195163,2.0479666 -0.0597,3.0467512 -0.226223,0.886552 -0.629256,1.7038838 -1.213536,2.4609865 -0.224048,0.290317 -0.803271,0.869503 -1.093607,1.093535 -1.0802462,0.833551 -2.281896,1.299055 -3.622538,1.403327 -0.2735649,0.02128 -0.6588519,0.02455 -0.895511,0.0077 z m 1.3269638,-0.09039 C 8.6351884,12.96691 9.658605,12.54146 10.569968,11.861462 c 0.363661,-0.271341 1.020908,-0.928543 1.292266,-1.292181 0.684887,-0.9177957 1.095401,-1.9087417 1.272357,-3.071368 0.0586,-0.3849914 0.05725,-1.4195956 -0.0024,-1.8011274 C 13.011356,4.922973 12.811347,4.2938824 12.476673,3.6348277 11.847941,2.3966992 10.883668,1.4220701 9.632612,0.76022099 8.8327098,0.33704737 7.7883992,0.05928035 6.8980039,0.0328668 l -0.2377921,-0.0070774 -0.00598,6.5841326 -0.00598,6.584134 0.3151169,-0.01534 c 0.1733144,-0.0085 0.4253715,-0.0313 0.560127,-0.05082 z M 8.2200303,7.7476045 C 8.9399893,7.0356404 9.0697412,6.9270796 9.3108944,6.8348922 9.4963478,6.7639994 9.84347,6.7484728 10.048749,6.8018912 c 0.32049,0.0834 0.384441,0.1334084 1.177071,0.9204624 l 0.737155,0.7319698 -0.31955,3.332e-4 -0.31955,3.331e-4 -0.560281,-0.5543048 C 10.101734,7.2458836 10.07954,7.2313648 9.7396188,7.2308098 9.3991513,7.2302531 9.3777868,7.2442249 8.7160431,7.9000845 L 8.1561623,8.4549897 H 7.8304314 7.5047007 Z M 9.399285,6.3981826 C 9.1204961,6.3215502 9.0464552,6.2630071 8.2566034,5.494672 L 7.4988546,4.7575646 7.826826,4.7508848 8.1547977,4.7442051 8.7272506,5.3123345 c 0.5204431,0.5165124 0.5854157,0.5730604 0.7151278,0.6224093 0.1890534,0.071926 0.402072,0.071537 0.5944796,-0.00111 C 10.16681,5.8845928 10.230623,5.82915 10.75238,5.3119807 l 0.572844,-0.5678096 0.320943,0.00668 0.320943,0.00668 -0.741677,0.7290574 C 10.441203,6.2574763 10.359933,6.321309 10.060638,6.401453 9.9113426,6.441429 9.550182,6.439623 9.399285,6.398113 Z M 2.1723267,8.5132991 C 2.3941064,8.4206393 2.5110909,8.189391 2.4590159,7.9465881 2.424318,7.7848066 2.2568492,7.6146255 2.0992753,7.5810208 1.8874422,7.5358452 1.6953607,7.6106502 1.5717918,7.7864599 c -0.063905,0.09092 -0.071667,0.1208307 -0.071667,0.2761983 0,0.1552377 0.00778,0.185279 0.071338,0.2755134 0.1336795,0.1897847 0.3882159,0.2639718 0.6008639,0.1751275 z M 3.8481013,7.0118494 C 4.1456356,6.8709142 4.3745427,6.5625811 4.4056929,6.2607838 L 4.4189479,6.1323652 4.1626319,6.1166832 C 3.7616046,6.0921512 2.49178,6.0986482 2.3225557,6.1261032 1.9970326,6.1789212 1.7368815,6.3685162 1.5944026,6.6567839 1.5410436,6.7647418 1.5043536,6.8790439 1.4954876,6.9649364 L 1.4813956,7.101475 2.5846041,7.094635 3.6878126,7.087795 Z M 4.7773039,5.5815332 C 5.0873776,5.4564401 5.3675073,5.0888418 5.3733648,4.7993575 L 5.3761348,4.662454 3.8899345,4.6561745 C 2.8962442,4.6519573 2.3626044,4.6583985 2.2796197,4.6755431 1.8612585,4.7619255 1.537941,5.1117971 1.494606,5.5250306 l -0.01316,0.1254891 1.5787667,-0.0066 1.5787668,-0.0066 z"/></g>',
+        fassetAddress: "0xF9a84f4ec903F4EaB117A9c1098BeC078BA7027d",
+        rpcUrl: "xrpl:0",
         ledgerAppName: "XRP",
+        metamaskSnapName: "npm:xrpl-snap",
+        metamaskSnapRequest: {"npm:xrpl-snap": {},},
+        metamaskSnapAccountRequest: {method: 'wallet_invokeSnap', params: {snapId: 'npm:xrpl-snap', request: {method: 'xrpl_getAccount',},},},
      },
      FDOGE: {
          name: "DOGE",
@@ -22,11 +27,28 @@ import { closeCurrentPopup, setCurrentAppState, setCurrentPopup } from "./dapp-u
          fassetAddress: "0xaa25ee3B68c515e69A463876Ab262bc4e8339030",
          rpcUrl: "bip122:1a91e3dace36e2be3bf030a65679fe82",
         ledgerAppName: "Dogecoin",
+        metamaskSnapName: "",
      },
  }
+
+ export async function hasSnapsSupport() {
+    try {
+      await DappObject.chosenEVMProvider.request({
+        method: 'wallet_getSnaps',
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
  
- export async function ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex, FassetName) {
+ export async function ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, PassedPublicKey, PassedEthAddr, addressIndex, PassedSecondaryAddr, FassetName) {
      DappObject.isHandlingOperation = true;
+
+    if (DappObject.secondaryWalletIndex != -1 && DappObject.walletIndex != 1) {
+        document.getElementById("ConnectNative").remove();
+    }
  
      let rpcUrl = "https://sbi.sgb.ftsocan.com/ext/C/rpc";
  
@@ -52,6 +74,8 @@ import { closeCurrentPopup, setCurrentAppState, setCurrentPopup } from "./dapp-u
          let flrPublicKey;
  
          let account;
+
+         let secondaryAccount;
  
          let selectize;
  
@@ -67,378 +91,240 @@ import { closeCurrentPopup, setCurrentAppState, setCurrentPopup } from "./dapp-u
              requiredApp = "Flare Network";
          }
  
-         if (DappObject.walletIndex === 1) {
-             if (typeof addressIndex === "undefined" || addressIndex === "") {
-                 await getLedgerApp(requiredApp).then(async result => {
-                     switch (result) {
-                         case "Success":
-                             await wait(3000);
-     
-                             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
-                                 let addresses;
-     
-                                 // console.log("Fetching Addresses... ETH");
-     
-                                 if (GetNetworkName(rpcUrl) === "flare") {
-                                     addresses = await getLedgerAddresses("flare", DappObject.isAvax);
-                                 } else if (GetNetworkName(rpcUrl) === "songbird") {
-                                     addresses = await getLedgerAddresses("songbird", DappObject.isAvax);
-                                 }
-     
-                                 let insert = [];
-     
-                                 for (let i = 0; i < addresses.length; i++) {
-                                     insert[i] = {
-                                         id: i,
-                                         title: addresses[i].ethAddress,
-                                         pubkey: addresses[i].publicKey,
-                                     };
-                                 }
-     
-                                 DappObject.ledgerAddrArray = insert;
-                             }
-     
-                             // console.log(DappObject.ledgerAddrArray);
-     
-                             document.getElementById("ConnectWalletText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="Select Account"></select>'
-     
-                             var onInputChange = async (value) => {
-                                 let addressBox = document.querySelector("span.title.connect-wallet-text");
-                                 let ethaddr = addressBox.getAttribute('data-ethkey');
-                                 let pubKey = addressBox.getAttribute('data-pubkey');
-                                 
-                                 flrPublicKey = pubKey;
-     
-                                 account = ethaddr;
-     
-                                 DappObject.selectedAddress = account;
-     
-                                 DappObject.ledgerSelectedIndex = value;
-     
-                                 connectChainsAndKeys(flrPublicKey);
+        if (!PassedPublicKey) {
+            // --- If this is the first time connecting... ---
+            if (DappObject.walletIndex === 1) {
+                if (typeof addressIndex === "undefined" || addressIndex === "") {
+                    await ConnectWalletSetupLedger(requiredApp, selectize, account, flrPublicKey, rpcUrl, flrAddr, pageIndex, HandleClick, DappObject, FassetName, DappObject.secondaryAddr);
+                } else {
+                    account = PassedEthAddr;
+                    
+                    if (HandleClick) {
+                        document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+                    }
     
-                                 let unprefixed;
-     
-                                 if (GetNetworkName(rpcUrl) === "flare") {
-                                     unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "flare");
-                                 } else if (GetNetworkName(rpcUrl) === "songbird") {
-                                     unprefixed = await publicKeyToBech32AddressString(flrPublicKey, "songbird");
-                                 }
-     
-                                 DappObject.unPrefixedAddr = unprefixed;
-     
-                                 ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value, FassetName);
-                             }
-     
-                             var $select = $('#select-account').selectize({
-                                 maxItems: 1,
-                                 valueField: 'id',
-                                 labelField: 'title',
-                                 searchField: ["title"],
-                                 options: DappObject.ledgerAddrArray,
-                                 render: {
-                                     item: function (item, escape) {
-                                         return (
-                                         "<div>" +
-                                         (item.title
-                                             ? `<span class="title connect-wallet-text" data-pubkey=${item.pubkey} data-ethkey=${item.title}>` + escape(item.title) + "</span>"
-                                             : "") +
-                                         "</div>"
-                                         );
-                                     },
-                                     option: function (item, escape) {
-                                         var label = item.title;
-                                         return (
-                                         "<div>" +
-                                         '<span class="connect-wallet-text">' +
-                                         escape(label) +
-                                         "</span>" +
-                                         "</div>"
-                                         );
-                                     },
-                                 },
-                                 onChange: function(value) {
-                                     onInputChange(value);
-                                 },
-                                 create: false,
-                                 dropdownParent: "body",
-                             });
-     
-                             selectize = $select[0].selectize;
-     
-                             if (HandleClick) {
-                                 document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
-                             }
-     
-                             if (DappObject.ledgerSelectedIndex !== "") {
-                                 selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
-                             } else {
-                                 await setCurrentPopup("Please select an account.", true);
-                             }
-     
-                             let addressDropdown = document.querySelector(".selectize-input");
-                             let publicKey = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-pubkey');
-                                 
-                             flrPublicKey = publicKey;
-                             break
-                         case "Failed: App not Installed":
-                             await setCurrentAppState("Alert");
-     
-                             clearTimeout(DappObject.latestPopupTimeoutId);
-     
-                             DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                                 await setCurrentPopup("Whoops! Looks like you do not have the Avalanche App installed on your Ledger device! Please install it and come back again later!", true);
-                             }, 1000);
-     
-                             throw new Error("Ledger Avalanche App not installed!");
-                             break
-                         case "Failed: User Rejected":
-                             ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, undefined, undefined, undefined, FassetName);
-                             break
-                     }
-                 });
-             } else {
-                 account = PassedEthAddr;
-                 
-                 if (HandleClick) {
-                     document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
-                 }
- 
-                 await setCurrentAppState("Connected");
- 
-                 closeCurrentPopup();
- 
-                 // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
- 
-                 DappObject.isAccountConnected = true;
-             }
-         } else if ((!PassedPublicKey || PassedPublicKey === "")) {
-             if (DappObject.walletIndex === 2) {
-                 if (DappObject.chosenEVMProvider === undefined) {
-                     DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
-                 }
-     
-                 if (!DappObject.chosenEVMProvider.session) {
-                     await DappObject.chosenEVMProvider.connect();
-                 }
-             } else if (DappObject.walletIndex === 3) {
-                 if (DappObject.chosenEVMProvider === undefined) {
-                     await cryptoComConnector.activate();
- 
-                     DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
-                 }
-             }
- 
-             const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
-             
-             account = accounts[0];
- 
-             await setCurrentAppState("Connected");
- 
-             closeCurrentPopup();
- 
-             // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
- 
-             DappObject.isAccountConnected = true;
-         }
- 
-         if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
-             DappObject.isHandlingOperation = false;
-         } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex !== -1) {
-             DappObject.selectedAddress = account;
- 
-             try {
-                 if (pageIndex === 0) {
-                     const wrappedTokenAddr = FAssetInfo[FassetName].fassetAddress;
-                     let tokenContract = new web32.eth.Contract(DappObject.fassetTokenAbi, wrappedTokenAddr);
-                     showAccountAddress(account);
-                     const balance = await web32.eth.getBalance(account);
-                     const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-     
-                     DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
-     
-                     showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
- 
-                     await setCurrentPopup("This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB respectively. This will allow you to delegate to an FTSO and earn passive income!", true);
- 
-                     clearTimeout(DappObject.latestPopupTimeoutId);
- 
-                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                         await setCurrentPopup("First, choose if you would like to Wrap, or Unwrap your tokens by clicking on the top left button. Then, input the amount of tokens you would like to transfer. Don't forget to keep some FLR or SGB for gas fees!", true);
-                     }, 15000);
-                 } else if (pageIndex === 1) {
-                     let delegatedIcon1 = document.getElementById("delegatedIcon1");
-                     delegatedIcon1.src = dappUrlBaseAddr + 'img/FLR.svg';
-     
-                     await isDelegateInput1(DappObject);
-     
-                     await populateFtsos(rpcUrl, flrAddr);
- 
-                     await setCurrentPopup("This is the 'Delegate' page, where you can delegate a percentage of your WFLR or WSGB to an FTSO and earn passive income!", true);
- 
-                     clearTimeout(DappObject.latestPopupTimeoutId);
- 
-                     DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                         await setCurrentPopup("First, choose an FTSO from the dropdown list. Then, enter the percentage you would like to delegate to that FTSO, either 50% or 100%!", true);
-                     }, 15000);
-     
-                     try {
-                         showAccountAddress(account);
-                         await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-                     } catch (error) {
-                         throw error;
-                     }
-                 } else if (pageIndex === 2) {
-                     var networkSelectBox = document.getElementById('SelectedNetwork');
- 
-                     let rewardManagerAddr = await GetContract("RewardManager", rpcUrl, flrAddr);
- 
-                     let oldRewardManagerAddr;
- 
-                     let rewardManagerContract;
- 
-                     let rewardManagerAddrArray = [rewardManagerAddr];
- 
-                     let rewardManagerContractArray = [];
- 
-                     for (let i = 0; i < rewardManagerAddrArray.length; i++) {
-                         try {
-                             rewardManagerContract = new web32.eth.Contract(DappObject.rewardManagerAbiLocal, rewardManagerAddrArray[i]);
- 
-                             rewardManagerContractArray[i] = rewardManagerContract;
- 
-                             oldRewardManagerAddr = await rewardManagerContract.methods.oldRewardManager().call();
- 
-                             if (oldRewardManagerAddr !== "0x0000000000000000000000000000000000000000") {
-                                 rewardManagerAddrArray[i + 1] = oldRewardManagerAddr;
-                             }
-                         } catch (error) {
-                             // console.log(error);
-                         }
-                     }
-     
-                     try {
-                         const wrappedTokenAddr = await GetContract("WNat", rpcUrl, flrAddr);
-                         const DistributionDelegatorsAddr = await GetContract("DistributionToDelegators", rpcUrl, flrAddr);
-                         const ftsoRewardAddr = await GetContract("FtsoRewardManager", rpcUrl, flrAddr);
- 
-                         const systemsManagerAddr = await GetContract("FlareSystemsManager", rpcUrl, flrAddr);
-                         let tokenContract = new web32.eth.Contract(DappObject.ercAbi, wrappedTokenAddr);
-                         let DistributionDelegatorsContract = new web32.eth.Contract(DappObject.distributionAbiLocal, DistributionDelegatorsAddr);
-                         let ftsoRewardContract = new web32.eth.Contract(DappObject.ftsoRewardAbiLocal, ftsoRewardAddr);
-                         let flareSystemsManagerContract = new web32.eth.Contract(DappObject.systemsManagerAbiLocal, systemsManagerAddr);
- 
-                         const tokenBalance = await tokenContract.methods.balanceOf(account).call();
-     
-                         showAccountAddress(account);
-                         showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
-                         showFdRewards(0);
-                         showClaimRewards(0);
-                         showConnectedAccountAddress(account);
-     
-                         // Changing the color of Claim button.
-                         if (Number(document.getElementById('ClaimButtonText').innerText) >= 1) {
-                             switchClaimButtonColor();
-                             
-                             DappObject.claimBool = true;
-                         } else {
-                             switchClaimButtonColorBack();
-     
-                             DappObject.claimBool = false;
-                         }
-     
-                         if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
-                             switchClaimFdButtonColor();
-                             
-                             DappObject.fdClaimBool = true;
-                         } else {
-                             switchClaimFdButtonColorBack();
-     
-                             DappObject.fdClaimBool = false;
-                         }
-     
-                         remove(".wrap-box-ftso");
-     
-                         await getDelegatedProviders(account, web32, rpcUrl, flrAddr, DappObject);
-     
-                         // Getting the unclaimed Rewards and affecting the Claim button.
-                         const epochsUnclaimed = await ftsoRewardContract.methods.getEpochsWithUnclaimedRewards(account).call();
-                         let unclaimedAmount = BigInt(0);
-                         let unclaimedAmountv2;
-                         let l;
- 
-                         let network = GetNetworkName(rpcUrl);
- 
-                         unclaimedAmount += await getV1Rewards(epochsUnclaimed, network, account, ftsoRewardContract, l);
- 
-                         if (unclaimedAmount > BigInt(0)) {
-                             DappObject.hasV1Rewards = true;
-                         } else {
-                             DappObject.hasV1Rewards = false;
-                         }
- 
-                         if (rewardsOverrideConfig[network].V2Check === true && rewardManagerContractArray?.length) {
-                             unclaimedAmount += await getV2Rewards(unclaimedAmountv2, network, account, DappObject, flareSystemsManagerContract, rewardManagerContractArray);
-                         } else {
-                             DappObject.hasV2Rewards = false;
- 
-                             DappObject.hasFtsoRewards = false;
-                         }
-                         
-                         const convertedRewards = web32.utils.fromWei(unclaimedAmount, "ether").split('.');
-                         
-                         // Changing the color of Claim button.
-                         showClaimRewards(convertedRewards[0] + "." + convertedRewards[1].slice(0, 2));
-     
-                         if (networkSelectBox.options[networkSelectBox.selectedIndex].innerText === "FLR") {
-                             let claimableAmountFd = BigInt(0);
- 
-                             claimableAmountFd += await getFlareDropRewards(account, DistributionDelegatorsContract);
-                             
-                             const convertedRewardsFd = web32.utils.fromWei(claimableAmountFd, "ether").split('.');
-     
-                             // Changing the color of FlareDrop Claim button.
-                             showFdRewards(convertedRewardsFd[0] + "." + convertedRewardsFd[1].slice(0, 2));
-     
-                             if (Number(document.getElementById('ClaimFdButtonText').innerText) > 0) {
-                                 switchClaimFdButtonColor();
-     
-                                 DappObject.fdClaimBool = true;
-                             } else {
-                                 switchClaimFdButtonColorBack();
-     
-                                 DappObject.fdClaimBool = false;
-                             }
-                         }
-     
-                         if (Number(document.getElementById('ClaimButtonText').innerText) > 0) {
-                             switchClaimButtonColor();
-     
-                             DappObject.claimBool = true;
-                         } else {
-                             showClaimRewards(0);
-                             switchClaimButtonColorBack();
-     
-                             DappObject.claimBool = false;
-                         }
- 
-                         await setCurrentPopup("This is the 'Rewards' page, where you can claim your FLR or SGB tokens that you have earned by delegating to an FTSO!", true);
- 
-                         clearTimeout(DappObject.latestPopupTimeoutId);
- 
-                         DappObject.latestPopupTimeoutId = setTimeout( async () => {
-                             await setCurrentPopup("If you have any rewards, one of the bottom buttons will become red and contain the amount of rewards you have earned. You only need to click it to begin the claiming process!", true);
-                         }, 15000);
-                     } catch (error) {
-                         console.log(error);
-                     }
-                 }
- 
-                 DappObject.isHandlingOperation = false;
-             } catch (error) {
-                 throw error
-             }
-         }
+                    await setCurrentAppState("Connected");
+    
+                    closeCurrentPopup();
+    
+                    // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+    
+                    DappObject.isAccountConnected = true;
+                }
+            } else {
+                // EIP-1193 Wallets (Browser Wallets, WalletConnect, ect.)
+                if (DappObject.walletIndex === 0) { 
+                    if (DappObject.chosenEVMProvider === undefined) {
+                        DappObject.chosenEVMProvider = window.ethereum;
+                    }
+                } else if (DappObject.walletIndex === 2) {
+                    if (DappObject.chosenEVMProvider === undefined) {
+                        DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
+                    }
+        
+                    if (!DappObject.chosenEVMProvider.session) {
+                        await DappObject.chosenEVMProvider.connect();
+                    }
+                } else if (DappObject.walletIndex === 3) {
+                    if (DappObject.chosenEVMProvider === undefined) {
+                        await cryptoComConnector.activate();
+
+                        DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
+                    }
+                }
+
+                if (DappObject.selectedAddress === "") {
+                    const accounts = await DappObject.chosenEVMProvider.request({method: 'eth_requestAccounts'});
+                
+                    account = accounts[0];
+                } else {
+                    account = DappObject.selectedAddress;
+                }
+
+                if (DappObject.signatureStaking === "") {
+        
+                    if (DappObject.isPopupActive == false) {
+                        let signSpinner = await showSignatureSpinner();
+
+                        const signature = await DappObject.chosenEVMProvider.request({
+                            "method": "personal_sign",
+                            "params": [
+                                message,
+                                account
+                            ]
+                        }).catch((error) => async function() {
+                            signSpinner.close();
+
+                            throw error;
+                        });
+
+                        DappObject.signatureStaking = signature;
+
+                        DappObject.isPopupActive = false;
+
+                        signSpinner.close();
+                    } else {
+                        return;
+                    }
+                }
+
+                await setCurrentAppState("Connected");
+
+                closeCurrentPopup();
+
+                // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+
+                DappObject.isAccountConnected = true;
+
+                flrPublicKey = await GetPublicKey(account, message, DappObject.signatureStaking);
+            }
+        } else {
+            // --- If there are passed values, we use them instead. ---
+
+            account = PassedEthAddr;
+            flrPublicKey = PassedPublicKey;
+
+            if (HandleClick) {
+                document.getElementById("ConnectWallet").removeEventListener("click", HandleClick);
+            }
+
+            await setCurrentAppState("Connected");
+
+            closeCurrentPopup();
+
+            // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+
+            DappObject.isAccountConnected = true;
+        }
+
+        if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
+            DappObject.isHandlingOperation = false;
+        } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex !== -1) {
+            DappObject.selectedAddress = account;
+
+            try {
+                if (pageIndex === 0) {
+                    // MINT
+                    const wrappedTokenAddr = FAssetInfo[FassetName].fassetAddress;
+                    let tokenContract = new web32.eth.Contract(DappObject.fassetTokenAbi, wrappedTokenAddr);
+                    showAccountAddress(account);
+                    const balance = await web32.eth.getBalance(account);
+                    const tokenBalance = await tokenContract.methods.balanceOf(account).call();
+    
+                    DappObject.wrapBool = (document.getElementById("wrapUnwrap").value === 'true');
+    
+                    showTokenBalance(round(web32.utils.fromWei(tokenBalance, "ether")));
+
+                    await setCurrentPopup("This is the 'Wrap' page, where you can convert your FLR or SGB into WFLR and WSGB respectively. This will allow you to delegate to an FTSO and earn passive income!", true);
+
+                    clearTimeout(DappObject.latestPopupTimeoutId);
+
+                    DappObject.latestPopupTimeoutId = setTimeout( async () => {
+                        await setCurrentPopup("First, choose if you would like to Wrap, or Unwrap your tokens by clicking on the top left button. Then, input the amount of tokens you would like to transfer. Don't forget to keep some FLR or SGB for gas fees!", true);
+                    }, 15000);
+                } else if (pageIndex === 1) {
+                    // POOLS
+                } else if (pageIndex === 2) {
+                    // REWARDS
+                }
+
+                DappObject.isHandlingOperation = false;
+            } catch (error) {
+                throw error
+            }
+        }
+
+        if (!PassedSecondaryAddr) {
+            // --- If this is the first time connecting to FASSETS... ---
+            if (DappObject.secondaryWalletIndex !== -1) {
+                console.log("HELLO FASSETS")
+                if (DappObject.secondaryWalletIndex === 1) {
+                    if (typeof addressIndex === "undefined" || addressIndex === "") {
+                        await ConnectSecondaryWalletSetupLedger(requiredApp, selectize, PassedEthAddr, PassedPublicKey, secondaryAccount, pageIndex, HandleClick, DappObject, FassetName);
+                    } else {
+                        secondaryAccount = PassedSecondaryAddr;
+                        
+                        if (HandleClick) {
+                            document.getElementById("ConnectNative").removeEventListener("click", HandleClick);
+                            document.getElementById("ConnectNative").remove();
+                        }
+        
+                        await setCurrentAppState("Connected");
+        
+                        closeCurrentPopup();
+        
+                        // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+        
+                        DappObject.isAccountConnected = true;
+                    }
+                } else {
+                    // EIP-1193 Wallets (Browser Wallets, WalletConnect, ect.)
+    
+                    if (DappObject.secondaryAddr === "" || DappObject.secondaryAddr === undefined) {
+                        if (DappObject.secondaryWalletIndex === 0) {
+                            // METAMASK SNAP 
+                            if (DappObject.chosenEVMProvider === undefined) {
+                                DappObject.chosenEVMProvider = window.ethereum;
+                            }
+
+                            try {
+                                await DappObject.chosenEVMProvider.request({
+                                    method: 'wallet_requestSnaps',
+                                    params: FAssetInfo[FassetName].metamaskSnapRequest,
+                                });
+    
+                                // TODO: GET SNAP REQUEST
+                                const accounts = await DappObject.chosenEVMProvider.request(FAssetInfo[FassetName].metamaskSnapAccountRequest);
+    
+                                console.log("XRP ACCOUNT:")
+                                console.log(accounts);
+                            
+                                secondaryAccount = accounts.account;
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        } else if (DappObject.secondaryWalletIndex === 2) {
+                            // WALLET CONNECT
+                            if (DappObject.chosenEVMProvider === undefined) {
+                                DappObject.chosenEVMProvider = await walletConnectProvider.init(walletConnectEVMParams);
+                            }
+                
+                            if (!DappObject.chosenEVMProvider.session) {
+                                await DappObject.chosenEVMProvider.connect();
+                            }
+                        } else if (DappObject.secondaryWalletIndex === 3) {
+                            // CRYPTO.COM ONCHAIN
+                            if (DappObject.chosenEVMProvider === undefined) {
+                                await cryptoComConnector.activate();
+        
+                                DappObject.chosenEVMProvider = await cryptoComConnector.getProvider();
+                            }
+                        }
+                    } else {
+                        secondaryAccount = DappObject.secondaryAddr;
+                    }
+    
+                    await setCurrentAppState("Connected");
+    
+                    closeCurrentPopup();
+    
+                    // await setCurrentPopup("Connected to account: " + account.slice(0, 17));
+    
+                    DappObject.isAccountConnected = true;
+                }
+            }
+        }
+
+        if (DappObject.walletIndex === 1 && (typeof addressIndex == "undefined" || addressIndex === "")) {
+            DappObject.isHandlingOperation = false;
+        } else if ((DappObject.walletIndex === 1 && (addressIndex && addressIndex !== "")) || DappObject.walletIndex !== -1) {
+            DappObject.secondaryAddr = secondaryAccount;
+
+            if (pageIndex === 0) {
+                // MINT
+                showFassetNativeAddress(secondaryAccount);
+            }
+        }
      } catch (error) {
          console.log(error);
  

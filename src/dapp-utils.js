@@ -165,7 +165,11 @@ export async function resetDappObjectState(DappObject) {
 
     DappObject.unPrefixedAddr = "";
 
+    DappObject.secondaryAddr = "";
+
     DappObject.ledgerAddrArray = [];
+
+    DappObject.ledgerSecondaryArray = [];
 
     if (DappObject.walletIndex === 2 && DappObject.chosenEVMProvider !== undefined) {
         DappObject.chosenEVMProvider.disconnect();

@@ -3,7 +3,7 @@ import { ethers } from "./ethers.js";
 import { wait, checkTx, checkTxStake } from "./dapp-utils.js";
 import { showSpinner, showConfirmationSpinnerv2, showConfirmationSpinnerStake, showConfirm, showFail, showFailStake, setCurrentAppState, setCurrentPopup, setMabelMessages } from "./dapp-ui.js";
 import { ConnectWalletClick, handleAccountsChanged } from "./dapp-wallet.js";
-import { FAssetInfo } from "./dapp-fassets.js";
+import { ConnectWalletClickFassets, FAssetInfo } from "./dapp-fassets.js";
 
 export async function setupTransportConnect(dappOption, dappStakingOption, DappObject) {
     if (("usb" in navigator) && !("hid" in navigator) || ("usb" in navigator) && ("hid" in navigator)) {
@@ -37,7 +37,118 @@ export async function setupTransportConnect(dappOption, dappStakingOption, DappO
     }
 }
 
-export async function ConnectWalletSetupLedger(requiredApp, selectize, account, flrPublicKey, rpcUrl, flrAddr, pageIndex, HandleClick, DappObject) {
+export async function ConnectSecondaryWalletSetupLedger(requiredApp, selectize, account, flrPublicKey, passedAddr, pageIndex, HandleClick, DappObject, FassetName = undefined) {
+    DappObject.ledgerSelectedIndex = "";
+
+    await getLedgerApp(requiredApp).then(async result => {
+        switch (result) {
+            case "Success":
+                await wait(3000);
+
+                if (!Array.isArray(DappObject.ledgerSecondaryArray) || !DappObject.ledgerSecondaryArray.length) {
+                    let addresses;
+
+                    // console.log("Fetching Addresses... ETH");
+
+                    // @TODO: Change this function in jstest repo;
+                    addresses = await getLedgerAddresses(requiredApp);
+
+                    let insert = [];
+
+                    for (let i = 0; i < addresses.length; i++) {
+                        insert[i] = {
+                            id: i,
+                            title: addresses[i].ethAddress,
+                        };
+                    }
+
+                    DappObject.ledgerSecondaryArray = insert;
+                }
+
+                // console.log(DappObject.ledgerAddrArray);
+
+                document.getElementById("ConnectNativeText").innerHTML = '<select id="select-account" class="connect-wallet-text" placeholder="' + dappStrings['dapp_select_wallet'] + '"></select>'
+
+                var onInputChange = async (value) => {
+                    let addressBox = document.querySelector("span.title.connect-wallet-text");
+                    let addr = addressBox.getAttribute('data-ethkey');
+
+                    passedAddr = addr;
+
+                    DappObject.secondaryAddr = passedAddr;
+
+                    DappObject.ledgerSelectedIndex = value;
+
+                    ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, flrPublicKey, account, value, passedAddr, FassetName);
+                }
+
+                var $select = $('#select-account').selectize({
+                    maxItems: 1,
+                    valueField: 'id',
+                    labelField: 'title',
+                    searchField: ["title"],
+                    options: DappObject.ledgerSecondaryArray,
+                    render: {
+                        item: function (item, escape) {
+                            return (
+                            "<div>" +
+                            (item.title
+                                ? `<span class="title connect-wallet-text" data-ethkey=${item.title}>` + escape(item.title) + "</span>"
+                                : "") +
+                            "</div>"
+                            );
+                        },
+                        option: function (item, escape) {
+                            var label = item.title;
+                            return (
+                            "<div>" +
+                            '<span class="connect-wallet-text">' +
+                            escape(label) +
+                            "</span>" +
+                            "</div>"
+                            );
+                        },
+                    },
+                    onChange: function(value) {
+                        onInputChange(value);
+                    },
+                    create: false,
+                    dropdownParent: "body",
+                });
+
+                selectize = $select[0].selectize;
+
+                if (HandleClick) {
+                    document.getElementById("ConnectNative").removeEventListener("click", HandleClick);
+                    document.getElementById("ConnectNative").remove();
+                }
+
+                if (DappObject.ledgerSelectedIndex !== "") {
+                    selectize.setValue([Number(DappObject.ledgerSelectedIndex)]);
+                } else {
+                    await setCurrentPopup(dappStrings['dapp_mabel_selectaccount'], true);
+                }
+
+                let addressDropdown = document.querySelector(".selectize-input");
+                let secondaryAddress = addressDropdown?.childNodes[0]?.childNodes[0]?.getAttribute('data-ethkey');
+                    
+                passedAddr = secondaryAddress;
+                break
+            case "Failed: App not Installed":
+                await setCurrentAppState("Alert");
+
+                await setMabelMessages(undefined, dappStrings['dapp_mabel_ledger2'] + ' ' + requiredApp + ' ' + dappStrings['dapp_mabel_ledger3'], 1000);
+
+                throw new Error("Ledger Avalanche App not installed!");
+                break
+            case "Failed: User Rejected":
+                ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, undefined, undefined, undefined, undefined, FassetName);
+                break
+        }
+    });
+}
+
+export async function ConnectWalletSetupLedger(requiredApp, selectize, account, flrPublicKey, rpcUrl, flrAddr, pageIndex, HandleClick, DappObject, FassetName = undefined, passedSecondaryAddr = undefined) {
     await getLedgerApp(requiredApp).then(async result => {
         switch (result) {
             case "Success":
@@ -94,7 +205,13 @@ export async function ConnectWalletSetupLedger(requiredApp, selectize, account, 
 
                     DappObject.unPrefixedAddr = unprefixed;
 
-                    ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+                    if (pageIndex >= 0 && pageIndex < 4) {
+                        // Normal DApp
+                        ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value);
+                    } else if (pageIndex >= 9) {
+                        // FAssets
+                        ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, flrPublicKey, ethaddr, value, passedSecondaryAddr, FassetName);
+                    }
                 }
 
                 var $select = $('#select-account').selectize({
@@ -156,7 +273,13 @@ export async function ConnectWalletSetupLedger(requiredApp, selectize, account, 
                 throw new Error("Ledger Avalanche App not installed!");
                 break
             case "Failed: User Rejected":
-                ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
+                if (pageIndex >= 0 && pageIndex < 4) {
+                    // Normal DApp
+                    ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex, HandleClick);
+                } else if (pageIndex >= 9) {
+                    // FAssets
+                    ConnectWalletClickFassets(DappObject, pageIndex, HandleClick, undefined, undefined, undefined, undefined, FassetName);
+                }
                 break
         }
     });

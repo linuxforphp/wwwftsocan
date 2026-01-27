@@ -11,7 +11,7 @@ import { setupDelegatePage } from "./dapp-delegate.js";
 import { setupRewardsPage } from "./dapp-claim.js";
 import { setupTransferPage, setupStakePage, setupStakeRewardsPage } from "./dapp-staking.js";
 import { setupTransportConnect } from "./dapp-ledger.js";
-import { ConnectWalletClickFassets, FAssetInfo } from "./dapp-fassets.js";
+import { ConnectWalletClickFassets, FAssetInfo, hasSnapsSupport } from "./dapp-fassets.js";
 
 // ALL MODULES.
 
@@ -74,6 +74,9 @@ window.DappObject = {
     StakeMinDate: "",
     // FAssets Variables
     chosenFAsset: "",
+    secondaryWalletIndex: -1,
+    secondaryAddr: "",
+    ledgerSecondaryArray: [],
 }
 
 window.cachedValues = {
@@ -81,6 +84,7 @@ window.cachedValues = {
     tokenBalance: "",
     pBalance: "",
     delegateDropdown: undefined,
+    currentFassetPage: ""
 }
 
 export async function getSelectedNetwork(rpcUrl, chainidhex, networkValue, tokenIdentifier, wrappedTokenIdentifier, flrAddr) {
@@ -503,6 +507,7 @@ window.dappInit = async (option, stakingOption) => {
                 await resetDappObjectState(DappObject);
 
                 DappObject.walletIndex = -1;
+                DappObject.secondaryWalletIndex = -1;
 
                 document.getElementById("ContinueMetamask")?.addEventListener("click", async () => {
                     document.cookie = "ftsocan_browser-wallet=true;";
@@ -633,26 +638,65 @@ window.dappInit = async (option, stakingOption) => {
                 handleChainChangedStake(DappObject);
             });
         }
-    } else if (option === 5 || option === '5') {
+    }
+    
+    if (option === 5 || option === '5') {
+        if (DappObject.walletIndex !== 1 && DappObject.walletIndex !== -1) {
+            DappObject.chosenEVMProvider.on("accountsChanged", async (accounts) => {
+                handleAccountsChanged(accounts, DappObject, dappOption, stakingOption);
+            });
+
+            DappObject.chosenEVMProvider.on("chainChanged", async () => {
+                handleChainChanged(DappObject);
+            });
+        }
+
         var handleClick;
 
         console.log(DappObject.chosenEVMProvider);
+ 
+        if (stakingOption === 7) {
+            // SECONDARY WALLET
+            document.getElementById("NativeName").innerHTML = FAssetInfo[DappObject.chosenFAsset].name;
+
+            if (DappObject.walletIndex !== 0 || DappObject.chosenEVMProvider.isMetaMask !== true || (await hasSnapsSupport() === false)) {
+                document.getElementById("metamaskOption").style.display = "none";
+                document.getElementById("walletConnectOption").classList.remove("col-md-6");
+            }
+
+            document.getElementById("metamaskOption")?.addEventListener("click", async () => {
+                DappObject.secondaryWalletIndex = 0;
+                getDappPage(cachedValues.currentFassetPage);
+            });
+
+            document.getElementById("ledgerOption")?.addEventListener("click", async () => {
+                DappObject.secondaryWalletIndex = 1;
+                getDappPage(cachedValues.currentFassetPage);
+            });
+
+            document.getElementById("walletConnectOption")?.addEventListener("click", async () => {
+                DappObject.secondaryWalletIndex = 2;
+                getDappPage(cachedValues.currentFassetPage);
+            });
+        }
 
         if (stakingOption === 1) {
             DappObject.chosenFAsset = "";
  
-             const btns = document.querySelectorAll('.fasset-clickable');
- 
-             btns.forEach(btn => {
-                 btn.addEventListener('click', event => {
-                     DappObject.chosenFAsset = btn.id;
- 
-                     console.log(btn.id);
- 
-                     getDappPage('fassetsMintMint');
-                 });
-              });             
+            const btns = document.querySelectorAll('.fasset-clickable');
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', event => {
+                    DappObject.chosenFAsset = btn.id;
+
+                    console.log(btn.id);
+
+                    getDappPage('fassetsMintMint');
+                });
+            });             
          } else if (stakingOption === 2) {
+            cachedValues.currentFassetPage = "fassetsMintMint";
+
             document.getElementById("FAssetName").innerHTML = FAssetInfo[DappObject.chosenFAsset].fasset;
             document.getElementById("NativeName").innerHTML = FAssetInfo[DappObject.chosenFAsset].name;
             document.getElementById("FromIcon").innerHTML = FAssetInfo[DappObject.chosenFAsset].icon;
@@ -660,7 +704,11 @@ window.dappInit = async (option, stakingOption) => {
             document.getElementById("NativeAddress").innerHTML = FAssetInfo[DappObject.chosenFAsset].dummyAddress;
 
             document.getElementById("ConnectWallet")?.addEventListener("click", handleClick = async () => {
-                ConnectWalletClickFassets(DappObject, 0, handleClick, undefined, undefined, undefined, DappObject.chosenFAsset);
+                ConnectWalletClickFassets(DappObject, 0, handleClick, undefined, undefined, undefined, undefined, DappObject.chosenFAsset);
+            });
+
+            document.getElementById("ConnectNative")?.addEventListener("click", async () => {
+                getDappPage("secondaryWallet");
             });
 
             if (DappObject.walletIndex !== -1 || (DappObject.walletIndex === 1 && (Array.isArray(DappObject.ledgerAddrArray) && DappObject.ledgerAddrArray.length))) {
@@ -681,6 +729,8 @@ window.dappInit = async (option, stakingOption) => {
              //     transferTokens(DappObject, stakingOption);
              // });
          }
+    } else {
+        DappObject.chosenFAsset = "";
     }
 
     // French Number formatting

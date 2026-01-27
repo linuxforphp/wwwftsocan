@@ -261,9 +261,20 @@ export function showAccountAddress(address, pAddress) {
     }
 }
 
+// Show user's account address.
+export function showFassetNativeAddress(address) {
+    if (typeof address !== "undefined") {
+        document.getElementById('NativeAddress').innerText = address;
+    } else {
+        if (DappObject.secondaryAddr !== "" && DappObject.secondaryAddr !== undefined) {
+            document.getElementById('NativeAddress').innerText = DappObject.secondaryAddr;
+        }
+    }
+}
+
 //Functions to show the requested info
 export function showBalance(balanceAddress, wrapBool = true, staking = false) {
-    if (balanceAddress) {
+    if (balanceAddress !== undefined) {
         document.getElementById("Balance").innerText = balanceAddress;
     } else {
         if (wrapBool === true) {
@@ -287,7 +298,7 @@ export function showBalance(balanceAddress, wrapBool = true, staking = false) {
 }
 
 export function showTokenBalance(tokenBalanceAddress, wrapBool = true) {
-    if (tokenBalanceAddress) {
+    if (tokenBalanceAddress !== undefined) {
         document.getElementById("TokenBalance").innerText = tokenBalanceAddress;
     } else {
         if (wrapBool === true) {

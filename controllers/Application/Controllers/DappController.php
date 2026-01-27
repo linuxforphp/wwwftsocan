@@ -1097,4 +1097,61 @@ public function FassetsRewardsAction($vars = null)
 
         return $this->view;
     }
+
+    public function preSecondaryWalletAction($vars = null)
+    {
+        if (isset($vars['get']['id'])) {
+            $networkArray['id'] = (string)$vars['get']['id'];
+        } else {
+            $networkArray = [];
+        }
+
+        $aggregateValueObject = new AggregateImmutableValueObject($networkArray);
+
+        $event = new AggregateEvent(
+            $aggregateValueObject,
+            $this->aggregateRootName,
+            DappController::READ_REQUESTED
+        );
+
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function SecondaryWalletAction($vars = null)
+    {
+        if (isset($this->results) && !empty($this->results)) {
+            $this->filteredResults = [];
+            $networkSymbols = [];
+
+            if ($this->view['env'] === 'production') {
+                $networkSymbols = ['FLR', 'SGB'];
+            } else {
+                $networkSymbols = ['CFLR', 'C2FLR'];
+            }
+
+            array_walk($this->results, function($value, $key, $symbol) {
+                foreach ($symbol as $networkSymbol) {
+                    if ($value['chainidentifier'] === $networkSymbol) {
+                        $this->filteredResults[$key] = $value;
+                    }
+                }
+            }, $networkSymbols);
+
+            $this->view['results'] = $this->filteredResults;
+        } else {
+            $this->view['results']['nodata'] = 'No results';
+        }
+
+        $this->view['headjs'] = 1;
+
+        // $this->view['headjsdefer'] = 1;
+
+        $this->view['bodyjs'] = 1;
+
+        $this->view['dappfassets'] = 1;
+
+        $this->view['templatefile'] = 'dapp/dapp_secondary_wallet';
+ 
+         return $this->view;
+    }
 }

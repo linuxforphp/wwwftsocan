@@ -264,7 +264,18 @@
                         }
                     });
                 }
-            }
+            // METAMASK SELECT OTHER WALLET
+            } else if (option === "secondarywallet") {
+                if (DappObject.walletIndex !== -1) {
+                    $.get( "secondaryWallet", function( data ) {
+                        $( "#dapp-root" ).html( data );
+
+                        if (reconnect === true) {
+                            window.dappInit(5, 7);
+                        }
+                    });
+                }
+            } 
         }
     }
 </script>
