@@ -562,21 +562,27 @@ ul.delegation {
 }
 
 .dropdown-menu-dapp ul li:hover > a.navbar-list-item {
+    transition: color 0.3s !important;
     color: #EF0000 !important;
 }
 
 .dropdown-menu-dapp {
     transition: 0.3;
-    display: none;
+    height: 0px;
+    opacity: 0;
+    transform: translateX(-1em);
 }
 
 .navbar-nav li:hover .dropdown-menu-dapp,
 .navbar-nav li:active .dropdown-menu-dapp,
 .navbar-nav li.hover .dropdown-menu-dapp {
+    transform: translateX(0);
+    opacity: 1;
     z-index: 100 !important;
     border-radius: 10px !important;
     padding: 0;
     box-sizing: border-box;
+    height: auto;
     display: inline-block;
     width: max-content !important;
     position: absolute;
@@ -584,7 +590,7 @@ ul.delegation {
     left: 0;
     top: 80%;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
+    transition: 0.5s;
     padding: auto;
 }
 

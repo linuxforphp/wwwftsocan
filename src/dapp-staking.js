@@ -1186,7 +1186,13 @@ export async function stake(DappObject, stakingOption) {
     amount1.value = "0";
 
     if (PchainBalanceBigInt < stakeAmount) {
-        await setCurrentPopup(dappStrings['dapp_mabel_transfer_error3'], true);
+        await setCurrentPopup(dappStrings['dapp_mabel_stake_error2'], true);
+
+        let claimButton = document.getElementById("WrapButton");
+        claimButton.style.backgroundColor = "rgba(143, 143, 143, 0.8)";
+        claimButton.style.cursor = "auto";
+        document.getElementById("WrapButtonText").innerText = dappStrings['dapp_enteramount'];
+        DappObject.isRealValue = false;
     } else {
 
         let pChainTransactionId;

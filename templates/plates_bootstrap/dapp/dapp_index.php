@@ -290,6 +290,10 @@
 <script src="<?=$view['urlbaseaddr'] ?>js/buffer.min.js"></script>
 <script>
     window.Buffer = buffer.Buffer;
+
+    function events_default() {
+        
+    }
 </script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/main.bundle.js"></script>
 <script type="module" src="<?=$view['urlbaseaddr'] ?>js/dappcommon.bundle.js"></script>
