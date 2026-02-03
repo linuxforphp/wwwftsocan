@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.4 (2026-02-02)
+
+- Fixes DApp staking.
+- Fixes an visual issue with the preloader.
+- Adds some subtle animation to the navbar's dropdown menus.
+
 ## 1.5.3 (2026-01-10)
 
 - Fixes a responsive issue in portrait view on tablets.
