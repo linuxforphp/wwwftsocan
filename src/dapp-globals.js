@@ -16,8 +16,8 @@ export const walletConnectEVMParams = {
             "37a686ab6223cd42e2886ed6e5477fce100a4fb565dcd57ed4f81f7c12e93053",
             // Metamask
             "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
-            // Web3AUTH
-            "78aaedfb74f2f4737134f2aaa78871f15ff0a2828ecb0ddc5b068a1f57bb4213",
+            // Crypto.com Onchain
+            "f2436c67184f158d1beda5df53298ee84abfc367581e4505134b5bcf5f46697d",
             // Ledger
             '19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927',
         ],

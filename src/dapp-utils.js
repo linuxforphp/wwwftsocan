@@ -180,4 +180,6 @@ export async function resetDappObjectState(DappObject) {
     }
 
     DappObject.chosenEVMProvider = undefined;
+
+    DappObject.secondaryProvider = undefined;
 }

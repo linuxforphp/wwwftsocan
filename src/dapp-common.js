@@ -77,6 +77,7 @@ window.DappObject = {
     secondaryWalletIndex: -1,
     secondaryAddr: "",
     ledgerSecondaryArray: [],
+    secondaryProvider: undefined
 }
 
 window.cachedValues = {

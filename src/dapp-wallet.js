@@ -442,7 +442,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
             DappObject.isHandlingOperation = false;
         }
     } catch (error) {
-        // console.log(error);
+        console.log(error);
 
         document.getElementById("ConnectWalletText").innerText = dappStrings["dapp_connect"];
 

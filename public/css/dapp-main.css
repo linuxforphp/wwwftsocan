@@ -12,6 +12,12 @@ html {
 }
 
 body {
+    --w3m-z-index: 9998 !important;
+    --w3m-font-family: 'Poppins', sans-serif !important;
+    --w3m-accent-color: rgba(255, 49, 32, 0.8) !important;
+    --w3m-background-color: rgba(255, 49, 32, 0.8) !important;
+    --w3m-overlay-background-color: rgba(0, 0, 0, 0.5) !important;
+
     overflow-x: hidden;
     overflow-y: hidden;
     font-family: 'Poppins', sans-serif;
@@ -150,9 +156,13 @@ h1, h2 {
     padding: 30px 20% 25px;
 }
 
-.cryptoconnect-extension-modal {
+.cryptoconnect-extension-modal, .w3m-container{
     z-index: 9999 !important;
     line-height: 32px;
+}
+
+.w3m-overlay {
+    overflow-x: hidden !important;
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
