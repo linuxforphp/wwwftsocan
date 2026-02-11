@@ -557,7 +557,7 @@ ul.delegation {
     box-sizing: border-box;
     display: inline-block !important;
     min-width: 160px;
-    min-height: 25px;
+    min-height: 22px;
     position: absolute;
 }
 
@@ -588,7 +588,7 @@ ul.delegation {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.75);
     left: 0;
-    top: 80%;
+    top: 90%;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     transition: 0.5s;
     padding: auto;
