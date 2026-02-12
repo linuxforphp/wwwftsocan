@@ -23,12 +23,13 @@
             <div class="container">
                 <div class="jumbotron-content float-left">
                     <img src="<?=$view['urlbaseaddr']?>img/logo-dark-2.svg"/>
-                    <div class="h1">
-                        FTSO Canada<br />
-                    </div>
-                    <span class="lead"><?=_("index_lead")?></span>
+                    <svg id="jumbo-svg-text" viewBox="0 0 2150 180">
+                        <text xmlns="http://www.w3.org" id="jumbo-text" class="h1" text-anchor="left" x="0" y="1em" dx="5px"></text>
+                    </svg>
+                    
+                    <span class="lead focus-in-expand"><?=_("index_lead")?></span>
                     <br />
-                    <button id="dappButton" style="background-color: rgba(253, 0, 15, 0.9);" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')" class="connect-wallet hero-btn">
+                    <button id="dappButton" style="background-color: rgba(253, 0, 15, 0.9);" onclick="getDocsPageNewTab(1, '<?=$view['urlbaseaddr']?>dapp/index')" class="connect-wallet hero-btn slide-in-blurred-left">
                         <i class="connect-wallet-text" style="font-weight: 500; vertical-align: text-top; padding-left: 5px;"><?=_("dapp_open_app")?> 
                         </i>
                         <lord-icon
@@ -122,6 +123,45 @@
 <?php if ($view['bodyjs'] === 1): ?>
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
+
+<script>
+    // Jumbotron Animation
+
+    function create_multiline(text, width) {
+        var svgNS = "http://www.w3.org/2000/svg";
+        var words = text.split(' ');                        
+        var text_element = document.getElementById('jumbo-text');
+        var tspan_element = document.createElementNS(svgNS, "tspan");   // Create first tspan element
+        var text_node = document.createTextNode(words[0]);           // Create text in tspan element
+
+        tspan_element.appendChild(text_node);                           // Add tspan element to DOM
+        text_element.appendChild(tspan_element);                        // Add text to tspan element
+
+        for(var i=1; i<words.length; i++)
+        {
+            var len = tspan_element.firstChild.data.length;             // Find number of letters in string
+            tspan_element.firstChild.data += " " + words[i];            // Add next word
+
+            if (tspan_element.getComputedTextLength() / 1.55 > width)
+            {
+                tspan_element.firstChild.data = tspan_element.firstChild.data.slice(0, len);    // Remove added word
+
+                var tspan_element = document.createElementNS(svgNS, "tspan");       // Create new tspan element
+                tspan_element.setAttributeNS(null, "x", 10);
+                tspan_element.setAttributeNS(null, "dy", "0.9em");
+                text_node = document.createTextNode(words[i]);
+                tspan_element.appendChild(text_node);
+                text_element.appendChild(tspan_element);
+            }
+        }
+
+
+    }
+
+    document.getElementById('jumbo-svg-text').setAttribute("viewBox", "0 0 " + String(document.getElementById('home-jumbotron').offsetWidth * 1.5) + " 180");
+
+    create_multiline("FTSO Canada", window.innerWidth);
+</script>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="<?=$view['urlbaseaddr'] ?>js/ie10-viewport-bug-workaround.js"></script>

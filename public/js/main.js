@@ -6,6 +6,7 @@ jQuery(window).load(function(){
 
 	$("#preloader").fadeOut("slow");
 
+	document.getElementById("jumbo-text")?.classList.add("animated");
 });
 
 /* ========================================================================= */
