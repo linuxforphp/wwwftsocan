@@ -1,10 +1,6 @@
 import { showConfirm, showConfirmStake, showFail, showFailStake, setCurrentAppState, setCurrentPopup } from "./dapp-ui.js";
 import { updateCurrentAccountStatus } from "./flare-utils.js";
 
-export function wait(milliseconds) {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-}
-
 export function unPrefix0x(input) {
     return input.startsWith("0x") ? input.slice(2) : input;
 }

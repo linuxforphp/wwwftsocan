@@ -1,12 +1,32 @@
 /* ========================================================================= */
 /*	Preloader
 /* ========================================================================= */
+window.wait = function (milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
 
 jQuery(window).load(function(){
 
 	$("#preloader").fadeOut("slow");
 
 	document.getElementById("jumbo-text")?.classList.add("animated");
+
+	let dropdownList = document.querySelectorAll(".delegate-dropdown");
+
+	dropdownList?.forEach(dropdownElem => {
+		if (typeof dropdownElem !== "undefined") {
+			dropdownElem.parentElement.addEventListener("click", function () {
+				this.lastElementChild.lastElementChild.classList.toggle("active");
+				dropdownElem.querySelector(".fa-caret-down").classList.toggle("active");
+			});
+			dropdownElem.addEventListener("blur", async function () {
+				await wait(180);
+				console.log("Unfocused");
+				this.parentElement.lastElementChild.lastElementChild.classList.remove("active");
+				dropdownElem.querySelector(".fa-caret-down").classList.remove("active");
+			});
+		}
+	});
 });
 
 /* ========================================================================= */

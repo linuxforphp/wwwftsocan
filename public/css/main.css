@@ -616,8 +616,22 @@ ul.delegation {
     padding: 20px 0;
 }
 
+.navbar-nav li {
+    transition: all 0.3s ease;
+    max-height: 100%;
+}
+
 .delegate-dropdown {
     padding: 0;
+}
+
+.delegate-dropdown i {
+    transition: all 0.3s ease-out;
+    transform: none;
+}
+
+.delegate-dropdown i.active {
+    transform: rotate(-180deg);
 }
 
 .dd-menu {
@@ -628,7 +642,7 @@ ul.delegation {
     position: absolute;
 }
 
-.dropdown-menu-dapp ul li:hover > a.navbar-list-item {
+.dropdown-menu-dapp.active > a.navbar-list-item {
     transition: color 0.3s !important;
     color: #EF0000 !important;
 }
@@ -640,9 +654,7 @@ ul.delegation {
     transform: translateX(-1em);
 }
 
-.navbar-nav li:hover .dropdown-menu-dapp,
-.navbar-nav li:active .dropdown-menu-dapp,
-.navbar-nav li.hover .dropdown-menu-dapp {
+.dropdown-menu-dapp.active {
     transform: translateX(0);
     opacity: 1;
     z-index: 100 !important;
@@ -661,9 +673,7 @@ ul.delegation {
     padding: auto;
 }
 
-.navbar-nav li:hover .dropdown-menu-dapp ul,
-.navbar-nav li:active .dropdown-menu-dapp ul,
-.navbar-nav li.hover .dropdown-menu-dapp ul {
+.dropdown-menu-dapp.active ul {
     display: table;
     content: " ";
     box-sizing: border-box;
@@ -673,9 +683,7 @@ ul.delegation {
     width: auto;
 }
 
-.navbar-nav li:hover .dropdown-menu-dapp ul li,
-.navbar-nav li:active .dropdown-menu-dapp ul li,
-.navbar-nav li.hover .dropdown-menu-dapp ul li {
+.dropdown-menu-dapp.active ul li {
     width: 130px;
     padding: 10px;
 }
@@ -1788,12 +1796,13 @@ textarea.form-control {
     .navbar-nav li {
         width: 100% !important;
         height: 40px;
+        max-height: 40px;
         overflow: hidden;
     }
 
-    .navbar-nav li:hover,
-    .navbar-nav li:active {
+    .navbar-nav li:has(.dropdown-menu-dapp.active) {
         height: fit-content;
+        max-height: 200px;
         overflow: hidden;
     }
 
@@ -1802,8 +1811,7 @@ textarea.form-control {
         overflow: hidden;
     }
 
-    .navbar-nav li:hover .dropdown-menu-dapp,
-    .navbar-nav li:active .dropdown-menu-dapp {
+    .dropdown-menu-dapp.active {
         z-index: 100 !important;
         border-radius: 0 !important;
         padding: 0;
@@ -1817,42 +1825,25 @@ textarea.form-control {
         top: 0;
     }
 
-    .navbar-nav li.hover .dropdown-menu-dapp {
-        z-index: 100 !important;
-        border-radius: 0 !important;
-        padding: 0;
-        box-sizing: border-box;
-        display: block;
-        width: 100% !important;
-        position: relative;
-        background-color: rgba(0, 0, 0, 0);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
-        left: 0;
-        top: 0;
-    }
-
-    .navbar-nav li:hover .dropdown-menu-dapp ul,
-    .navbar-nav li:active .dropdown-menu-dapp ul {
+    .dropdown-menu-dapp.active ul {
         width: 100%;
     }
 
-    .navbar-nav li.hover .dropdown-menu-dapp ul {
+    .dropdown-menu-dapp.active ul {
         width: 100%;
     }
 
-    .navbar-nav li:hover .dropdown-menu-dapp ul li,
-    .navbar-nav li:active .dropdown-menu-dapp ul li {
+    .dropdown-menu-dapp.active ul li {
         width: 360px !important;
         padding: 0px;
     }
 
-    .navbar-nav li.active .dropdown-menu-dapp ul li {
+    .dropdown-menu-dapp.active ul li {
         width: 360px !important;
         padding: 0px;
     }
 
-    .navbar-nav li:hover .dropdown-menu-dapp ul li a,
-    .navbar-nav li:active .dropdown-menu-dapp ul li a {
+    .dropdown-menu-dapp.active ul li a {
         width: 100%;
         box-sizing: border-box;
         position: relative;
@@ -1861,7 +1852,7 @@ textarea.form-control {
         padding: 10px 15px;
     }
 
-    .navbar-nav li.hover .dropdown-menu-dapp ul li a {
+    .dropdown-menu-dapp.active ul li a {
         width: 100%;
         box-sizing: border-box;
         position: relative;
@@ -2090,22 +2081,18 @@ textarea.form-control {
     .navbar-nav li {
         width: 100% !important;
         height: 40px;
+        max-height: 40px;
         overflow: hidden;
     }
 
-    .navbar-nav li:hover,
-    .navbar-nav li:active {
+    .navbar-nav li:has(.dropdown-menu-dapp.active) {
         height: fit-content;
+        max-height: 200px;
         overflow: hidden;
     }
 
-    .navbar-nav li.hover {
-        height: fit-content;
-        overflow: hidden;
-    }
-
-    .navbar-nav li:hover .dropdown-menu-dapp,
-    .navbar-nav li:active .dropdown-menu-dapp {
+    .dropdown-menu-dapp.active,
+    .dropdown-menu-dapp.active {
         z-index: 100 !important;
         border-radius: 0 !important;
         padding: 0;
@@ -2119,7 +2106,7 @@ textarea.form-control {
         top: 0;
     }
 
-    .navbar-nav li.hover .dropdown-menu-dapp {
+    .dropdown-menu-dapp.active {
         z-index: 100 !important;
         border-radius: 0 !important;
         padding: 0;
@@ -2133,17 +2120,15 @@ textarea.form-control {
         top: 0;
     }
 
-    .navbar-nav li:hover .dropdown-menu-dapp ul,
-    .navbar-nav li:active .dropdown-menu-dapp ul {
+    .dropdown-menu-dapp.active ul {
         width: 100%;
     }
 
-    .navbar-nav li.hover .dropdown-menu-dapp ul {
+    .dropdown-menu-dapp.active ul {
         width: 100%;
     }
 
-    .navbar-nav li:hover .dropdown-menu-dapp ul li,
-    .navbar-nav li:active .dropdown-menu-dapp ul li {
+    .dropdown-menu-dapp.active ul li {
         width: 360px !important;
         padding: 0px;
     }
@@ -2153,8 +2138,7 @@ textarea.form-control {
         padding: 0px;
     }
 
-    .navbar-nav li:hover .dropdown-menu-dapp ul li a,
-    .navbar-nav li:active .dropdown-menu-dapp ul li a {
+    .dropdown-menu-dapp.active ul li a {
         width: 100%;
         box-sizing: border-box;
         position: relative;
@@ -2163,7 +2147,7 @@ textarea.form-control {
         padding: 10px 15px;
     }
 
-    .navbar-nav li.hover .dropdown-menu-dapp ul li a {
+    .dropdown-menu-dapp.active ul li a {
         width: 100%;
         box-sizing: border-box;
         position: relative;

@@ -165,50 +165,9 @@
     </div>
 <?php endif ?>
 
-<script>
-    var dappUrlBaseAddr = <?= json_encode($view['urlbaseaddr']); ?>;
-
-    var dappLanguage = "<?= $view['language']; ?>";
-
-    var odometerFormat = dappLanguage === "fr_FR" ? '( ddd).dd' : '(,ddd).dd';
-
-    window.odometerOptions = {
-        auto: false, // Don't automatically initialize everything with class 'odometer'
-        format: odometerFormat,
-        theme: 'minimal', // Specify the theme (if you have more than one theme css file on the page)
-    };
-
-    var dappStrings = <?= $view['jstranslate']; ?>;
-</script>
-
 <?php if ($view['bodyjs'] === 1): ?>
     <?=$this->section('bodyjs', $this->fetch('bodyjs', ['view' => $view]))?>
 <?php endif ?>
-
-<script>
-    var dappNetworks = <?= json_encode($view['results']); ?>;
-</script>
-
-<script>
-    var fetchTupleConfig = <?= $view['jsconfig']['ftsov2']['fetchtupleconfig']; ?>;
-
-    var contractOverrideConfig = <?= $view['jsconfig']['ftsov2']['contractoverrideconfig']; ?>;
-
-    var rewardsOverrideConfig = <?= $view['jsconfig']['ftsov2']['rewardsoverrideconfig']; ?>;
-
-    var explorerConfig = <?= $view['jsconfig']['explorerconfig']; ?>;
-</script>
-
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso-reward-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/reward-manager-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/systems-manager-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/address-binder-abi.js"></script>
-<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/validator-reward-abi.js"></script>
 
 <script>
     var uriPath = <?= json_encode($view['path']); ?>;
@@ -262,6 +221,48 @@
         }
     }
 </script>
+
+<script>
+    var dappUrlBaseAddr = <?= json_encode($view['urlbaseaddr']); ?>;
+
+    var dappLanguage = "<?= $view['language']; ?>";
+
+    var odometerFormat = dappLanguage === "fr_FR" ? '( ddd).dd' : '(,ddd).dd';
+
+    window.odometerOptions = {
+        auto: false, // Don't automatically initialize everything with class 'odometer'
+        format: odometerFormat,
+        theme: 'minimal', // Specify the theme (if you have more than one theme css file on the page)
+    };
+
+    var dappStrings = <?= $view['jstranslate']; ?>;
+</script>
+
+<script>
+    var dappNetworks = <?= json_encode($view['results']); ?>;
+</script>
+
+<script>
+    var fetchTupleConfig = <?= $view['jsconfig']['ftsov2']['fetchtupleconfig']; ?>;
+
+    var contractOverrideConfig = <?= $view['jsconfig']['ftsov2']['contractoverrideconfig']; ?>;
+
+    var rewardsOverrideConfig = <?= $view['jsconfig']['ftsov2']['rewardsoverrideconfig']; ?>;
+
+    var explorerConfig = <?= $view['jsconfig']['explorerconfig']; ?>;
+</script>
+
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/flare-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/wnat-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/voter-whitelister-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/ftso-reward-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/reward-manager-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/systems-manager-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/distribution-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/claim-setup-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/address-binder-abi.js"></script>
+<script type="text/javascript" src="<?=$view['urlbaseaddr'] ?>js/validator-reward-abi.js"></script>
+
 <script>
     $('#centerButton').click(function(){
         $(this).toggleClass("clicked");
