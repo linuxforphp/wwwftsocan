@@ -1,7 +1,7 @@
 import { GetContract, GetNetworkName, MMSDK, showAccountAddress, showBalance, showTokenBalance, FlareAbis, FlareLogos, updateCurrentBalancesStatus, updateCurrentAccountStatus } from "./flare-utils";
 import { ethers } from "./ethers.js";
 import { wait, unPrefix0x, round, isNumber, checkConnection, checkTxStake, showConnectedAccountAddress, resetDappObjectState } from "./dapp-utils.js";
-import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid, showSignatureSpinner } from "./dapp-ui.js";
+import { showSpinner, showConfirmationSpinnerTransfer, showConfirmationSpinnerStake, showConfirmStake, showFailStake, showBindPAddress, setCurrentAppState, setCurrentPopup, closeCurrentPopup, showValidatorInvalid, showSignatureSpinner, formatOdometer } from "./dapp-ui.js";
 import { walletConnectEVMParams } from "./dapp-globals.js";
 import { switchClaimButtonColor, switchClaimButtonColorBack, showClaimRewards } from "./dapp-claim.js";
 import { LedgerEVMSingleSign } from "./dapp-ledger.js";
@@ -71,7 +71,7 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
                 await getLedgerApp(requiredApp).then(async result => {
                     switch (result) {
                         case "Success":
-                            await wait(3000);
+                            await window.wait(3000);
     
                             if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                                 // console.log("Fetching Addresses... P-Chain");
@@ -391,6 +391,8 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
 
                     showAccountAddress(prefixedPchainAddress, account);
 
+                    await showStakeInfo(DappObject.unPrefixedAddr, web32);
+
                     await setCurrentPopup(dappStrings['dapp_mabel_claimstake1'], true);
 
                     clearTimeout(DappObject.latestPopupTimeoutId);
@@ -430,6 +432,156 @@ export async function ConnectPChainClickStake(DappObject, HandleClick, PassedPub
         document.getElementById("ConnectPChain")?.addEventListener("click", ClickHandler = async () => {
             ConnectPChainClickStake(DappObject, ClickHandler);
         });
+    }
+}
+
+async function showStakeInfo(unPrefixedAddr, web32) {
+    // let stakeInfo = await getStakeInfo(unPrefixedAddr);
+    let ftsoList = await getStakeInfo("flare1dkeqvpd68stg3rgclmayr900jtmxqx9yp2y29d");
+    console.log(ftsoList);
+
+    if (ftsoList.length < 1) {
+        try {
+            var insert1 = '';
+
+            var delegatedFtsoElement = document.getElementById('wrap-box-stake');
+            
+            fetch(dappUrlBaseAddr + 'validatorlist.json')
+                .then(res => res.json())
+                .then(async FtsoInfo => {
+                    FtsoInfo.sort((a, b) => a.name > b.name ? 1 : -1);
+
+                    let indexNumber;
+
+                    for (var f = 0; f < FtsoInfo.length; f++) {
+                        if (FtsoInfo[f].nodeId.toLowerCase() === ftsoList[0].nodeId.toLowerCase()) {
+                            indexNumber = f;
+
+                            // Origin: https://raw.githubusercontent.com/TowoLabs/ftso-signal-providers/master/assets.
+                            insert1 += `<div class="wrap-box-ftso" data-addr="${ftsoList[0].nodeId}">
+                                            <div class="row">
+                                                <div class="wrap-box-content">
+                                                    <img src="${dappUrlBaseAddr}assets/${ftsoList[0].nodeId}.png" alt="${FtsoInfo[f].name}" class="delegated-icon" id="delegatedIcon"/>
+                                                    <div class="ftso-identifier">
+                                                        <span id="delegatedName">${FtsoInfo[f].name}</span>
+                                                    </div>
+                                                    <div class="wrapper">
+                                                        <span id="stakedAmount" class="token-balance-claim odometer">0</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="wrapper-claim">
+                                                    <span>${dappStrings['dapp_provider']}:</span>
+                                                    <span class="address-claim">${ftsoList[0].nodeId}</span>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                            
+                                        break
+                        }
+                    }
+
+                    let delegatedFtsoElementChildren = delegatedFtsoElement.getElementsByClassName('wrap-box-ftso');
+
+                    while (delegatedFtsoElementChildren[0]) {
+                        delegatedFtsoElementChildren[0].parentNode.removeChild(delegatedFtsoElementChildren[0]);
+                    }
+
+                    delegatedFtsoElement.insertAdjacentHTML('afterbegin', insert1);
+
+                    let stakedAmountElement = document.getElementById("stakedAmount");
+
+                    new Odometer({el: stakedAmountElement, value: 0, format: odometerFormat});
+
+                    formatOdometer(stakedAmountElement);
+
+                    stakedAmountElement.innerHTML = round(web32.utils.fromWei(ftsoList[0].amount, "ether"));
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    } else if (ftsoList.length === 1) {    
+    //} else if (ftsoList.length > 1) {
+        // TODO: Add POPUP Modal and translations and fix if conditions;
+        try {
+            var insert1 = '';
+
+            var delegatedFtsoElement = document.getElementById('wrap-box-stake');
+
+            insert1 += `<div class="wrap-box-ftso">
+                            <div class="row">
+                                <div class="wrap-box-content">
+                                    <img src="${dappUrlBaseAddr}img/FTSO.png" alt="${dappStrings['dapp_provider']}" class="delegated-icon" id="delegatedIcon"/>
+                                    <div class="ftso-identifier">
+                                        <span id="delegatedName">${dappStrings['dapp_amount']}</span>
+                                    </div>
+                                    <div class="wrapper">
+                                        <span id="stakedAmount" class="token-balance-claim odometer">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="wrapper-claim">
+                                    <div id="viewStakes" style="font-weight: bold; cursor: pointer;">
+                                        <span>View all Stakes</span>
+                                        <lord-icon
+                                            id="StakeArrow"
+                                            src="${dappUrlBaseAddr}img/icons/arrow.json"
+                                            colors="primary:#8f8f8f"
+                                            target="#viewStakes"
+                                            style="width:19px;height:19px;top:5px;left:2px;display:none;">
+                                        </lord-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+            let delegatedFtsoElementChildren = delegatedFtsoElement.getElementsByClassName('wrap-box-ftso');
+
+            while (delegatedFtsoElementChildren[0]) {
+                delegatedFtsoElementChildren[0].parentNode.removeChild(delegatedFtsoElementChildren[0]);
+            }
+
+            delegatedFtsoElement.insertAdjacentHTML('afterbegin', insert1);
+
+            let stakedAmountElement = document.getElementById("stakedAmount");
+
+            new Odometer({el: stakedAmountElement, value: 0, format: odometerFormat});
+
+            formatOdometer(stakedAmountElement);
+
+            let TotalStake = BigInt(0);
+
+            for (let i = 0; i < ftsoList.length; i++) {
+                TotalStake += ftsoList[i].amount;
+            }
+
+            stakedAmountElement.innerHTML = round(web32.utils.fromWei(TotalStake, "ether"));
+
+            const iconElement = document.getElementById('StakeArrow');
+
+            iconElement.style.display = 'inline-block';
+            iconElement.setAttribute('state', 'in-reveal');
+            iconElement.setAttribute('trigger', 'in');
+
+            iconElement.addEventListener('ready', () => {
+                iconElement.playerInstance.addEventListener('complete', (e) => {
+                    // change to assigned state
+                    iconElement.setAttribute('state', 'hover-slide');
+                    iconElement.setAttribute('target', '#viewStakes');
+                
+                    // play from beginning
+                    iconElement.setAttribute('trigger', 'hover');
+                }, { once: true });
+            });
+
+            document.getElementById("viewStakes").addEventListener("click", async function () {
+                // showStakesModal()
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

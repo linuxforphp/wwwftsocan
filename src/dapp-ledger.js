@@ -290,7 +290,7 @@ export async function handleTransportConnect(chosenNavigator, DappObject, option
                         registryaddr = networkSelectBox.options[networkSelectBox.selectedIndex].getAttribute("data-registrycontract");
                     }
 
-                    await wait(3000);
+                    await window.wait(3000);
               
                     handleAccountsChanged([], DappObject, option, stakingOption, rpc, registryaddr, true);
                     break

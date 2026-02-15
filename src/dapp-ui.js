@@ -479,6 +479,39 @@ export async function showAlreadyDelegated(DelegatedFtsos, object) {
     });
 }
 
+export async function showStakesModal() {
+    DappObject.isPopupActive = true;
+
+    let spinner = $.confirm({
+        escapeKey: false,
+        backgroundDismiss: false,
+        icon: '',
+        title: "",
+        // HTML GOES HERE
+        content: "",
+        theme: 'material',
+        type: 'red',
+        typeAnimated: false,
+        draggable: false,
+        buttons: {
+            close: function () {
+            },
+            downloadCSV: {
+                btnClass: 'btn-red',
+                action: function () {
+                    // CSV FUNCTION
+                },
+            },
+        },
+        onContentReady: async function () {
+            // APPEND HTML
+            // TRANSLATIONS
+        }
+    });
+
+    return spinner;
+}
+
 export async function setCurrentAppState(state) {
     const currentWallets = document.querySelectorAll('.current-wallet');
 
@@ -561,7 +594,7 @@ export async function setCurrentPopup(message, open) {
 
     if (open === true) {
         if ((navigator.maxTouchPoints & 0xFF) === 0) {
-            await wait(1000);
+            await window.wait(1000);
 
             document.getElementById("currentWalletPopup")?.classList.add("showing");
         }
@@ -623,4 +656,41 @@ export const onLedgerInputChange = async (value) => {
     } else if (value == 1) {
         DappObject.isAvax = true;
     }
+}
+
+export function formatOdometer(odometer) {
+    odometer.addEventListener('odometerdone', function() {
+        let odometerChild = odometer.children[0];
+        let amountOfThousands = odometerChild.querySelectorAll('[class="odometer-formatting-mark"]');
+
+        if (amountOfThousands.length >= 2) {
+
+            if (odometerChild.querySelector(".odometer-radix-mark") !== null) {
+                while (!odometerChild.children[odometerChild.children.length - 1].classList.value.includes("odometer-radix-mark")) {
+                    odometerChild.removeChild(odometerChild.children[odometerChild.children.length - 1]);
+                }
+
+                odometerChild.removeChild(odometerChild.children[odometerChild.children.length - 1]);
+            };
+
+            for (let i = 0; i < 2; i++) {
+                odometerChild.removeChild(odometerChild.children[odometerChild.children.length - 1]);
+                odometerChild.removeChild(odometerChild.children[odometerChild.children.length - 1]);
+                odometerChild.removeChild(odometerChild.children[odometerChild.children.length - 1]);
+                if (i == 0) {
+                    odometerChild.removeChild(odometerChild.children[odometerChild.children.length - 1]);
+                } else {
+                    odometerChild.children[odometerChild.children.length - 1].innerHTML = "M";
+                }
+            }
+        }
+        
+        document.querySelectorAll(".odometer-radix-mark").forEach(element => {
+            if (dappLanguage === "fr_FR") {
+                element.innerText = ",";
+            } else {
+                element.innerText = ".";
+            }
+        });
+    });
 }

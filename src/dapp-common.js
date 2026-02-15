@@ -3,7 +3,7 @@
 
 import { GetContract, FlareAbis, FlareLogos, updateCurrentAccountStatus, updateCurrentBalancesStatus } from "./flare-utils";
 import { wait, checkConnection, showTokenIdentifiers, resetDappObjectState } from "./dapp-utils.js";
-import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption, togglePopup } from "./dapp-ui.js";
+import { downloadMetamask, showAlreadyDelegated, setCurrentAppState, setCurrentPopup, closeCurrentPopup, setupLedgerOption, togglePopup, formatOdometer } from "./dapp-ui.js";
 import { injectedProviderDropdown, walletConnectEVMParams, injectedProvider } from "./dapp-globals.js";
 import { handleAccountsChanged, handleChainChanged, handleChainChangedStake, ConnectWalletClick } from "./dapp-wallet.js";
 import { toggleWrapButton, setWrapButton, copyWrapInput, wrapTokens } from "./dapp-wrap.js";
@@ -1128,7 +1128,7 @@ window.dappInit = async (option, stakingOption) => {
                 await getLedgerApp(requiredApp).then(async result => {
                     switch (result) {
                         case "Success":
-                            await wait(3000);
+                            await window.wait(3000);
     
                             await setCurrentAppState("Connected");
 
@@ -1270,14 +1270,6 @@ window.dappInit = async (option, stakingOption) => {
     }
 
     document.querySelectorAll(".odometer").forEach(odometer => {
-        odometer.addEventListener('odometerdone', function(){
-            document.querySelectorAll(".odometer-radix-mark").forEach(element => {
-                if (dappLanguage === "fr_FR") {
-                    element.innerText = ",";
-                } else {
-                    element.innerText = ".";
-                }
-            });
-        });
+        formatOdometer(odometer);
     });
 };

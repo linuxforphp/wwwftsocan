@@ -34,6 +34,7 @@
             </div>
         </span>
     </div>
+    <div id='wrap-box-stake'></div>
 </div>
 <div class="row">
     <div class="col-sm-6">

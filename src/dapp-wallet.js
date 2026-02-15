@@ -258,7 +258,7 @@ export async function ConnectWalletClick(rpcUrl, flrAddr, DappObject, pageIndex,
                     await getLedgerApp(requiredApp).then(async result => {
                         switch (result) {
                             case "Success":
-                                await wait(3000);
+                                await window.wait(3000);
         
                                 if (!Array.isArray(DappObject.ledgerAddrArray) || !DappObject.ledgerAddrArray.length) {
                                     let addresses;
